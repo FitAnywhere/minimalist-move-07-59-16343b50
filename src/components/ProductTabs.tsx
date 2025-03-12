@@ -87,8 +87,8 @@ const ProductTabs = () => {
               </div>
               
               <div className="order-1 md:order-2">
-                <h3 className="text-2xl font-bold mb-3">Resistance Bands</h3>
-                <p className="text-lg text-gray-600 mb-6">The Perfect Finishing Touch.</p>
+                <h3 className="text-2xl font-bold mb-3">RESISTANCE BANDS</h3>
+                
                 
                 <div className={cn("relative overflow-hidden transition-all duration-500", bandsExpanded ? "max-h-[1000px]" : "max-h-0")}>
                   <div className="space-y-4 mb-6">
