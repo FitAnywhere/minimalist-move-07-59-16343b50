@@ -91,6 +91,7 @@ const NavBar = () => {
           "fixed inset-0 top-[73px] bg-white z-40 md:hidden",
           isOpen ? "block" : "hidden"
         )}
+        style={{ backgroundColor: "white" }}
       >
         <div className="flex flex-col space-y-4 px-6 py-8">
           {navLinks.map((link) => (
