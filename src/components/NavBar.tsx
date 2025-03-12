@@ -47,7 +47,7 @@ const NavBar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a 
           href="#" 
-          className="text-2xl font-bold tracking-tighter transition-all"
+          className="text-2xl font-bold tracking-tighter transition-all relative z-50"
         >
           <span>Fit</span>
           <span className="text-yellow">Anywhere</span>
@@ -77,7 +77,7 @@ const NavBar = () => {
 
         {/* Mobile Menu Button */}
         <button 
-          className="md:hidden text-black"
+          className="md:hidden text-black relative z-50"
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? "Close menu" : "Open menu"}
         >
@@ -86,35 +86,43 @@ const NavBar = () => {
       </div>
 
       {/* Mobile Menu Panel */}
-      <div 
-        className={cn(
-          "fixed inset-0 top-[73px] bg-white z-40 md:hidden",
-          isOpen ? "block" : "hidden"
-        )}
-        style={{ backgroundColor: "white" }}
-      >
-        <div className="flex flex-col space-y-4 px-6 py-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="font-medium text-lg py-3 border-b border-gray-100"
-              onClick={() => setIsOpen(false)}
-            >
-              {link.name}
-            </a>
-          ))}
-          <div className="pt-4">
-            <a
-              href="#order"
-              className="block w-full bg-black text-white text-center px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-all"
-              onClick={() => setIsOpen(false)}
-            >
-              ORDER NOW
-            </a>
+      {isOpen && (
+        <div 
+          className="fixed inset-0 pt-[73px] bg-white z-40 md:hidden"
+          style={{ 
+            backgroundColor: "white",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: "100vh",
+            overflowY: "auto"
+          }}
+        >
+          <div className="flex flex-col space-y-4 px-6 py-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="font-medium text-lg py-3 border-b border-gray-100"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </a>
+            ))}
+            <div className="pt-4">
+              <a
+                href="#order"
+                className="block w-full bg-black text-white text-center px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-all"
+                onClick={() => setIsOpen(false)}
+              >
+                ORDER NOW
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 };
