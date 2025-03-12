@@ -16,6 +16,19 @@ const NavBar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Effect to prevent body scrolling when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const navLinks = [
     { name: "PowerTower", href: "#product" },
     { name: "Accessories", href: "#accessories" },
@@ -66,6 +79,7 @@ const NavBar = () => {
         <button 
           className="md:hidden text-black"
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -74,8 +88,8 @@ const NavBar = () => {
       {/* Mobile Menu Panel */}
       <div 
         className={cn(
-          "fixed inset-0 top-[73px] bg-white z-40 transform transition-transform duration-300 ease-in-out md:hidden",
-          isOpen ? "translate-x-0" : "translate-x-full"
+          "fixed inset-0 top-[73px] bg-white z-40 md:hidden",
+          isOpen ? "block" : "hidden"
         )}
       >
         <div className="flex flex-col space-y-4 px-6 py-8">
