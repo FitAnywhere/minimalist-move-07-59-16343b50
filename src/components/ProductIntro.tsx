@@ -44,32 +44,33 @@ const ProductIntro = () => {
           
           {/* Two-column layout on desktop, stacked on mobile */}
           <div className="grid md:grid-cols-2 gap-8 items-center">
-            {/* Left column (features) on desktop, below video on mobile */}
-            <div className="flex flex-col space-y-4 md:order-1 order-2">
+            {/* Left column (features) on desktop */}
+            <div className="flex flex-col space-y-6">
               {features.map((feature, index) => (
                 <Card 
                   key={index} 
                   className={cn(
-                    "p-4 md:p-6 rounded-2xl bg-gray-50 hover:shadow-lg transition-all duration-300 hover:-translate-y-2",
+                    "p-5 md:p-7 rounded-2xl bg-gray-50 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 hover:border-yellow-400/40",
                     isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
                   )}
                   style={{
                     transitionDelay: `${(index + 1) * 200}ms`,
-                    animation: `fade-in 0.5s ease-out ${(index + 1) * 200}ms both`
+                    animation: `fade-in 0.5s ease-out ${(index + 1) * 200}ms both`,
+                    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                   }}
                 >
-                  <h4 className="font-semibold mb-2">{feature.title}</h4>
+                  <h4 className="font-semibold mb-3 text-lg md:text-xl">{feature.title}</h4>
                   <p className="text-gray-600 text-sm md:text-base">{feature.description}</p>
                 </Card>
               ))}
             </div>
             
-            {/* Right column (video) on desktop, above features on mobile */}
+            {/* Right column (video) on desktop */}
             <div className={cn(
-              "flex justify-center items-center transition-all duration-700 h-full md:order-2 order-1 mb-8 md:mb-0",
+              "flex justify-center items-center transition-all duration-700 h-full",
               isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
             )}>
-              <div className="w-full md:h-full rounded-2xl overflow-hidden shadow-md flex items-center justify-center">
+              <div className="w-full h-full rounded-2xl overflow-hidden shadow-md flex items-center justify-center">
                 <video
                   className="w-full h-auto object-contain"
                   autoPlay
