@@ -50,9 +50,7 @@ const Footer = () => {
           </div>
           
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-            <div className="mb-4 md:mb-0">
-              &copy; 2024 FitAnywhere. All rights reserved.
-            </div>
+            <div className="mb-4 md:mb-0">© 2025 FitAnywhere. All rights reserved.</div>
             
             <div className="flex space-x-6">
               <a href="#" className="hover:text-yellow transition-colors">Privacy Policy</a>
