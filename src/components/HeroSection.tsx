@@ -54,9 +54,8 @@ const HeroSection = () => {
           {/* Mobile Layout (Stack: Headline > Video > Subheadline > CTA) */}
           {isMobile && <div className="text-center order-1 w-full space-y-6">
               {/* Headline */}
-              <h1 ref={headlineRef} className={cn("text-4xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                The Ultimate Minimalist Fitness Solution
-              </h1>
+              <h1 ref={headlineRef} className={cn("text-4xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>BREAK FREE &
+TRAIN YOUR WAY</h1>
               
               {/* Video Container (Between headline and subheadline) */}
               <div className={cn("w-full transition-all duration-1000 delay-300", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
@@ -98,9 +97,7 @@ const HeroSection = () => {
               </div>
               
               {/* Subheadline */}
-              <p ref={subheadlineRef} className={cn("text-xl text-gray-800 transition-all duration-1000 delay-400", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                Train Smarter. Live Better. Elevate Your Lifestyle.
-              </p>
+              <p ref={subheadlineRef} className={cn("text-xl text-gray-800 transition-all duration-1000 delay-400", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>Portable gym that adapts to your lifestyle</p>
               
               {/* CTA Button */}
               <div ref={ctaRef} className={cn("transition-all duration-1000 delay-600", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
