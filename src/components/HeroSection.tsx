@@ -118,8 +118,8 @@ const HeroSection = () => {
           {!isMobile && <>
               {/* Left Column - Text */}
               <div className="text-center md:text-left order-2 md:order-1">
-                <h1 ref={headlineRef} className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>Break free &
-train your way</h1>
+                <h1 ref={headlineRef} className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>BREAK FREE &
+TRAIN YOUR WAY</h1>
                 
                 <p ref={subheadlineRef} className={cn("mt-6 text-xl md:text-2xl text-gray-800 transition-all duration-1000 delay-200", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>Your portable gym that adapts to your lifestyle</p>
                 
