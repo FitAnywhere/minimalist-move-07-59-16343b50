@@ -42,7 +42,7 @@ const BundleOffer = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-            <h2 className="text-black">ALL IN ONE PORTABLE GYM </h2>
+            <h2 className="text-black">PRICELESS PORTABLE GYM EXPERIENCE</h2>
             <p className="mt-6 text-xl text-gray-600 max-w-3xl mx-auto">
               A complete fitness system designed for the modern minimalist lifestyle
             </p>
