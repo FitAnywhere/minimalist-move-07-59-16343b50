@@ -4,19 +4,24 @@ import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 
-const features = [{
-  title: "Minimalist, Premium Design",
-  description: "Crafted with premium materials and a sleek, minimalist aesthetic that complements any modern living space."
-}, {
-  title: "Instant, Tool-Free Setup",
-  description: "Ready to use in minutes with no tools required. Unfold, lock, and begin your premium fitness experience."
-}, {
-  title: "Lifetime Investment – No Monthly Fees",
-  description: "One purchase, endless workouts. No subscriptions, no hidden costs – just lasting quality and performance."
-}, {
-  title: "Professional Grade Workouts",
-  description: "Engineered to deliver the same quality workout experience as professional equipment in premium gyms."
-}];
+const features = [
+  {
+    title: "2-Minute, tool free setup",
+    description: "Unfold, lock, and go—no installation needed."
+  },
+  {
+    title: "Foldable & lightweight",
+    description: "Store with ease, move effortlessly, train anywhere."
+  },
+  {
+    title: "Lifetime durability",
+    description: "Premium build—no fees, no hidden costs."
+  },
+  {
+    title: "Professional versatility",
+    description: "One station, endless workouts for every muscle group."
+  }
+];
 
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,22 +43,19 @@ const ProductIntro = () => {
           </div>
           
           {/* Two-column layout on desktop, stacked on mobile */}
-          <div className="grid md:grid-cols-2 gap-8 items-start">
-            {/* Left column (features) on desktop, below video on mobile */}
-            <div className={cn(
-              "md:order-1 order-2 grid grid-cols-1 gap-6",
-              isInView ? "opacity-100" : "opacity-0"
-            )}>
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            {/* Left column (features) on desktop, above video on mobile */}
+            <div className="flex flex-col space-y-4">
               {features.map((feature, index) => (
                 <Card 
                   key={index} 
                   className={cn(
-                    "p-6 rounded-2xl hover:shadow-md hover:-translate-y-1 transition-all duration-300 bg-gray-50",
-                    isInView ? "opacity-100" : "opacity-0 translate-y-4"
+                    "p-6 rounded-2xl bg-gray-50 hover:shadow-lg transition-all duration-300 hover:-translate-y-2",
+                    isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
                   )}
                   style={{
-                    transitionDelay: `${(index + 1) * 100}ms`,
-                    animation: `fade-in 0.5s ease-out ${(index + 1) * 100}ms both`
+                    transitionDelay: `${(index + 1) * 200}ms`,
+                    animation: `fade-in 0.5s ease-out ${(index + 1) * 200}ms both`
                   }}
                 >
                   <h4 className="font-semibold mb-2">{feature.title}</h4>
@@ -62,12 +64,12 @@ const ProductIntro = () => {
               ))}
             </div>
             
-            {/* Right column (video) on desktop, above features on mobile */}
+            {/* Right column (video) on desktop, below features on mobile */}
             <div className={cn(
-              "md:order-2 order-1 flex justify-center items-center transition-all duration-700 mb-8 md:mb-0",
-              isInView ? "opacity-100" : "opacity-0 scale-95"
+              "flex justify-center items-center transition-all duration-700 h-full",
+              isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
             )}>
-              <div className="w-full md:max-w-[90%] rounded-2xl overflow-hidden shadow-md">
+              <div className="w-full h-full rounded-2xl overflow-hidden shadow-md flex items-center justify-center">
                 <video
                   className="w-full h-auto object-contain"
                   autoPlay
