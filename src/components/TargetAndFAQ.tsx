@@ -53,7 +53,7 @@ const TargetAndFAQ = () => {
         <div className="max-w-6xl mx-auto">
           {/* Target Audience */}
           <div className={cn("text-center mb-20 transition-all duration-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-            <h2 className="text-black mb-12">WHO WILL LOVE THIS?</h2>
+            <h2 className="text-black mb-12">WHO WE BUILT THIS FOR?</h2>
             
             <div className="grid md:grid-cols-3 gap-6">
               {targetAudiences.map((audience, index) => <div key={index} className={cn("bg-gray-50 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:bg-white hover:shadow-lg", activeAudience === index ? "bg-white shadow-lg" : "")} onClick={() => toggleAudience(index)}>
