@@ -3,6 +3,8 @@ import { useState, useRef } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
+import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const features = [{
   title: "Minimalist, Premium Design",
@@ -26,67 +28,92 @@ const ProductIntro = () => {
   return (
     <section id="product" ref={containerRef} className="py-24 bg-white">
       <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className={cn("text-center transition-all duration-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-            <h2 className="text-black">
-              TURN ANY SPACE INTO YOUR GYM
-            </h2>
-            
-            <p className="mt-6 text-xl">Gain the freedom to train on your terms</p>
-            
-            <button 
-              onClick={() => setExpanded(!expanded)} 
-              className="mt-4 flex items-center justify-center mx-auto bg-white border border-gray-200 px-6 py-3 rounded-full text-sm font-medium hover:bg-gray-50 transition-all hover-lift"
-            >
-              {expanded ? (
-                <>Show Less <ChevronUp className="ml-2 w-4 h-4" /></>
-              ) : (
-                <>Read More <ChevronDown className="ml-2 w-4 h-4" /></>
-              )}
-            </button>
-            
-            <div className="mt-8 max-w-3xl mx-auto">
-              <video
-                className="w-full rounded-2xl shadow-md"
-                autoPlay
-                muted
-                loop
-                playsInline
+        <div className="max-w-5xl mx-auto">
+          {/* Desktop: Two-column layout, Mobile: Stacked layout */}
+          <div className="grid md:grid-cols-2 gap-8 items-start">
+            {/* Left Column (Desktop) / Top (Mobile) - Text Content */}
+            <div className={cn(
+              "transition-all duration-700", 
+              isInView ? "opacity-100" : "opacity-0 translate-y-8"
+            )}>
+              <h2 className="text-black text-center md:text-left">
+                TURN ANY SPACE INTO YOUR GYM
+              </h2>
+              
+              <p className="mt-6 text-xl text-center md:text-left">
+                Gain the freedom to train on your terms
+              </p>
+              
+              {/* Collapsible content that appears below the subheading when "Read More" is clicked */}
+              <Collapsible
+                open={expanded}
+                onOpenChange={setExpanded}
+                className="mt-6"
               >
-                <source src="/home-360-tb.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </div>
-          
-          <div className="mt-12">
-            <div className={cn("relative overflow-hidden transition-all duration-500", expanded ? "max-h-[1000px]" : "max-h-0")}>
-              <div className="grid md:grid-cols-2 gap-8 mb-8">
-                {features.map((feature, index) => (
-                  <div 
-                    key={index} 
-                    className={cn(
-                      "bg-gray-50 p-6 rounded-2xl transition-all", 
-                      "hover:shadow-md hover:-translate-y-1 duration-300"
-                    )} 
-                    style={{
-                      transitionDelay: `${(index + 1) * 100}ms`,
-                      animation: `fade-in 0.5s ease-out ${(index + 1) * 100}ms both`
-                    }}
-                  >
-                    <h4 className="font-semibold mb-2">{feature.title}</h4>
-                    <p className="text-gray-600">{feature.description}</p>
+                <CollapsibleContent className="space-y-4">
+                  <div className="grid md:grid-cols-2 gap-8 mb-8">
+                    {features.map((feature, index) => (
+                      <div 
+                        key={index} 
+                        className={cn(
+                          "bg-gray-50 p-6 rounded-2xl transition-all", 
+                          "hover:shadow-md hover:-translate-y-1 duration-300"
+                        )} 
+                        style={{
+                          transitionDelay: `${(index + 1) * 100}ms`,
+                          animation: `fade-in 0.5s ease-out ${(index + 1) * 100}ms both`
+                        }}
+                      >
+                        <h4 className="font-semibold mb-2">{feature.title}</h4>
+                        <p className="text-gray-600">{feature.description}</p>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                  
+                  <div className="aspect-video max-w-3xl mx-auto rounded-2xl overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1486718448742-163732cd1544" 
+                      alt="PowerTower Minimalist Design" 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
+            
+            {/* Right Column (Desktop) / Bottom (Mobile) - Video and Read More Button */}
+            <div className={cn(
+              "flex flex-col items-center transition-all duration-700", 
+              isInView ? "opacity-100" : "opacity-0 translate-y-8"
+            )}>
+              {/* Video Container - 50% smaller on desktop, 30% smaller on mobile */}
+              <div className="w-[70%] md:w-[50%] aspect-video rounded-2xl overflow-hidden shadow-md mb-6">
+                <video
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                >
+                  <source src="/home-360-tb.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
               
-              <div className="aspect-video max-w-3xl mx-auto rounded-2xl overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1486718448742-163732cd1544" 
-                  alt="PowerTower Minimalist Design" 
-                  className="w-full h-full object-cover" 
-                />
-              </div>
+              {/* Read More Button - Always positioned below the video */}
+              <CollapsibleTrigger asChild>
+                <Button 
+                  onClick={() => setExpanded(!expanded)} 
+                  className="mt-4 px-6 py-3 rounded-full bg-white border border-gray-200 hover:bg-gray-50 transition-all hover-lift flex items-center gap-2"
+                  variant="outline"
+                >
+                  {expanded ? (
+                    <>Show Less <ChevronUp className="h-4 w-4" /></>
+                  ) : (
+                    <>Read More <ChevronDown className="h-4 w-4" /></>
+                  )}
+                </Button>
+              </CollapsibleTrigger>
             </div>
           </div>
         </div>
