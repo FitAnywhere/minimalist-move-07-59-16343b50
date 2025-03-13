@@ -70,7 +70,7 @@ const TestimonialsCarousel = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center mb-16 transition-all duration-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-            <h2 className="text-black">WHY THEY LOVE IT</h2>
+            <h2 className="text-black">WHY THEY LOVE IT?</h2>
             
           </div>
           
