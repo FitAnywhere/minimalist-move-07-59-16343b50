@@ -28,7 +28,7 @@ const ProductIntro = () => {
               <span className="block mt-2">TURN ANY SPACE INTO YOUR GYM</span>
             </h2>
             
-            <p className="mt-6 text-xl">Join revolution and gain the freedom to train on your terms</p>
+            <p className="mt-6 text-xl">Gain the freedom to train on your terms</p>
           </div>
           
           <div className="mt-12">
