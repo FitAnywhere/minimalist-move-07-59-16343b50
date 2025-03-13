@@ -101,38 +101,19 @@ const ProductIntro = () => {
               </div>
               
               {/* Read More Button - Always positioned below the video */}
-              <Collapsible
-                open={expanded}
-                onOpenChange={setExpanded}
-                className="hidden"
-              >
-                <CollapsibleTrigger asChild>
-                  <Button 
-                    onClick={() => setExpanded(!expanded)} 
-                    className="mt-4 px-6 py-3 rounded-full bg-white border border-gray-200 hover:bg-gray-50 transition-all hover-lift flex items-center gap-2"
-                    variant="outline"
-                  >
-                    {expanded ? (
-                      <>Show Less <ChevronUp className="h-4 w-4" /></>
-                    ) : (
-                      <>Read More <ChevronDown className="h-4 w-4" /></>
-                    )}
-                  </Button>
-                </CollapsibleTrigger>
-              </Collapsible>
-              
-              {/* Standalone button that controls the main Collapsible */}
-              <Button 
-                onClick={() => setExpanded(!expanded)} 
-                className="mt-4 px-6 py-3 rounded-full bg-white border border-gray-200 hover:bg-gray-50 transition-all hover-lift flex items-center gap-2"
-                variant="outline"
-              >
-                {expanded ? (
-                  <>Show Less <ChevronUp className="h-4 w-4" /></>
-                ) : (
-                  <>Read More <ChevronDown className="h-4 w-4" /></>
-                )}
-              </Button>
+              <CollapsibleTrigger asChild>
+                <Button 
+                  onClick={() => setExpanded(!expanded)} 
+                  className="mt-4 px-6 py-3 rounded-full bg-white border border-gray-200 hover:bg-gray-50 transition-all hover-lift flex items-center gap-2"
+                  variant="outline"
+                >
+                  {expanded ? (
+                    <>Show Less <ChevronUp className="h-4 w-4" /></>
+                  ) : (
+                    <>Read More <ChevronDown className="h-4 w-4" /></>
+                  )}
+                </Button>
+              </CollapsibleTrigger>
             </div>
           </div>
         </div>
