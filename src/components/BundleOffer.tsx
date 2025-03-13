@@ -42,8 +42,8 @@ const BundleOffer = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-            <h2 className="text-black">ALL IN ONE PORTABLE GYM </h2>
-            <p className="mt-6 text-xl text-gray-600 max-w-3xl mx-auto">A complete fitness system designed for the modern lifestyle</p>
+            <h2 className="text-black">GYM IN A BOX</h2>
+            <p className="mt-6 text-xl text-gray-600 max-w-3xl mx-auto">A complete fitness designed for the modern lifestyle</p>
           </div>
           
           <div className={cn("mt-12 bg-gray-50 rounded-2xl overflow-hidden shadow-lg border border-gray-100 transition-all duration-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
