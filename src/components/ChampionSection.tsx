@@ -4,14 +4,11 @@ import { cn } from '@/lib/utils';
 import { Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useInView } from '@/utils/animations';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
   const isInView = useInView(sectionRef);
-  const isMobile = useIsMobile();
   const [animationState, setAnimationState] = useState({
     line1: false,
     line2: false,
@@ -45,53 +42,25 @@ const ChampionSection = () => {
     return () => clearInterval(flickerInterval);
   }, []);
   
-  // Improved video loading and playback strategy
+  // Ensure video playback works on all devices
   useEffect(() => {
-    if (!videoRef.current) return;
-    
-    // Create a more robust video loading function
-    const loadAndPlayVideo = () => {
-      if (!videoRef.current) return;
-      
-      // Set video properties programmatically
-      videoRef.current.muted = true;
-      videoRef.current.playsInline = true;
-      videoRef.current.loop = true;
-      videoRef.current.preload = "auto";
-      
-      // Attempt to play video
-      const playPromise = videoRef.current.play();
-      
-      // Handle play promise
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            console.log("Video playback started successfully");
-          })
-          .catch(error => {
-            console.log("Video playback issue:", error);
-            // If video fails to play, show fallback content
-            if (imageRef.current) {
-              imageRef.current.style.display = 'block';
-            }
+    if (videoRef.current) {
+      // Force video to play - important for mobile
+      const playVideo = () => {
+        if (videoRef.current) {
+          videoRef.current.play().catch(error => {
+            console.log("Video playback prevented by browser:", error);
           });
+        }
+      };
+      
+      playVideo();
+      
+      // Try playing video again when it comes into view
+      if (isInView) {
+        playVideo();
       }
-    };
-    
-    // Set up event listeners for video
-    const video = videoRef.current;
-    
-    // Try to load video when it's visible
-    if (isInView) {
-      loadAndPlayVideo();
     }
-    
-    // Additional event listeners to help with playback
-    video.addEventListener('canplay', loadAndPlayVideo);
-    
-    return () => {
-      video.removeEventListener('canplay', loadAndPlayVideo);
-    };
   }, [isInView]);
   
   return (
@@ -190,7 +159,7 @@ const ChampionSection = () => {
               </div>
             </div>
             
-            {/* Video Side with Fallback Strategy */}
+            {/* Video Side - Removed overlay title and simplified */}
             <div 
               className={cn(
                 "relative perspective transition-all duration-700 transform",
@@ -201,26 +170,14 @@ const ChampionSection = () => {
                 "relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500",
                 "hover:shadow-2xl hover:scale-[1.02] group"
               )}>
-                {/* Video Element with Better Mobile Support */}
                 <video 
                   ref={videoRef}
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-                  poster="/lovable-uploads/6db8f815-b30e-4af9-9ba5-f17555fd31ca.png"
-                  preload="auto"
-                  muted
-                  loop
+                  src="/0314 (3)(1).mp4" 
+                  autoPlay 
+                  muted 
+                  loop 
                   playsInline
-                >
-                  <source src="/0314 (3)(1).mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                
-                {/* Fallback Image */}
-                <img 
-                  ref={imageRef}
-                  src="/lovable-uploads/6db8f815-b30e-4af9-9ba5-f17555fd31ca.png" 
-                  alt="Champion workout" 
-                  className="absolute inset-0 w-full h-full object-cover hidden" 
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                 />
                 
                 {/* Pulse Border */}
