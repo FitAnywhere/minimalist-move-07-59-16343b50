@@ -77,7 +77,14 @@ const ProductTabs = () => {
               </div>
               
               <div className="rounded-2xl overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
-                <img src="https://images.unsplash.com/photo-1527576539890-dfa815648363" alt="TRX Attachment" className="w-full h-full object-cover" />
+                <video 
+                  src="/trx.mp4" 
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
@@ -85,7 +92,14 @@ const ProductTabs = () => {
           <div className={cn("transition-all duration-500", activeTab === 'bands' ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20 hidden')}>
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="order-2 md:order-1 rounded-2xl overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
-                <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716" alt="Resistance Bands" className="w-full h-full object-cover" />
+                <video 
+                  src="/bands.mp4" 
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
               </div>
               
               <div className="order-1 md:order-2">
