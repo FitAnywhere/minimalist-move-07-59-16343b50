@@ -1,49 +1,20 @@
-import { useRef, useState, useEffect } from 'react';
+
+import { useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { ArrowRight, ArrowLeft, ArrowRight as Next, X } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useInView } from '@/utils/animations';
-import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subheadlineRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
-  const [videoPlaying, setVideoPlaying] = useState<boolean>(false);
   const isMobile = useIsMobile();
   const isInView = useInView(heroRef, {}, false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Video data
-  const videos = [{
-    id: 1,
-    title: "Fitness Demo",
-    src: "Anastazija-banner.mp4"
-  }, {
-    id: 2,
-    title: "Workout Routine",
-    src: "1022.mp4"
-  }];
-
-  // Auto-play videos when they become visible
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-      videoRef.current.play().catch(error => {
-        console.log('Auto-play was prevented:', error);
-      });
-    }
-  }, [activeVideoIndex]);
-  const handleNextVideo = () => {
-    setActiveVideoIndex(prevIndex => (prevIndex + 1) % videos.length);
-  };
-  const handlePrevVideo = () => {
-    setActiveVideoIndex(prevIndex => (prevIndex - 1 + videos.length) % videos.length);
-  };
-  const openVideoModal = () => {
-    setVideoPlaying(true);
-  };
+  // Auto-play video when it becomes visible
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
@@ -59,39 +30,18 @@ TRAIN YOUR WAY</h1>
               
               {/* Video Container (Between headline and subheadline) */}
               <div className={cn("w-full transition-all duration-1000 delay-300", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="relative rounded-xl overflow-hidden shadow-lg aspect-video">
-                  {/* Auto-playing Video (No play button) */}
-                  <div className="relative w-full h-full" onClick={openVideoModal}>
-                    <video ref={videoRef} src={videos[activeVideoIndex].src} className="w-full h-full object-cover" loop playsInline muted autoPlay />
-                    
-                    {/* Video Title */}
-                    <p className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-2 text-sm text-center">
-                      {videos[activeVideoIndex].title}
-                    </p>
-                  </div>
-                  
-                  {/* Carousel Navigation Controls */}
-                  <div className="absolute inset-x-0 top-1/2 flex justify-between items-center transform -translate-y-1/2 px-4">
-                    <button onClick={e => {
-                  e.stopPropagation();
-                  handlePrevVideo();
-                }} className="bg-white/70 hover:bg-white rounded-full p-2 shadow-md transition-all">
-                      <ArrowLeft size={20} className="text-black" />
-                    </button>
-                    <button onClick={e => {
-                  e.stopPropagation();
-                  handleNextVideo();
-                }} className="bg-white/70 hover:bg-white rounded-full p-2 shadow-md transition-all">
-                      <Next size={20} className="text-black" />
-                    </button>
-                  </div>
-                  
-                  {/* Carousel Indicators */}
-                  <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2">
-                    {videos.map((_, index) => <button key={index} onClick={e => {
-                  e.stopPropagation();
-                  setActiveVideoIndex(index);
-                }} className={`w-2 h-2 rounded-full transition-all ${activeVideoIndex === index ? 'bg-yellow w-4' : 'bg-white/70'}`} />)}
+                <div className="relative rounded-xl overflow-hidden shadow-lg">
+                  {/* Auto-playing Video */}
+                  <div className="relative w-full h-full">
+                    <video 
+                      ref={videoRef} 
+                      src="Anastazija-banner.mp4" 
+                      className="w-full h-auto object-contain" 
+                      loop 
+                      playsInline 
+                      muted 
+                      autoPlay 
+                    />
                   </div>
                 </div>
               </div>
@@ -130,60 +80,26 @@ TRAIN YOUR WAY</h1>
                 </div>
               </div>
               
-              {/* Right Column - Video Carousel */}
+              {/* Right Column - Single Video */}
               <div className={cn("order-1 md:order-2 transition-all duration-1000 delay-300 w-full", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="relative rounded-xl overflow-hidden shadow-lg aspect-video">
+                <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
                   {/* Video Player */}
-                  <div className="relative cursor-pointer w-full h-full" onClick={openVideoModal}>
-                    <video ref={videoRef} src={videos[activeVideoIndex].src} className="w-full h-full object-cover" loop playsInline muted autoPlay />
-                    
-                    <p className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-2 text-sm text-center">
-                      {videos[activeVideoIndex].title}
-                    </p>
-                  </div>
-                  
-                  {/* Carousel Navigation Controls */}
-                  <div className="absolute inset-x-0 top-1/2 flex justify-between items-center transform -translate-y-1/2 px-4">
-                    <button onClick={e => {
-                  e.stopPropagation();
-                  handlePrevVideo();
-                }} className="bg-white/70 hover:bg-white rounded-full p-2 shadow-md transition-all">
-                      <ArrowLeft size={20} className="text-black" />
-                    </button>
-                    <button onClick={e => {
-                  e.stopPropagation();
-                  handleNextVideo();
-                }} className="bg-white/70 hover:bg-white rounded-full p-2 shadow-md transition-all">
-                      <Next size={20} className="text-black" />
-                    </button>
-                  </div>
-                  
-                  {/* Carousel Indicators */}
-                  <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2">
-                    {videos.map((_, index) => <button key={index} onClick={e => {
-                  e.stopPropagation();
-                  setActiveVideoIndex(index);
-                }} className={`w-2 h-2 rounded-full transition-all ${activeVideoIndex === index ? 'bg-yellow w-4' : 'bg-white/70'}`} />)}
+                  <div className="w-full max-w-[95%] mx-auto">
+                    <video 
+                      ref={videoRef} 
+                      src="Anastazija-banner.mp4" 
+                      className="w-full h-auto object-contain" 
+                      loop 
+                      playsInline 
+                      muted 
+                      autoPlay 
+                    />
                   </div>
                 </div>
               </div>
             </>}
         </div>
       </div>
-      
-      {/* Video Modal */}
-      <Dialog open={videoPlaying} onOpenChange={open => !open && setVideoPlaying(false)}>
-        <DialogContent className="max-w-4xl w-[90vw] h-[80vh] p-0 bg-black border-none">
-          <DialogClose className="absolute right-3 top-3 z-50 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 transition-all">
-            <X size={24} />
-            <span className="sr-only">Close</span>
-          </DialogClose>
-          
-          <div className="w-full h-full">
-            <video src={videos[activeVideoIndex].src} className="w-full h-full object-contain" controls autoPlay playsInline />
-          </div>
-        </DialogContent>
-      </Dialog>
       
       {/* Scroll Indicator */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
@@ -193,4 +109,5 @@ TRAIN YOUR WAY</h1>
       </div>
     </section>;
 };
+
 export default HeroSection;
