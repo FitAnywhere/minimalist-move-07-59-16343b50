@@ -99,3 +99,40 @@ export const useLazyLoad = (ref: RefObject<HTMLImageElement>) => {
   
   return isLoaded;
 };
+
+// New animation hook for the staggered fade-in effect
+export const useStaggeredFadeIn = (
+  containerRef: RefObject<HTMLElement>,
+  itemSelector: string,
+  delay = 200,
+  threshold = 0.1
+) => {
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    const container = containerRef.current;
+    const items = container.querySelectorAll(itemSelector);
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            Array.from(items).forEach((item, index) => {
+              setTimeout(() => {
+                item.classList.add('fade-in-visible');
+              }, index * delay);
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold }
+    );
+    
+    observer.observe(container);
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, [containerRef, itemSelector, delay, threshold]);
+};

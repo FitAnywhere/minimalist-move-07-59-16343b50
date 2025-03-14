@@ -1,29 +1,35 @@
 
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { Check, Zap, Globe, Settings, Feather, Waves, ChevronDown, ChevronUp } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 
 const trxFeatures = [{
   title: "Personalized intensity",
-  description: "Shift your angle to dial in the perfect challenge."
+  description: "Shift your angle for perfect challenge",
+  icon: Settings
 }, {
-  title: "Gravity powered strength",
-  description: "Harness your weight for balance and power."
+  title: "Gravity powered",
+  description: "Harness your weight",
+  icon: Feather
 }, {
   title: "Dynamic flow",
-  description: "Unlock versatile, full body workouts."
+  description: "Unlock full body workouts",
+  icon: Waves
 }];
 
 const bandsFeatures = [{
-  title: "Beginner-Friendly",
-  description: "Extra support for easier, confident moves."
+  title: "Beginner friendly",
+  description: "Extra support for confident moves",
+  icon: Check
 }, {
-  title: "Pro-Level Challenge",
-  description: "Add intensity to break plateaus."
+  title: "Pro challenge",
+  description: "Add intensity to break plateaus",
+  icon: Zap
 }, {
-  title: "Portable & Versatile",
-  description: "Train anywhere, anytime."
+  title: "Portable & versatile",
+  description: "Train anywhere, anytime",
+  icon: Globe
 }];
 
 const ProductTabs = () => {
@@ -57,17 +63,39 @@ const ProductTabs = () => {
           <div className={cn("transition-all duration-500", activeTab === 'trx' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20 hidden')}>
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
-                <h3 className="text-2xl font-bold mb-3">Experience TRX</h3>
-                <p className="text-lg text-gray-600 mb-6">Turn movement into fun while stressing less and sweating more.</p>
+                <h3 className="text-2xl font-bold mb-3">TRX</h3>
+                <p className="text-lg text-gray-600 mb-6">Train smarter</p>
                 
                 <div className={cn("relative overflow-hidden transition-all duration-500", trxExpanded ? "max-h-[1000px]" : "max-h-0")}>
                   <div className="space-y-4 mb-6">
-                    {trxFeatures.map((feature, index) => <div key={index} className="transition-all duration-300" style={{
-                    animationDelay: `${index * 100}ms`
-                  }}>
-                        <h4 className="font-semibold">{feature.title}</h4>
-                        <p className="text-gray-600">{feature.description}</p>
-                      </div>)}
+                    {trxFeatures.map((feature, index) => (
+                      <div 
+                        key={index} 
+                        className={cn(
+                          "transition-all duration-500 opacity-0 translate-y-4",
+                          trxExpanded && "opacity-100 translate-y-0"
+                        )} 
+                        style={{
+                          transitionDelay: trxExpanded ? `${index * 200}ms` : "0ms"
+                        }}
+                      >
+                        <div className="group relative">
+                          <div className="flex items-center gap-2 mb-1">
+                            <feature.icon 
+                              className="w-5 h-5 text-gray-800 transition-transform duration-300 group-hover:scale-110 group-hover:text-yellow-600" 
+                            />
+                            <h4 className="font-semibold group-hover:text-black relative">
+                              {feature.title}
+                              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
+                            </h4>
+                          </div>
+                          <div className="relative pl-7">
+                            <p className="text-gray-600">{feature.description}</p>
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-transparent group-hover:from-yellow-50 group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg -z-10"></div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 
@@ -104,16 +132,29 @@ const ProductTabs = () => {
               
               <div className="order-1 md:order-2">
                 <h3 className="text-2xl font-bold mb-3">BANDS</h3>
-                <p className="text-lg text-gray-600 mb-6">Expand your PowerTower</p>
+                <p className="text-lg text-gray-600 mb-6">No excuses</p>
                 
                 <div className={cn("relative overflow-hidden transition-all duration-500", bandsExpanded ? "max-h-[1000px]" : "max-h-0")}>
                   <div className="space-y-4 mb-6">
-                    {bandsFeatures.map((feature, index) => <div key={index} className="transition-all duration-300" style={{
-                    animationDelay: `${index * 100}ms`
-                  }}>
-                        <h4 className="font-semibold">{feature.title}</h4>
-                        <p className="text-gray-600">{feature.description}</p>
-                      </div>)}
+                    {bandsFeatures.map((feature, index) => (
+                      <div key={index} className="transition-all duration-300">
+                        <div className="group relative">
+                          <div className="flex items-center gap-2 mb-1">
+                            <feature.icon 
+                              className="w-5 h-5 text-gray-800 transition-transform duration-300 group-hover:animate-bounce" 
+                            />
+                            <h4 className="font-semibold group-hover:text-black relative">
+                              {feature.title}
+                              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
+                            </h4>
+                          </div>
+                          <div className="pl-7 relative">
+                            <p className="text-gray-600">{feature.description}</p>
+                            <div className="absolute inset-0 bg-yellow-300/0 group-hover:bg-yellow-300/10 rounded-lg transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,215,0,0.3)] -z-10"></div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 
