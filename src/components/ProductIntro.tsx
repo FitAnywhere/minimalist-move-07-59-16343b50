@@ -24,7 +24,7 @@ const ProductIntro = () => {
           {/* Headings at the top */}
           <div className={cn("text-center mb-12 transition-all duration-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
             <h2 className="text-black">TRANSFORM ANY SPACE </h2>
-            <p className="mt-6 text-2xl">Gain the freedom to be fit on your terms</p>
+            <p className="mt-6 text-2xl">Freedom to stay strong and healthy on your terms</p>
           </div>
           
           {/* Two-column layout on desktop, stacked on mobile */}
