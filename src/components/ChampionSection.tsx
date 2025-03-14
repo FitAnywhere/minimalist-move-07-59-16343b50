@@ -1,14 +1,19 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame } from 'lucide-react';
+import { Flame, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Toggle } from '@/components/ui/toggle';
 import { useInView } from '@/utils/animations';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isInView = useInView(sectionRef);
+  const isMobile = useIsMobile();
+  const [isMuted, setIsMuted] = useState(true);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [animationState, setAnimationState] = useState({
     line1: false,
     line2: false,
@@ -42,26 +47,54 @@ const ChampionSection = () => {
     return () => clearInterval(flickerInterval);
   }, []);
   
-  // Ensure video playback works on all devices
+  // Handle video loading and playback
   useEffect(() => {
     if (videoRef.current) {
-      // Force video to play - important for mobile
-      const playVideo = () => {
-        if (videoRef.current) {
-          videoRef.current.play().catch(error => {
-            console.log("Video playback prevented by browser:", error);
-          });
-        }
+      // Set up event listeners
+      const video = videoRef.current;
+      
+      const handleCanPlay = () => {
+        setIsVideoLoaded(true);
+        console.log("Video can play now");
       };
       
-      playVideo();
+      const handlePlaySuccess = () => {
+        console.log("Video playback started successfully");
+      };
       
-      // Try playing video again when it comes into view
+      const handlePlayError = (error: any) => {
+        console.error("Video playback error:", error);
+      };
+      
+      // Add event listeners
+      video.addEventListener('canplay', handleCanPlay);
+      
+      // Attempt to play video when in view
       if (isInView) {
-        playVideo();
+        // Use promise to detect success/failure
+        const playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(handlePlaySuccess)
+            .catch(handlePlayError);
+        }
       }
+      
+      // Cleanup
+      return () => {
+        video.removeEventListener('canplay', handleCanPlay);
+      };
     }
-  }, [isInView]);
+  }, [isInView, videoRef]);
+  
+  // Toggle mute state
+  const toggleMute = () => {
+    if (videoRef.current) {
+      setIsMuted(!isMuted);
+      videoRef.current.muted = !isMuted;
+    }
+  };
   
   return (
     <section 
@@ -159,7 +192,7 @@ const ChampionSection = () => {
               </div>
             </div>
             
-            {/* Video Side - Removed overlay title and simplified */}
+            {/* Video Side with Sound Toggle */}
             <div 
               className={cn(
                 "relative perspective transition-all duration-700 transform",
@@ -170,15 +203,31 @@ const ChampionSection = () => {
                 "relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500",
                 "hover:shadow-2xl hover:scale-[1.02] group"
               )}>
+                {/* Using video with source element for better compatibility */}
                 <video 
                   ref={videoRef}
-                  src="/0314 (3)(1).mp4" 
-                  autoPlay 
-                  muted 
-                  loop 
-                  playsInline
                   className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-                />
+                  playsInline
+                  muted={isMuted}
+                  autoPlay
+                  loop
+                  preload="auto"
+                >
+                  <source src="/0314 (3)(1).mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+                {/* Sound toggle button */}
+                <div className="absolute bottom-3 right-3 z-10">
+                  <Toggle 
+                    aria-label={isMuted ? "Unmute video" : "Mute video"}
+                    className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center"
+                    pressed={!isMuted}
+                    onPressedChange={() => toggleMute()}
+                  >
+                    {isMuted ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+                  </Toggle>
+                </div>
                 
                 {/* Pulse Border */}
                 <div 
