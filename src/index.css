@@ -187,6 +187,15 @@
   .button-glow {
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
   }
+  
+  /* New animations for Champion section */
+  .text-shadow-yellow {
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+  }
+  
+  .shake-animation {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  }
 }
 
 @keyframes animate-slide-in {
@@ -198,4 +207,26 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+/* New keyframes for Champion section */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }

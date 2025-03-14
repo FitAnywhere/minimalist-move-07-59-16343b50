@@ -136,3 +136,24 @@ export const useStaggeredFadeIn = (
     };
   }, [containerRef, itemSelector, delay, threshold]);
 };
+
+// Add a new hook for shake animation
+export const useShakeEffect = (ref: RefObject<HTMLElement>, delay = 0) => {
+  useEffect(() => {
+    if (!ref.current) return;
+    
+    setTimeout(() => {
+      ref.current?.classList.add('shake-animation');
+      
+      const handleAnimationEnd = () => {
+        ref.current?.classList.remove('shake-animation');
+      };
+      
+      ref.current?.addEventListener('animationend', handleAnimationEnd);
+      
+      return () => {
+        ref.current?.removeEventListener('animationend', handleAnimationEnd);
+      };
+    }, delay);
+  }, [ref, delay]);
+};
