@@ -35,8 +35,8 @@ const ProductTabs = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <div className={cn("text-center mb-12 transition-all duration-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-            <h2 className="text-black">COMPLETE YOUR SYSTEM</h2>
-            <p className="mt-4 text-xl text-gray-600">Designed to maximize your fitness experience</p>
+            <h2 className="text-black">MAXIMIZE YOUR EXPERIENCE</h2>
+            <p className="mt-4 text-gray-600 text-2xl">Expand your PowerTower</p>
           </div>
           
           {/* Tabs */}
