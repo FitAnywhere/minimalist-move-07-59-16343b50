@@ -1,7 +1,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Zap, Flame, Target } from 'lucide-react';
+import { Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useInView } from '@/utils/animations';
 
@@ -9,7 +9,6 @@ const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isInView = useInView(sectionRef);
-  const [showOverlay, setShowOverlay] = useState(false);
   const [animationState, setAnimationState] = useState({
     line1: false,
     line2: false,
@@ -42,6 +41,27 @@ const ChampionSection = () => {
     
     return () => clearInterval(flickerInterval);
   }, []);
+  
+  // Ensure video playback works on all devices
+  useEffect(() => {
+    if (videoRef.current) {
+      // Force video to play - important for mobile
+      const playVideo = () => {
+        if (videoRef.current) {
+          videoRef.current.play().catch(error => {
+            console.log("Video playback prevented by browser:", error);
+          });
+        }
+      };
+      
+      playVideo();
+      
+      // Try playing video again when it comes into view
+      if (isInView) {
+        playVideo();
+      }
+    }
+  }, [isInView]);
   
   return (
     <section 
@@ -139,14 +159,12 @@ const ChampionSection = () => {
               </div>
             </div>
             
-            {/* Video Side */}
+            {/* Video Side - Removed overlay title and simplified */}
             <div 
               className={cn(
                 "relative perspective transition-all duration-700 transform",
                 isInView ? "opacity-100 scale-100 animate-[shake_0.3s_ease-in-out]" : "opacity-0 scale-95"
               )}
-              onMouseEnter={() => setShowOverlay(true)}
-              onMouseLeave={() => setShowOverlay(false)}
             >
               <div className={cn(
                 "relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500",
@@ -162,23 +180,10 @@ const ChampionSection = () => {
                   className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                 />
                 
-                {/* Video Overlay Text */}
-                <div 
-                  className={cn(
-                    "absolute inset-0 flex items-center justify-center transition-opacity duration-700",
-                    showOverlay ? "opacity-100" : "opacity-0"
-                  )}
-                >
-                  <div className="bg-black/40 text-white text-xl font-bold py-3 px-6 rounded backdrop-blur-sm">
-                    WATCH IT MOVE
-                  </div>
-                </div>
-                
                 {/* Pulse Border */}
                 <div 
                   className={cn(
-                    "absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500",
-                    showOverlay ? "animate-pulse opacity-100" : "opacity-0"
+                    "absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse"
                   )}
                 />
               </div>
