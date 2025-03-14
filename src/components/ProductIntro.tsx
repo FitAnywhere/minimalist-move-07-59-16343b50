@@ -31,11 +31,21 @@ const ProductIntro = () => {
             <p className="mt-6 text-2xl">Freedom to stay strong and healthy on your terms</p>
           </div>
           
-          {/* Two-column layout on desktop, stacked on mobile */}
+          {/* Two-column layout on desktop, stacked on mobile with video above boxes */}
           <div className="grid md:grid-cols-2 gap-6 items-center">
-            {/* Left column (features) on desktop */}
-            <div className="flex flex-col space-y-4">
-              {features.map((feature, index) => <Card key={index} className={cn("p-4 md:p-5 rounded-2xl bg-gray-50 hover:shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-yellow-400/40", isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8")} style={{
+            {/* Video above on mobile, left column on desktop */}
+            <div className={cn("flex justify-center items-center transition-all duration-700 h-full order-first md:order-last", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
+              <div className="w-full max-w-[70%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
+                <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
+                  <source src="/home-360-tb.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+            
+            {/* Boxes below on mobile, right column on desktop */}
+            <div className="flex flex-col space-y-4 order-last md:order-first">
+              {features.map((feature, index) => <Card key={index} className={cn("p-4 md:p-5 rounded-2xl bg-white border border-yellow-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-yellow-300", isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8")} style={{
               transitionDelay: `${(index + 1) * 200}ms`,
               animation: `fade-in 0.5s ease-out ${(index + 1) * 200}ms both`,
               boxShadow: "0 2px 4px rgba(0,0,0,0.08)"
@@ -43,16 +53,6 @@ const ProductIntro = () => {
                   <h4 className="font-semibold mb-2 text-base md:text-lg">{feature.title}</h4>
                   <p className="text-gray-600 text-xs md:text-sm">{feature.description}</p>
                 </Card>)}
-            </div>
-            
-            {/* Right column (video) on desktop */}
-            <div className={cn("flex justify-center items-center transition-all duration-700 h-full", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
-              <div className="w-full max-w-[90%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
-                <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
-                  <source src="/home-360-tb.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
             </div>
           </div>
         </div>
