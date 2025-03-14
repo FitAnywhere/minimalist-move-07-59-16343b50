@@ -14,6 +14,7 @@ const ChampionSection = () => {
   const isMobile = useIsMobile();
   const [isMuted, setIsMuted] = useState(true);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const [animationState, setAnimationState] = useState({
     line1: false,
     line2: false,
@@ -47,52 +48,60 @@ const ChampionSection = () => {
     return () => clearInterval(flickerInterval);
   }, []);
   
-  // Handle video loading and playback
+  // Improved video handling with proper error handling
   useEffect(() => {
     if (videoRef.current) {
-      // Set up event listeners
       const video = videoRef.current;
       
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
+        setVideoError(false);
         console.log("Video can play now");
       };
       
-      const handlePlaySuccess = () => {
-        console.log("Video playback started successfully");
-      };
-      
-      const handlePlayError = (error: any) => {
-        console.error("Video playback error:", error);
+      const handleError = (e: Event) => {
+        console.error("Video error:", e);
+        setVideoError(true);
       };
       
       // Add event listeners
       video.addEventListener('canplay', handleCanPlay);
+      video.addEventListener('error', handleError);
       
-      // Attempt to play video when in view
-      if (isInView) {
-        // Use promise to detect success/failure
-        const playPromise = video.play();
+      // Try to play the video when in view
+      if (isInView && !videoError) {
+        // Use a timeout to give browser a moment to process
+        const playTimeout = setTimeout(() => {
+          const playPromise = video.play();
+          
+          if (playPromise !== undefined) {
+            playPromise.catch((error) => {
+              console.error("Video play error:", error);
+              // Only set error if it's not a user interaction error
+              if (error.name !== 'NotAllowedError') {
+                setVideoError(true);
+              }
+            });
+          }
+        }, 300);
         
-        if (playPromise !== undefined) {
-          playPromise
-            .then(handlePlaySuccess)
-            .catch(handlePlayError);
-        }
+        return () => clearTimeout(playTimeout);
       }
       
       // Cleanup
       return () => {
         video.removeEventListener('canplay', handleCanPlay);
+        video.removeEventListener('error', handleError);
       };
     }
-  }, [isInView, videoRef]);
+  }, [isInView, videoError]);
   
   // Toggle mute state
   const toggleMute = () => {
     if (videoRef.current) {
-      setIsMuted(!isMuted);
-      videoRef.current.muted = !isMuted;
+      const newMutedState = !isMuted;
+      setIsMuted(newMutedState);
+      videoRef.current.muted = newMutedState;
     }
   };
   
@@ -203,7 +212,7 @@ const ChampionSection = () => {
                 "relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500",
                 "hover:shadow-2xl hover:scale-[1.02] group"
               )}>
-                {/* Using video with source element for better compatibility */}
+                {/* Video with better compatibility */}
                 <video 
                   ref={videoRef}
                   className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
@@ -212,6 +221,7 @@ const ChampionSection = () => {
                   autoPlay
                   loop
                   preload="auto"
+                  poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png"
                 >
                   <source src="/0314 (3)(1).mp4" type="video/mp4" />
                   Your browser does not support the video tag.
@@ -223,7 +233,7 @@ const ChampionSection = () => {
                     aria-label={isMuted ? "Unmute video" : "Mute video"}
                     className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center"
                     pressed={!isMuted}
-                    onPressedChange={() => toggleMute()}
+                    onPressedChange={toggleMute}
                   >
                     {isMuted ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
                   </Toggle>
