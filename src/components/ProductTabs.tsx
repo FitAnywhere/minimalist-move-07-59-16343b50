@@ -1,36 +1,38 @@
+
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useInView } from '@/utils/animations';
-const boxFunFeatures = [{
-  title: "Portable & Powerful",
-  description: "Take your boxing workouts anywhere with this lightweight yet durable attachment."
+
+const trxFeatures = [{
+  title: "Personalized intensity",
+  description: "Shift your angle to dial in the perfect challenge."
 }, {
-  title: "Pro-Level Boxing Workouts",
-  description: "Experience studio-quality boxing training without the expensive memberships."
+  title: "Gravity powered strength",
+  description: "Harness your weight for balance and power."
 }, {
-  title: "Aesthetic & Functional Design",
-  description: "Sleek design that complements your PowerTower while delivering professional functionality."
-}, {
-  title: "Zero Installation, Instant Action",
-  description: "Attaches in seconds to your PowerTower system – ready whenever inspiration strikes."
+  title: "Dynamic flow",
+  description: "Unlock versatile, full body workouts."
 }];
-const resistanceBandFeatures = [{
-  title: "Enhanced Strength & Mobility",
-  description: "Target specific muscle groups for comprehensive strength and mobility training."
+
+const bandsFeatures = [{
+  title: "Beginner-Friendly",
+  description: "Extra support for easier, confident moves."
 }, {
-  title: "Ultra-Portable Convenience",
-  description: "Lightweight and compact – ideal for travel, outdoor workouts, or small spaces."
+  title: "Pro-Level Challenge",
+  description: "Add intensity to break plateaus."
 }, {
-  title: "Ideal for All Fitness Levels",
-  description: "Progressive resistance options suitable for beginners to advanced athletes."
+  title: "Portable & Versatile",
+  description: "Train anywhere, anytime."
 }];
+
 const ProductTabs = () => {
-  const [activeTab, setActiveTab] = useState<'boxfun' | 'bands'>('boxfun');
-  const [boxFunExpanded, setBoxFunExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
+  const [trxExpanded, setTrxExpanded] = useState(false);
   const [bandsExpanded, setBandsExpanded] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef);
+
   return <section id="accessories" ref={sectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
@@ -42,25 +44,25 @@ const ProductTabs = () => {
           {/* Tabs */}
           <div className="flex justify-center mb-10">
             <div className="inline-flex rounded-full border border-gray-200 p-1 bg-white">
-              <button onClick={() => setActiveTab('boxfun')} className={cn("px-6 py-3 rounded-full text-sm font-medium transition-all duration-300", activeTab === 'boxfun' ? "bg-yellow text-black" : "bg-transparent text-gray-600 hover:bg-gray-50")}>
-                BoxFun
+              <button onClick={() => setActiveTab('trx')} className={cn("px-6 py-3 rounded-full text-sm font-medium transition-all duration-300", activeTab === 'trx' ? "bg-yellow text-black" : "bg-transparent text-gray-600 hover:bg-gray-50")}>
+                TRX
               </button>
               <button onClick={() => setActiveTab('bands')} className={cn("px-6 py-3 rounded-full text-sm font-medium transition-all duration-300", activeTab === 'bands' ? "bg-yellow text-black" : "bg-transparent text-gray-600 hover:bg-gray-50")}>
-                Resistance Bands
+                BANDS
               </button>
             </div>
           </div>
           
           {/* Content */}
-          <div className={cn("transition-all duration-500", activeTab === 'boxfun' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20 hidden')}>
+          <div className={cn("transition-all duration-500", activeTab === 'trx' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20 hidden')}>
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
-                <h3 className="text-2xl font-bold mb-3">Experience BoxFun</h3>
+                <h3 className="text-2xl font-bold mb-3">Experience TRX</h3>
                 <p className="text-lg text-gray-600 mb-6">Turn movement into fun while stressing less and sweating more.</p>
                 
-                <div className={cn("relative overflow-hidden transition-all duration-500", boxFunExpanded ? "max-h-[1000px]" : "max-h-0")}>
+                <div className={cn("relative overflow-hidden transition-all duration-500", trxExpanded ? "max-h-[1000px]" : "max-h-0")}>
                   <div className="space-y-4 mb-6">
-                    {boxFunFeatures.map((feature, index) => <div key={index} className="transition-all duration-300" style={{
+                    {trxFeatures.map((feature, index) => <div key={index} className="transition-all duration-300" style={{
                     animationDelay: `${index * 100}ms`
                   }}>
                         <h4 className="font-semibold">{feature.title}</h4>
@@ -69,13 +71,13 @@ const ProductTabs = () => {
                   </div>
                 </div>
                 
-                <button onClick={() => setBoxFunExpanded(!boxFunExpanded)} className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors">
-                  {boxFunExpanded ? <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : <>Read More <ChevronDown className="ml-1 w-4 h-4" /></>}
+                <button onClick={() => setTrxExpanded(!trxExpanded)} className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors">
+                  {trxExpanded ? <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : <>Read More <ChevronDown className="ml-1 w-4 h-4" /></>}
                 </button>
               </div>
               
               <div className="rounded-2xl overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
-                <img src="https://images.unsplash.com/photo-1527576539890-dfa815648363" alt="BoxFun Attachment" className="w-full h-full object-cover" />
+                <img src="https://images.unsplash.com/photo-1527576539890-dfa815648363" alt="TRX Attachment" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -87,12 +89,12 @@ const ProductTabs = () => {
               </div>
               
               <div className="order-1 md:order-2">
-                <h3 className="text-2xl font-bold mb-3">RESISTANCE BANDS</h3>
-                
+                <h3 className="text-2xl font-bold mb-3">BANDS</h3>
+                <p className="text-lg text-gray-600 mb-6">Expand your PowerTower</p>
                 
                 <div className={cn("relative overflow-hidden transition-all duration-500", bandsExpanded ? "max-h-[1000px]" : "max-h-0")}>
                   <div className="space-y-4 mb-6">
-                    {resistanceBandFeatures.map((feature, index) => <div key={index} className="transition-all duration-300" style={{
+                    {bandsFeatures.map((feature, index) => <div key={index} className="transition-all duration-300" style={{
                     animationDelay: `${index * 100}ms`
                   }}>
                         <h4 className="font-semibold">{feature.title}</h4>
@@ -111,4 +113,5 @@ const ProductTabs = () => {
       </div>
     </section>;
 };
+
 export default ProductTabs;
