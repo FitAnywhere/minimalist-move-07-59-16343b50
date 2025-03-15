@@ -68,7 +68,7 @@ const BundleOffer = () => {
   const totalValue = 1839.96;
   const yourPrice = 990;
   const savings = totalValue - yourPrice;
-  return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-0 mx-0 my-0 bg-zinc-100">
+  return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-0 mx-0 my-0 bg-transparent">
       {/* Parallax Background */}
       <div ref={parallaxRef} style={{
       background: "radial-gradient(circle at 50% 50%, #f8f8f8, #f1f1f1, #eaeaea)"
