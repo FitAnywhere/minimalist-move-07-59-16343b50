@@ -99,7 +99,6 @@ export const useLazyLoad = (ref: RefObject<HTMLImageElement>) => {
   return isLoaded;
 };
 
-// New animation hook for the staggered fade-in effect
 export const useStaggeredFadeIn = (
   containerRef: RefObject<HTMLElement>,
   itemSelector: string,
@@ -136,7 +135,6 @@ export const useStaggeredFadeIn = (
   }, [containerRef, itemSelector, delay, threshold]);
 };
 
-// Add a new hook for shake animation
 export const useShakeEffect = (ref: RefObject<HTMLElement>, delay = 0) => {
   useEffect(() => {
     if (!ref.current) return;
@@ -157,7 +155,6 @@ export const useShakeEffect = (ref: RefObject<HTMLElement>, delay = 0) => {
   }, [ref, delay]);
 };
 
-// Add a new hook for text underline animation
 export const useTextUnderline = (ref: RefObject<HTMLElement>, delay = 0) => {
   useEffect(() => {
     if (!ref.current) return;
