@@ -1,9 +1,10 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame, Volume2, VolumeX } from 'lucide-react';
+import { Flame, Volume2, VolumeX, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Toggle } from '@/components/ui/toggle';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -15,21 +16,24 @@ const ChampionSection = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [animationState, setAnimationState] = useState({
-    line1: false,
-    line2: false,
-    line3: false,
-    coreText: false
+    title: false,
+    subheading: false,
+    paragraph: false,
+    features: false,
+    finalLine: false
   });
   
   // Trigger animations when section comes into view
   useEffect(() => {
     if (isInView) {
-      // Staggered animation for lines
-      setTimeout(() => setAnimationState(prev => ({ ...prev, line1: true })), 300);
-      setTimeout(() => setAnimationState(prev => ({ ...prev, line2: true })), 800);
-      setTimeout(() => setAnimationState(prev => ({ ...prev, line3: true })), 1300);
-      setTimeout(() => setAnimationState(prev => ({ ...prev, coreText: true })), 1800);
+      // Staggered animation for text elements
+      setTimeout(() => setAnimationState(prev => ({ ...prev, title: true })), 300);
+      setTimeout(() => setAnimationState(prev => ({ ...prev, subheading: true })), 600);
+      setTimeout(() => setAnimationState(prev => ({ ...prev, paragraph: true })), 900);
+      setTimeout(() => setAnimationState(prev => ({ ...prev, features: true })), 1200);
+      setTimeout(() => setAnimationState(prev => ({ ...prev, finalLine: true })), 1800);
     }
   }, [isInView]);
   
@@ -104,6 +108,31 @@ const ChampionSection = () => {
       videoRef.current.muted = newMutedState;
     }
   };
+
+  // Toggle expand/collapse of feature details
+  const toggleExpandDetails = () => {
+    setIsExpanded(!isExpanded);
+  };
+  
+  // Feature items data
+  const featureItems = [
+    {
+      title: "Unfold & go.",
+      detail: "No tools, no installation—just pure movement."
+    },
+    {
+      title: "Seamless design.",
+      detail: "Folds away when you're done. Effortless. Invisible."
+    },
+    {
+      title: "Built to last.",
+      detail: "Precision-crafted. Strong. Elegant. Just like you."
+    },
+    {
+      title: "Endless potential.",
+      detail: "One station. Infinite possibilities. No limits."
+    }
+  ];
   
   return (
     <section 
@@ -127,60 +156,87 @@ const ChampionSection = () => {
                     "group hover:text-shadow-yellow"
                   )}
                 >
-                  👊 UNLEASH YOUR INNER CHAMPION
+                  TRAIN SMART. LIVE FREE.
                 </h2>
                 
                 <p 
                   className={cn(
                     "text-2xl text-gray-800 font-medium transition-all duration-500 delay-200 transform",
-                    isInView ? "animate-bounce opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                    animationState.subheading ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                   )}
                 >
-                  The Most Addictive Workout You Didn't Know You Needed
+                  Space is luxury. Strength is freedom. Own both.
                 </p>
               </div>
               
-              {/* Power Lines with Staggered Animation */}
-              <div className="space-y-5">
-                <div 
-                  className={cn(
-                    "flex items-center gap-2 transition-all duration-500 transform",
-                    animationState.line1 ? "opacity-100 translate-x-0 animate-[shake_0.5s_ease-in-out]" : "opacity-0 -translate-x-4"
-                  )}
-                >
-                  <p className="text-xl font-semibold">💥 Swing. Dodge. Strike. Repeat.</p>
-                </div>
-                
-                <div 
-                  className={cn(
-                    "flex items-center gap-2 transition-all duration-500 transform group",
-                    animationState.line2 ? "opacity-100 translate-x-0 animate-[shake_0.5s_ease-in-out]" : "opacity-0 -translate-x-4"
-                  )}
-                >
-                  <p className="text-xl font-semibold relative">
-                    🔥 Feel the rhythm. Get in the zone. Own your power.
-                    <span className="absolute inset-0 bg-gradient-to-r from-yellow-100/0 to-yellow-100/0 group-hover:from-yellow-400/20 group-hover:to-yellow-100/0 transition-all duration-500 -z-10 rounded"></span>
-                  </p>
-                </div>
-                
-                <div 
-                  className={cn(
-                    "flex items-center gap-2 transition-all duration-500 transform",
-                    animationState.line3 ? "opacity-100 translate-x-0 animate-[shake_0.5s_ease-in-out]" : "opacity-0 -translate-x-4"
-                  )}
-                >
-                  <p className="text-xl font-semibold">⚡ No setup. No thinking. Just action.</p>
-                </div>
-              </div>
-              
-              {/* Core Text */}
+              {/* Main paragraph */}
               <p 
                 className={cn(
-                  "text-lg text-gray-700 italic font-medium transition-all duration-700 transform",
-                  animationState.coreText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  "text-lg text-gray-700 transition-all duration-700 transform",
+                  animationState.paragraph ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                 )}
               >
-                This isn't just training. It's a game. And the only way to win? Keep going.
+                Your home is your sanctuary. Your time is priceless. Your training should respect both.
+              </p>
+              
+              {/* Feature Points with Collapsible Details */}
+              <div 
+                className={cn(
+                  "space-y-4 transition-all duration-700 transform",
+                  animationState.features ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                )}
+              >
+                {featureItems.map((item, index) => (
+                  <div 
+                    key={index}
+                    className={cn(
+                      "transition-all duration-500 transform",
+                      animationState.features ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4",
+                      "hover:bg-yellow-50/50 p-2 rounded-lg group cursor-pointer"
+                    )}
+                    style={{ transitionDelay: `${index * 100 + 300}ms` }}
+                  >
+                    <p className="text-xl font-semibold relative group-hover:text-yellow-dark transition-colors duration-300">
+                      {item.title}
+                      <span className="absolute inset-0 bg-gradient-to-r from-yellow-100/0 to-yellow-100/0 group-hover:from-yellow-400/20 group-hover:to-yellow-100/0 transition-all duration-500 -z-10 rounded"></span>
+                    </p>
+                    
+                    {isExpanded && (
+                      <p className="text-gray-700 mt-1 pl-2 border-l-2 border-yellow animate-fade-in">
+                        {item.detail}
+                      </p>
+                    )}
+                  </div>
+                ))}
+                
+                {/* Toggle Button for Expanding/Collapsing Details */}
+                <Button
+                  variant="ghost"
+                  className="text-yellow-dark hover:text-yellow-dark/90 hover:bg-yellow-50/50 flex items-center gap-2 mt-2 group"
+                  onClick={toggleExpandDetails}
+                >
+                  {isExpanded ? (
+                    <>
+                      <ChevronUp className="h-4 w-4 transition-transform group-hover:-translate-y-1" />
+                      <span>Show Less</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-1" />
+                      <span>See More</span>
+                    </>
+                  )}
+                </Button>
+              </div>
+              
+              {/* Final Line */}
+              <p 
+                className={cn(
+                  "text-lg text-gray-800 font-medium italic transition-all duration-700 transform",
+                  animationState.finalLine ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                )}
+              >
+                Train when you want. Where you want. Without compromise.
               </p>
               
               {/* CTA Button */}
