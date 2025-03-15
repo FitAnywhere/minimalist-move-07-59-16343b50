@@ -80,7 +80,7 @@ const BundleOffer = () => {
   const savings = totalValue - yourPrice;
 
   return (
-    <section id="bundle" ref={sectionRef} className="py-24 relative overflow-hidden">
+    <section id="bundle" ref={sectionRef} className="py-16 relative overflow-hidden">
       {/* Parallax Background */}
       <div 
         ref={parallaxRef} 
@@ -109,41 +109,41 @@ const BundleOffer = () => {
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
-          {/* Headline with animation */}
-          <div className={cn(
-            "text-center transition-all duration-1000 transform",
-            isInView ? "opacity-100 translate-y-0 animate-[bounce_0.5s_ease-out]" : "opacity-0 -translate-y-8"
-          )}>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4">
-              THE LAST GYM YOU'LL EVER NEED.
-            </h2>
-            <p className="mt-2 text-gray-700 text-xl md:text-2xl max-w-3xl mx-auto">
-              No memberships. No excuses. Just results.
-            </p>
-            
-            <div className="mt-8 max-w-3xl mx-auto text-left text-gray-700">
-              <p className="mb-6">
-                Ever wondered why thousands are wasted on gym memberships…only to quit?
-                What if you could <span className="font-semibold">OWN</span> the gym, the trainer, and the motivation—forever?
-              </p>
-            </div>
-          </div>
-          
           {/* Bundle Offer Card */}
           <div className={cn(
-            "mt-10 bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 transition-all duration-1000",
+            "bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 transition-all duration-1000",
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}>
-            <div className="p-8">
-              {/* What You Get Section */}
-              <h3 className="text-xl font-bold mb-6">HERE'S WHAT YOU GET:</h3>
+            <div className="p-6">
+              {/* Headline directly in the offer container */}
+              <div className={cn(
+                "text-center transition-all duration-1000 transform mb-6",
+                isInView ? "opacity-100 translate-y-0 animate-[bounce_0.5s_ease-out]" : "opacity-0 -translate-y-8"
+              )}>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-3 text-black">
+                  THE LAST GYM YOU'LL EVER NEED.
+                </h2>
+                <p className="mt-1 text-gray-700 text-lg md:text-xl max-w-3xl mx-auto">
+                  No memberships. No excuses. Just results.
+                </p>
+              </div>
               
-              <div className="space-y-5">
+              <div className="mt-4 max-w-3xl mx-auto text-left text-gray-700">
+                <p className="mb-5 text-lg">
+                  Ever wondered why thousands are wasted on gym memberships…only to quit?
+                  What if you could <span className="font-semibold">OWN</span> the gym, the trainer, and the motivation—forever?
+                </p>
+              </div>
+              
+              {/* What You Get Section */}
+              <h3 className="text-xl font-bold mb-4">HERE'S WHAT YOU GET:</h3>
+              
+              <div className="space-y-3">
                 {bundleItems.filter(item => !item.isBonus).map((item, index) => (
                   <div 
                     key={index}
                     className={cn(
-                      "flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-white transition-all duration-500 transform",
+                      "flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-white transition-all duration-500 transform",
                       "hover:shadow-md hover:bg-gray-50",
                       isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
                     )}
@@ -153,8 +153,8 @@ const BundleOffer = () => {
                   >
                     <div className="flex items-start gap-3">
                       <div className="flex-shrink-0 mt-1">
-                        <div className="w-5 h-5 rounded-full bg-yellow flex items-center justify-center">
-                          <Check className="w-3 h-3 text-black" />
+                        <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                          <Check className="w-3 h-3 text-white" />
                         </div>
                       </div>
                       <div>
@@ -177,23 +177,23 @@ const BundleOffer = () => {
               <div 
                 ref={bonusSectionRef}
                 className={cn(
-                  "mt-10 p-6 rounded-xl border border-yellow-100 transition-all duration-500",
+                  "mt-6 p-4 rounded-xl border border-yellow-100 transition-all duration-500",
                   isBonusInView ? "bg-yellow/5" : "bg-white"
                 )}
               >
                 <h3 className={cn(
-                  "text-xl font-bold mb-4 flex items-center",
+                  "text-xl font-bold mb-3 flex items-center",
                   isBonusInView ? "animate-[pulse_2s_infinite]" : ""
                 )}>
                   🎁 EXCLUSIVE BONUSES:
                 </h3>
                 
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {bundleItems.filter(item => item.isBonus).map((item, index) => (
                     <div 
                       key={index}
                       className={cn(
-                        "flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-white transition-all duration-500 transform",
+                        "flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-white transition-all duration-500 transform",
                         "hover:shadow-md border border-yellow-50",
                         isBonusInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12" 
                       )}
@@ -203,8 +203,8 @@ const BundleOffer = () => {
                     >
                       <div className="flex items-start gap-3">
                         <div className="flex-shrink-0 mt-1">
-                          <div className="w-5 h-5 rounded-full bg-yellow-400 flex items-center justify-center">
-                            <Check className="w-3 h-3 text-black" />
+                          <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                            <Check className="w-3 h-3 text-white" />
                           </div>
                         </div>
                         <div>
@@ -225,12 +225,12 @@ const BundleOffer = () => {
               </div>
               
               {/* Value Breakdown with Counter */}
-              <div className="mt-10 p-6 bg-gray-50 rounded-xl">
-                <h3 className="text-xl font-bold mb-4">
+              <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+                <h3 className="text-xl font-bold mb-3">
                   💰 VALUE BREAKDOWN:
                 </h3>
                 
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700">Total Value:</span>
                     <span className="font-semibold text-xl">
@@ -282,8 +282,8 @@ const BundleOffer = () => {
               </div>
               
               {/* Additional Value Proposition */}
-              <div className="mt-8 space-y-4 text-center">
-                <p className="text-lg font-medium">🔹 Would you rather pay for the gym…or OWN it forever?</p>
+              <div className="mt-5 space-y-3 text-center">
+                <p className="text-lg font-medium">Would you rather pay for the gym…or OWN it forever?</p>
                 <p className="text-lg font-bold tracking-wide">
                   GET IT ALL FOR LESS THAN 3 MONTHS WITH A PERSONAL TRAINER.
                 </p>
@@ -294,13 +294,12 @@ const BundleOffer = () => {
             </div>
             
             {/* CTA Section */}
-            <div className="bg-gray-900 p-8 text-center">
+            <div className="bg-gray-900 p-6 text-center">
               <Button
                 size="lg"
                 className={cn(
                   "bg-yellow hover:bg-yellow-dark text-black px-8 py-6 rounded-full text-lg font-semibold tracking-wide",
-                  "transition-all duration-300 hover:shadow-lg hover:-translate-y-1",
-                  "animate-[pulse_3s_infinite] hover:animate-none",
+                  "transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:scale-105",
                   "w-full sm:w-auto"
                 )}
               >
