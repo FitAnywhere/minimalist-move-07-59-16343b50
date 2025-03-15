@@ -1,10 +1,8 @@
-
 import { useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -33,15 +31,7 @@ TRAIN YOUR WAY</h1>
                 <div className="relative rounded-xl overflow-hidden shadow-lg">
                   {/* Auto-playing Video */}
                   <div className="relative w-full h-full">
-                    <video 
-                      ref={videoRef} 
-                      src="Anastazija-banner.mp4" 
-                      className="w-full h-auto object-contain" 
-                      loop 
-                      playsInline 
-                      muted 
-                      autoPlay 
-                    />
+                    <video ref={videoRef} src="Anastazija-banner.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
                   </div>
                 </div>
               </div>
@@ -65,7 +55,7 @@ TRAIN YOUR WAY</h1>
           {!isMobile && <>
               {/* Left Column - Text */}
               <div className="text-center md:text-left order-2 md:order-1">
-                <h1 ref={headlineRef} className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>TRAIN YOUR WAY</h1>
+                <h1 ref={headlineRef} className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>TRAIN SMART</h1>
                 
                 <p ref={subheadlineRef} className={cn("mt-6 text-xl md:text-2xl text-gray-800 transition-all duration-1000 delay-200", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>Portable gym that adapts to your lifestyle</p>
                 
@@ -85,15 +75,7 @@ TRAIN YOUR WAY</h1>
                 <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
                   {/* Video Player */}
                   <div className="w-full max-w-[95%] mx-auto">
-                    <video 
-                      ref={videoRef} 
-                      src="Anastazija-banner.mp4" 
-                      className="w-full h-auto object-contain" 
-                      loop 
-                      playsInline 
-                      muted 
-                      autoPlay 
-                    />
+                    <video ref={videoRef} src="Anastazija-banner.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
                   </div>
                 </div>
               </div>
@@ -109,5 +91,4 @@ TRAIN YOUR WAY</h1>
       </div>
     </section>;
 };
-
 export default HeroSection;
