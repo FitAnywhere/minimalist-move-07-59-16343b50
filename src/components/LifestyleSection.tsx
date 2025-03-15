@@ -69,33 +69,17 @@ const LifestyleSection = () => {
                 CAN'T WAIT TO WORK OUT?
               </h2>
               
-              <div className="space-y-4 text-gray-700">
-                <p className="text-lg">
-                  Sharpen your mind, sync your breath, and feel unstoppable.
-                </p>
-                
-                <p>No more crowded gyms or clunky gear.</p>
-                
-                <p>
-                  Transform your living room into a stress-relieving, cardio playground with BoxFun.
-                </p>
-                
+              <div className="space-y-4 text-gray-700">                
                 <p ref={keyPhraseRef} className="relative inline-block text-gray-800 font-medium">
-                  Every session leaves you energized.
+                  Each workout leaves you energized and alive. Once you feel that flow, you'll never go back.
                 </p>
               </div>
-              
-              <p className="text-lg font-medium italic pt-4">
-                Enjoy a mind-body upgrade wrapped in premium materials. Once you feel that flow, you'll never go back.
-              </p>
             </div>
             
             {/* Desktop: Right-aligned image + CTA */}
             <div className="flex flex-col md:flex-row gap-12 items-start mb-16">
               {/* Lifestyle Benefits - Left side on desktop, full width on mobile */}
               <div className="space-y-6 w-full md:w-1/2">
-                <h3 className="text-xl font-bold tracking-wide">WHY IT FITS YOUR LIFESTYLE?</h3>
-                
                 <div className="grid gap-4">
                   {lifestyleFeatures.map((feature, index) => (
                     <div 
@@ -128,23 +112,20 @@ const LifestyleSection = () => {
                 <div className="w-full max-w-md perspective">
                   <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group">
                     {/* Mobile Phone Frame */}
-                    <div className="relative mx-auto w-72 h-auto">
-                      {/* Phone Frame */}
-                      <div className="absolute inset-0 bg-gray-800 rounded-[36px] shadow-lg transform transition-all duration-300 group-hover:shadow-xl"></div>
-                      
-                      {/* Phone Screen with Bezel */}
-                      <div className="relative rounded-[32px] overflow-hidden border-8 border-gray-800 bg-white shadow-inner">
-                        {/* Product Image Inside Phone */}
-                        <img 
-                          src="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png" 
-                          alt="BoxFun Cap" 
-                          className="w-full h-auto object-cover"
-                        />
-                      </div>
-                      
-                      {/* Phone Button/Notch */}
-                      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-24 h-4 bg-gray-800 rounded-full"></div>
+                    <div className="absolute inset-0 bg-gray-800 rounded-[36px] shadow-lg transform transition-all duration-300 group-hover:shadow-xl"></div>
+                    
+                    {/* Phone Screen with Bezel */}
+                    <div className="relative rounded-[32px] overflow-hidden border-8 border-gray-800 bg-white shadow-inner">
+                      {/* Product Image Inside Phone */}
+                      <img 
+                        src="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png" 
+                        alt="BoxFun Cap" 
+                        className="w-full h-auto object-cover"
+                      />
                     </div>
+                    
+                    {/* Phone Button/Notch */}
+                    <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-24 h-4 bg-gray-800 rounded-full"></div>
                   </div>
                 </div>
                 
@@ -154,12 +135,11 @@ const LifestyleSection = () => {
                     className={cn(
                       "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg",
                       "transition-all duration-300 transform hover:scale-105",
-                      "shadow-md hover:shadow-[0_0_20px_rgba(255,215,0,0.5)]", 
-                      "animate-pulse",
+                      "shadow-md hover:shadow-[0_0_20px_rgba(255,215,0,0.5)]",
                       "w-full md:w-auto"
                     )}
                   >
-                    GET YOUR BOXFUN CAP NOW <Rocket className="ml-1 h-5 w-5" />
+                    GET BOXFUN NOW <Rocket className="ml-1 h-5 w-5" />
                   </Button>
                   
                   {/* Visual CTA hint */}
