@@ -9,15 +9,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const bandsFeatures = [{
   title: "⚡ Effortless Assistance",
-  description: "Boost strength, refine form, and build confidence.",
+  description: "Lighten the load and build strength with confidence.",
   icon: Zap
 }, {
   title: "🔥 Next-Level Resistance",
-  description: "Push past plateaus, unlock new challenges.",
+  description: "Push past plateaus, and keep progressing.",
   icon: Flame
 }, {
   title: "🎒 Anywhere, Anytime",
-  description: "Compact. Portable. Ready when you are.",
+  description: "Unfold, clip in, and train—whether at home or on the go.",
   icon: Backpack
 }];
 
@@ -35,7 +35,7 @@ const trxFeatures = [{
 const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
   const [trxExpandedFeatures, setTrxExpandedFeatures] = useState<Record<number, boolean>>({});
-  const [bandsExpanded, setBandsExpanded] = useState(false);
+  const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
   const sectionRef = useRef<HTMLElement>(null);
   const trxVideoRef = useRef<HTMLDivElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
@@ -45,6 +45,13 @@ const ProductTabs = () => {
   
   const toggleTrxFeature = (index: number) => {
     setTrxExpandedFeatures(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+  
+  const toggleBandsFeature = (index: number) => {
+    setBandsExpandedFeatures(prev => ({
       ...prev,
       [index]: !prev[index]
     }));
@@ -63,7 +70,7 @@ const ProductTabs = () => {
               <button onClick={() => setActiveTab('trx')} className={cn("px-6 py-3 rounded-full text-sm font-medium transition-all duration-300", activeTab === 'trx' ? "bg-yellow text-black" : "bg-transparent text-gray-600 hover:bg-gray-50")}>
                 TRX
               </button>
-              <button onClick={() => setActiveTab('bands')} className={cn("px-6 py-3 rounded-full text-sm font-medium transition-all duration-300", activeTab === 'bands' ? "bg-yellow text-black animate-pulse" : "bg-transparent text-gray-600 hover:bg-gray-50")}>
+              <button onClick={() => setActiveTab('bands')} className={cn("px-6 py-3 rounded-full text-sm font-medium transition-all duration-300", activeTab === 'bands' ? "bg-yellow text-black" : "bg-transparent text-gray-600 hover:bg-gray-50")}>
                 BANDS
               </button>
             </div>
@@ -179,7 +186,7 @@ const ProductTabs = () => {
           
           <div className={cn("transition-all duration-500", activeTab === 'bands' ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20 hidden')}>
             <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="order-2 md:order-1">
+              <div className="order-2 md:order-1 space-y-6">
                 <div className="space-y-2 mb-6">
                   <h3 className="text-2xl font-bold group transition-all duration-300">
                     <span className="inline-flex items-center relative group-hover:text-yellow-600">
@@ -192,7 +199,12 @@ const ProductTabs = () => {
                 
                 <div className="space-y-5 mb-6">
                   {bandsFeatures.map((feature, index) => (
-                    <Collapsible key={index} className="w-full">
+                    <Collapsible 
+                      key={index} 
+                      className="w-full"
+                      open={!!bandsExpandedFeatures[index]}
+                      onOpenChange={() => toggleBandsFeature(index)}
+                    >
                       <div 
                         className={cn(
                           "transition-all duration-500 transform",
@@ -216,10 +228,10 @@ const ProductTabs = () => {
                         <div 
                           className={cn(
                             "transition-all duration-500 opacity-0 translate-y-2",
-                            bandsExpanded ? "opacity-100 translate-y-0" : ""
+                            bandsExpandedFeatures[index] ? "opacity-100 translate-y-0" : ""
                           )} 
                           style={{
-                            transitionDelay: bandsExpanded ? `${index * 150}ms` : "0ms"
+                            transitionDelay: bandsExpandedFeatures[index] ? `150ms` : "0ms"
                           }}
                         >
                           <p className="text-gray-600 relative">
@@ -232,36 +244,29 @@ const ProductTabs = () => {
                   ))}
                 </div>
                 
-                <Collapsible 
-                  open={bandsExpanded} 
-                  onOpenChange={setBandsExpanded}
-                  className="w-full"
-                >
-                  <div className="space-y-0">
-                    <CollapsibleContent>
-                      <div 
-                        className={cn(
-                          "mt-4 font-medium text-gray-700 italic transition-all duration-500 opacity-0 translate-y-2",
-                          bandsExpanded ? "opacity-100 translate-y-0" : ""
-                        )} 
-                        style={{
-                          transitionDelay: bandsExpanded ? "450ms" : "0ms"
-                        }}
-                      >
-                        From first reps to peak performance—bands move with you.
-                      </div>
-                    </CollapsibleContent>
-                    
-                    <CollapsibleTrigger asChild>
-                      <button className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors mt-2">
-                        {bandsExpanded ? 
-                          <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : 
-                          <>Show More <ChevronDown className="ml-1 w-4 h-4" />
-                        </>}
-                      </button>
-                    </CollapsibleTrigger>
-                  </div>
-                </Collapsible>
+                <div className="mt-4 font-medium text-gray-700 italic">
+                  From first reps to peak performance—bands move with you.
+                </div>
+                
+                <div className="mt-2">
+                  <button 
+                    onClick={() => {
+                      const allExpanded = Object.values(bandsExpandedFeatures).every(v => v);
+                      const newState = !allExpanded;
+                      const updatedState: Record<number, boolean> = {};
+                      bandsFeatures.forEach((_, index) => {
+                        updatedState[index] = newState;
+                      });
+                      setBandsExpandedFeatures(updatedState);
+                    }}
+                    className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors"
+                  >
+                    {Object.values(bandsExpandedFeatures).every(v => v) ? 
+                      <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : 
+                      <>Show More <ChevronDown className="ml-1 w-4 h-4" />
+                    </>}
+                  </button>
+                </div>
               </div>
               
               <div 
@@ -282,10 +287,6 @@ const ProductTabs = () => {
                     "w-full h-full object-cover transition-transform duration-1000",
                     isBandsVideoInView ? "scale-[1.05]" : "scale-100"
                   )}
-                  style={{
-                    transition: "transform 2s ease-out",
-                    animationDelay: "0.2s"
-                  }}
                 />
               </div>
             </div>
