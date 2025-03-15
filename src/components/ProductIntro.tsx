@@ -80,7 +80,7 @@ const ProductIntro = () => {
               <div className="space-y-4">
                 <h2 className={cn("text-black font-bold tracking-wide transition-all duration-700 transform", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>OWN BOTH</h2>
                 
-                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>Space is luxury & strength is freedom</p>
+                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>Space is luxury & time is freedom</p>
                 
                 
               </div>
