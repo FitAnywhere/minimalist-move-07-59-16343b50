@@ -76,9 +76,9 @@ const LifestyleSection = () => {
               </div>
             </div>
             
-            {/* Desktop: Right-aligned image + CTA */}
+            {/* Desktop: Rearranged layout with features and CTA on left, image on right */}
             <div className="flex flex-col md:flex-row gap-12 items-start mb-16">
-              {/* Lifestyle Benefits - Left side on desktop, full width on mobile */}
+              {/* Lifestyle Benefits + CTA - Left side on desktop */}
               <div className="space-y-6 w-full md:w-1/2">
                 <div className="grid gap-4">
                   {lifestyleFeatures.map((feature, index) => (
@@ -104,33 +104,9 @@ const LifestyleSection = () => {
                     </div>
                   ))}
                 </div>
-              </div>
-              
-              {/* Image & CTA - Right side on desktop, centered on mobile */}
-              <div className="w-full md:w-1/2 flex flex-col items-center md:items-end space-y-6">
-                {/* Mobile Phone Frame with Product Image */}
-                <div className="w-full max-w-md perspective">
-                  <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group">
-                    {/* Mobile Phone Frame */}
-                    <div className="absolute inset-0 bg-gray-800 rounded-[36px] shadow-lg transform transition-all duration-300 group-hover:shadow-xl"></div>
-                    
-                    {/* Phone Screen with Bezel */}
-                    <div className="relative rounded-[32px] overflow-hidden border-8 border-gray-800 bg-white shadow-inner">
-                      {/* Updated Product Image Inside Phone */}
-                      <img 
-                        src="/bgg.png" 
-                        alt="BoxFun Product" 
-                        className="w-full h-auto object-cover"
-                      />
-                    </div>
-                    
-                    {/* Phone Button/Notch */}
-                    <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-24 h-4 bg-gray-800 rounded-full"></div>
-                  </div>
-                </div>
                 
-                {/* CTA Button */}
-                <div className="w-full max-w-md text-center">
+                {/* CTA Button - Moved under the features */}
+                <div className="mt-8">
                   <Button 
                     className={cn(
                       "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg",
@@ -146,6 +122,30 @@ const LifestyleSection = () => {
                   <p className="text-sm text-gray-500 mt-3">
                     Limited stock available
                   </p>
+                </div>
+              </div>
+              
+              {/* Image - Right side on desktop */}
+              <div className="w-full md:w-1/2 flex flex-col items-center md:items-end">
+                {/* Mobile Phone Frame with Product Image */}
+                <div className="w-full max-w-md perspective">
+                  <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                    {/* Mobile Phone Frame */}
+                    <div className="absolute inset-0 bg-gray-800 rounded-[36px] shadow-lg transform transition-all duration-300 group-hover:shadow-xl"></div>
+                    
+                    {/* Phone Screen with Bezel */}
+                    <div className="relative rounded-[32px] overflow-hidden border-8 border-gray-800 bg-white shadow-inner">
+                      {/* Product Image Inside Phone */}
+                      <img 
+                        src="/bgg.png" 
+                        alt="BoxFun Product" 
+                        className="w-full h-auto object-cover"
+                      />
+                    </div>
+                    
+                    {/* Phone Button/Notch */}
+                    <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-24 h-4 bg-gray-800 rounded-full"></div>
+                  </div>
                 </div>
               </div>
             </div>

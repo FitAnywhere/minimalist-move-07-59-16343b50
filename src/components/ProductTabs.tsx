@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Check, Zap, Globe, Feather, Waves, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -42,7 +41,6 @@ const trxFeatures = [
 
 const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
-  // Initialize with empty objects to ensure collapsed state by default
   const [trxExpandedFeatures, setTrxExpandedFeatures] = useState<Record<number, boolean>>({});
   const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
   
@@ -70,6 +68,14 @@ const ProductTabs = () => {
       ...prev,
       [index]: !prev[index]
     }));
+  };
+
+  const areAllTrxFeaturesExpanded = () => {
+    return trxFeatures.every((_, index) => trxExpandedFeatures[index]);
+  };
+
+  const areAllBandsFeaturesExpanded = () => {
+    return bandsFeatures.every((_, index) => bandsExpandedFeatures[index]);
   };
 
   return (
@@ -177,7 +183,7 @@ const ProductTabs = () => {
                 <div className="mt-2">
                   <button 
                     onClick={() => {
-                      const allExpanded = Object.values(trxExpandedFeatures).every(v => v);
+                      const allExpanded = areAllTrxFeaturesExpanded();
                       const newState = !allExpanded;
                       const updatedState: Record<number, boolean> = {};
                       trxFeatures.forEach((_, index) => {
@@ -187,7 +193,7 @@ const ProductTabs = () => {
                     }} 
                     className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors"
                   >
-                    {Object.values(trxExpandedFeatures).every(v => v) ? 
+                    {areAllTrxFeaturesExpanded() ? 
                       <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : 
                       <>Show More <ChevronDown className="ml-1 w-4 h-4" /></>
                     }
@@ -288,7 +294,7 @@ const ProductTabs = () => {
                 <div className="mt-2">
                   <button 
                     onClick={() => {
-                      const allExpanded = Object.values(bandsExpandedFeatures).every(v => v);
+                      const allExpanded = areAllBandsFeaturesExpanded();
                       const newState = !allExpanded;
                       const updatedState: Record<number, boolean> = {};
                       bandsFeatures.forEach((_, index) => {
@@ -298,10 +304,9 @@ const ProductTabs = () => {
                     }} 
                     className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors"
                   >
-                    {Object.values(bandsExpandedFeatures).every(v => v) ? 
+                    {areAllBandsFeaturesExpanded() ? 
                       <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : 
-                      <>Show More <ChevronDown className="ml-1 w-4 h-4" />
-                      </>
+                      <>Show More <ChevronDown className="ml-1 w-4 h-4" /></>
                     }
                   </button>
                 </div>
