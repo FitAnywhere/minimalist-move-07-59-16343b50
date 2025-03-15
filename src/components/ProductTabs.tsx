@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Check, Zap, Globe, Settings, Feather, Waves, ChevronDown, ChevronUp } from 'lucide-react';
@@ -142,17 +143,17 @@ const ProductTabs = () => {
                       No more crowded gyms. Just pure movement on your terms.
                     </div>
                   </CollapsibleContent>
+                  
+                  {/* Show More/Less Button - Fixed: moved inside Collapsible */}
+                  <CollapsibleTrigger asChild>
+                    <button className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors mt-2">
+                      {trxExpanded ? 
+                        <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : 
+                        <>Show More <ChevronDown className="ml-1 w-4 h-4" />
+                      </>}
+                    </button>
+                  </CollapsibleTrigger>
                 </Collapsible>
-                
-                {/* Show More/Less Button */}
-                <CollapsibleTrigger asChild>
-                  <button className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors mt-2">
-                    {trxExpanded ? 
-                      <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : 
-                      <>Show More <ChevronDown className="ml-1 w-4 h-4" />
-                    </>}
-                  </button>
-                </CollapsibleTrigger>
               </div>
               
               {/* Video container with enhancements */}
@@ -197,7 +198,8 @@ const ProductTabs = () => {
                 <h3 className="text-2xl font-bold mb-3">BANDS</h3>
                 <p className="text-lg text-gray-600 mb-6">No excuses</p>
                 
-                <div className={cn("relative overflow-hidden transition-all duration-500", bandsExpanded ? "max-h-[1000px]" : "max-h-0")}>
+                {/* Fixed: Wrapped the bands content in a Collapsible component */}
+                <Collapsible open={bandsExpanded} onOpenChange={setBandsExpanded}>
                   <div className="space-y-4 mb-6">
                     {bandsFeatures.map((feature, index) => (
                       <div key={index} className="transition-all duration-300">
@@ -211,19 +213,23 @@ const ProductTabs = () => {
                               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
                             </h4>
                           </div>
-                          <div className="pl-7 relative">
-                            <p className="text-gray-600">{feature.description}</p>
-                            <div className="absolute inset-0 bg-yellow-300/0 group-hover:bg-yellow-300/10 rounded-lg transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,215,0,0.3)] -z-10"></div>
-                          </div>
+                          <CollapsibleContent>
+                            <div className="pl-7 relative">
+                              <p className="text-gray-600">{feature.description}</p>
+                              <div className="absolute inset-0 bg-yellow-300/0 group-hover:bg-yellow-300/10 rounded-lg transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,215,0,0.3)] -z-10"></div>
+                            </div>
+                          </CollapsibleContent>
                         </div>
                       </div>
                     ))}
                   </div>
-                </div>
-                
-                <button onClick={() => setBandsExpanded(!bandsExpanded)} className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors">
-                  {bandsExpanded ? <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : <>Read More <ChevronDown className="ml-1 w-4 h-4" /></>}
-                </button>
+                  
+                  <CollapsibleTrigger asChild>
+                    <button className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors">
+                      {bandsExpanded ? <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : <>Read More <ChevronDown className="ml-1 w-4 h-4" /></>}
+                    </button>
+                  </CollapsibleTrigger>
+                </Collapsible>
               </div>
             </div>
           </div>
