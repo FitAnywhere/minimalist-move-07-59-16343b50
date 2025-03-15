@@ -1,9 +1,11 @@
+
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Check, Zap, Globe, Feather, Waves, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const bandsFeatures = [{
   title: "⚡ Effortless Assistance",
@@ -32,7 +34,7 @@ const trxFeatures = [{
 
 const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
-  const [trxExpanded, setTrxExpanded] = useState(false);
+  const [trxExpandedFeatures, setTrxExpandedFeatures] = useState<Record<number, boolean>>({});
   const [bandsExpanded, setBandsExpanded] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const trxVideoRef = useRef<HTMLDivElement>(null);
@@ -40,6 +42,13 @@ const ProductTabs = () => {
   const isInView = useInView(sectionRef);
   const isVideoInView = useInView(trxVideoRef, { threshold: 0.3 });
   const isBandsVideoInView = useInView(bandsVideoRef, { threshold: 0.3 });
+  
+  const toggleTrxFeature = (index: number) => {
+    setTrxExpandedFeatures(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
   
   return <section id="accessories" ref={sectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
@@ -66,7 +75,7 @@ const ProductTabs = () => {
                 <div className="space-y-2">
                   <h3 className="text-2xl font-bold mb-1 group transition-all duration-300">
                     <span className="inline-flex items-center relative group-hover:text-yellow-600">
-                      ⚡ EXPAND YOUR POWER
+                      EXPAND YOUR POWER
                       <span className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></span>
                     </span>
                   </h3>
@@ -78,6 +87,8 @@ const ProductTabs = () => {
                     <Collapsible 
                       key={index}
                       className="w-full"
+                      open={!!trxExpandedFeatures[index]}
+                      onOpenChange={() => toggleTrxFeature(index)}
                     >
                       <div 
                         className={cn(
@@ -102,10 +113,10 @@ const ProductTabs = () => {
                         <div 
                           className={cn(
                             "transition-all duration-500 opacity-0 translate-y-2",
-                            trxExpanded ? "opacity-100 translate-y-0" : ""
+                            trxExpandedFeatures[index] ? "opacity-100 translate-y-0" : ""
                           )} 
                           style={{
-                            transitionDelay: trxExpanded ? `${index * 150}ms` : "0ms"
+                            transitionDelay: trxExpandedFeatures[index] ? `150ms` : "0ms"
                           }}
                         >
                           <p className="text-gray-600 relative">
@@ -118,36 +129,29 @@ const ProductTabs = () => {
                   ))}
                 </div>
                 
-                <Collapsible 
-                  open={trxExpanded} 
-                  onOpenChange={setTrxExpanded}
-                  className="w-full"
-                >
-                  <div className="space-y-0">
-                    <CollapsibleContent>
-                      <div 
-                        className={cn(
-                          "mt-4 font-medium text-gray-700 italic transition-all duration-500 opacity-0 translate-y-2",
-                          trxExpanded ? "opacity-100 translate-y-0" : ""
-                        )} 
-                        style={{
-                          transitionDelay: trxExpanded ? "450ms" : "0ms"
-                        }}
-                      >
-                        No more crowded gyms. Just pure movement on your terms.
-                      </div>
-                    </CollapsibleContent>
-                    
-                    <CollapsibleTrigger asChild>
-                      <button className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors mt-2">
-                        {trxExpanded ? 
-                          <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : 
-                          <>Show More <ChevronDown className="ml-1 w-4 h-4" />
-                        </>}
-                      </button>
-                    </CollapsibleTrigger>
-                  </div>
-                </Collapsible>
+                <div className="mt-4 font-medium text-gray-700 italic">
+                  No more crowded gyms. Just pure movement on your terms.
+                </div>
+                
+                <div className="mt-2">
+                  <button 
+                    onClick={() => {
+                      const allExpanded = Object.values(trxExpandedFeatures).every(v => v);
+                      const newState = !allExpanded;
+                      const updatedState: Record<number, boolean> = {};
+                      trxFeatures.forEach((_, index) => {
+                        updatedState[index] = newState;
+                      });
+                      setTrxExpandedFeatures(updatedState);
+                    }}
+                    className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors"
+                  >
+                    {Object.values(trxExpandedFeatures).every(v => v) ? 
+                      <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : 
+                      <>Show More <ChevronDown className="ml-1 w-4 h-4" />
+                    </>}
+                  </button>
+                </div>
               </div>
               
               <div 
