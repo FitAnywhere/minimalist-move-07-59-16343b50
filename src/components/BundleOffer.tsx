@@ -72,7 +72,7 @@ const BundleOffer = () => {
       {/* Parallax Background */}
       <div ref={parallaxRef} style={{
       background: "radial-gradient(circle at 50% 50%, #f8f8f8, #f1f1f1, #eaeaea)"
-    }} className="absolute inset-0 w-full h-full z-0 overflow-hidden py-[47px] px-0 bg-inherit">
+    }} className="absolute inset-0 w-full h-full z-0 overflow-hidden py-[47px] px-0 bg-[#f8ffdd]/[0.31]">
         {/* Floating Particles */}
         {Array.from({
         length: 15
