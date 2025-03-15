@@ -1,9 +1,9 @@
-
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { Check, Zap, Globe, Settings, Feather, Waves, ChevronDown, ChevronUp } from 'lucide-react';
+import { Check, Zap, Globe, Feather, Waves, ChevronDown, ChevronUp } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 // Keep the bandsFeatures array the same
 const bandsFeatures = [{
@@ -24,15 +24,12 @@ const bandsFeatures = [{
 const trxFeatures = [{
   title: "🌀 Adaptive Strength",
   description: "Tilt, pull, or push. Your intensity, your rules.",
-  icon: Zap
 }, {
   title: "🌍 Gravity in Your Favor",
   description: "No weights. No restrictions. Just pure movement.",
-  icon: Feather
 }, {
   title: "🌊 Seamless Motion",
   description: "Full-body workouts with effortless control.",
-  icon: Waves
 }];
 
 const ProductTabs = () => {
@@ -79,16 +76,14 @@ const ProductTabs = () => {
                   <p className="text-lg text-gray-700 mb-4">Master your body. Move with purpose.</p>
                 </div>
                 
-                {/* Feature points with collapsible content */}
-                <Collapsible 
-                  open={trxExpanded} 
-                  onOpenChange={setTrxExpanded}
-                  className="w-full"
-                >
-                  <div className="space-y-5">
-                    {trxFeatures.map((feature, index) => (
+                {/* Feature points with individual collapsible content for each item */}
+                <div className="space-y-5">
+                  {trxFeatures.map((feature, index) => (
+                    <Collapsible 
+                      key={index}
+                      className="w-full"
+                    >
                       <div 
-                        key={index} 
                         className={cn(
                           "transition-all duration-500 transform",
                           isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
@@ -99,9 +94,6 @@ const ProductTabs = () => {
                       >
                         <div className="group relative">
                           <div className="flex items-center gap-2 mb-1">
-                            <feature.icon 
-                              className="w-5 h-5 text-gray-800 transition-transform duration-300 group-hover:scale-110 group-hover:text-yellow-600" 
-                            />
                             <h4 className="font-semibold group-hover:text-black relative">
                               {feature.title}
                               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
@@ -109,50 +101,59 @@ const ProductTabs = () => {
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
 
-                  <CollapsibleContent className="space-y-4">
-                    {trxFeatures.map((feature, index) => (
+                      <CollapsibleContent className="space-y-4 pl-7 mb-3">
+                        <div 
+                          className={cn(
+                            "transition-all duration-500 opacity-0 translate-y-2",
+                            trxExpanded ? "opacity-100 translate-y-0" : ""
+                          )} 
+                          style={{
+                            transitionDelay: trxExpanded ? `${index * 150}ms` : "0ms"
+                          }}
+                        >
+                          <p className="text-gray-600 relative">
+                            {feature.description}
+                            <span className="absolute inset-0 bg-gradient-to-r from-yellow-50/0 to-yellow-50/0 hover:from-yellow-50 hover:to-yellow-50/0 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg -z-10"></span>
+                          </p>
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  ))}
+                </div>
+                
+                {/* Main Collapsible Toggle for all items */}
+                <Collapsible 
+                  open={trxExpanded} 
+                  onOpenChange={setTrxExpanded}
+                  className="w-full"
+                >
+                  <div className="space-y-0">
+                    {/* Final message that appears when expanded */}
+                    <CollapsibleContent>
                       <div 
-                        key={`desc-${index}`} 
                         className={cn(
-                          "pl-7 transition-all duration-500 opacity-0 translate-y-2",
+                          "mt-4 font-medium text-gray-700 italic transition-all duration-500 opacity-0 translate-y-2",
                           trxExpanded ? "opacity-100 translate-y-0" : ""
                         )} 
                         style={{
-                          transitionDelay: trxExpanded ? `${index * 150}ms` : "0ms"
+                          transitionDelay: trxExpanded ? "450ms" : "0ms"
                         }}
                       >
-                        <p className="text-gray-600 relative">
-                          {feature.description}
-                          <span className="absolute inset-0 bg-gradient-to-r from-yellow-50/0 to-yellow-50/0 hover:from-yellow-50 hover:to-yellow-50/0 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg -z-10"></span>
-                        </p>
+                        No more crowded gyms. Just pure movement on your terms.
                       </div>
-                    ))}
+                    </CollapsibleContent>
                     
-                    <div 
-                      className={cn(
-                        "mt-4 font-medium text-gray-700 italic transition-all duration-500 opacity-0 translate-y-2",
-                        trxExpanded ? "opacity-100 translate-y-0" : ""
-                      )} 
-                      style={{
-                        transitionDelay: trxExpanded ? "450ms" : "0ms"
-                      }}
-                    >
-                      No more crowded gyms. Just pure movement on your terms.
-                    </div>
-                  </CollapsibleContent>
-                  
-                  {/* Show More/Less Button - Fixed: moved inside Collapsible */}
-                  <CollapsibleTrigger asChild>
-                    <button className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors mt-2">
-                      {trxExpanded ? 
-                        <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : 
-                        <>Show More <ChevronDown className="ml-1 w-4 h-4" />
-                      </>}
-                    </button>
-                  </CollapsibleTrigger>
+                    {/* Show More/Less Button */}
+                    <CollapsibleTrigger asChild>
+                      <button className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors mt-2">
+                        {trxExpanded ? 
+                          <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : 
+                          <>Show More <ChevronDown className="ml-1 w-4 h-4" />
+                        </>}
+                      </button>
+                    </CollapsibleTrigger>
+                  </div>
                 </Collapsible>
               </div>
               
