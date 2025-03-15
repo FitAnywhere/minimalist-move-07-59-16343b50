@@ -111,7 +111,7 @@ const BundleOffer = () => {
               </div>
               
               <div className="mt-2 max-w-3xl mx-auto text-left text-gray-700">
-                <p className="mb-3 text-lg leading-tight text-center text-blue-600">No memberships. No excuses. Just results.</p>
+                <p className="mb-3 text-lg leading-tight text-center text-blue-600">No memberships. No excuses. </p>
               </div>
               
               {/* What You Get Section */}
@@ -211,9 +211,7 @@ const BundleOffer = () => {
               {/* Additional Value Proposition */}
               <div className="mt-3 space-y-1.5 text-center">
                 <p className="text-base font-medium">Would you rather pay for the gym…or OWN it forever?</p>
-                <p className="text-base font-bold tracking-wide">
-                  GET IT ALL FOR LESS THAN 3 MONTHS WITH A PERSONAL TRAINER.
-                </p>
+                
                 
               </div>
             </div>
