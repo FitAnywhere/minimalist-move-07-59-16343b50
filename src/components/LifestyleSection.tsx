@@ -63,8 +63,8 @@ const LifestyleSection = () => {
             "transition-all duration-1000 transform",
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}>
-            {/* Headline and Main Text - Full Width */}
-            <div className="space-y-8 mb-12">
+            {/* Headline and Main Text - Centered */}
+            <div className="space-y-8 mb-12 text-center">
               <h2 className="text-3xl md:text-4xl font-bold leading-tight">
                 CAN'T WAIT TO WORK OUT?
               </h2>
@@ -116,10 +116,10 @@ const LifestyleSection = () => {
                     
                     {/* Phone Screen with Bezel */}
                     <div className="relative rounded-[32px] overflow-hidden border-8 border-gray-800 bg-white shadow-inner">
-                      {/* Product Image Inside Phone */}
+                      {/* Updated Product Image Inside Phone */}
                       <img 
-                        src="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png" 
-                        alt="BoxFun Cap" 
+                        src="/bgg.png" 
+                        alt="BoxFun Product" 
                         className="w-full h-auto object-cover"
                       />
                     </div>
