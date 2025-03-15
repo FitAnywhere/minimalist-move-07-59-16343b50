@@ -1,5 +1,5 @@
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { useInView, useTextUnderline } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -12,16 +12,16 @@ interface LifestyleFeature {
 
 const lifestyleFeatures: LifestyleFeature[] = [
   {
-    title: "Minimalist Design, Maximum Impact",
-    description: "Seamlessly blends with any modern interior."
+    title: "MAXIMUM IMPACT",
+    description: "Blends seamlessly with any modern space."
   },
   {
-    title: "On-Demand Convenience",
-    description: "Train on your schedule—no commutes, no monthly fees."
+    title: "ON DEMAND",
+    description: "Train whenever. No commutes or fees."
   },
   {
-    title: "Lifetime Quality & Comfort",
-    description: "Engineered for everyday performance and built to last."
+    title: "LIFETIME QUALITY & COMFORT",
+    description: "Engineered for daily use and built to last."
   }
 ];
 
@@ -66,29 +66,27 @@ const LifestyleSection = () => {
             {/* Headline and Main Text - Full Width */}
             <div className="space-y-8 mb-12">
               <h2 className="text-3xl md:text-4xl font-bold leading-tight">
-                What if fitness was something you couldn't wait to do?
+                CAN'T WAIT TO WORK OUT?
               </h2>
               
               <div className="space-y-4 text-gray-700">
                 <p className="text-lg">
-                  A ritual that sharpens your mind, syncs your breath, and leaves you unstoppable.
+                  Sharpen your mind, sync your breath, and feel unstoppable.
                 </p>
                 
                 <p>No more crowded gyms or clunky gear.</p>
                 
                 <p>
-                  Just a sleek, comfortable BoxFun cap that transforms your living room into a 
-                  stress-relieving, cardio-charged playground.
+                  Transform your living room into a stress-relieving, cardio playground with BoxFun.
                 </p>
                 
                 <p ref={keyPhraseRef} className="relative inline-block text-gray-800 font-medium">
-                  Every swing melts tension, every strike hones focus, and every session leaves you energized.
+                  Every session leaves you energized.
                 </p>
               </div>
               
               <p className="text-lg font-medium italic pt-4">
-                This isn't just a workout—it's a mind-body upgrade wrapped in premium materials. 
-                Once you feel that flow, you'll never go back.
+                Enjoy a mind-body upgrade wrapped in premium materials. Once you feel that flow, you'll never go back.
               </p>
             </div>
             
@@ -96,7 +94,7 @@ const LifestyleSection = () => {
             <div className="flex flex-col md:flex-row gap-12 items-start mb-16">
               {/* Lifestyle Benefits - Left side on desktop, full width on mobile */}
               <div className="space-y-6 w-full md:w-1/2">
-                <h3 className="text-xl font-bold tracking-wide">WHY IT FITS YOUR LIFESTYLE</h3>
+                <h3 className="text-xl font-bold tracking-wide">WHY IT FITS YOUR LIFESTYLE?</h3>
                 
                 <div className="grid gap-4">
                   {lifestyleFeatures.map((feature, index) => (
@@ -126,16 +124,27 @@ const LifestyleSection = () => {
               
               {/* Image & CTA - Right side on desktop, centered on mobile */}
               <div className="w-full md:w-1/2 flex flex-col items-center md:items-end space-y-6">
-                {/* BoxFun Cap Image */}
+                {/* Mobile Phone Frame with Product Image */}
                 <div className="w-full max-w-md perspective">
-                  <div className="relative rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl group">
-                    <img 
-                      src="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png" 
-                      alt="BoxFun Cap" 
-                      className="w-full h-auto object-cover"
-                    />
-                    {/* Overlay on hover */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-all duration-300"></div>
+                  <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+                    {/* Mobile Phone Frame */}
+                    <div className="relative mx-auto w-72 h-auto">
+                      {/* Phone Frame */}
+                      <div className="absolute inset-0 bg-gray-800 rounded-[36px] shadow-lg transform transition-all duration-300 group-hover:shadow-xl"></div>
+                      
+                      {/* Phone Screen with Bezel */}
+                      <div className="relative rounded-[32px] overflow-hidden border-8 border-gray-800 bg-white shadow-inner">
+                        {/* Product Image Inside Phone */}
+                        <img 
+                          src="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png" 
+                          alt="BoxFun Cap" 
+                          className="w-full h-auto object-cover"
+                        />
+                      </div>
+                      
+                      {/* Phone Button/Notch */}
+                      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-24 h-4 bg-gray-800 rounded-full"></div>
+                    </div>
                   </div>
                 </div>
                 
@@ -155,7 +164,7 @@ const LifestyleSection = () => {
                   
                   {/* Visual CTA hint */}
                   <p className="text-sm text-gray-500 mt-3">
-                    Limited stock available for summer release
+                    Limited stock available
                   </p>
                 </div>
               </div>
