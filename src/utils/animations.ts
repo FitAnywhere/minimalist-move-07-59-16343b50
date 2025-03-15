@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef, RefObject } from 'react';
 
 export const useInView = (ref: RefObject<HTMLElement>, options = {}, once = true) => {
@@ -155,5 +154,34 @@ export const useShakeEffect = (ref: RefObject<HTMLElement>, delay = 0) => {
         ref.current?.removeEventListener('animationend', handleAnimationEnd);
       };
     }, delay);
+  }, [ref, delay]);
+};
+
+// Add a new hook for text underline animation
+export const useTextUnderline = (ref: RefObject<HTMLElement>, delay = 0) => {
+  useEffect(() => {
+    if (!ref.current) return;
+    
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            ref.current?.classList.add('underline-animation');
+          }, delay);
+        }
+      });
+    };
+    
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.2
+    });
+    
+    observer.observe(ref.current);
+    
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
   }, [ref, delay]);
 };
