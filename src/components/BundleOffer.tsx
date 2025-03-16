@@ -84,7 +84,7 @@ const BundleOffer = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-6", isInView ? "opacity-100 translate-y-0 animate-[bounce_0.5s_ease-out]" : "opacity-0 -translate-y-8")}>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-3 text-black">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
               LAST GYM YOU WILL EVER NEED
             </h2>
             
