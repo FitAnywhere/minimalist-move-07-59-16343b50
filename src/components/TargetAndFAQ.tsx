@@ -103,23 +103,22 @@ const TargetAndFAQ = () => {
                     key={index} 
                     value={`item-${index}`}
                     className={cn(
-                      "mb-4 border-b border-gray-100 pb-2",
-                      "transition-all duration-300",
+                      "mb-4 transition-all duration-300 rounded-lg overflow-hidden",
                       isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                     )}
                     style={{
                       transitionDelay: `${index * 100}ms`
                     }}
                   >
-                    <div className="border border-transparent transition-all duration-300 rounded-lg hover:bg-gray-50 group
+                    <div className="border border-transparent hover:bg-gray-50/50 transition-all duration-300 rounded-lg
                       data-[state=open]:border-yellow data-[state=open]:border-[1.5px] data-[state=open]:bg-white">
                       <AccordionTrigger 
-                        className="py-4 px-4 text-lg font-medium hover:no-underline flex justify-between items-center transition-all duration-300"
+                        className="py-4 px-5 text-lg font-medium hover:no-underline flex justify-between items-center transition-all duration-300"
                       >
                         {item.question}
                       </AccordionTrigger>
                       <AccordionContent 
-                        className="text-gray-500 px-4 pb-4 font-normal transition-all duration-300"
+                        className="text-gray-600 px-5 pb-5 font-normal transition-all duration-300"
                       >
                         {item.answer}
                       </AccordionContent>
