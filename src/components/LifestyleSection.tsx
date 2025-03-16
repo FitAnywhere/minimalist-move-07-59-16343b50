@@ -35,20 +35,6 @@ const LifestyleSection = () => {
     threshold: 0.2
   });
 
-  // Using the animation hook for the title
-  useEffect(() => {
-    if (!titleRef.current || !isInView) return;
-    const handleIntersection = () => {
-      titleRef.current?.classList.add('underline-animation');
-    };
-    handleIntersection();
-    return () => {
-      if (titleRef.current) {
-        titleRef.current.classList.remove('underline-animation');
-      }
-    };
-  }, [isInView, titleRef]);
-
   const handleFeatureClick = (index: number) => {
     // Toggle feature - if clicking the open one, keep it open
     setOpenFeatureIndex(index);
@@ -73,10 +59,13 @@ const LifestyleSection = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className={cn("transition-all duration-1000 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
-            {/* Headline and Main Text - Centered */}
+            {/* Headline and Main Text - Centered with animated underline */}
             <div className="space-y-8 mb-12 text-center">
               <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold leading-tight relative inline-block">
-                BECOME WORKOUT ADDICT
+                <span className="relative inline-block">
+                  BECOME WORKOUT ADDICT
+                  <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
+                </span>
               </h2>
               
               <div className="space-y-4 text-gray-700">                
