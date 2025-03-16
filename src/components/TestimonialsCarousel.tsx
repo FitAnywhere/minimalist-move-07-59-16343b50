@@ -2,7 +2,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 
 interface Testimonial {
   name: string;
@@ -40,12 +47,20 @@ const testimonials: Testimonial[] = [
     author: "Sophia",
     role: "Remote Developer",
     video: "/bands.mp4"
+  },
+  {
+    name: "As a beginner, I love TRX and bands addition",
+    quote: "The PowerTower and BoxFun combo gives me everything I need for a complete workout routine. It's perfect for my small apartment!",
+    author: "Oliver",
+    role: "Software Engineer",
+    video: "/trx.mp4"
   }
 ];
 
 const TestimonialsCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -79,8 +94,13 @@ const TestimonialsCarousel = () => {
     }
   };
   
+  const togglePlayPause = () => {
+    setIsPaused(!isPaused);
+    setIsAutoPlaying(!isPaused);
+  };
+  
   useEffect(() => {
-    if (isAutoPlaying) {
+    if (isAutoPlaying && !isPaused) {
       autoPlayRef.current = setInterval(nextTestimonial, 5000);
     }
     return () => {
@@ -88,13 +108,13 @@ const TestimonialsCarousel = () => {
         clearInterval(autoPlayRef.current);
       }
     };
-  }, [isAutoPlaying]);
+  }, [isAutoPlaying, isPaused]);
   
   useEffect(() => {
     // Pause auto-play when out of view
     if (!isInView && autoPlayRef.current) {
       clearInterval(autoPlayRef.current);
-    } else if (isInView && isAutoPlaying && !autoPlayRef.current) {
+    } else if (isInView && isAutoPlaying && !isPaused && !autoPlayRef.current) {
       autoPlayRef.current = setInterval(nextTestimonial, 5000);
     }
     return () => {
@@ -102,7 +122,7 @@ const TestimonialsCarousel = () => {
         clearInterval(autoPlayRef.current);
       }
     };
-  }, [isInView, isAutoPlaying]);
+  }, [isInView, isAutoPlaying, isPaused]);
 
   return (
     <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-white">
@@ -114,7 +134,7 @@ const TestimonialsCarousel = () => {
           </div>
           
           <div className="relative">
-            <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center", 
+            <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", 
               isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
               {/* Review Text Side */}
               <div className="order-2 md:order-1 text-center md:text-left">
@@ -151,7 +171,7 @@ const TestimonialsCarousel = () => {
               
               {/* Video Side */}
               <div className="order-1 md:order-2 relative transition-all duration-500">
-                <div className="w-full mx-auto md:mx-0 rounded-xl overflow-hidden shadow-lg">
+                <div className="w-full mx-auto md:mx-0 rounded-xl overflow-hidden shadow-lg group">
                   <video 
                     ref={videoRef}
                     src={currentTestimonial.video}
@@ -162,6 +182,18 @@ const TestimonialsCarousel = () => {
                     playsInline
                     onClick={toggleFullScreen}
                   />
+                  
+                  {/* Play/Pause Button Overlay */}
+                  <button 
+                    onClick={togglePlayPause}
+                    className="absolute top-4 right-4 bg-black/30 hover:bg-black/50 p-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100"
+                    aria-label={isPaused ? "Play video" : "Pause video"}
+                  >
+                    {isPaused ? 
+                      <Play className="w-4 h-4 text-white" /> : 
+                      <Pause className="w-4 h-4 text-white" />
+                    }
+                  </button>
                 </div>
               </div>
             </div>
