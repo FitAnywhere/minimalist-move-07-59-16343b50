@@ -111,14 +111,15 @@ const TargetAndFAQ = () => {
                       transitionDelay: `${index * 100}ms`
                     }}
                   >
-                    <div className="[&>[data-state=open]]:border-yellow [&>[data-state=open]]:border-[1.5px] [&>[data-state=open]]:rounded-lg [&>[data-state=open]]:p-4 transition-all duration-300">
+                    <div className="border border-transparent transition-all duration-300 rounded-lg hover:bg-gray-50 group
+                      data-[state=open]:border-yellow data-[state=open]:border-[1.5px] data-[state=open]:bg-white">
                       <AccordionTrigger 
-                        className="py-4 text-lg font-medium hover:no-underline flex justify-between items-center transition-all duration-300"
+                        className="py-4 px-4 text-lg font-medium hover:no-underline flex justify-between items-center transition-all duration-300"
                       >
                         {item.question}
                       </AccordionTrigger>
                       <AccordionContent 
-                        className="text-gray-600 pt-1 pb-2 font-normal transition-all duration-300"
+                        className="text-gray-500 px-4 pb-4 font-normal transition-all duration-300"
                       >
                         {item.answer}
                       </AccordionContent>
