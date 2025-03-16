@@ -63,8 +63,8 @@ const TestimonialsCarousel = () => {
       }
     }
   };
-  return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-inherit">
-      <div className="container mx-auto px-6 md:px-12 lg:px-20">
+  return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
+      <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center mb-12 transition-all duration-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">

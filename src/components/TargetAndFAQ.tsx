@@ -1,26 +1,17 @@
-
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ChevronDown, Briefcase, Clock, Dumbbell } from 'lucide-react';
-import { 
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from "@/components/ui/accordion";
-
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 interface FAQItem {
   question: string;
   answer: string;
 }
-
 interface TargetAudience {
   icon: React.ElementType;
   title: string;
   description: string;
 }
-
 const targetAudiences: TargetAudience[] = [{
   icon: Briefcase,
   title: "DRIVEN ACHIEVERS",
@@ -34,7 +25,6 @@ const targetAudiences: TargetAudience[] = [{
   title: "WELLNESS SEEKERS",
   description: "For those who see fitness as a lifelong asset."
 }];
-
 const faqItems: FAQItem[] = [{
   question: "How easy is the PowerTower to set up?",
   answer: "Unfold and lock in place. Done in under 2 minutes. No tools, no drilling."
@@ -48,17 +38,14 @@ const faqItems: FAQItem[] = [{
   question: "Are the resistance bands suitable for beginners?",
   answer: "Perfect for all levels. Supportive for beginners, resistance for constant gains."
 }];
-
 const TargetAndFAQ = () => {
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef);
-
   const toggleAudience = (index: number) => {
     setActiveAudience(activeAudience === index ? null : index);
   };
-
-  return <section id="faq" ref={sectionRef} className="py-24 bg-gray-50">
+  return <section id="faq" ref={sectionRef} className="py-24 bg-inherit">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           {/* Target Audience */}
@@ -91,40 +78,25 @@ const TargetAndFAQ = () => {
             <h2 className={cn("text-3xl md:text-4xl font-bold text-black text-center mb-12 relative")}>
               <span className="relative inline-block">
                 FREQUENTLY ASKED QUESTIONS
-                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
-                  isInView ? "scale-x-100" : "scale-x-0")}></span>
+                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
               </span>
             </h2>
             
             <div className="max-w-3xl mx-auto">
               <Accordion type="single" collapsible className="w-full">
-                {faqItems.map((item, index) => (
-                  <AccordionItem 
-                    key={index} 
-                    value={`item-${index}`}
-                    className={cn(
-                      "mb-4 transition-all duration-300 rounded-lg overflow-hidden",
-                      isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                    )}
-                    style={{
-                      transitionDelay: `${index * 100}ms`
-                    }}
-                  >
+                {faqItems.map((item, index) => <AccordionItem key={index} value={`item-${index}`} className={cn("mb-4 transition-all duration-300 rounded-lg overflow-hidden", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")} style={{
+                transitionDelay: `${index * 100}ms`
+              }}>
                     <div className="border border-transparent hover:bg-gray-50/50 transition-all duration-300 rounded-lg
                       data-[state=open]:border-yellow data-[state=open]:border-[1.5px] data-[state=open]:bg-white">
-                      <AccordionTrigger 
-                        className="py-4 px-5 text-lg font-medium hover:no-underline flex justify-between items-center transition-all duration-300"
-                      >
+                      <AccordionTrigger className="py-4 px-5 text-lg font-medium hover:no-underline flex justify-between items-center transition-all duration-300">
                         {item.question}
                       </AccordionTrigger>
-                      <AccordionContent 
-                        className="text-gray-600 px-5 pb-5 font-normal transition-all duration-300"
-                      >
+                      <AccordionContent className="text-gray-600 px-5 pb-5 font-normal transition-all duration-300">
                         {item.answer}
                       </AccordionContent>
                     </div>
-                  </AccordionItem>
-                ))}
+                  </AccordionItem>)}
               </Accordion>
             </div>
           </div>
@@ -132,5 +104,4 @@ const TargetAndFAQ = () => {
       </div>
     </section>;
 };
-
 export default TargetAndFAQ;
