@@ -2,26 +2,22 @@ import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Rocket, ArrowRight } from 'lucide-react';
+import { Rocket, ChevronRight, ChevronUp } from 'lucide-react';
 
 interface LifestyleFeature {
   title: string;
   description: string;
-  className?: string;
 }
 
 const lifestyleFeatures: LifestyleFeature[] = [{
   title: "FEEL UNSTOPPABLE",
-  description: "Tap into boundless energy to train like never before.",
-  className: "font-bold italic"
+  description: "Tap into boundless energy to train like never before."
 }, {
   title: "GLOW WITH CONFIDENCE",
-  description: "Walk with energy and unstoppable self-belief.",
-  className: "glow-effect"
+  description: "Walk with energy and unstoppable self-belief."
 }, {
   title: "WORKOUT YOU'LL ACTUALLY LOVE",
-  description: "It's addictive in the best way possible.",
-  className: "font-light bg-gradient-to-r from-yellow-light to-yellow"
+  description: "It's addictive in the best way possible."
 }];
 
 const LifestyleSection = () => {
@@ -86,7 +82,7 @@ const LifestyleSection = () => {
                       className={cn(
                         "px-6 py-3 rounded-full cursor-pointer", 
                         "transition-all duration-300 ease-in-out", 
-                        "shadow-md hover:shadow-lg", 
+                        "shadow-md", 
                         "transform opacity-0",
                         openFeatureIndex === index ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
                         isInView ? "animate-fade-in opacity-100" : ""
@@ -100,20 +96,19 @@ const LifestyleSection = () => {
                       onMouseLeave={() => setHoverIndex(null)}
                     >
                       <div className="flex justify-between items-center">
-                        <h4 className={cn(
-                          "text-lg font-semibold transition-all duration-300",
-                          feature.className && !feature.className.includes("bg-gradient") ? feature.className : ""
-                        )}>
+                        <h4 className="text-lg font-semibold">
                           {feature.title}
                         </h4>
                         
                         {hoverIndex === index && (
-                          <ArrowRight className="w-4 h-4 animate-slide-in-right" />
+                          openFeatureIndex === index ? 
+                          <ChevronUp className="w-4 h-4 animate-slide-in-right" /> :
+                          <ChevronRight className="w-4 h-4 animate-slide-in-right" />
                         )}
                       </div>
                       
                       {openFeatureIndex === index && (
-                        <p className="text-gray-600 mt-2 animate-fade-in font-medium transition-all duration-300 ease-in-out">
+                        <p className="text-gray-600 mt-2 animate-fade-in transition-all duration-300 ease-in-out">
                           {feature.description}
                         </p>
                       )}
