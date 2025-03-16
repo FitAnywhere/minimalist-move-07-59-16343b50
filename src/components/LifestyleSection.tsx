@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -74,64 +75,134 @@ const LifestyleSection = () => {
             {/* Desktop: Rearranged layout with features and CTA on left, image on right */}
             <div className="flex flex-col md:flex-row gap-12 items-start mb-16">
               {/* Lifestyle Benefits + CTA - Left side on desktop */}
-              <div className="space-y-6 w-full md:w-1/2">
-                <div className="grid gap-5">
-                  {lifestyleFeatures.map((feature, index) => (
-                    <div 
-                      key={index} 
-                      className={cn(
-                        "px-6 py-3 rounded-full cursor-pointer", 
-                        "transition-all duration-300 ease-in-out", 
-                        "shadow-md", 
-                        "transform opacity-0",
-                        openFeatureIndex === index ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
-                        isInView ? "animate-fade-in opacity-100" : ""
-                      )} 
-                      style={{
-                        animationDelay: `${300 + index * 200}ms`,
-                        animationDuration: "0.4s"
-                      }} 
-                      onClick={() => handleFeatureClick(index)}
-                      onMouseEnter={() => setHoverIndex(index)} 
-                      onMouseLeave={() => setHoverIndex(null)}
-                    >
-                      <div className="flex justify-between items-center">
-                        <h4 className="text-lg font-semibold">
-                          {feature.title}
-                        </h4>
-                        
-                        {hoverIndex === index && (
-                          openFeatureIndex === index ? 
-                          <ChevronUp className="w-4 h-4 animate-slide-in-right" /> :
-                          <ChevronRight className="w-4 h-4 animate-slide-in-right" />
-                        )}
-                      </div>
-                      
-                      {openFeatureIndex === index && (
-                        <p className="text-gray-600 mt-2 animate-fade-in transition-all duration-300 ease-in-out">
-                          {feature.description}
-                        </p>
-                      )}
-                    </div>
-                  ))}
+              <div className="space-y-6 w-full md:w-1/2 flex flex-col">
+                {/* First feature box */}
+                <div 
+                  className={cn(
+                    "px-6 py-3 rounded-full cursor-pointer", 
+                    "transition-all duration-300 ease-in-out", 
+                    "shadow-md", 
+                    "transform opacity-0",
+                    openFeatureIndex === 0 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
+                    isInView ? "animate-fade-in opacity-100" : ""
+                  )} 
+                  style={{
+                    animationDelay: "300ms",
+                    animationDuration: "0.4s"
+                  }} 
+                  onClick={() => handleFeatureClick(0)}
+                  onMouseEnter={() => setHoverIndex(0)} 
+                  onMouseLeave={() => setHoverIndex(null)}
+                >
+                  <div className="flex justify-between items-center">
+                    <h4 className="text-lg font-semibold">
+                      {lifestyleFeatures[0].title}
+                    </h4>
+                    
+                    {hoverIndex === 0 && (
+                      openFeatureIndex === 0 ? 
+                      <ChevronUp className="w-4 h-4 animate-slide-in-right" /> :
+                      <ChevronRight className="w-4 h-4 animate-slide-in-right" />
+                    )}
+                  </div>
+                  
+                  {openFeatureIndex === 0 && (
+                    <p className="text-gray-600 mt-2 animate-fade-in transition-all duration-300 ease-in-out">
+                      {lifestyleFeatures[0].description}
+                    </p>
+                  )}
                 </div>
                 
-                {/* Redesigned CTA Button - Larger and more curved */}
-                <div className="mt-8">
+                {/* Second feature box */}
+                <div 
+                  className={cn(
+                    "px-6 py-3 rounded-full cursor-pointer", 
+                    "transition-all duration-300 ease-in-out", 
+                    "shadow-md", 
+                    "transform opacity-0",
+                    openFeatureIndex === 1 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
+                    isInView ? "animate-fade-in opacity-100" : ""
+                  )} 
+                  style={{
+                    animationDelay: "500ms",
+                    animationDuration: "0.4s"
+                  }} 
+                  onClick={() => handleFeatureClick(1)}
+                  onMouseEnter={() => setHoverIndex(1)} 
+                  onMouseLeave={() => setHoverIndex(null)}
+                >
+                  <div className="flex justify-between items-center">
+                    <h4 className="text-lg font-semibold">
+                      {lifestyleFeatures[1].title}
+                    </h4>
+                    
+                    {hoverIndex === 1 && (
+                      openFeatureIndex === 1 ? 
+                      <ChevronUp className="w-4 h-4 animate-slide-in-right" /> :
+                      <ChevronRight className="w-4 h-4 animate-slide-in-right" />
+                    )}
+                  </div>
+                  
+                  {openFeatureIndex === 1 && (
+                    <p className="text-gray-600 mt-2 animate-fade-in transition-all duration-300 ease-in-out">
+                      {lifestyleFeatures[1].description}
+                    </p>
+                  )}
+                </div>
+                
+                {/* Redesigned CTA Button - Now in the middle with centered alignment */}
+                <div className="flex flex-col items-center my-5 py-2">
                   <Button className={cn(
                     "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", 
                     "transition-all duration-300 transform hover:scale-105", 
                     "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", 
-                    "w-full md:w-auto text-center", 
+                    "w-full max-w-xs md:max-w-sm text-center", 
                     "flex items-center justify-center space-x-2"
                   )}>
                     <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
                   </Button>
                   
-                  {/* Visual CTA hint */}
-                  <p className="text-sm text-gray-500 mt-3">
+                  {/* Visual CTA hint - Now centered below the button */}
+                  <p className="text-sm text-gray-500 mt-2 text-center">
                     Limited stock available
                   </p>
+                </div>
+                
+                {/* Third feature box */}
+                <div 
+                  className={cn(
+                    "px-6 py-3 rounded-full cursor-pointer", 
+                    "transition-all duration-300 ease-in-out", 
+                    "shadow-md", 
+                    "transform opacity-0",
+                    openFeatureIndex === 2 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
+                    isInView ? "animate-fade-in opacity-100" : ""
+                  )} 
+                  style={{
+                    animationDelay: "700ms",
+                    animationDuration: "0.4s"
+                  }} 
+                  onClick={() => handleFeatureClick(2)}
+                  onMouseEnter={() => setHoverIndex(2)} 
+                  onMouseLeave={() => setHoverIndex(null)}
+                >
+                  <div className="flex justify-between items-center">
+                    <h4 className="text-lg font-semibold">
+                      {lifestyleFeatures[2].title}
+                    </h4>
+                    
+                    {hoverIndex === 2 && (
+                      openFeatureIndex === 2 ? 
+                      <ChevronUp className="w-4 h-4 animate-slide-in-right" /> :
+                      <ChevronRight className="w-4 h-4 animate-slide-in-right" />
+                    )}
+                  </div>
+                  
+                  {openFeatureIndex === 2 && (
+                    <p className="text-gray-600 mt-2 animate-fade-in transition-all duration-300 ease-in-out">
+                      {lifestyleFeatures[2].description}
+                    </p>
+                  )}
                 </div>
               </div>
               
