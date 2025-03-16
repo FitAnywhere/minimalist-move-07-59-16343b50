@@ -72,8 +72,8 @@ const BundleOffer = () => {
   const yourPrice = 990;
   const savings = totalValue - yourPrice;
   
-  return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-0 mx-0 my-0 bg-inherit">
-      
+  return (
+    <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-0 mx-0 my-0 bg-inherit">
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-6", isInView ? "opacity-100 translate-y-0 animate-[bounce_0.5s_ease-out]" : "opacity-0 -translate-y-8")}>
@@ -196,16 +196,20 @@ const BundleOffer = () => {
               <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "w-full sm:w-auto")}>
                 APPLY TODAY <Rocket className="ml-2 h-5 w-5" />
               </Button>
-              
-              <p className={cn("text-xl font-medium text-white mt-3 transform transition-all duration-700", 
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")}>
-                Would you rather pay for the gym…or OWN it forever?
-              </p>
             </div>
+          </div>
+          
+          {/* Repositioned text - moved outside the dark box */}
+          <div className={cn("text-center py-10 max-w-3xl mx-auto transition-all duration-300", 
+              isInView ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
+            <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4">
+              Would you rather pay for the gym…or OWN it forever?
+            </p>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 
 export default BundleOffer;
