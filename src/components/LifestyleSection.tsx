@@ -3,26 +3,29 @@ import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Rocket, ChevronDown, ChevronUp } from 'lucide-react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Rocket, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 
 interface LifestyleFeature {
   title: string;
   description: string;
+  className?: string;
 }
 
 const lifestyleFeatures: LifestyleFeature[] = [
   {
     title: "FEEL UNSTOPPABLE",
-    description: "Tap into boundless energy to train like never before."
+    description: "Tap into boundless energy to train like never before.",
+    className: "font-bold italic"
   },
   {
     title: "GLOW WITH CONFIDENCE",
-    description: "Walk with energy and unstoppable self-belief."
+    description: "Walk with energy and unstoppable self-belief.",
+    className: "glow-effect"
   },
   {
     title: "WORKOUT YOU'LL ACTUALLY LOVE",
-    description: "It's addictive in the best way possible."
+    description: "It's addictive in the best way possible.",
+    className: "font-light bg-gradient-to-r from-yellow-light to-yellow"
   }
 ];
 
@@ -30,6 +33,7 @@ const LifestyleSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const isInView = useInView(sectionRef, {
     threshold: 0.2
   });
@@ -57,12 +61,12 @@ const LifestyleSection = () => {
 
   return (
     <section ref={sectionRef} className="py-24 relative overflow-hidden">
-      {/* Floating Particles Background */}
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gray-50">
+      {/* Dynamic Background with Parallax Effect */}
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         {Array.from({ length: 20 }).map((_, i) => (
           <div
             key={i}
-            className="absolute rounded-full bg-yellow/10 blur-md"
+            className="absolute rounded-full bg-yellow/10 blur-md parallax-bg"
             style={{
               width: `${Math.random() * 30 + 10}px`,
               height: `${Math.random() * 30 + 10}px`,
@@ -99,28 +103,36 @@ const LifestyleSection = () => {
             <div className="flex flex-col md:flex-row gap-12 items-start mb-16">
               {/* Lifestyle Benefits + CTA - Left side on desktop */}
               <div className="space-y-6 w-full md:w-1/2">
-                <div className="grid gap-4">
+                <div className="grid gap-5">
                   {lifestyleFeatures.map((feature, index) => (
                     <div
                       key={index}
                       className={cn(
-                        "p-4 rounded-lg border border-transparent",
-                        "transition-all duration-300 hover:scale-105 hover:shadow-md hover:border-yellow/20 hover:translate-y-[-4px]",
-                        "group bg-white/80 hover:bg-white hover:shadow-[0_0_15px_rgba(255,215,0,0.3)]",
-                        "transform opacity-0",
+                        "px-6 py-3 rounded-full",
+                        "transition-all duration-300",
+                        "shadow-md hover:shadow-lg",
+                        "transform opacity-0 hover:translate-y-[-4px]",
+                        feature.className,
+                        hoverIndex === index ? "pulse-glow scale-105" : "",
                         isInView ? "animate-fade-in opacity-100" : ""
                       )}
                       style={{
                         animationDelay: `${300 + index * 200}ms`,
-                        animationDuration: "0.4s"
+                        animationDuration: "0.4s",
+                        background: feature.className?.includes("gradient") ? "" : "white"
                       }}
+                      onMouseEnter={() => setHoverIndex(index)}
+                      onMouseLeave={() => setHoverIndex(null)}
                     >
-                      <h4 className="text-lg font-semibold group-hover:text-shadow-yellow transition-all duration-300">
+                      <h4 className="text-lg font-semibold transition-all duration-300">
                         {feature.title}
+                        {hoverIndex === index && (
+                          <ArrowRight className="inline-block ml-2 w-4 h-4 animate-slide-in-right" />
+                        )}
                       </h4>
                       
                       {isExpanded && (
-                        <p className="text-gray-600 mt-1 animate-fade-in">
+                        <p className="text-gray-600 mt-2 animate-fade-in">
                           {feature.description}
                         </p>
                       )}
@@ -128,12 +140,11 @@ const LifestyleSection = () => {
                   ))}
                 </div>
                 
-                {/* Show More/Less Button */}
-                <div className="flex justify-center mt-2">
-                  <Button 
-                    variant="outline"
+                {/* Show More Link - Redesigned */}
+                <div className="flex items-center ml-3 mt-1">
+                  <button
                     onClick={toggleExpanded}
-                    className="text-sm flex items-center gap-1 hover:bg-yellow/10 transition-all"
+                    className="text-sm text-gray-500 flex items-center gap-1 hover:text-gray-800 transition-all duration-300 hover:scale-105 opacity-80 hover:opacity-100"
                   >
                     {isExpanded ? (
                       <>
@@ -144,18 +155,19 @@ const LifestyleSection = () => {
                         Show More <ChevronDown className="h-4 w-4" />
                       </>
                     )}
-                  </Button>
+                  </button>
                 </div>
                 
-                {/* CTA Button - Moved under the features */}
+                {/* Redesigned CTA Button - Larger and more curved */}
                 <div className="mt-8">
                   <Button className={cn(
                     "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg",
                     "transition-all duration-300 transform hover:scale-105",
-                    "shadow-md hover:shadow-[0_0_20px_rgba(255,215,0,0.5)]",
-                    "w-full md:w-auto"
+                    "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]",
+                    "w-full md:w-auto text-center",
+                    "flex items-center justify-center space-x-2"
                   )}>
-                    GET BOXFUN NOW <Rocket className="ml-1 h-5 w-5" />
+                    <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
                   </Button>
                   
                   {/* Visual CTA hint */}
