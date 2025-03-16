@@ -12,8 +12,8 @@ const CallToAction = () => {
   return <section id="order" ref={sectionRef} className="relative py-24 bg-black text-white overflow-hidden">
       {/* Parallax Background */}
       <div ref={backgroundRef} className="absolute inset-0 opacity-30">
-        <div className="absolute inset-0 bg-yellow/10 z-10"></div>
-        <img src="https://images.unsplash.com/photo-1458668383970-8ddd3927deed" alt="Minimalist background" className="w-full h-full object-cover" />
+        
+        
       </div>
       
       <div className="container relative z-20 mx-auto px-6">
@@ -31,7 +31,7 @@ const CallToAction = () => {
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
               
-              <p className="mt-6 text-sm text-white/60">*Limited shippings to Netherlands.</p>
+              <p className="mt-6 text-sm text-white/60">Limited units available in 2025</p>
             </div>
           </div>
         </div>
