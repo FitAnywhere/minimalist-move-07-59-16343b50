@@ -1,16 +1,26 @@
+
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ChevronDown, Briefcase, Clock, Dumbbell } from 'lucide-react';
+import { 
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from "@/components/ui/accordion";
+
 interface FAQItem {
   question: string;
   answer: string;
 }
+
 interface TargetAudience {
   icon: React.ElementType;
   title: string;
   description: string;
 }
+
 const targetAudiences: TargetAudience[] = [{
   icon: Briefcase,
   title: "DRIVEN ACHIEVERS",
@@ -24,30 +34,30 @@ const targetAudiences: TargetAudience[] = [{
   title: "WELLNESS SEEKERS",
   description: "For those who see fitness as a lifelong asset."
 }];
+
 const faqItems: FAQItem[] = [{
   question: "How easy is the PowerTower to set up?",
-  answer: "The PowerTower features a revolutionary tool-free setup process. Simply unfold, lock the stabilizing mechanisms, and you're ready to begin your workout. The entire process takes less than 5 minutes, making it perfect for urban living spaces where convenience is essential."
+  answer: "Unfold and lock in place. Done in under 2 minutes. No tools, no drilling."
 }, {
-  question: "Is the BoxFun attachment effective for real boxing training?",
-  answer: "Absolutely. The BoxFun attachment was developed in collaboration with professional boxing coaches to deliver an authentic boxing experience. It provides proper resistance and feedback, allowing for effective technique development, cardiovascular conditioning, and stress relief—all the benefits of boxing training without the need for a partner or gym membership."
+  question: "Is the BoxFun effective for training?",
+  answer: "Yes! Great for warm ups, cardio, and full body movement."
 }, {
-  question: "When will my FitAnywhere Bundle be delivered?",
-  answer: "Pre-orders for the Spring 2025 launch will begin shipping in March 2025. Early adopters who purchase during our launch phase will receive priority shipping. For customers in Amsterdam and Utrecht, we offer free white-glove delivery service, while other locations will have standard shipping options available at checkout."
+  question: "When will my FitAnywhere bundle be delivered?",
+  answer: "We ship weekly from Slovenia to the Netherlands. Order now for the next batch!"
 }, {
   question: "Are the resistance bands suitable for beginners?",
-  answer: "Yes, our Premium Elastic Resistance Set includes bands of varying resistance levels, making them perfect for all fitness levels from beginners to advanced users. Each band is clearly marked with its resistance level, and our exclusive video tutorial library includes specialized beginner workouts to help you master proper form and technique from day one."
+  answer: "Perfect for all levels. Supportive for beginners, resistance for constant gains."
 }];
+
 const TargetAndFAQ = () => {
-  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef);
-  const toggleFAQ = (index: number) => {
-    setOpenFAQ(openFAQ === index ? null : index);
-  };
+
   const toggleAudience = (index: number) => {
     setActiveAudience(activeAudience === index ? null : index);
   };
+
   return <section id="faq" ref={sectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
@@ -78,29 +88,45 @@ const TargetAndFAQ = () => {
           
           {/* FAQ Accordion */}
           <div>
-            <h2 className="text-black text-center mb-12">FREQUENTLY ASKED QUESTIONS</h2>
+            <h2 className={cn("text-3xl md:text-4xl font-bold text-black text-center mb-12 relative")}>
+              <span className="relative inline-block">
+                FREQUENTLY ASKED QUESTIONS
+                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
+                  isInView ? "scale-x-100" : "scale-x-0")}></span>
+              </span>
+            </h2>
             
             <div className="max-w-3xl mx-auto">
-              {faqItems.map((item, index) => <div key={index} className={cn("mb-4 border-b border-gray-100 pb-4", "transition-all duration-300", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")} style={{
-              transitionDelay: `${index * 100}ms`
-            }}>
-                  <button onClick={() => toggleFAQ(index)} className="w-full flex justify-between items-center text-left py-4 focus:outline-none">
-                    <h4 className="text-lg font-medium pr-8">{item.question}</h4>
-                    <div className={cn("flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300", openFAQ === index ? "bg-yellow transform rotate-180" : "bg-gray-100")}>
-                      <ChevronDown className="w-4 h-4" />
-                    </div>
-                  </button>
-                  
-                  <div className={cn("overflow-hidden transition-all duration-300 ease-in-out", openFAQ === index ? "max-h-96 opacity-100" : "max-h-0 opacity-0")}>
-                    <div className="pb-4 text-gray-600">
+              <Accordion type="single" collapsible className="w-full">
+                {faqItems.map((item, index) => (
+                  <AccordionItem 
+                    key={index} 
+                    value={`item-${index}`}
+                    className={cn(
+                      "mb-4 border-b border-gray-100 pb-2",
+                      "transition-all duration-300",
+                      isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                    )}
+                    style={{
+                      transitionDelay: `${index * 100}ms`
+                    }}
+                  >
+                    <AccordionTrigger 
+                      className="py-4 text-lg font-medium hover:no-underline flex justify-between items-center"
+                    >
+                      {item.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-600 pt-1 pb-3">
                       {item.answer}
-                    </div>
-                  </div>
-                </div>)}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </div>
           </div>
         </div>
       </div>
     </section>;
 };
+
 export default TargetAndFAQ;
