@@ -1,9 +1,10 @@
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Rocket } from 'lucide-react';
+import { Rocket, ChevronDown, ChevronUp } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface LifestyleFeature {
   title: string;
@@ -28,11 +29,12 @@ const lifestyleFeatures: LifestyleFeature[] = [
 const LifestyleSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
   const isInView = useInView(sectionRef, {
     threshold: 0.2
   });
 
-  // Using the animation hook for the title instead of the subtext
+  // Using the animation hook for the title
   useEffect(() => {
     if (!titleRef.current || !isInView) return;
     
@@ -48,6 +50,10 @@ const LifestyleSection = () => {
       }
     };
   }, [isInView, titleRef]);
+
+  const toggleExpanded = () => {
+    setIsExpanded(prev => !prev);
+  };
 
   return (
     <section ref={sectionRef} className="py-24 relative overflow-hidden">
@@ -112,11 +118,33 @@ const LifestyleSection = () => {
                       <h4 className="text-lg font-semibold group-hover:text-shadow-yellow transition-all duration-300">
                         {feature.title}
                       </h4>
-                      <p className="text-gray-600 mt-1">
-                        {feature.description}
-                      </p>
+                      
+                      {isExpanded && (
+                        <p className="text-gray-600 mt-1 animate-fade-in">
+                          {feature.description}
+                        </p>
+                      )}
                     </div>
                   ))}
+                </div>
+                
+                {/* Show More/Less Button */}
+                <div className="flex justify-center mt-2">
+                  <Button 
+                    variant="outline"
+                    onClick={toggleExpanded}
+                    className="text-sm flex items-center gap-1 hover:bg-yellow/10 transition-all"
+                  >
+                    {isExpanded ? (
+                      <>
+                        Show Less <ChevronUp className="h-4 w-4" />
+                      </>
+                    ) : (
+                      <>
+                        Show More <ChevronDown className="h-4 w-4" />
+                      </>
+                    )}
+                  </Button>
                 </div>
                 
                 {/* CTA Button - Moved under the features */}
@@ -139,8 +167,8 @@ const LifestyleSection = () => {
               
               {/* Image - Right side on desktop */}
               <div className="w-full md:w-1/2 flex flex-col items-center md:items-end">
-                {/* Mobile Phone Frame with Product Image */}
-                <div className="w-full max-w-md perspective scale-95 transition-transform duration-300">
+                {/* Mobile Phone Frame with Product Image - slightly smaller */}
+                <div className="w-full max-w-xs md:max-w-sm perspective scale-95 transition-transform duration-300">
                   <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group">
                     {/* Mobile Phone Frame */}
                     <div className="absolute inset-0 bg-gray-800 rounded-[36px] shadow-lg transform transition-all duration-300 group-hover:shadow-xl"></div>
