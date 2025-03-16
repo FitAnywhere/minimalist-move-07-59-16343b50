@@ -5,14 +5,12 @@ import { Check, ChevronDown, ChevronUp, Rocket, Gift } from 'lucide-react';
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-
 interface BundleItem {
   name: string;
   price: string;
   description: string;
   isBonus?: boolean;
 }
-
 const bundleItems: BundleItem[] = [{
   name: "PowerTower",
   price: "€1,299.99",
@@ -44,7 +42,6 @@ const bundleItems: BundleItem[] = [{
   description: "",
   isBonus: true
 }];
-
 const BundleOffer = () => {
   const [bonusSectionOpen, setBonusSectionOpen] = useState(false);
   const [valueSectionOpen, setValueSectionOpen] = useState(false);
@@ -53,7 +50,6 @@ const BundleOffer = () => {
   const isInView = useInView(sectionRef, {
     threshold: 0.1
   });
-
   const parallaxRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleScroll = () => {
@@ -65,11 +61,9 @@ const BundleOffer = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   const totalValue = 1839.96;
   const yourPrice = 990;
   const savings = totalValue - yourPrice;
-
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-0 mx-0 my-0 bg-transparent">
       <div ref={parallaxRef} style={{
       background: "radial-gradient(circle at 50% 50%, #f8f8f8, #f1f1f1, #eaeaea)"
@@ -93,9 +87,7 @@ const BundleOffer = () => {
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-3 text-black">
               LAST GYM YOU WILL EVER NEED
             </h2>
-            <p className="mt-2 text-gray-700 text-lg md:text-xl max-w-3xl mx-auto">
-              What if you could <span className="font-semibold">OWN</span> the gym, the trainer, and the motivation forever?
-            </p>
+            
           </div>
           
           <div ref={cardRef} className={cn("bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 transition-all duration-1000", "shadow-md rounded-lg transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")} style={{
@@ -108,7 +100,7 @@ const BundleOffer = () => {
               </div>
               
               <div className="mt-2 max-w-3xl mx-auto text-left text-gray-700">
-                <p className="mb-3 text-lg leading-tight text-center text-blue-600">No memberships. No excuses. </p>
+                
               </div>
               
               <h3 className="text-xl font-bold mb-2">WHAT YOU GET:</h3>
@@ -202,7 +194,7 @@ const BundleOffer = () => {
               </div>
               
               <div className="mt-3 space-y-1.5 text-center">
-                <p className="text-base font-medium">Would you rather pay for the gym…or OWN it forever?</p>
+                
                 
                 
               </div>
@@ -218,5 +210,4 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
-
 export default BundleOffer;
