@@ -19,9 +19,7 @@ const CallToAction = () => {
       <div className="container relative z-20 mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
-            <div className="inline-block bg-yellow px-4 py-1.5 rounded-full text-black font-semibold text-sm mb-6">
-              FINAL CALL
-            </div>
+            
             
             <h2 className="text-white mb-6">YOUR NEW LIFESTYLE AWAITS</h2>
             
