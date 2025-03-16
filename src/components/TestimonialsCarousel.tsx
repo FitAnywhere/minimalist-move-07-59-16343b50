@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -13,38 +12,38 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
-    name: "John D.",
-    role: "Fitness Enthusiast",
-    quote: "Finally, got an efficient training solution!",
-    video: "/trx.mp4"
-  }, 
-  {
-    name: "Sarah M.",
-    role: "Home Fitness Advocate",
-    quote: "Ordered with friends and got extra discount. Thank you!",
-    video: "/bands.mp4"
-  }, 
-  {
-    name: "Chris L.",
+    name: "Alex G.",
     role: "Busy Professional",
     quote: "I can't believe how much time it saves me!",
     video: "/trx.mp4"
   },
   {
     name: "Emily T.",
-    role: "Remote Worker",
-    quote: "I work from home, and this is exactly what I needed!",
+    role: "Fitness Beginner",
+    quote: "As a beginner, I love TRX and bands addition!",
     video: "/bands.mp4"
   },
   {
-    name: "Alex G.",
-    role: "Fitness Beginner",
-    quote: "As a beginner, I love TRX and bands addition!",
+    name: "John D.",
+    role: "Fitness Enthusiast",
+    quote: "Finally, got an efficient training solution!",
+    video: "/trx.mp4"
+  },
+  {
+    name: "Chris L.",
+    role: "Fitness Advocate",
+    quote: "Ordered with friends and got an extra discount. Thank you!",
+    video: "/bands.mp4"
+  },
+  {
+    name: "Sarah M.",
+    role: "Remote Worker",
+    quote: "I work from home, and this is exactly what I needed!",
     video: "/trx.mp4"
   },
   {
     name: "Jordan P.",
-    role: "Fitness Enthusiast",
+    role: "Calisthenics Enthusiast",
     quote: "BoxFun with PowerTower combo is just priceless!",
     video: "/bands.mp4"
   }
@@ -71,9 +70,7 @@ const TestimonialsCarousel = () => {
   
   const goToTestimonial = (index: number) => {
     setActiveIndex(index);
-    // Pause auto-play when user navigates manually
     setIsAutoPlaying(false);
-    // Resume after 5 seconds
     setTimeout(() => setIsAutoPlaying(true), 5000);
   };
 
@@ -104,7 +101,6 @@ const TestimonialsCarousel = () => {
   }, [isAutoPlaying, isPaused]);
   
   useEffect(() => {
-    // Pause auto-play when out of view
     if (!isInView && autoPlayRef.current) {
       clearInterval(autoPlayRef.current);
     } else if (isInView && isAutoPlaying && !isPaused && !autoPlayRef.current) {
@@ -121,7 +117,6 @@ const TestimonialsCarousel = () => {
     <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-white">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
         <div className="max-w-6xl mx-auto">
-          {/* Title */}
           <div 
             className={cn(
               "text-center mb-12 transition-all duration-700", 
@@ -134,7 +129,6 @@ const TestimonialsCarousel = () => {
             </h2>
           </div>
           
-          {/* Testimonial Carousel */}
           <div className="relative">
             <div 
               className={cn(
@@ -142,25 +136,22 @@ const TestimonialsCarousel = () => {
                 isInView ? "opacity-100" : "opacity-0 translate-y-4"
               )}
             >
-              {/* Review Text Side */}
               <div className="order-2 md:order-1 text-left flex flex-col justify-center">
-                <h3 className="text-xl font-semibold mb-3 text-black transition-all duration-300">
+                <h3 className="text-xl font-bold mb-3 text-black transition-all duration-300">
                   {currentTestimonial.name}
-                  <span className="text-sm text-gray-500 font-medium ml-2">
-                    {currentTestimonial.role}
+                  <span className="text-gray-700 font-semibold ml-2">
+                    – {currentTestimonial.role}
                   </span>
                 </h3>
                 
-                <div className="bg-gray-100 p-6 rounded-xl shadow-md relative mb-8 transition-all duration-300 hover:shadow-lg">
-                  {/* Speech bubble arrow */}
-                  <div className="absolute top-0 left-6 w-4 h-4 bg-gray-100 transform rotate-45 -mt-2"></div>
+                <div className="bg-gray-100 p-6 rounded-xl shadow-md relative mb-8 transition-all duration-300 hover:shadow-lg border-2 border-yellow-400">
+                  <div className="absolute top-0 left-6 w-4 h-4 bg-gray-100 transform rotate-45 -mt-2 border-t-2 border-l-2 border-yellow-400"></div>
                   
-                  <p className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 transition-all duration-500">
+                  <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 transition-all duration-500">
                     "{currentTestimonial.quote}"
                   </p>
                 </div>
                 
-                {/* Dot Indicators */}
                 <div className="flex space-x-3 mt-4 justify-center md:justify-start">
                   {testimonials.map((_, index) => (
                     <button 
@@ -178,9 +169,8 @@ const TestimonialsCarousel = () => {
                 </div>
               </div>
               
-              {/* Video Side */}
               <div className="order-1 md:order-2 relative transition-all duration-500">
-                <div className="w-full mx-auto md:mx-0 rounded-xl overflow-hidden shadow-lg group hover:shadow-xl transition-all duration-300">
+                <div className="w-full max-w-[90%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-lg group hover:shadow-xl transition-all duration-300">
                   <video 
                     ref={videoRef}
                     src={currentTestimonial.video}
@@ -192,7 +182,6 @@ const TestimonialsCarousel = () => {
                     onClick={toggleFullScreen}
                   />
                   
-                  {/* Play/Pause Button Overlay */}
                   <button 
                     onClick={togglePlayPause}
                     className="absolute top-4 right-4 bg-black/40 hover:bg-black/60 p-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100"
@@ -207,10 +196,9 @@ const TestimonialsCarousel = () => {
               </div>
             </div>
             
-            {/* Navigation Arrows */}
             <button 
               onClick={prevTestimonial} 
-              className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none" 
+              className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-yellow-400" 
               aria-label="Previous testimonial"
             >
               <ChevronLeft className="w-5 h-5 text-gray-800" />
@@ -218,7 +206,7 @@ const TestimonialsCarousel = () => {
             
             <button 
               onClick={nextTestimonial} 
-              className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none" 
+              className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-yellow-400" 
               aria-label="Next testimonial"
             >
               <ChevronRight className="w-5 h-5 text-gray-800" />
