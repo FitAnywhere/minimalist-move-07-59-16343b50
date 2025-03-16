@@ -2,12 +2,14 @@ import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Rocket, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { Rocket, ArrowRight } from 'lucide-react';
+
 interface LifestyleFeature {
   title: string;
   description: string;
   className?: string;
 }
+
 const lifestyleFeatures: LifestyleFeature[] = [{
   title: "FEEL UNSTOPPABLE",
   description: "Tap into boundless energy to train like never before.",
@@ -21,11 +23,14 @@ const lifestyleFeatures: LifestyleFeature[] = [{
   description: "It's addictive in the best way possible.",
   className: "font-light bg-gradient-to-r from-yellow-light to-yellow"
 }];
+
 const LifestyleSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
+  // Default open the last feature (WORKOUT YOU'LL ACTUALLY LOVE)
+  const [openFeatureIndex, setOpenFeatureIndex] = useState<number>(2);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  
   const isInView = useInView(sectionRef, {
     threshold: 0.2
   });
@@ -43,9 +48,12 @@ const LifestyleSection = () => {
       }
     };
   }, [isInView, titleRef]);
-  const toggleExpanded = () => {
-    setIsExpanded(prev => !prev);
+
+  const handleFeatureClick = (index: number) => {
+    // Toggle feature - if clicking the open one, keep it open
+    setOpenFeatureIndex(index);
   };
+
   return <section ref={sectionRef} className="py-24 relative overflow-hidden">
       {/* Dynamic Background with Parallax Effect */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
@@ -83,36 +91,56 @@ const LifestyleSection = () => {
               {/* Lifestyle Benefits + CTA - Left side on desktop */}
               <div className="space-y-6 w-full md:w-1/2">
                 <div className="grid gap-5">
-                  {lifestyleFeatures.map((feature, index) => <div key={index} className={cn("px-6 py-3 rounded-full", "transition-all duration-300", "shadow-md hover:shadow-lg", "transform opacity-0 hover:translate-y-[-4px]", feature.className, hoverIndex === index ? "pulse-glow scale-105" : "", isInView ? "animate-fade-in opacity-100" : "")} style={{
-                  animationDelay: `${300 + index * 200}ms`,
-                  animationDuration: "0.4s",
-                  background: feature.className?.includes("gradient") ? "" : "white"
-                }} onMouseEnter={() => setHoverIndex(index)} onMouseLeave={() => setHoverIndex(null)}>
-                      <h4 className="text-lg font-semibold transition-all duration-300">
-                        {feature.title}
-                        {hoverIndex === index && <ArrowRight className="inline-block ml-2 w-4 h-4 animate-slide-in-right" />}
-                      </h4>
+                  {lifestyleFeatures.map((feature, index) => (
+                    <div 
+                      key={index} 
+                      className={cn(
+                        "px-6 py-3 rounded-full cursor-pointer", 
+                        "transition-all duration-300 ease-in-out", 
+                        "shadow-md hover:shadow-lg", 
+                        "transform opacity-0",
+                        openFeatureIndex === index ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
+                        isInView ? "animate-fade-in opacity-100" : ""
+                      )} 
+                      style={{
+                        animationDelay: `${300 + index * 200}ms`,
+                        animationDuration: "0.4s"
+                      }} 
+                      onClick={() => handleFeatureClick(index)}
+                      onMouseEnter={() => setHoverIndex(index)} 
+                      onMouseLeave={() => setHoverIndex(null)}
+                    >
+                      <div className="flex justify-between items-center">
+                        <h4 className={cn(
+                          "text-lg font-semibold transition-all duration-300",
+                          feature.className && !feature.className.includes("bg-gradient") ? feature.className : ""
+                        )}>
+                          {feature.title}
+                        </h4>
+                        
+                        {hoverIndex === index && (
+                          <ArrowRight className="w-4 h-4 animate-slide-in-right" />
+                        )}
+                      </div>
                       
-                      {isExpanded && <p className="text-gray-600 mt-2 animate-fade-in font-medium">
+                      {openFeatureIndex === index && (
+                        <p className="text-gray-600 mt-2 animate-fade-in font-medium transition-all duration-300 ease-in-out">
                           {feature.description}
-                        </p>}
-                    </div>)}
-                </div>
-                
-                {/* Show More Link - Redesigned */}
-                <div className="flex items-center ml-3 mt-1">
-                  <button onClick={toggleExpanded} className="text-sm text-gray-500 flex items-center gap-1 hover:text-gray-800 transition-all duration-300 hover:scale-105 opacity-80 hover:opacity-100">
-                    {isExpanded ? <>
-                        Show Less <ChevronUp className="h-4 w-4" />
-                      </> : <>
-                        Show More <ChevronDown className="h-4 w-4" />
-                      </>}
-                  </button>
+                        </p>
+                      )}
+                    </div>
+                  ))}
                 </div>
                 
                 {/* Redesigned CTA Button - Larger and more curved */}
                 <div className="mt-8">
-                  <Button className={cn("bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", "transition-all duration-300 transform hover:scale-105", "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", "w-full md:w-auto text-center", "flex items-center justify-center space-x-2")}>
+                  <Button className={cn(
+                    "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", 
+                    "transition-all duration-300 transform hover:scale-105", 
+                    "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", 
+                    "w-full md:w-auto text-center", 
+                    "flex items-center justify-center space-x-2"
+                  )}>
                     <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
                   </Button>
                   
@@ -148,4 +176,5 @@ const LifestyleSection = () => {
       </div>
     </section>;
 };
+
 export default LifestyleSection;
