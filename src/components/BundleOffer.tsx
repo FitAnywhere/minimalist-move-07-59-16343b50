@@ -64,22 +64,8 @@ const BundleOffer = () => {
   const totalValue = 1839.96;
   const yourPrice = 990;
   const savings = totalValue - yourPrice;
-  return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-0 mx-0 my-0 bg-transparent">
-      <div ref={parallaxRef} style={{
-      background: "radial-gradient(circle at 50% 50%, #f8f8f8, #f1f1f1, #eaeaea)"
-    }} className="absolute inset-0 w-full h-full z-0 overflow-hidden py-[47px] px-0 bg-[#f8ffdd]/[0.31] rounded-md">
-        {Array.from({
-        length: 15
-      }).map((_, i) => <div key={i} className="absolute rounded-full bg-yellow/10 blur-md" style={{
-        width: `${Math.random() * 40 + 20}px`,
-        height: `${Math.random() * 40 + 20}px`,
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        animation: `float ${Math.random() * 15 + 15}s linear infinite`,
-        transform: `translateY(${Math.random() * 100}px)`,
-        opacity: Math.random() * 0.5 + 0.1
-      }} />)}
-      </div>
+  return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-0 mx-0 my-0 bg-inherit">
+      
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">

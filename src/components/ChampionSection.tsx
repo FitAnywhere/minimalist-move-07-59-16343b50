@@ -109,7 +109,7 @@ const ChampionSection = () => {
       videoRef.current.muted = newMutedState;
     }
   };
-  return <section id="champion" ref={sectionRef} className={cn("py-24 transition-colors duration-1000 min-h-[70vh] flex items-center", isInView ? "bg-yellow-50/30" : "bg-white")}>
+  return <section id="champion" ref={sectionRef} className="">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">

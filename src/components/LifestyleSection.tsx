@@ -28,7 +28,7 @@ const LifestyleSection = () => {
   useTextUnderline(keyPhraseRef, 1000);
   return <section ref={sectionRef} className="py-24 relative overflow-hidden">
       {/* Floating Particles Background */}
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gray-50">
         {Array.from({
         length: 20
       }).map((_, i) => <div key={i} className="absolute rounded-full bg-yellow/10 blur-md" style={{
