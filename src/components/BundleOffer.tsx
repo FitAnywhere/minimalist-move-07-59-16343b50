@@ -5,43 +5,46 @@ import { Check, ChevronDown, ChevronUp, Rocket, Gift } from 'lucide-react';
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
 interface BundleItem {
   name: string;
   price: string;
   description: string;
   isBonus?: boolean;
 }
+
 const bundleItems: BundleItem[] = [{
   name: "PowerTower",
   price: "€1,299.99",
   description: "All-in-one bodyweight strength trainer",
   isBonus: false
 }, {
-  name: "Professional TRX",
+  name: "TRX",
   price: "€129.99",
   description: "Professional TRX-style trainer",
   isBonus: false
 }, {
-  name: "Full Bands Set",
+  name: "Bands Set",
   price: "€69.99",
   description: "Activate every muscle",
   isBonus: false
 }, {
-  name: "Video Training Library",
+  name: "FREE Video Library",
   price: "€240/year",
   description: "Your personal trainer, on-demand",
-  isBonus: false
-}, {
-  name: "BoxFun",
-  price: "€69.99",
-  description: "Transform fitness into fun",
   isBonus: true
 }, {
-  name: "Shipping",
+  name: "FREE BoxFun",
+  price: "€69.99",
+  description: "",
+  isBonus: true
+}, {
+  name: "FREE Shipping",
   price: "€30",
-  description: "Straight to your door",
+  description: "",
   isBonus: true
 }];
+
 const BundleOffer = () => {
   const [bonusSectionOpen, setBonusSectionOpen] = useState(false);
   const [valueSectionOpen, setValueSectionOpen] = useState(false);
@@ -51,29 +54,26 @@ const BundleOffer = () => {
     threshold: 0.1
   });
 
-  // Parallax effect for background
   const parallaxRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleScroll = () => {
       if (!parallaxRef.current) return;
       const scrollY = window.scrollY;
-      const offset = scrollY * 0.05; // Subtle movement
+      const offset = scrollY * 0.05;
       parallaxRef.current.style.transform = `translateY(${offset}px)`;
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Calculate total values
   const totalValue = 1839.96;
   const yourPrice = 990;
   const savings = totalValue - yourPrice;
+
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-0 mx-0 my-0 bg-transparent">
-      {/* Parallax Background */}
       <div ref={parallaxRef} style={{
       background: "radial-gradient(circle at 50% 50%, #f8f8f8, #f1f1f1, #eaeaea)"
     }} className="absolute inset-0 w-full h-full z-0 overflow-hidden py-[47px] px-0 bg-[#f8ffdd]/[0.31] rounded-md">
-        {/* Floating Particles */}
         {Array.from({
         length: 15
       }).map((_, i) => <div key={i} className="absolute rounded-full bg-yellow/10 blur-md" style={{
@@ -89,7 +89,6 @@ const BundleOffer = () => {
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
-          {/* Main Headline outside the card */}
           <div className={cn("text-center transition-all duration-1000 transform mb-6", isInView ? "opacity-100 translate-y-0 animate-[bounce_0.5s_ease-out]" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-3 text-black">
               LAST GYM YOU WILL EVER NEED
@@ -99,23 +98,20 @@ const BundleOffer = () => {
             </p>
           </div>
           
-          {/* Bundle Offer Card */}
           <div ref={cardRef} className={cn("bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 transition-all duration-1000", "shadow-md rounded-lg transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")} style={{
           boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
           borderRadius: "8px"
         }}>
             <div className="p-4">
-              {/* Headline directly in the offer container */}
               <div className="text-center mb-4">
                 
               </div>
               
               <div className="mt-2 max-w-3xl mx-auto text-left text-gray-700">
-                <p className="mb-3 text-lg leading-tight text-center text-blue-600">No memberships. No excuses. </p>
+                <p className="mb-3 text-lg leading-tight text-center text-blue-600">No memberships. No excuses. </p>
               </div>
               
-              {/* What You Get Section */}
-              <h3 className="text-xl font-bold mb-2">HERE'S WHAT YOU GET:</h3>
+              <h3 className="text-xl font-bold mb-2">WHAT YOU GET:</h3>
               
               <div className="space-y-1">
                 {bundleItems.filter(item => !item.isBonus).map((item, index) => <div key={index} className={cn("flex items-center justify-between p-1.5 rounded-lg bg-white transition-all duration-500 transform", "hover:bg-gray-50", isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12")} style={{
@@ -140,11 +136,10 @@ const BundleOffer = () => {
                   </div>)}
               </div>
               
-              {/* Exclusive Bonuses Section with Collapsible */}
               <div className="mt-3">
                 <Collapsible open={bonusSectionOpen} onOpenChange={setBonusSectionOpen} className="p-2 rounded-lg border border-yellow-100 transition-all duration-300">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-bold">EXCLUSIVE BONUSES:</h3>
+                    <h3 className="text-xl font-bold">BONUSES:</h3>
                     <CollapsibleTrigger className="flex items-center text-sm text-blue-600 hover:text-blue-800 transition-colors">
                       {bonusSectionOpen ? 'Show Less ' : 'Show More '}
                       {bonusSectionOpen ? <ChevronUp className="h-4 w-4 ml-1" /> : <ChevronDown className="h-4 w-4 ml-1" />}
@@ -160,8 +155,7 @@ const BundleOffer = () => {
                             </div>
                           </div>
                           <div>
-                            <h4 className="font-medium text-base">FREE {item.name}</h4>
-                            <p className="text-xs text-gray-600">{item.description}</p>
+                            <h4 className="font-medium text-base">{item.name}</h4>
                           </div>
                         </div>
                         <div className="text-right">
@@ -174,11 +168,10 @@ const BundleOffer = () => {
                 </Collapsible>
               </div>
               
-              {/* Value Breakdown with Counter - Also Collapsible */}
               <div className="mt-3">
                 <Collapsible open={valueSectionOpen} onOpenChange={setValueSectionOpen} className="p-2 bg-gray-50 rounded-lg transition-all duration-300">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-bold">VALUE BREAKDOWN:</h3>
+                    <h3 className="text-xl font-bold">BREAKDOWN:</h3>
                     <CollapsibleTrigger className="flex items-center text-sm text-blue-600 hover:text-blue-800 transition-colors">
                       {valueSectionOpen ? 'Show Less ' : 'Show More '}
                       {valueSectionOpen ? <ChevronUp className="h-4 w-4 ml-1" /> : <ChevronDown className="h-4 w-4 ml-1" />}
@@ -208,7 +201,6 @@ const BundleOffer = () => {
                 </Collapsible>
               </div>
               
-              {/* Additional Value Proposition */}
               <div className="mt-3 space-y-1.5 text-center">
                 <p className="text-base font-medium">Would you rather pay for the gym…or OWN it forever?</p>
                 
@@ -216,7 +208,6 @@ const BundleOffer = () => {
               </div>
             </div>
             
-            {/* CTA Section */}
             <div className="bg-gray-900 p-4 text-center">
               <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "w-full sm:w-auto")}>
                 SECURE YOUR GYM TODAY <Rocket className="ml-2 h-5 w-5" />
@@ -227,4 +218,5 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
+
 export default BundleOffer;
