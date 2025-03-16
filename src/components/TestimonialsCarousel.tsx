@@ -42,18 +42,24 @@ const testimonials: Testimonial[] = [
     video: "/bands.mp4"
   },
   {
-    name: "As a beginner I love TRX and bands addition. BoxFun with PowerTower combo is just priceless",
+    name: "As a beginner I love TRX and bands addition",
     quote: "I'm new to fitness and was intimidated by complicated equipment. The PowerTower with TRX and bands has been perfect - easy to use but challenging enough to see results.",
     author: "Miguel",
     role: "Student",
     video: "/trx.mp4"
+  },
+  {
+    name: "BoxFun with PowerTower combo is just priceless",
+    quote: "The combination of BoxFun and PowerTower gives me everything I need for complete training. It's compact, versatile, and incredibly effective.",
+    author: "Alex",
+    role: "Fitness Enthusiast",
+    video: "/bands.mp4"
   }
 ];
 
 const TestimonialsCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -114,32 +120,30 @@ const TestimonialsCarousel = () => {
 
   return (
     <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-white">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 md:px-12 lg:px-20">
         <div className="max-w-6xl mx-auto">
-          <div className={cn("text-center mb-8 md:mb-12 transition-all duration-700", 
+          <div className={cn("text-center mb-8 transition-all duration-700", 
             isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-black">WHY THEY LOVE IT?</h2>
+            <h2 className="text-3xl font-extrabold text-black">WHY THEY LOVE IT?</h2>
           </div>
           
           <div className="relative">
-            <div className={cn("grid md:grid-cols-2 gap-8 items-center", 
+            <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center", 
               isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
               {/* Review Text Side */}
-              <div className="order-2 md:order-1 text-center md:text-left space-y-6 md:space-y-8">
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 transition-all duration-500">
+              <div className="order-2 md:order-1 text-center md:text-left">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   {currentTestimonial.name}
                 </h3>
                 
-                <blockquote className="text-lg md:text-xl text-gray-800 font-medium leading-relaxed transition-all duration-500">
-                  "{currentTestimonial.quote}"
-                </blockquote>
-                
-                <div className="text-sm text-gray-600 mt-4 italic">
-                  {currentTestimonial.author}, {currentTestimonial.role}
+                <div className="bg-gray-100 p-6 rounded-xl shadow-md">
+                  <p className="text-xl md:text-2xl font-bold text-gray-900 transition-all duration-500">
+                    "{currentTestimonial.quote}"
+                  </p>
                 </div>
                 
                 {/* Dot Indicators */}
-                <div className="flex space-x-2 mt-6 justify-center md:justify-start">
+                <div className="flex space-x-3 mt-6 justify-center md:justify-start">
                   {testimonials.map((_, index) => (
                     <button 
                       key={index} 
@@ -158,11 +162,11 @@ const TestimonialsCarousel = () => {
               
               {/* Video Side */}
               <div className="order-1 md:order-2 relative transition-all duration-500">
-                <div className="w-full max-w-md mx-auto md:mx-0 rounded-xl overflow-hidden shadow-lg">
+                <div className="w-full mx-auto md:mx-0 rounded-xl overflow-hidden shadow-lg">
                   <video 
                     ref={videoRef}
                     src={currentTestimonial.video}
-                    className="w-full h-full object-cover transition-transform duration-500 cursor-pointer"
+                    className="w-full h-full object-contain transition-transform duration-500 cursor-pointer"
                     autoPlay 
                     muted 
                     loop 
@@ -176,7 +180,7 @@ const TestimonialsCarousel = () => {
             {/* Navigation Arrows */}
             <button 
               onClick={prevTestimonial} 
-              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-100 p-2 rounded-full shadow-md hover:bg-gray-300 transition-all hover:scale-110 z-10 focus:outline-none" 
+              className="absolute top-1/2 left-0 md:left-4 transform -translate-y-1/2 bg-gray-100 p-2 rounded-full shadow-md hover:bg-gray-300 transition-all hover:scale-110 z-10 focus:outline-none" 
               aria-label="Previous testimonial"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -184,7 +188,7 @@ const TestimonialsCarousel = () => {
             
             <button 
               onClick={nextTestimonial} 
-              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-100 p-2 rounded-full shadow-md hover:bg-gray-300 transition-all hover:scale-110 z-10 focus:outline-none" 
+              className="absolute top-1/2 right-0 md:right-4 transform -translate-y-1/2 bg-gray-100 p-2 rounded-full shadow-md hover:bg-gray-300 transition-all hover:scale-110 z-10 focus:outline-none" 
               aria-label="Next testimonial"
             >
               <ChevronRight className="w-5 h-5" />
