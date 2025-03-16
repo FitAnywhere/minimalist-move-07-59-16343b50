@@ -33,8 +33,8 @@ const LifestyleSection = () => {
   });
 
   const handleFeatureClick = (index: number) => {
-    // Toggle feature - if clicking the open one, keep it open
-    setOpenFeatureIndex(index);
+    // Toggle feature - if clicking the open one, close it
+    setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
 
   return <section ref={sectionRef} className="py-24 relative overflow-hidden">
@@ -150,24 +150,6 @@ const LifestyleSection = () => {
                   )}
                 </div>
                 
-                {/* Redesigned CTA Button - Now in the middle with centered alignment */}
-                <div className="flex flex-col items-center my-5 py-2">
-                  <Button className={cn(
-                    "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", 
-                    "transition-all duration-300 transform hover:scale-105", 
-                    "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", 
-                    "w-full max-w-xs md:max-w-sm text-center", 
-                    "flex items-center justify-center space-x-2"
-                  )}>
-                    <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
-                  </Button>
-                  
-                  {/* Visual CTA hint - Now centered below the button */}
-                  <p className="text-sm text-gray-500 mt-2 text-center">
-                    Limited stock available
-                  </p>
-                </div>
-                
                 {/* Third feature box */}
                 <div 
                   className={cn(
@@ -203,6 +185,24 @@ const LifestyleSection = () => {
                       {lifestyleFeatures[2].description}
                     </p>
                   )}
+                </div>
+                
+                {/* Redesigned CTA Button - Now below the third box */}
+                <div className="flex flex-col items-center my-5 py-2">
+                  <Button className={cn(
+                    "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", 
+                    "transition-all duration-300 transform hover:scale-105", 
+                    "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", 
+                    "w-full max-w-xs md:max-w-sm text-center", 
+                    "flex items-center justify-center space-x-2"
+                  )}>
+                    <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
+                  </Button>
+                  
+                  {/* Visual CTA hint - Now centered below the button */}
+                  <p className="text-sm text-gray-500 mt-2 text-center">
+                    Limited stock available
+                  </p>
                 </div>
               </div>
               
