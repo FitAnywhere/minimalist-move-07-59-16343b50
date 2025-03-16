@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -5,12 +6,14 @@ import { Check, ChevronDown, ChevronUp, Rocket, Gift } from 'lucide-react';
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
 interface BundleItem {
   name: string;
   price: string;
   description: string;
   isBonus?: boolean;
 }
+
 const bundleItems: BundleItem[] = [{
   name: "PowerTower",
   price: "€1,299.99",
@@ -42,6 +45,7 @@ const bundleItems: BundleItem[] = [{
   description: "",
   isBonus: true
 }];
+
 const BundleOffer = () => {
   const [bonusSectionOpen, setBonusSectionOpen] = useState(false);
   const [valueSectionOpen, setValueSectionOpen] = useState(false);
@@ -51,6 +55,7 @@ const BundleOffer = () => {
     threshold: 0.1
   });
   const parallaxRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
     const handleScroll = () => {
       if (!parallaxRef.current) return;
@@ -58,22 +63,25 @@ const BundleOffer = () => {
       const offset = scrollY * 0.05;
       parallaxRef.current.style.transform = `translateY(${offset}px)`;
     };
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  
   const totalValue = 1839.96;
   const yourPrice = 990;
   const savings = totalValue - yourPrice;
+  
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-0 mx-0 my-0 bg-inherit">
-      
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-6", isInView ? "opacity-100 translate-y-0 animate-[bounce_0.5s_ease-out]" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
               LAST GYM YOU WILL EVER NEED
+              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
+                isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
-            
           </div>
           
           <div ref={cardRef} className={cn("bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 transition-all duration-1000", "shadow-md rounded-lg transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")} style={{
@@ -181,19 +189,23 @@ const BundleOffer = () => {
               
               <div className="mt-3 space-y-1.5 text-center">
                 
-                
-                
               </div>
             </div>
             
-            <div className="bg-gray-900 p-4 text-center">
+            <div className="bg-gray-900 p-4 text-center flex flex-col items-center">
               <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "w-full sm:w-auto")}>
-                SECURE YOUR GYM TODAY <Rocket className="ml-2 h-5 w-5" />
+                APPLY TODAY <Rocket className="ml-2 h-5 w-5" />
               </Button>
+              
+              <p className={cn("text-xl font-medium text-white mt-3 transform transition-all duration-700", 
+                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")}>
+                Would you rather pay for the gym…or OWN it forever?
+              </p>
             </div>
           </div>
         </div>
       </div>
     </section>;
 };
+
 export default BundleOffer;
