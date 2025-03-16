@@ -15,44 +15,30 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     name: "Finally, got an efficient training solution",
-    quote: "PowerTower and BoxFun transformed my routine. No more gym subscriptions or bulky equipment – just a sleek, effective setup that delivers professional results.",
+    quote: "Working from home means I need equipment that doesn't take up space. PowerTower fits perfectly in my apartment and gives me the workout I need without leaving home.",
     author: "Jasper",
     role: "Design Director",
     video: "/trx.mp4"
   }, 
   {
     name: "Ordered with friends and got extra discount. Thank you!",
-    quote: "Finally, fitness equipment that meets my aesthetic standards. The minimalist design complements my apartment perfectly, and the workouts are incredible.",
+    quote: "I work from home and this is exactly what I needed",
     author: "Eva",
     role: "Architect",
     video: "/bands.mp4"
   }, 
   {
     name: "I can't believe how much time it saves me",
-    quote: "Resistance bands complete my PowerTower experience. The versatility is unmatched – I can get a complete workout from the comfort of my loft.",
+    quote: "As a beginner I love TRX and bands addition",
     author: "Lucas",
     role: "Marketing Executive",
     video: "/trx.mp4"
   },
   {
     name: "I work from home and this is exactly what I needed",
-    quote: "Working from home means I need equipment that doesn't take up space. PowerTower fits perfectly in my apartment and gives me the workout I need without leaving home.",
+    quote: "BoxFun with PowerTower combo is just priceless",
     author: "Sophia",
     role: "Remote Developer",
-    video: "/bands.mp4"
-  },
-  {
-    name: "As a beginner I love TRX and bands addition",
-    quote: "I'm new to fitness and was intimidated by complicated equipment. The PowerTower with TRX and bands has been perfect - easy to use but challenging enough to see results.",
-    author: "Miguel",
-    role: "Student",
-    video: "/trx.mp4"
-  },
-  {
-    name: "BoxFun with PowerTower combo is just priceless",
-    quote: "The combination of BoxFun and PowerTower gives me everything I need for complete training. It's compact, versatile, and incredibly effective.",
-    author: "Alex",
-    role: "Fitness Enthusiast",
     video: "/bands.mp4"
   }
 ];
@@ -139,6 +125,9 @@ const TestimonialsCarousel = () => {
                 <div className="bg-gray-100 p-6 rounded-xl shadow-md">
                   <p className="text-xl md:text-2xl font-bold text-gray-900 transition-all duration-500">
                     "{currentTestimonial.quote}"
+                  </p>
+                  <p className="mt-4 text-right text-gray-700 italic">
+                    — {currentTestimonial.author}, {currentTestimonial.role}
                   </p>
                 </div>
                 
