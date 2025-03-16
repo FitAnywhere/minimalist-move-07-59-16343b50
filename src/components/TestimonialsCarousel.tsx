@@ -1,41 +1,74 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+
 interface Testimonial {
+  name: string;
   quote: string;
   author: string;
   role: string;
-  image: string;
+  video: string;
 }
-const testimonials: Testimonial[] = [{
-  quote: "PowerTower and BoxFun transformed my routine. No more gym subscriptions or bulky equipment – just a sleek, effective setup that delivers professional results.",
-  author: "Jasper",
-  role: "Design Director",
-  image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-}, {
-  quote: "Finally, fitness equipment that meets my aesthetic standards. The minimalist design complements my apartment perfectly, and the workouts are incredible.",
-  author: "Eva",
-  role: "Architect",
-  image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-}, {
-  quote: "Resistance bands complete my PowerTower experience. The versatility is unmatched – I can get a complete workout from the comfort of my loft.",
-  author: "Lucas",
-  role: "Marketing Executive",
-  image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-}];
+
+const testimonials: Testimonial[] = [
+  {
+    name: "Finally, got an efficient training solution",
+    quote: "PowerTower and BoxFun transformed my routine. No more gym subscriptions or bulky equipment – just a sleek, effective setup that delivers professional results.",
+    author: "Jasper",
+    role: "Design Director",
+    video: "/trx.mp4"
+  }, 
+  {
+    name: "Ordered with friends and got extra discount. Thank you!",
+    quote: "Finally, fitness equipment that meets my aesthetic standards. The minimalist design complements my apartment perfectly, and the workouts are incredible.",
+    author: "Eva",
+    role: "Architect",
+    video: "/bands.mp4"
+  }, 
+  {
+    name: "I can't believe how much time it saves me",
+    quote: "Resistance bands complete my PowerTower experience. The versatility is unmatched – I can get a complete workout from the comfort of my loft.",
+    author: "Lucas",
+    role: "Marketing Executive",
+    video: "/trx.mp4"
+  },
+  {
+    name: "I work from home and this is exactly what I needed",
+    quote: "Working from home means I need equipment that doesn't take up space. PowerTower fits perfectly in my apartment and gives me the workout I need without leaving home.",
+    author: "Sophia",
+    role: "Remote Developer",
+    video: "/bands.mp4"
+  },
+  {
+    name: "As a beginner I love TRX and bands addition. BoxFun with PowerTower combo is just priceless",
+    quote: "I'm new to fitness and was intimidated by complicated equipment. The PowerTower with TRX and bands has been perfect - easy to use but challenging enough to see results.",
+    author: "Miguel",
+    role: "Student",
+    video: "/trx.mp4"
+  }
+];
+
 const TestimonialsCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, {}, false);
+  
+  const currentTestimonial = testimonials[activeIndex];
+
   const nextTestimonial = () => {
     setActiveIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
   };
+  
   const prevTestimonial = () => {
     setActiveIndex(prevIndex => prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1);
   };
+  
   const goToTestimonial = (index: number) => {
     setActiveIndex(index);
     // Pause auto-play when user navigates manually
@@ -43,6 +76,17 @@ const TestimonialsCarousel = () => {
     // Resume after 5 seconds
     setTimeout(() => setIsAutoPlaying(true), 5000);
   };
+
+  const toggleFullScreen = () => {
+    if (videoRef.current) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        videoRef.current.requestFullscreen();
+      }
+    }
+  };
+  
   useEffect(() => {
     if (isAutoPlaying) {
       autoPlayRef.current = setInterval(nextTestimonial, 5000);
@@ -53,6 +97,7 @@ const TestimonialsCarousel = () => {
       }
     };
   }, [isAutoPlaying]);
+  
   useEffect(() => {
     // Pause auto-play when out of view
     if (!isInView && autoPlayRef.current) {
@@ -66,64 +111,89 @@ const TestimonialsCarousel = () => {
       }
     };
   }, [isInView, isAutoPlaying]);
-  return <section id="testimonials" ref={sectionRef} className="py-24 bg-gray-50">
+
+  return (
+    <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-white">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
-          <div className={cn("text-center mb-16 transition-all duration-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-            <h2 className="text-black">WHY THEY LOVE IT?</h2>
-            
+          <div className={cn("text-center mb-8 md:mb-12 transition-all duration-700", 
+            isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-black">WHY THEY LOVE IT?</h2>
           </div>
           
           <div className="relative">
-            <div className="overflow-hidden">
-              <div className="flex transition-transform duration-500 ease-out" style={{
-              transform: `translateX(-${activeIndex * 100}%)`
-            }}>
-                {testimonials.map((testimonial, index) => <div key={index} className="w-full flex-shrink-0 px-4">
-                    <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-                      <div className="flex flex-col md:flex-row md:items-center gap-8">
-                        <div className="flex-shrink-0">
-                          <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-yellow">
-                            <img src={testimonial.image} alt={testimonial.author} className="w-full h-full object-cover" />
-                          </div>
-                        </div>
-                        
-                        <div>
-                          <div className="text-yellow mb-2">
-                            {[...Array(5)].map((_, i) => <span key={i} className="text-xl">★</span>)}
-                          </div>
-                          
-                          <blockquote className="text-xl md:text-2xl font-medium mb-4">
-                            "{testimonial.quote}"
-                          </blockquote>
-                          
-                          <div>
-                            <div className="font-bold">{testimonial.author}</div>
-                            <div className="text-gray-500">{testimonial.role}</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>)}
+            <div className={cn("grid md:grid-cols-2 gap-8 items-center", 
+              isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
+              {/* Review Text Side */}
+              <div className="order-2 md:order-1 text-center md:text-left space-y-6 md:space-y-8">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 transition-all duration-500">
+                  {currentTestimonial.name}
+                </h3>
+                
+                <blockquote className="text-lg md:text-xl text-gray-800 font-medium leading-relaxed transition-all duration-500">
+                  "{currentTestimonial.quote}"
+                </blockquote>
+                
+                <div className="text-sm text-gray-600 mt-4 italic">
+                  {currentTestimonial.author}, {currentTestimonial.role}
+                </div>
+                
+                {/* Dot Indicators */}
+                <div className="flex space-x-2 mt-6 justify-center md:justify-start">
+                  {testimonials.map((_, index) => (
+                    <button 
+                      key={index} 
+                      onClick={() => goToTestimonial(index)}
+                      className={cn(
+                        "transition-all duration-300", 
+                        index === activeIndex 
+                          ? "w-3 h-3 bg-yellow rounded-full" 
+                          : "w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400"
+                      )}
+                      aria-label={`Go to testimonial ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+              
+              {/* Video Side */}
+              <div className="order-1 md:order-2 relative transition-all duration-500">
+                <div className="w-full max-w-md mx-auto md:mx-0 rounded-xl overflow-hidden shadow-lg">
+                  <video 
+                    ref={videoRef}
+                    src={currentTestimonial.video}
+                    className="w-full h-full object-cover transition-transform duration-500 cursor-pointer"
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline
+                    onClick={toggleFullScreen}
+                  />
+                </div>
               </div>
             </div>
             
             {/* Navigation Arrows */}
-            <button onClick={prevTestimonial} className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 transition-all z-10 focus:outline-none" aria-label="Previous testimonial">
+            <button 
+              onClick={prevTestimonial} 
+              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-100 p-2 rounded-full shadow-md hover:bg-gray-300 transition-all hover:scale-110 z-10 focus:outline-none" 
+              aria-label="Previous testimonial"
+            >
               <ChevronLeft className="w-5 h-5" />
             </button>
             
-            <button onClick={nextTestimonial} className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 transition-all z-10 focus:outline-none" aria-label="Next testimonial">
+            <button 
+              onClick={nextTestimonial} 
+              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-100 p-2 rounded-full shadow-md hover:bg-gray-300 transition-all hover:scale-110 z-10 focus:outline-none" 
+              aria-label="Next testimonial"
+            >
               <ChevronRight className="w-5 h-5" />
             </button>
-            
-            {/* Indicators */}
-            <div className="flex justify-center mt-8">
-              {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("w-2.5 h-2.5 rounded-full mx-1 transition-all duration-300", index === activeIndex ? "bg-yellow w-8" : "bg-gray-300 hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
-            </div>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default TestimonialsCarousel;
