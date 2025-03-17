@@ -1,9 +1,17 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Rocket, ChevronRight, ChevronDown } from 'lucide-react';
+import { Rocket, ChevronRight, ChevronDown, X } from 'lucide-react';
 import { Toggle } from '@/components/ui/toggle';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from '@/components/ui/dialog';
 
 interface LifestyleFeature {
   title: string;
@@ -30,6 +38,7 @@ const LifestyleSection = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [showSpecs, setShowSpecs] = useState(false);
   
   const isInView = useInView(sectionRef, {
     threshold: 0.2
@@ -321,11 +330,84 @@ const LifestyleSection = () => {
                     </div>
                   </div>
                 </div>
+                
+                {/* Specifications button below video */}
+                <div className={cn(
+                  "mt-4 transition-all duration-700 transform", 
+                  isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                )}>
+                  <Button 
+                    variant="outline" 
+                    className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all"
+                    onClick={() => setShowSpecs(true)}
+                  >
+                    Specifications
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Specifications Dialog */}
+      <Dialog open={showSpecs} onOpenChange={setShowSpecs}>
+        <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-center text-xl font-bold">Product Specifications</DialogTitle>
+          </DialogHeader>
+          
+          <DialogClose className="absolute right-4 top-4 rounded-full p-1.5 opacity-70 ring-offset-background transition-opacity hover:bg-gray-100 hover:opacity-100 focus:outline-none">
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
+          
+          <div className="space-y-6 text-left mt-2 px-2">
+            <div>
+              <h3 className="font-semibold text-lg">Components & Materials</h3>
+              <ul className="list-disc pl-6 space-y-1.5 mt-2">
+                <li>Cap: High-quality fabric, breathable design for comfort during workouts</li>
+                <li>Elastic Band: Durable, and stretch-resistant for consistent rebound</li>
+                <li>Training Ball: Lightweight, impact-resistant ball with a textured surface for better control</li>
+                <li>Attachment System: Securely fastened to the cap for stability during use</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-lg">Dimensions & Weight</h3>
+              <ul className="list-disc pl-6 space-y-1.5 mt-2">
+                <li>Cap Size: One-size-fits-most with an adjustable strap</li>
+                <li>Ball Diameter: Approx. 6–7 cm</li>
+                <li>Elastic Band Length: Default length designed to match the average person's reach (from head to hand when extended)</li>
+                <li>Custom Sizing Available: Customers can provide their measurements for a perfectly tailored elastic band length</li>
+                <li>Total Weight: Ultra-lightweight for effortless portability</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-lg">Key Features</h3>
+              <ul className="list-disc pl-6 space-y-1.5 mt-2">
+                <li>Training: Improves reaction time, speed, and hand-eye coordination</li>
+                <li>Portable & Lightweight: Can be used anywhere – gym, home, or outdoors</li>
+                <li>Easy to Use: Suitable for beginners and professionals</li>
+                <li>Breathable & Comfortable: Designed for extended training sessions</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-lg">Ideal For</h3>
+              <ul className="list-disc pl-6 space-y-1.5 mt-2">
+                <li>Boxers, martial artists, and fitness enthusiasts looking to improve reflexes, coordination, and precision</li>
+                <li>Cardio & Endurance Training: Helps increase heart rate and calorie burn through active movement</li>
+                <li>Warm-Up & Activation: A great tool to get the body moving before workouts</li>
+                <li>Mind-Body-Breath Connection: Improves focus, mental clarity, and rhythmic breathing control</li>
+                <li>Cognitive & Stress Relief Exercises: Enhances concentration, mindfulness, and relaxation</li>
+                <li>All Ages & Skill Levels: Suitable for beginners, advanced athletes, and even non-athletes looking for a fun challenge</li>
+              </ul>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>;
 };
 
