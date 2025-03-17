@@ -8,6 +8,9 @@ const TermsOfService = () => {
     <div className="min-h-screen flex flex-col">
       <NavBar />
       <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
+        {/* Add extra padding at the top to create more space below the navbar */}
+        <div className="pt-16 md:pt-20"></div>
+        
         <h1 className="text-3xl font-bold mb-6 text-center">Terms of Service</h1>
         
         <div className="prose prose-lg max-w-none">
@@ -78,7 +81,7 @@ const TermsOfService = () => {
             By using our website and purchasing our products, you confirm that you have read, understood, and agree to these Terms of Service.
           </p>
           
-          <p className="text-gray-700 text-center mt-12">© 2025 FitAnywhere. All rights reserved.</p>
+          {/* Removed the copyright notice that was here */}
         </div>
       </main>
       <Footer />
