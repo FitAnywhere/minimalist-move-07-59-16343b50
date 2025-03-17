@@ -114,170 +114,171 @@ const LifestyleSection = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className={cn("transition-all duration-1000 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
-            {/* Headline and Main Text - Centered with animated underline */}
-            <div className="space-y-8 mb-12 text-center">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-                BECOME WORKOUT ADDICT
-                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
-              </h2>
-              
-              <div className="space-y-4 text-gray-700">                
-                <p className="text-gray-800 font-medium text-lg">
-                  Once you feel that flow, you'll never go back
-                </p>
-              </div>
-            </div>
-            
             {/* Desktop: Rearranged layout with features and CTA on left, video on right */}
-            <div className="flex flex-col md:flex-row gap-12 items-start mb-16">
+            <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
               {/* Lifestyle Benefits + CTA - Left side on desktop */}
-              <div className="space-y-6 w-full md:w-1/2 flex flex-col">
-                {/* First feature box */}
-                <div 
-                  className={cn(
-                    "px-6 py-3 rounded-full cursor-pointer", 
-                    "transition-all duration-300 ease-in-out", 
-                    "shadow-md", 
-                    "transform opacity-0",
-                    openFeatureIndex === 0 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
-                    isInView ? "animate-fade-in opacity-100" : ""
-                  )} 
-                  style={{
-                    animationDelay: "300ms",
-                    animationDuration: "0.4s"
-                  }} 
-                  onClick={() => handleFeatureClick(0)}
-                  onMouseEnter={() => setHoverIndex(0)} 
-                  onMouseLeave={() => setHoverIndex(null)}
-                >
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-lg font-semibold">
-                      {lifestyleFeatures[0].title}
-                    </h4>
+              <div className="space-y-6 w-full md:w-1/2 flex flex-col h-full justify-between">
+                {/* Title and intro section - centered vertically */}
+                <div className="space-y-4 text-center md:text-left mb-6 flex-grow-0">
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
+                    BECOME WORKOUT ADDICT
+                    <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
+                  </h2>
+                  
+                  <p className="text-gray-800 font-medium text-lg">
+                    Once you feel that flow, you'll never go back
+                  </p>
+                </div>
+                
+                {/* Interactive feature boxes - middle content */}
+                <div className="space-y-6 flex-grow">
+                  {/* First feature box */}
+                  <div 
+                    className={cn(
+                      "px-6 py-3 rounded-full cursor-pointer", 
+                      "transition-all duration-300 ease-in-out", 
+                      "shadow-md", 
+                      "transform opacity-0",
+                      openFeatureIndex === 0 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
+                      isInView ? "animate-fade-in opacity-100" : ""
+                    )} 
+                    style={{
+                      animationDelay: "300ms",
+                      animationDuration: "0.4s"
+                    }} 
+                    onClick={() => handleFeatureClick(0)}
+                    onMouseEnter={() => setHoverIndex(0)} 
+                    onMouseLeave={() => setHoverIndex(null)}
+                  >
+                    <div className="flex justify-between items-center">
+                      <h4 className="text-lg font-semibold">
+                        {lifestyleFeatures[0].title}
+                      </h4>
+                      
+                      <div 
+                        className={cn(
+                          "transition-all duration-200", 
+                          hoverIndex === 0 ? "transform translate-x-1" : ""
+                        )}
+                      >
+                        {openFeatureIndex === 0 ? 
+                          <ChevronDown className="w-5 h-5" /> : 
+                          <ChevronRight className="w-5 h-5" />
+                        }
+                      </div>
+                    </div>
                     
                     <div 
                       className={cn(
-                        "transition-all duration-200", 
-                        hoverIndex === 0 ? "transform translate-x-1" : ""
+                        "overflow-hidden transition-all duration-300 ease-in-out",
+                        openFeatureIndex === 0 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
                       )}
                     >
-                      {openFeatureIndex === 0 ? 
-                        <ChevronDown className="w-5 h-5" /> : 
-                        <ChevronRight className="w-5 h-5" />
-                      }
+                      <p className="text-gray-600">
+                        {lifestyleFeatures[0].description}
+                      </p>
                     </div>
                   </div>
                   
+                  {/* Second feature box */}
                   <div 
                     className={cn(
-                      "overflow-hidden transition-all duration-300 ease-in-out",
-                      openFeatureIndex === 0 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
-                    )}
+                      "px-6 py-3 rounded-full cursor-pointer", 
+                      "transition-all duration-300 ease-in-out", 
+                      "shadow-md", 
+                      "transform opacity-0",
+                      openFeatureIndex === 1 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
+                      isInView ? "animate-fade-in opacity-100" : ""
+                    )} 
+                    style={{
+                      animationDelay: "500ms",
+                      animationDuration: "0.4s"
+                    }} 
+                    onClick={() => handleFeatureClick(1)}
+                    onMouseEnter={() => setHoverIndex(1)} 
+                    onMouseLeave={() => setHoverIndex(null)}
                   >
-                    <p className="text-gray-600">
-                      {lifestyleFeatures[0].description}
-                    </p>
-                  </div>
-                </div>
-                
-                {/* Second feature box */}
-                <div 
-                  className={cn(
-                    "px-6 py-3 rounded-full cursor-pointer", 
-                    "transition-all duration-300 ease-in-out", 
-                    "shadow-md", 
-                    "transform opacity-0",
-                    openFeatureIndex === 1 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
-                    isInView ? "animate-fade-in opacity-100" : ""
-                  )} 
-                  style={{
-                    animationDelay: "500ms",
-                    animationDuration: "0.4s"
-                  }} 
-                  onClick={() => handleFeatureClick(1)}
-                  onMouseEnter={() => setHoverIndex(1)} 
-                  onMouseLeave={() => setHoverIndex(null)}
-                >
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-lg font-semibold">
-                      {lifestyleFeatures[1].title}
-                    </h4>
+                    <div className="flex justify-between items-center">
+                      <h4 className="text-lg font-semibold">
+                        {lifestyleFeatures[1].title}
+                      </h4>
+                      
+                      <div 
+                        className={cn(
+                          "transition-all duration-200", 
+                          hoverIndex === 1 ? "transform translate-x-1" : ""
+                        )}
+                      >
+                        {openFeatureIndex === 1 ? 
+                          <ChevronDown className="w-5 h-5" /> : 
+                          <ChevronRight className="w-5 h-5" />
+                        }
+                      </div>
+                    </div>
                     
                     <div 
                       className={cn(
-                        "transition-all duration-200", 
-                        hoverIndex === 1 ? "transform translate-x-1" : ""
+                        "overflow-hidden transition-all duration-300 ease-in-out",
+                        openFeatureIndex === 1 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
                       )}
                     >
-                      {openFeatureIndex === 1 ? 
-                        <ChevronDown className="w-5 h-5" /> : 
-                        <ChevronRight className="w-5 h-5" />
-                      }
+                      <p className="text-gray-600">
+                        {lifestyleFeatures[1].description}
+                      </p>
                     </div>
                   </div>
                   
+                  {/* Third feature box */}
                   <div 
                     className={cn(
-                      "overflow-hidden transition-all duration-300 ease-in-out",
-                      openFeatureIndex === 1 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
-                    )}
+                      "px-6 py-3 rounded-full cursor-pointer", 
+                      "transition-all duration-300 ease-in-out", 
+                      "shadow-md", 
+                      "transform opacity-0",
+                      openFeatureIndex === 2 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
+                      isInView ? "animate-fade-in opacity-100" : ""
+                    )} 
+                    style={{
+                      animationDelay: "700ms",
+                      animationDuration: "0.4s"
+                    }} 
+                    onClick={() => handleFeatureClick(2)}
+                    onMouseEnter={() => setHoverIndex(2)} 
+                    onMouseLeave={() => setHoverIndex(null)}
                   >
-                    <p className="text-gray-600">
-                      {lifestyleFeatures[1].description}
-                    </p>
-                  </div>
-                </div>
-                
-                {/* Third feature box */}
-                <div 
-                  className={cn(
-                    "px-6 py-3 rounded-full cursor-pointer", 
-                    "transition-all duration-300 ease-in-out", 
-                    "shadow-md", 
-                    "transform opacity-0",
-                    openFeatureIndex === 2 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
-                    isInView ? "animate-fade-in opacity-100" : ""
-                  )} 
-                  style={{
-                    animationDelay: "700ms",
-                    animationDuration: "0.4s"
-                  }} 
-                  onClick={() => handleFeatureClick(2)}
-                  onMouseEnter={() => setHoverIndex(2)} 
-                  onMouseLeave={() => setHoverIndex(null)}
-                >
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-lg font-semibold">
-                      {lifestyleFeatures[2].title}
-                    </h4>
+                    <div className="flex justify-between items-center">
+                      <h4 className="text-lg font-semibold">
+                        {lifestyleFeatures[2].title}
+                      </h4>
+                      
+                      <div 
+                        className={cn(
+                          "transition-all duration-200", 
+                          hoverIndex === 2 ? "transform translate-x-1" : ""
+                        )}
+                      >
+                        {openFeatureIndex === 2 ? 
+                          <ChevronDown className="w-5 h-5" /> : 
+                          <ChevronRight className="w-5 h-5" />
+                        }
+                      </div>
+                    </div>
                     
                     <div 
                       className={cn(
-                        "transition-all duration-200", 
-                        hoverIndex === 2 ? "transform translate-x-1" : ""
+                        "overflow-hidden transition-all duration-300 ease-in-out",
+                        openFeatureIndex === 2 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
                       )}
                     >
-                      {openFeatureIndex === 2 ? 
-                        <ChevronDown className="w-5 h-5" /> : 
-                        <ChevronRight className="w-5 h-5" />
-                      }
+                      <p className="text-gray-600">
+                        {lifestyleFeatures[2].description}
+                      </p>
                     </div>
-                  </div>
-                  
-                  <div 
-                    className={cn(
-                      "overflow-hidden transition-all duration-300 ease-in-out",
-                      openFeatureIndex === 2 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
-                    )}
-                  >
-                    <p className="text-gray-600">
-                      {lifestyleFeatures[2].description}
-                    </p>
                   </div>
                 </div>
                 
-                {/* Redesigned CTA Button - Now below the third box */}
-                <div className="flex flex-col items-center my-5 py-2">
+                {/* CTA Button and hint - bottom content */}
+                <div className="flex flex-col items-center md:items-start mt-8 flex-grow-0">
                   <Button className={cn(
                     "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", 
                     "transition-all duration-300 transform hover:scale-105", 
@@ -288,19 +289,19 @@ const LifestyleSection = () => {
                     <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
                   </Button>
                   
-                  {/* Visual CTA hint - Now centered below the button */}
-                  <p className="text-sm text-gray-500 mt-2 text-center">
+                  {/* Visual CTA hint */}
+                  <p className="text-sm text-gray-500 mt-2 text-center md:text-left">
                     Limited stock available
                   </p>
                 </div>
               </div>
               
               {/* Video - Right side on desktop (replacing the phone image) */}
-              <div className="w-full md:w-1/2 flex flex-col items-center md:items-end">
-                <div className="w-full max-w-xs md:max-w-sm perspective scale-95 transition-transform duration-300">
-                  <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+              <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full">
+                <div className="w-full max-w-xs md:max-w-none md:h-full perspective transition-transform duration-300">
+                  <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
                     {/* Video Container with Styling */}
-                    <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl">
+                    <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl h-full">
                       {/* Video with styling similar to ChampionSection */}
                       <video 
                         ref={videoRef} 
