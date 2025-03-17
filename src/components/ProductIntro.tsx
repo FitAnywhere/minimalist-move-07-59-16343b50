@@ -4,7 +4,14 @@ import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronRight, ChevronDown, X } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from '@/components/ui/dialog';
 
 const features = [{
   title: "UNFOLD & GO",
@@ -30,6 +37,7 @@ const ProductIntro = () => {
   // Default to no open feature
   const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [showSpecs, setShowSpecs] = useState(false);
 
   useEffect(() => {
     if (isInView) {
@@ -142,12 +150,27 @@ const ProductIntro = () => {
                 ))}
               </div>
               
-              <p className={cn(
-                "font-medium text-lg italic text-gray-800 transition-all duration-700 transform", 
-                animationState.finalLine ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-              )}>
-                Train when you want. Where you want. Without compromise.
-              </p>
+              <div className="space-y-4">
+                <p className={cn(
+                  "font-medium text-lg italic text-gray-800 transition-all duration-700 transform", 
+                  animationState.finalLine ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                )}>
+                  Train when you want. Where you want. Without compromise.
+                </p>
+                
+                <div className={cn(
+                  "transition-all duration-700 transform", 
+                  animationState.finalLine ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                )}>
+                  <Button 
+                    variant="outline" 
+                    className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all"
+                    onClick={() => setShowSpecs(true)}
+                  >
+                    Specifications
+                  </Button>
+                </div>
+              </div>
             </div>
             
             <div className={cn(
@@ -164,6 +187,74 @@ const ProductIntro = () => {
           </div>
         </div>
       </div>
+
+      {/* Specifications Dialog */}
+      <Dialog open={showSpecs} onOpenChange={setShowSpecs}>
+        <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-center text-xl font-bold">Product Specifications</DialogTitle>
+          </DialogHeader>
+          
+          <DialogClose className="absolute right-4 top-4 rounded-full p-1.5 opacity-70 ring-offset-background transition-opacity hover:bg-gray-100 hover:opacity-100 focus:outline-none">
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
+          
+          <div className="space-y-6 text-left mt-2 px-2">
+            <div>
+              <h3 className="font-semibold text-lg">Material & Construction</h3>
+              <ul className="list-disc pl-6 space-y-1.5 mt-2">
+                <li>Made from high-quality, round steel bars</li>
+                <li>Thickness: 2 mm</li>
+                <li>Width: 38 mm</li>
+                <li>Durable powder-coated finish for lasting protection</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-lg">Dimensions</h3>
+              <ul className="list-disc pl-6 space-y-1.5 mt-2">
+                <li>Adjustable Frame Height: 195–235 cm</li>
+                <li>Width: 67 cm</li>
+                <li>Length: 100 cm</li>
+                <li>Weight: 24.3 kg</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-lg">Stability & Safety Features</h3>
+              <ul className="list-disc pl-6 space-y-1.5 mt-2">
+                <li>Rubber pads included, preventing slipping and protecting surfaces</li>
+                <li>Innovative clamp-based assembly system eliminates the need for nuts or bolts</li>
+                <li>Secure clamps provide exceptional stability and ease of assembly</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-lg">Load Capacity</h3>
+              <ul className="list-disc pl-6 space-y-1.5 mt-2">
+                <li>Pull-Up Bar: Maximum recommended load 150 kg (successfully tested up to 200+ kg)</li>
+                <li>Parallel Bars: Maximum recommended load 200 kg (successfully tested up to 250+ kg)</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-lg">Design Excellence</h3>
+              <ul className="list-disc pl-6 space-y-1.5 mt-2">
+                <li>Elegant, perfected design featuring smooth bends instead of sharp angles</li>
+                <li>All open ends securely covered with plugs for added safety and a premium look</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-lg">Color Availability</h3>
+              <ul className="list-disc pl-6 space-y-1.5 mt-2">
+                <li>Black</li>
+              </ul>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
