@@ -62,7 +62,6 @@ const NavBar = () => {
   const navLinks = [
     { name: "PowerTower", href: "#product", section: "OWN BOTH" },
     { name: "BoxFun", href: "#lifestyle", section: "BECOME WORKOUT ADDICT" },
-    // Set Testimonials to point to reviews section
     { name: "Testimonials", href: "#reviews", section: "WHY THEY LOVE IT?" },
     { name: "FAQ", href: "#faq", section: "FREQUENTLY ASKED QUESTIONS" }
   ];
