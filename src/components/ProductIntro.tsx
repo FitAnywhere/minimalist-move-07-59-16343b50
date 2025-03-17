@@ -5,6 +5,7 @@ import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronDown, X } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Dialog,
   DialogContent,
@@ -27,6 +28,7 @@ const features = [{
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
+  const isMobile = useIsMobile();
   const [animationState, setAnimationState] = useState({
     title: false,
     subtitle: false,
@@ -98,6 +100,21 @@ const ProductIntro = () => {
                   Space is luxury & time is freedom
                 </p>
               </div>
+              
+              {/* Video section for mobile only - placed between heading and features */}
+              {isMobile && (
+                <div className={cn(
+                  "flex justify-center items-center transition-all duration-700 h-full md:hidden", 
+                  isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
+                )}>
+                  <div className="w-full max-w-[80%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
+                    <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
+                      <source src="/home-360-tb.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              )}
               
               <div className="space-y-5">
                 {features.map((feature, index) => (
@@ -173,8 +190,9 @@ const ProductIntro = () => {
               </div>
             </div>
             
+            {/* Video section for desktop only - always visible on right side */}
             <div className={cn(
-              "flex justify-center items-center transition-all duration-700 h-full order-first md:order-last", 
+              "flex justify-center items-center transition-all duration-700 h-full order-first md:order-last hidden md:flex", 
               isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
             )}>
               <div className="w-full max-w-[70%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
