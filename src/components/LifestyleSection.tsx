@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -327,19 +328,22 @@ const LifestyleSection = () => {
                       </div>
                       
                       <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
-                      
-                      {/* Specifications button positioned in the middle of the video */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Button 
-                          variant="outline" 
-                          className="uppercase font-bold border-yellow border-2 bg-white/80 hover:bg-white text-black hover:bg-yellow-light/20 transition-all z-10"
-                          onClick={() => setShowSpecs(true)}
-                        >
-                          Specifications
-                        </Button>
-                      </div>
                     </div>
                   </div>
+                </div>
+                
+                {/* Specifications button positioned below the video, centered in right column */}
+                <div className={cn(
+                  "mt-6 w-full flex justify-center transition-all duration-700 transform", 
+                  isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                )}>
+                  <Button 
+                    variant="outline" 
+                    className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all"
+                    onClick={() => setShowSpecs(true)}
+                  >
+                    Specifications
+                  </Button>
                 </div>
               </div>
             </div>
