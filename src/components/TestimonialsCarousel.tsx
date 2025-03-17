@@ -18,7 +18,7 @@ const testimonials: Testimonial[] = [{
 }, {
   name: "Emily T.",
   role: "Fitness Beginner",
-  quote: "Your video library is golden. I never imagined how many exercises I can do using TRX and BANDS.",
+  quote: "I never imagined how many exercises I can do using TRX and BANDS.",
   video: "/bands.mp4"
 }, {
   name: "John D.",
