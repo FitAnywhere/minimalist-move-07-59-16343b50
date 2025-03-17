@@ -100,8 +100,9 @@ const ChampionSection = () => {
             {/* Text Content with adjusted spacing */}
             <div className="space-y-6 flex flex-col justify-between h-full">
               <div className="space-y-3">
-                <h2 ref={titleRef} className="text-black font-bold relative group">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
                   FAVORITE WORKOUT
+                  <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
                 
                 <p className="text-2xl text-gray-800 font-medium">

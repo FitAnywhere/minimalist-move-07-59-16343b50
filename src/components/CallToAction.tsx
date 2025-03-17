@@ -24,7 +24,10 @@ const CallToAction = () => {
           <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
             
             
-            <h2 className="text-white mb-6">YOUR NEW LIFESTYLE AWAITS</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-6 relative inline-block">
+              YOUR NEW LIFESTYLE AWAITS
+              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
+            </h2>
             
             
             

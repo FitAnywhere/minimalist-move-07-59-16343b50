@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -58,11 +57,9 @@ const LifestyleSection = () => {
           <div className={cn("transition-all duration-1000 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
             {/* Headline and Main Text - Centered with animated underline */}
             <div className="space-y-8 mb-12 text-center">
-              <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold leading-tight relative inline-block">
-                <span className="relative inline-block">
-                  BECOME WORKOUT ADDICT
-                  <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
-                </span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
+                BECOME WORKOUT ADDICT
+                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
               
               <div className="space-y-4 text-gray-700">                

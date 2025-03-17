@@ -59,7 +59,10 @@ const ProductTabs = () => {
             "text-center mb-12 transition-all duration-700", 
             isInView ? "opacity-100" : "opacity-0 translate-y-8"
           )}>
-            <h2 className="text-black">MAXIMIZE YOUR EXPERIENCE</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
+              MAXIMIZE YOUR EXPERIENCE
+              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
+            </h2>
             
           </div>
           
@@ -144,7 +147,7 @@ const ProductTabs = () => {
                   <h3 className="text-2xl font-bold group transition-all duration-300">
                     <span className="inline-flex items-center relative group-hover:text-yellow-600">
                       AMPLIFY YOUR WORKOUT
-                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
                     </span>
                   </h3>
                   <p className="text-lg text-gray-700">More power. More support. No limits.</p>

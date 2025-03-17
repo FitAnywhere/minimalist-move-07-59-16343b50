@@ -2,12 +2,14 @@ import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, User } from 'lucide-react';
+
 interface Testimonial {
   name: string;
   role: string;
   quote: string;
   video: string;
 }
+
 const testimonials: Testimonial[] = [{
   name: "Alex G.",
   role: "Busy Professional",
@@ -39,6 +41,7 @@ const testimonials: Testimonial[] = [{
   quote: "BoxFun with PowerTower combo is just priceless!",
   video: "/bands.mp4"
 }];
+
 const TestimonialsCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -122,4 +125,5 @@ const TestimonialsCarousel = () => {
       </div>
     </section>;
 };
+
 export default TestimonialsCarousel;

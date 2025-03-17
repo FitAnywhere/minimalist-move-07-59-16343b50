@@ -58,11 +58,9 @@ const TargetAndFAQ = () => {
         <div className="max-w-6xl mx-auto">
           {/* Target Audience */}
           <div className={cn("text-center mb-20 transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-12")}>
-            <h2 className="text-3xl md:text-4xl font-bold text-black mb-16 relative">
-              <span className="relative inline-block">
-                WHO WE BUILT THIS FOR
-                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
-              </span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-16 relative inline-block">
+              WHO WE BUILT THIS FOR
+              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
             <div className="grid md:grid-cols-3 gap-8">
@@ -84,11 +82,9 @@ const TargetAndFAQ = () => {
           
           {/* FAQ Accordion */}
           <div>
-            <h2 className={cn("text-3xl md:text-4xl font-bold text-black text-center mb-12 relative")}>
-              <span className="relative inline-block">
-                FREQUENTLY ASKED QUESTIONS
-                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
-              </span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center mb-12 relative inline-block">
+              FREQUENTLY ASKED QUESTIONS
+              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
             <div className="max-w-3xl mx-auto">
