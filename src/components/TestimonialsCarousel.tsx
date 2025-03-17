@@ -1,7 +1,8 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight, User } from 'lucide-react';
+import { ChevronLeft, ChevronRight, User, Quote, Star } from 'lucide-react';
 
 interface Testimonial {
   name: string;
@@ -79,21 +80,22 @@ const TestimonialsCarousel = () => {
           <div className="relative">
             <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
               <div className="order-2 md:order-1 text-left flex flex-col justify-center">
-                <div className="bg-white shadow-md p-7 rounded-xl relative mb-6 transition-all duration-300 hover:shadow-lg border-t-2 border-yellow-400 slide-in-right">
-                  <div className="text-yellow-400 opacity-10 absolute left-4 top-4">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M10 11L8 13H11L10 17M16 11L14 13H17L16 17M3 7C3 5.89543 3.89543 5 5 5H19C20.1046 5 21 5.89543 21 7V18C21 19.1046 20.1046 20 19 20H5C3.89543 20 3 19.1046 3 18V7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                <div className="backdrop-blur-md bg-white/80 shadow-md p-7 rounded-xl relative mb-6 transition-all duration-300 hover:shadow-lg border-t-2 border-blue-400 slide-in-right">
+                  <div className="text-blue-500 opacity-30 absolute left-4 top-4">
+                    <Quote className="h-10 w-10" />
                   </div>
                   
-                  <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-5 transition-all duration-500 pt-4 pl-2">
+                  <div className="flex mb-3 mt-4 animate-fade-in">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-5 w-5 text-yellow-400 mr-1" fill="#FFD700" />
+                    ))}
+                  </div>
+                  
+                  <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-5 transition-all duration-500 pt-2 pl-2">
                     {currentTestimonial.quote}
                   </p>
                   
                   <div className="flex items-center mt-4 animate-fade-in">
-                    <div className="bg-gray-100 p-2 rounded-full mr-3">
-                      <User className="h-5 w-5 text-gray-500" />
-                    </div>
                     <div>
                       <p className="font-semibold text-gray-800">{currentTestimonial.name}</p>
                       <p className="text-sm text-gray-500">{currentTestimonial.role}</p>
@@ -102,7 +104,7 @@ const TestimonialsCarousel = () => {
                 </div>
                 
                 <div className="flex space-x-3 mt-4 justify-center md:justify-start">
-                  {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-4 h-4 bg-yellow-400 rounded-full" : "w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
+                  {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-4 h-4 bg-blue-400 rounded-full" : "w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
                 </div>
               </div>
               
@@ -113,11 +115,11 @@ const TestimonialsCarousel = () => {
               </div>
             </div>
             
-            <button onClick={prevTestimonial} className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-yellow-400" aria-label="Previous testimonial">
+            <button onClick={prevTestimonial} className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-blue-400" aria-label="Previous testimonial">
               <ChevronLeft className="w-5 h-5 text-gray-800" />
             </button>
             
-            <button onClick={nextTestimonial} className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-yellow-400" aria-label="Next testimonial">
+            <button onClick={nextTestimonial} className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-blue-400" aria-label="Next testimonial">
               <ChevronRight className="w-5 h-5 text-gray-800" />
             </button>
           </div>
