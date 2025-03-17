@@ -151,45 +151,38 @@ const ProductTabs = () => {
               <div 
                 ref={trxTextRef} 
                 className={cn(
-                  "space-y-8 md:pr-6 transition-all duration-500",
-                  isTrxTextInView ? "opacity-100" : "opacity-0 translate-y-4",
+                  "space-y-8 md:pr-6",
                   isMobile ? "order-2" : "order-1"
                 )}
               >
-                <div className={cn(
-                  "relative space-y-2 transition-all duration-700",
-                  isTrxTextInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                )}>
+                <div className="relative space-y-2">
                   <h3 
-                    className={cn(
-                      "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700",
-                      isTrxTextInView ? "scale-100" : "scale-95",
-                      "text-shadow-yellow" // Still applying the yellow shadow
-                    )}
-                    style={{ letterSpacing: "1.2px", color: "#555" }}
+                    className="text-xl md:text-2xl font-semibold mb-6 leading-tight tracking-wider"
+                    style={{ 
+                      background: 'linear-gradient(to bottom, #E6B800, #000000)', 
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                      color: 'transparent',
+                      letterSpacing: "1.5px"
+                    }}
                   >
                     MOVE THE WAY YOUR BODY WAS BUILT TO
                   </h3>
                 </div>
                 
                 <div className="space-y-8 md:space-y-9 mt-8 relative z-10">
-                  <div className={cn(
-                    "flex items-start gap-3 transition-all duration-700 transform",
-                    bulletPointsVisible[0] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                  )}>
-                    <p className="text-gray-700 text-lg font-medium uppercase hover:scale-[1.02] transition-transform duration-300">🔹 NO MACHINES. NO RESTRICTIONS.</p>
+                  <div className="flex items-start gap-3">
+                    <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>|</span>
+                    <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>NO MACHINES. NO RESTRICTIONS.</p>
                   </div>
-                  <div className={cn(
-                    "flex items-start gap-3 transition-all duration-700 transform",
-                    bulletPointsVisible[1] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                  )}>
-                    <p className="text-gray-700 text-lg font-medium uppercase hover:scale-[1.02] transition-transform duration-300">🔹 PULL, PUSH, OR HOLD.</p>
+                  <div className="flex items-start gap-3">
+                    <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>|</span>
+                    <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>PULL, PUSH, OR HOLD.</p>
                   </div>
-                  <div className={cn(
-                    "flex items-start gap-3 transition-all duration-700 transform",
-                    bulletPointsVisible[2] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                  )}>
-                    <p className="text-gray-700 text-lg font-medium uppercase hover:scale-[1.02] transition-transform duration-300">🔹 YOUR INTENSITY. YOUR RULES.</p>
+                  <div className="flex items-start gap-3">
+                    <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>|</span>
+                    <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>YOUR INTENSITY. YOUR RULES.</p>
                   </div>
                 </div>
               </div>
@@ -207,37 +200,32 @@ const ProductTabs = () => {
               )}>
                 <div 
                   ref={bandsTextRef}
-                  className={cn(
-                    "relative space-y-2 transition-all duration-700 mb-6",
-                    isBandsTextInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                  )}
+                  className="relative space-y-2 mb-6"
                 >
                   <h3 
-                    className={cn(
-                      "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700",
-                      isBandsTextInView ? "scale-100" : "scale-95",
-                      "text-shadow-yellow" // Still applying the yellow shadow
-                    )}
-                    style={{ letterSpacing: "1.2px", color: "#555" }}
+                    className="text-xl md:text-2xl font-semibold mb-6 leading-tight tracking-wider"
+                    style={{ 
+                      background: 'linear-gradient(to bottom, #E6B800, #000000)', 
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                      color: 'transparent',
+                      letterSpacing: "1.5px"
+                    }}
                   >
                     ADAPTIVE TRAINING FOR EVERY LEVEL
                   </h3>
                 </div>
                 
-                <div className="space-y-6 mb-6 relative z-10">
+                <div className="space-y-8 mb-6 relative z-10">
                   {bandsFeatures.map((feature, index) => (
                     <div 
                       key={index} 
-                      className={cn(
-                        "transition-all duration-500 transform", 
-                        isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-                      )} 
-                      style={{
-                        transitionDelay: isInView ? `${index * 200}ms` : "0ms"
-                      }}
+                      className="flex items-start gap-3" 
                     >
-                      <p className="text-gray-700 text-lg font-medium uppercase hover:scale-[1.02] transition-transform duration-300">
-                        🔹 {feature.title}
+                      <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>|</span>
+                      <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>
+                        {feature.title}
                       </p>
                     </div>
                   ))}
@@ -274,4 +262,3 @@ const ProductTabs = () => {
 };
 
 export default ProductTabs;
-
