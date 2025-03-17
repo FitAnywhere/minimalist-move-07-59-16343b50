@@ -62,7 +62,8 @@ const NavBar = () => {
   const navLinks = [
     { name: "PowerTower", href: "#product", section: "OWN BOTH" },
     { name: "BoxFun", href: "#lifestyle", section: "BECOME WORKOUT ADDICT" },
-    { name: "Testimonials", href: "#reviews", section: "WHY THEY LOVE IT?" },
+    // Changed this mapping to point "Testimonials" to the lifestyle section instead of reviews
+    { name: "Testimonials", href: "#lifestyle", section: "BECOME WORKOUT ADDICT" },
     { name: "FAQ", href: "#faq", section: "FREQUENTLY ASKED QUESTIONS" }
   ];
 
