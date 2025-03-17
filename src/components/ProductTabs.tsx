@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -157,7 +156,7 @@ const ProductTabs = () => {
               >
                 <div className="relative space-y-2">
                   <h3 
-                    className="text-xl md:text-2xl font-semibold mb-6 leading-tight tracking-wider"
+                    className="text-xl md:text-2xl font-bold mb-6 leading-tight tracking-wider"
                     style={{ 
                       background: 'linear-gradient(to bottom, #E6B800, #000000)', 
                       WebkitBackgroundClip: 'text',
@@ -173,15 +172,15 @@ const ProductTabs = () => {
                 
                 <div className="space-y-8 md:space-y-9 mt-8 relative z-10">
                   <div className="flex items-start gap-3">
-                    <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>|</span>
+                    <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>-</span>
                     <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>NO MACHINES. NO RESTRICTIONS.</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>|</span>
+                    <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>-</span>
                     <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>PULL, PUSH, OR HOLD.</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>|</span>
+                    <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>-</span>
                     <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>YOUR INTENSITY. YOUR RULES.</p>
                   </div>
                 </div>
@@ -203,7 +202,7 @@ const ProductTabs = () => {
                   className="relative space-y-2 mb-6"
                 >
                   <h3 
-                    className="text-xl md:text-2xl font-semibold mb-6 leading-tight tracking-wider"
+                    className="text-xl md:text-2xl font-bold mb-6 leading-tight tracking-wider"
                     style={{ 
                       background: 'linear-gradient(to bottom, #E6B800, #000000)', 
                       WebkitBackgroundClip: 'text',
@@ -223,7 +222,7 @@ const ProductTabs = () => {
                       key={index} 
                       className="flex items-start gap-3" 
                     >
-                      <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>|</span>
+                      <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>-</span>
                       <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>
                         {feature.title}
                       </p>
