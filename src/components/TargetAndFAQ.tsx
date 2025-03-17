@@ -56,8 +56,9 @@ const TargetAndFAQ = () => {
     setActiveAudience(activeAudience === index ? null : index);
   };
   
-  return <>
-      {/* Target Audience Section */}
+  return (
+    <>
+      {/* Target Audience Section - Now with "target" ID */}
       <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
@@ -108,9 +109,9 @@ const TargetAndFAQ = () => {
         </div>
       </section>
       
-      {/* FAQ Section - Ensuring this has a proper ID for navigation */}
-      <section id="faq" ref={faqSectionRef} className="py-24 bg-gray-50">
-        <div className="container mx-auto px-6">
+      {/* FAQ Section - Making sure this has a proper ID for navigation */}
+      <section ref={faqSectionRef} className="py-24 bg-gray-50">
+        <div id="faq" className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center mb-12 relative inline-block">
@@ -141,7 +142,8 @@ const TargetAndFAQ = () => {
           </div>
         </div>
       </section>
-    </>;
+    </>
+  );
 };
 
 export default TargetAndFAQ;
