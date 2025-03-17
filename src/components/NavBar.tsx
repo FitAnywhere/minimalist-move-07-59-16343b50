@@ -2,10 +2,14 @@
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Menu, X } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,6 +33,27 @@ const NavBar = () => {
     };
   }, [isOpen]);
 
+  const handleNavLinkClick = (href: string) => {
+    if (isHomePage) {
+      // Already on home page, just scroll to the section
+      const element = document.querySelector(href);
+      if (element) {
+        window.scrollTo({
+          top: element.getBoundingClientRect().top + window.scrollY - 100,
+          behavior: 'smooth'
+        });
+        
+        // Update URL without scrolling
+        history.pushState(null, '', href);
+      }
+    } else {
+      // Navigate to home page with the hash
+      navigate(`/${href}`);
+    }
+    
+    setIsOpen(false); // Close mobile menu if open
+  };
+
   const navLinks = [
     { name: "PowerTower", href: "#product" },
     { name: "BoxFun", href: "#lifestyle" },
@@ -45,8 +70,12 @@ const NavBar = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a 
-          href="#" 
+          href="/"
           className="text-2xl font-bold tracking-tighter transition-all relative z-50"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate('/');
+          }}
         >
           <span>Fit</span>
           <span className="text-yellow">Anywhere</span>
@@ -59,6 +88,10 @@ const NavBar = () => {
               key={link.name}
               href={link.href}
               className="font-medium text-sm hover:text-yellow transition-colors relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:w-0 after:bg-yellow after:transition-all after:duration-300 hover:after:w-full"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavLinkClick(link.href);
+              }}
             >
               {link.name}
             </a>
@@ -69,6 +102,10 @@ const NavBar = () => {
           <a
             href="#bundle"
             className="bg-black text-white px-6 py-2.5 rounded-full font-medium text-sm hover:bg-black/90 transition-all hover-lift"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavLinkClick('#bundle');
+            }}
           >
             ORDER NOW
           </a>
@@ -105,7 +142,10 @@ const NavBar = () => {
                 key={link.name}
                 href={link.href}
                 className="font-medium text-lg py-3 border-b border-gray-100"
-                onClick={() => setIsOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavLinkClick(link.href);
+                }}
               >
                 {link.name}
               </a>
@@ -114,7 +154,10 @@ const NavBar = () => {
               <a
                 href="#bundle"
                 className="block w-full bg-black text-white text-center px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-all"
-                onClick={() => setIsOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavLinkClick('#bundle');
+                }}
               >
                 ORDER NOW
               </a>
