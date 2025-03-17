@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -38,7 +39,7 @@ const faqItems: FAQItem[] = [{
   answer: "Yes! Great for warm ups, cardio, and full body movement."
 }, {
   question: "When will my FitAnywhere bundle be delivered?",
-  answer: "We ship weekly from Slovenia to the Netherlands. Order now for the next batch!"
+  answer: "We ship to the Netherlands on a weekly basis. Place your order now to be included in the next scheduled shipment."
 }, {
   question: "Are the resistance bands suitable for beginners?",
   answer: "Perfect for all levels. Supportive for beginners, resistance for constant gains."

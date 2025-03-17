@@ -24,13 +24,24 @@ const Index = () => {
         
         const targetElement = document.querySelector(anchor.hash);
         if (targetElement) {
+          // Scroll to the target element with smooth behavior
           window.scrollTo({
             top: targetElement.getBoundingClientRect().top + window.scrollY - 100,
             behavior: 'smooth'
           });
           
-          // Update URL without scrolling
-          history.pushState(null, '', anchor.hash);
+          // Handle specific sections
+          if (anchor.hash === '#lifestyle') {
+            // If there's a collapsible section in the lifestyle section, we could expand it here
+            // For now, this ensures the URL is updated
+            setTimeout(() => {
+              // Update URL without scrolling after the smooth scroll completes
+              history.pushState(null, '', anchor.hash);
+            }, 800); // The delay allows for the scroll animation to complete
+          } else {
+            // Update URL without scrolling
+            history.pushState(null, '', anchor.hash);
+          }
         }
       }
     };
