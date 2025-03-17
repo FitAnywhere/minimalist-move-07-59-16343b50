@@ -13,8 +13,26 @@ import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
 
 const Index = () => {
-  // Add smooth scroll behavior for anchor links
+  // Add smooth scroll behavior for anchor links and handle URL hash on page load
   useEffect(() => {
+    // Handle URL hash on initial load
+    const handleInitialHash = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        setTimeout(() => {
+          const targetElement = document.querySelector(hash);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.getBoundingClientRect().top + window.scrollY - 100,
+              behavior: 'smooth'
+            });
+          }
+        }, 300); // Slight delay to ensure elements are rendered
+      }
+    };
+    
+    handleInitialHash();
+    
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchor = target.closest('a');
@@ -30,18 +48,8 @@ const Index = () => {
             behavior: 'smooth'
           });
           
-          // Handle specific sections
-          if (anchor.hash === '#lifestyle') {
-            // If there's a collapsible section in the lifestyle section, we could expand it here
-            // For now, this ensures the URL is updated
-            setTimeout(() => {
-              // Update URL without scrolling after the smooth scroll completes
-              history.pushState(null, '', anchor.hash);
-            }, 800); // The delay allows for the scroll animation to complete
-          } else {
-            // Update URL without scrolling
-            history.pushState(null, '', anchor.hash);
-          }
+          // Update URL without scrolling
+          history.pushState(null, '', anchor.hash);
         }
       }
     };
@@ -56,16 +64,26 @@ const Index = () => {
   return (
     <div className="overflow-x-hidden">
       <NavBar />
-      <HeroSection />
-      <ProductIntro />
-      <ProductTabs />
+      <div id="hero">
+        <HeroSection />
+      </div>
+      <div id="product">
+        <ProductIntro />
+        <ProductTabs />
+      </div>
       <ChampionSection />
       <div id="lifestyle">
         <LifestyleSection />
       </div>
-      <BundleOffer />
-      <TestimonialsCarousel />
-      <TargetAndFAQ />
+      <div id="bundle">
+        <BundleOffer />
+      </div>
+      <div id="reviews">
+        <TestimonialsCarousel />
+      </div>
+      <div id="faq">
+        <TargetAndFAQ />
+      </div>
       <CallToAction />
       <Footer />
     </div>

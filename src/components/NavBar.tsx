@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Menu, X } from 'lucide-react';
@@ -74,7 +73,18 @@ const NavBar = () => {
           className="text-2xl font-bold tracking-tighter transition-all relative z-50"
           onClick={(e) => {
             e.preventDefault();
-            navigate('/');
+            // Always navigate to home page "ALL YOU NEED" section
+            if (isHomePage) {
+              const heroElement = document.querySelector('#hero') || document.querySelector('main');
+              if (heroElement) {
+                window.scrollTo({
+                  top: heroElement.getBoundingClientRect().top + window.scrollY - 100,
+                  behavior: 'smooth'
+                });
+              }
+            } else {
+              navigate('/');
+            }
           }}
         >
           <span>Fit</span>
