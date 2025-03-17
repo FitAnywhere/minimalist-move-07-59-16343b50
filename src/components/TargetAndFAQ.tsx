@@ -82,7 +82,7 @@ const TargetAndFAQ = () => {
           
           {/* FAQ Accordion */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center mb-12 relative inline-block">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center mb-12 relative inline-block mx-auto w-full">
               FREQUENTLY ASKED QUESTIONS
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
