@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -8,11 +7,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import FloatingParticles from './FloatingParticles';
 
 const bandsFeatures = [
-  {
-    title: "ADAPTIVE TRAINING FOR EVERY LEVEL",
-    description: "Lighten the load and build strength with confidence.",
-    icon: Zap
-  }, 
   {
     title: "SUPPORT WHEN NEEDED, CHALLENGE WHEN READY",
     description: "Push past plateaus, and keep progressing.",
@@ -256,16 +250,16 @@ const ProductTabs = () => {
                     className={cn(
                       "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700 relative z-10",
                       isBandsTextInView ? "scale-100" : "scale-95",
-                      bandsPulsing ? "text-shadow-yellow" : ""
+                      "text-shadow-yellow"
                     )}
                     style={{ letterSpacing: "1.2px", color: "#555" }}
                     onMouseEnter={() => handleBandsHeadingHover(true)}
                     onMouseLeave={() => handleBandsHeadingHover(false)}
                   >
-                    AMPLIFY YOUR WORKOUT
+                    ADAPTIVE TRAINING FOR EVERY LEVEL
                   </h3>
                   
-                  {/* Particles container */}
+                  {/* Particles container - always visible */}
                   <div className="absolute inset-0 w-full h-full">
                     <FloatingParticles isHovered={bandsHeadingHovered} />
                   </div>
