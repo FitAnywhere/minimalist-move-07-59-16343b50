@@ -46,50 +46,61 @@ const faqItems: FAQItem[] = [{
 
 const TargetAndFAQ = () => {
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef);
+  const targetSectionRef = useRef<HTMLElement>(null);
+  const faqSectionRef = useRef<HTMLElement>(null);
+  const isTargetInView = useInView(targetSectionRef);
+  const isFaqInView = useInView(faqSectionRef);
 
   const toggleAudience = (index: number) => {
     setActiveAudience(activeAudience === index ? null : index);
   };
 
-  return <section id="faq" ref={sectionRef} className="py-24 bg-inherit">
-      <div className="container mx-auto px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Target Audience */}
-          <div className={cn("text-center mb-20 transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-12")}>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-16 relative inline-block">
-              WHO WE BUILT THIS FOR
-              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
-            </h2>
-            
-            <div className="grid md:grid-cols-3 gap-8">
-              {targetAudiences.map((audience, index) => <div key={index} className={cn("rounded-2xl p-8 text-center group cursor-pointer transition-all duration-500", "bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl", "transform hover:-translate-y-2", isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12", activeAudience === index ? "border-yellow shadow-xl shadow-yellow/20" : "")} onClick={() => toggleAudience(index)} style={{
-              transitionDelay: `${index * 150}ms`
-            }}>
-                  <div className="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:bg-yellow transition-all duration-500 transform group-hover:scale-110">
-                    <audience.icon className="w-10 h-10 text-black group-hover:text-black transition-all duration-500" />
-                  </div>
-                  
-                  <h3 className="text-xl md:text-2xl font-bold mb-4 text-black">{audience.title}</h3>
-                  
-                  <p className="text-gray-700 transition-all duration-500 text-base md:text-lg">
-                    {audience.description}
-                  </p>
-                </div>)}
+  return (
+    <>
+      {/* Target Audience Section */}
+      <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className={cn("text-center mb-20 transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-12")}>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-16 relative inline-block">
+                WHO WE BUILT THIS FOR
+                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isTargetInView ? "scale-x-100" : "scale-x-0")}></span>
+              </h2>
+              
+              <div className="grid md:grid-cols-3 gap-8">
+                {targetAudiences.map((audience, index) => <div key={index} className={cn("rounded-2xl p-8 text-center group cursor-pointer transition-all duration-500", "bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl", "transform hover:-translate-y-2", isTargetInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12", activeAudience === index ? "border-yellow shadow-xl shadow-yellow/20" : "")} onClick={() => toggleAudience(index)} style={{
+                transitionDelay: `${index * 150}ms`
+              }}>
+                    <div className="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:bg-yellow transition-all duration-500 transform group-hover:scale-110">
+                      <audience.icon className="w-10 h-10 text-black group-hover:text-black transition-all duration-500" />
+                    </div>
+                    
+                    <h3 className="text-xl md:text-2xl font-bold mb-4 text-black">{audience.title}</h3>
+                    
+                    <p className="text-gray-700 transition-all duration-500 text-base md:text-lg">
+                      {audience.description}
+                    </p>
+                  </div>)}
+              </div>
             </div>
           </div>
-          
-          {/* FAQ Accordion */}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center mb-12 relative inline-block mx-auto w-full">
-              FREQUENTLY ASKED QUESTIONS
-              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
-            </h2>
+        </div>
+      </section>
+      
+      {/* FAQ Section */}
+      <section id="faq" ref={faqSectionRef} className="py-24 bg-inherit">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center mb-12 relative inline-block">
+                FREQUENTLY ASKED QUESTIONS
+                <span className={cn("absolute bottom-0 left-0 right-0 mx-auto h-1 bg-yellow-400 transform transition-transform duration-1000", isFaqInView ? "scale-x-100" : "scale-x-0")} style={{ width: '100%' }}></span>
+              </h2>
+            </div>
             
             <div className="max-w-3xl mx-auto">
               <Accordion type="single" collapsible className="w-full">
-                {faqItems.map((item, index) => <AccordionItem key={index} value={`item-${index}`} className={cn("mb-4 transition-all duration-300 rounded-lg overflow-hidden", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")} style={{
+                {faqItems.map((item, index) => <AccordionItem key={index} value={`item-${index}`} className={cn("mb-4 transition-all duration-300 rounded-lg overflow-hidden", isFaqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")} style={{
                 transitionDelay: `${index * 100}ms`
               }}>
                     <div className="border border-transparent hover:bg-gray-50/50 transition-all duration-300 rounded-lg
@@ -106,8 +117,9 @@ const TargetAndFAQ = () => {
             </div>
           </div>
         </div>
-      </div>
-    </section>;
+      </section>
+    </>
+  );
 };
 
 export default TargetAndFAQ;
