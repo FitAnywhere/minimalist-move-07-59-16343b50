@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -26,7 +25,6 @@ const LifestyleSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  // Default to no open feature
   const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [isMuted, setIsMuted] = useState(true);
@@ -38,11 +36,9 @@ const LifestyleSection = () => {
   });
 
   const handleFeatureClick = (index: number) => {
-    // Toggle feature - if clicking the open one, close it
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
 
-  // Video handling
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current;
@@ -56,19 +52,15 @@ const LifestyleSection = () => {
         setVideoError(true);
       };
 
-      // Add event listeners
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
 
-      // Try to play the video when in view
       if (isInView && !videoError) {
-        // Use a timeout to give browser a moment to process
         const playTimeout = setTimeout(() => {
           const playPromise = video.play();
           if (playPromise !== undefined) {
             playPromise.catch(error => {
               console.error("Video play error:", error);
-              // Only set error if it's not a user interaction error
               if (error.name !== 'NotAllowedError') {
                 setVideoError(true);
               }
@@ -78,7 +70,6 @@ const LifestyleSection = () => {
         return () => clearTimeout(playTimeout);
       }
 
-      // Cleanup
       return () => {
         video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('error', handleError);
@@ -86,7 +77,6 @@ const LifestyleSection = () => {
     }
   }, [isInView, videoError]);
 
-  // Toggle mute state
   const toggleMute = () => {
     if (videoRef.current) {
       const newMutedState = !isMuted;
@@ -96,7 +86,6 @@ const LifestyleSection = () => {
   };
 
   return <section ref={sectionRef} className="py-24 relative overflow-hidden">
-      {/* Dynamic Background with Parallax Effect */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         {Array.from({
         length: 20
@@ -114,11 +103,8 @@ const LifestyleSection = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className={cn("transition-all duration-1000 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
-            {/* Desktop: Rearranged layout with features and CTA on left, video on right */}
             <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
-              {/* Lifestyle Benefits + CTA - Left side on desktop */}
               <div className="space-y-6 w-full md:w-1/2 flex flex-col h-full justify-between">
-                {/* Title and intro section - centered vertically */}
                 <div className="space-y-4 text-center md:text-left mb-6 flex-grow-0">
                   <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
                     BECOME WORKOUT ADDICT
@@ -130,9 +116,7 @@ const LifestyleSection = () => {
                   </p>
                 </div>
                 
-                {/* Interactive feature boxes - middle content */}
                 <div className="space-y-6 flex-grow">
-                  {/* First feature box */}
                   <div 
                     className={cn(
                       "px-6 py-3 rounded-full cursor-pointer", 
@@ -180,7 +164,6 @@ const LifestyleSection = () => {
                     </div>
                   </div>
                   
-                  {/* Second feature box */}
                   <div 
                     className={cn(
                       "px-6 py-3 rounded-full cursor-pointer", 
@@ -228,7 +211,6 @@ const LifestyleSection = () => {
                     </div>
                   </div>
                   
-                  {/* Third feature box */}
                   <div 
                     className={cn(
                       "px-6 py-3 rounded-full cursor-pointer", 
@@ -277,32 +259,27 @@ const LifestyleSection = () => {
                   </div>
                 </div>
                 
-                {/* CTA Button and hint - bottom content */}
-                <div className="flex flex-col items-center md:items-start mt-8 flex-grow-0">
+                <div className="flex flex-col items-center mt-8 flex-grow-0">
                   <Button className={cn(
                     "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", 
                     "transition-all duration-300 transform hover:scale-105", 
                     "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", 
-                    "w-full max-w-xs md:max-w-sm text-center", 
+                    "w-auto max-w-fit text-center", 
                     "flex items-center justify-center space-x-2"
                   )}>
                     <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
                   </Button>
                   
-                  {/* Visual CTA hint */}
-                  <p className="text-sm text-gray-500 mt-2 text-center md:text-left">
+                  <p className="text-sm text-gray-500 mt-2 text-center">
                     Limited stock available
                   </p>
                 </div>
               </div>
               
-              {/* Video - Right side on desktop (replacing the phone image) */}
               <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full">
-                <div className="w-full max-w-xs md:max-w-none md:h-full perspective transition-transform duration-300">
+                <div className="w-full max-w-xs md:max-w-[90%] md:h-full perspective transition-transform duration-300">
                   <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
-                    {/* Video Container with Styling */}
                     <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl h-full">
-                      {/* Video with styling similar to ChampionSection */}
                       <video 
                         ref={videoRef} 
                         className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
@@ -317,7 +294,6 @@ const LifestyleSection = () => {
                         Your browser does not support the video tag.
                       </video>
                       
-                      {/* Sound toggle button */}
                       <div className="absolute bottom-3 right-3 z-10">
                         <Toggle 
                           aria-label={isMuted ? "Unmute video" : "Mute video"} 
@@ -341,7 +317,6 @@ const LifestyleSection = () => {
                         </Toggle>
                       </div>
                       
-                      {/* Pulse Border */}
                       <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
                     </div>
                   </div>
