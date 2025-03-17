@@ -1,45 +1,28 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame, Volume2, VolumeX } from 'lucide-react';
+import { Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Toggle } from '@/components/ui/toggle';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   const isInView = useInView(sectionRef);
   const isMobile = useIsMobile();
   const [isMuted, setIsMuted] = useState(true);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  const [animationState, setAnimationState] = useState({
-    line1: false,
-    line2: false,
-    line3: false,
-    coreText: false
-  });
 
-  // Trigger animations when section comes into view
+  // Animated underline effect
   useEffect(() => {
-    if (isInView) {
-      // Staggered animation for lines
-      setTimeout(() => setAnimationState(prev => ({
-        ...prev,
-        line1: true
-      })), 300);
-      setTimeout(() => setAnimationState(prev => ({
-        ...prev,
-        line2: true
-      })), 800);
-      setTimeout(() => setAnimationState(prev => ({
-        ...prev,
-        line3: true
-      })), 1300);
-      setTimeout(() => setAnimationState(prev => ({
-        ...prev,
-        coreText: true
-      })), 1800);
+    if (isInView && titleRef.current) {
+      setTimeout(() => {
+        titleRef.current?.classList.add('underline-animation');
+      }, 300);
     }
   }, [isInView]);
 
@@ -109,76 +92,111 @@ const ChampionSection = () => {
       videoRef.current.muted = newMutedState;
     }
   };
-  return <section id="champion" ref={sectionRef} className="">
+
+  return (
+    <section id="champion" ref={sectionRef} className="py-16">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Text Content */}
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <h2 className={cn("text-black font-bold transition-all duration-500 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10", "group hover:text-shadow-yellow")}>
-                  👊 UNLEASH YOUR INNER CHAMPION
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h2 ref={titleRef} className="text-black font-bold relative group">
+                  NEW FAVORITE WORKOUT
                 </h2>
                 
-                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-500 delay-200 transform", isInView ? "animate-bounce opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  The Most Addictive Workout You Didn't Know You Needed
+                <p className="text-2xl text-gray-800 font-medium">
+                  One move in and you're locked in.
                 </p>
               </div>
               
-              {/* Power Lines with Staggered Animation */}
-              <div className="space-y-5">
-                <div className={cn("flex items-center gap-2 transition-all duration-500 transform", animationState.line1 ? "opacity-100 translate-x-0 animate-[shake_0.5s_ease-in-out]" : "opacity-0 -translate-x-4")}>
-                  <p className="text-xl font-semibold">💥 Swing. Strike. Repeat.</p>
+              {/* Feature points with optimized spacing */}
+              <div className="space-y-3">
+                <div className="flex items-start gap-2">
+                  <span className="text-xl mt-0.5">🔥</span>
+                  <p className="text-lg">Your mind sharpens, your body follows</p>
                 </div>
                 
-                <div className={cn("flex items-center gap-2 transition-all duration-500 transform group", animationState.line2 ? "opacity-100 translate-x-0 animate-[shake_0.5s_ease-in-out]" : "opacity-0 -translate-x-4")}>
-                  <p className="text-xl font-semibold relative">
-                    🔥 Feel the rhythm. Get in the zone. Own your power.
-                    <span className="absolute inset-0 bg-gradient-to-r from-yellow-100/0 to-yellow-100/0 group-hover:from-yellow-400/20 group-hover:to-yellow-100/0 transition-all duration-500 -z-10 rounded"></span>
-                  </p>
+                <div className="flex items-start gap-2">
+                  <span className="text-xl mt-0.5">⚡</span>
+                  <p className="text-lg">Seamless, sleek, and built for your space</p>
                 </div>
                 
-                <div className={cn("flex items-center gap-2 transition-all duration-500 transform", animationState.line3 ? "opacity-100 translate-x-0 animate-[shake_0.5s_ease-in-out]" : "opacity-0 -translate-x-4")}>
-                  <p className="text-xl font-semibold">⚡ No setup. Just action.</p>
+                <div className="flex items-start gap-2">
+                  <span className="text-xl mt-0.5">⏳</span>
+                  <p className="text-lg">Minimal effort. Maximum impact</p>
                 </div>
               </div>
               
-              {/* Core Text */}
-              <p className={cn("text-lg text-gray-700 italic font-medium transition-all duration-700 transform", animationState.coreText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>This isn't just training. It's FUN.</p>
+              {/* Training tagline */}
+              <p className="text-lg text-gray-700 italic font-medium">
+                Training that fits your lifestyle. Exactly how it should be.
+              </p>
               
               {/* CTA Button */}
-              <div className={cn("transition-all duration-700 delay-500 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
-                <Button id="cta-button" className="bg-yellow hover:bg-yellow-dark text-black font-bold py-3 px-8 rounded-full text-lg 
-                  transition-all duration-300 transform hover:scale-105 hover:animate-[shake_0.3s_ease-in-out] 
-                  shadow-lg hover:shadow-xl active:scale-95">
+              <div>
+                <Button 
+                  id="cta-button" 
+                  className="bg-yellow hover:bg-yellow-dark text-black font-bold py-3 px-8 rounded-full text-lg 
+                    transition-all duration-300 transform hover:scale-105 hover:animate-[shake_0.3s_ease-in-out] 
+                    shadow-lg hover:shadow-xl active:scale-95"
+                >
                   <Flame className="mr-2 h-5 w-5" /> TRY IT NOW
                 </Button>
               </div>
             </div>
             
-            {/* Video Side with Sound Toggle */}
-            <div className={cn("relative perspective transition-all duration-700 transform", isInView ? "opacity-100 scale-100 animate-[shake_0.3s_ease-in-out]" : "opacity-0 scale-95")}>
-              <div className={cn("relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500", "hover:shadow-2xl hover:scale-[1.02] group")}>
+            {/* Video Side */}
+            <div className="relative perspective">
+              <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group">
                 {/* Video with better compatibility */}
-                <video ref={videoRef} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" playsInline muted={isMuted} autoPlay loop preload="auto" poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png">
+                <video 
+                  ref={videoRef} 
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
+                  playsInline 
+                  muted={isMuted} 
+                  autoPlay 
+                  loop 
+                  preload="auto" 
+                  poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png"
+                >
                   <source src="/0314 (3)(1).mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
                 
                 {/* Sound toggle button */}
                 <div className="absolute bottom-3 right-3 z-10">
-                  <Toggle aria-label={isMuted ? "Unmute video" : "Mute video"} className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center" pressed={!isMuted} onPressedChange={toggleMute}>
-                    {isMuted ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+                  <Toggle 
+                    aria-label={isMuted ? "Unmute video" : "Mute video"} 
+                    className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center" 
+                    pressed={!isMuted} 
+                    onPressedChange={toggleMute}
+                  >
+                    {isMuted ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                        <line x1="23" y1="9" x2="17" y2="15" />
+                        <line x1="17" y1="9" x2="23" y2="15" />
+                      </svg>
+                    )}
                   </Toggle>
                 </div>
                 
                 {/* Pulse Border */}
-                <div className={cn("absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse")} />
+                <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default ChampionSection;
