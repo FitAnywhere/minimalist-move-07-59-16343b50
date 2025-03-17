@@ -4,13 +4,7 @@ import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { ChevronRight, ChevronDown } from 'lucide-react';
 
 const features = [{
   title: "UNFOLD & GO",
@@ -33,6 +27,9 @@ const ProductIntro = () => {
     features: [false, false, false],
     finalLine: false
   });
+  // Default to no open feature
+  const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (isInView) {
@@ -69,6 +66,11 @@ const ProductIntro = () => {
     }
   }, [isInView]);
 
+  const handleFeatureClick = (index: number) => {
+    // Toggle feature - if clicking the open one, close it
+    setOpenFeatureIndex(openFeatureIndex === index ? null : index);
+  };
+
   return (
     <section id="product" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -90,39 +92,54 @@ const ProductIntro = () => {
               </div>
               
               <div className="space-y-5">
-                <Accordion type="single" collapsible className="w-full">
-                  {features.map((feature, index) => (
-                    <AccordionItem 
-                      key={index} 
-                      value={`item-${index}`}
-                      className={cn(
-                        "mb-3 transition-all duration-500 transform rounded-lg overflow-hidden", 
-                        animationState.features[index] ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4",
-                        "border border-yellow-100 data-[state=open]:border-yellow-300 data-[state=open]:bg-yellow-50"
-                      )}
-                      style={{
-                        transitionDelay: `${(index + 1) * 100}ms`
-                      }}
-                    >
-                      <AccordionTrigger 
+                {features.map((feature, index) => (
+                  <div 
+                    key={index}
+                    className={cn(
+                      "px-6 py-3 rounded-full cursor-pointer", 
+                      "transition-all duration-300 ease-in-out", 
+                      "shadow-md", 
+                      "transform",
+                      openFeatureIndex === index ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
+                      animationState.features[index] ? "opacity-100" : "opacity-0",
+                    )}
+                    style={{
+                      transitionDelay: `${(index + 1) * 100}ms`
+                    }} 
+                    onClick={() => handleFeatureClick(index)}
+                    onMouseEnter={() => setHoverIndex(index)} 
+                    onMouseLeave={() => setHoverIndex(null)}
+                  >
+                    <div className="flex justify-between items-center">
+                      <h4 className="text-lg font-semibold">
+                        {feature.title}
+                      </h4>
+                      
+                      <div 
                         className={cn(
-                          "px-4 py-3 hover:no-underline group transition-all duration-300",
-                          "hover:brightness-105 hover:shadow-md"
+                          "transition-all duration-200", 
+                          hoverIndex === index ? "transform translate-x-1" : ""
                         )}
                       >
-                        <div className="flex items-center">
-                          <span className="text-green-600 mr-2">✅</span>
-                          <span className="font-semibold text-base md:text-lg uppercase group-hover:text-shadow-yellow">
-                            {feature.title}
-                          </span>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="px-4 pb-3 pt-0 text-gray-600 text-sm">
+                        {openFeatureIndex === index ? 
+                          <ChevronDown className="w-5 h-5" /> : 
+                          <ChevronRight className="w-5 h-5" />
+                        }
+                      </div>
+                    </div>
+                    
+                    <div 
+                      className={cn(
+                        "overflow-hidden transition-all duration-300 ease-in-out",
+                        openFeatureIndex === index ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
+                      )}
+                    >
+                      <p className="text-gray-600">
                         {feature.description}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
               
               <p className={cn(
