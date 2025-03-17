@@ -61,6 +61,22 @@ const NavBar = () => {
     { name: "FAQ", href: "#faq", section: "FREQUENTLY ASKED QUESTIONS" }
   ];
 
+  const navigateToHome = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isHomePage) {
+      const heroElement = document.querySelector('#hero') || document.querySelector('main');
+      if (heroElement) {
+        window.scrollTo({
+          top: heroElement.getBoundingClientRect().top + window.scrollY - 100,
+          behavior: 'smooth'
+        });
+      }
+    } else {
+      navigate('/');
+    }
+    setIsOpen(false);
+  };
+
   return (
     <nav
       className={cn(
@@ -72,21 +88,7 @@ const NavBar = () => {
         <a 
           href="/"
           className="text-2xl font-bold tracking-tighter transition-all relative z-50"
-          onClick={(e) => {
-            e.preventDefault();
-            // Always navigate to home page "ALL YOU NEED" section
-            if (isHomePage) {
-              const heroElement = document.querySelector('#hero') || document.querySelector('main');
-              if (heroElement) {
-                window.scrollTo({
-                  top: heroElement.getBoundingClientRect().top + window.scrollY - 100,
-                  behavior: 'smooth'
-                });
-              }
-            } else {
-              navigate('/');
-            }
-          }}
+          onClick={navigateToHome}
         >
           <span>Fit</span>
           <span className="text-yellow">Anywhere</span>

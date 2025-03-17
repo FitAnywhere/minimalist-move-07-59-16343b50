@@ -27,7 +27,7 @@ const Index = () => {
               behavior: 'smooth'
             });
           }
-        }, 300); // Slight delay to ensure elements are rendered
+        }, 500); // Increased delay to ensure all elements are fully rendered
       }
     };
     
