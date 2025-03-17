@@ -1,73 +1,194 @@
-
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { Flame } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Toggle } from '@/components/ui/toggle';
 import { useInView } from '@/utils/animations';
-import { ArrowRight } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   const isInView = useInView(sectionRef);
-  
+  const isMobile = useIsMobile();
+  const [isMuted, setIsMuted] = useState(true);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+
+  // Animated underline effect
+  useEffect(() => {
+    if (isInView && titleRef.current) {
+      setTimeout(() => {
+        titleRef.current?.classList.add('underline-animation');
+      }, 300);
+    }
+  }, [isInView]);
+
+  // Button flicker effect
+  useEffect(() => {
+    const flickerInterval = setInterval(() => {
+      const button = document.getElementById('cta-button');
+      if (button) {
+        button.classList.add('opacity-90');
+        setTimeout(() => {
+          button.classList.remove('opacity-90');
+        }, 200);
+      }
+    }, 5000);
+    return () => clearInterval(flickerInterval);
+  }, []);
+
+  // Improved video handling with proper error handling
+  useEffect(() => {
+    if (videoRef.current) {
+      const video = videoRef.current;
+      const handleCanPlay = () => {
+        setIsVideoLoaded(true);
+        setVideoError(false);
+        console.log("Video can play now");
+      };
+      const handleError = (e: Event) => {
+        console.error("Video error:", e);
+        setVideoError(true);
+      };
+
+      // Add event listeners
+      video.addEventListener('canplay', handleCanPlay);
+      video.addEventListener('error', handleError);
+
+      // Try to play the video when in view
+      if (isInView && !videoError) {
+        // Use a timeout to give browser a moment to process
+        const playTimeout = setTimeout(() => {
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              console.error("Video play error:", error);
+              // Only set error if it's not a user interaction error
+              if (error.name !== 'NotAllowedError') {
+                setVideoError(true);
+              }
+            });
+          }
+        }, 300);
+        return () => clearTimeout(playTimeout);
+      }
+
+      // Cleanup
+      return () => {
+        video.removeEventListener('canplay', handleCanPlay);
+        video.removeEventListener('error', handleError);
+      };
+    }
+  }, [isInView, videoError]);
+
+  // Toggle mute state
+  const toggleMute = () => {
+    if (videoRef.current) {
+      const newMutedState = !isMuted;
+      setIsMuted(newMutedState);
+      videoRef.current.muted = newMutedState;
+    }
+  };
+
   return (
-    <section id="about" ref={sectionRef} className="py-20 bg-white overflow-hidden">
+    <section id="champion" ref={sectionRef} className="py-16">
       <div className="container mx-auto px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            {/* Video Column */}
-            <div className={cn(
-              "transform transition-all duration-1000", 
-              isInView ? "translate-x-0 opacity-100" : "-translate-x-20 opacity-0"
-            )}>
-              <div className="rounded-xl overflow-hidden shadow-lg relative">
-                <video 
-                  className="w-full h-auto" 
-                  autoPlay 
-                  muted 
-                  loop 
-                  playsInline
+        <div className="max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Text Content with adjusted spacing */}
+            <div className="space-y-6 flex flex-col justify-between h-full">
+              <div className="space-y-3">
+                <h2 ref={titleRef} className="text-black font-bold relative group">
+                  FAVORITE WORKOUT
+                </h2>
+                
+                <p className="text-2xl text-gray-800 font-medium">
+                  One move in and you're locked in.
+                </p>
+              </div>
+              
+              {/* Feature points - keeping original spacing */}
+              <div className="space-y-5">
+                <div className="flex items-start gap-2">
+                  <span className="text-xl mt-0.5">🔥</span>
+                  <p className="text-lg leading-relaxed">Mind sharpens, your body follows</p>
+                </div>
+                
+                <div className="flex items-start gap-2">
+                  <span className="text-xl mt-0.5">⚡</span>
+                  <p className="text-lg leading-relaxed">Designed for your space</p>
+                </div>
+                
+                <div className="flex items-start gap-2">
+                  <span className="text-xl mt-0.5">⏳</span>
+                  <p className="text-lg leading-relaxed">Minimal effort for maximum impact</p>
+                </div>
+              </div>
+              
+              {/* Training tagline with reduced spacing */}
+              <p className="text-lg text-gray-700 italic font-medium leading-relaxed mt-2">
+                Training that fits your lifestyle. Exactly how it should be.
+              </p>
+              
+              {/* CTA Button with reduced top spacing */}
+              <div className="mt-2">
+                <Button 
+                  id="cta-button" 
+                  className="bg-yellow hover:bg-yellow-dark text-black font-bold py-3 px-8 rounded-full text-lg 
+                    transition-all duration-300 transform hover:scale-105 hover:animate-[shake_0.3s_ease-in-out] 
+                    shadow-lg hover:shadow-xl active:scale-95"
                 >
-                  <source src="/321.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                  <Flame className="mr-2 h-5 w-5" /> TRY IT NOW
+                </Button>
               </div>
             </div>
             
-            {/* Content Column */}
-            <div className={cn(
-              "space-y-6 transition-all duration-1000 delay-300", 
-              isInView ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"
-            )}>
-              <div className="text-center md:text-left">
-                <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-                  FAVORITE WORKOUT
-                  <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform scale-x-100"></span>
-                </h2>
+            {/* Video Side */}
+            <div className="relative perspective">
+              <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group">
+                {/* Video with better compatibility */}
+                <video 
+                  ref={videoRef} 
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
+                  playsInline 
+                  muted={isMuted} 
+                  autoPlay 
+                  loop 
+                  preload="auto" 
+                  poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png"
+                >
+                  <source src="/0314 (3)(1).mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
                 
-                <div className="mt-8 space-y-4">
-                  <p className="text-lg md:text-xl text-gray-800">
-                    🔥 Mind sharpens, your body follows
-                  </p>
-                  <p className="text-lg md:text-xl text-gray-800">
-                    ⚡ Designed for your space
-                  </p>
-                  <p className="text-lg md:text-xl text-gray-800">
-                    ⏳ Minimal effort for maximum impact
-                  </p>
-                </div>
-                
-                <div className="mt-6 italic text-gray-700 text-lg">
-                  When time is limited, execution must be flawless.
-                </div>
-                
-                <div className="mt-8">
-                  <a 
-                    href="#order" 
-                    className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-6 py-3 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group"
+                {/* Sound toggle button */}
+                <div className="absolute bottom-3 right-3 z-10">
+                  <Toggle 
+                    aria-label={isMuted ? "Unmute video" : "Mute video"} 
+                    className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center" 
+                    pressed={!isMuted} 
+                    onPressedChange={toggleMute}
                   >
-                    GET YOUR BUNDLE NOW
-                    <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </a>
+                    {isMuted ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                        <line x1="23" y1="9" x2="17" y2="15" />
+                        <line x1="17" y1="9" x2="23" y2="15" />
+                      </svg>
+                    )}
+                  </Toggle>
                 </div>
+                
+                {/* Pulse Border */}
+                <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
             </div>
           </div>

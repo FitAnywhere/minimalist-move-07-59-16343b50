@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -79,10 +78,7 @@ const ProductIntro = () => {
             <div className="space-y-8 order-last md:order-first">
               {/* Section Title */}
               <div className="space-y-4">
-                <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block")}>
-                  OWN BOTH
-                  <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform scale-x-100"></span>
-                </h2>
+                <h2 className={cn("text-black font-bold tracking-wide transition-all duration-700 transform", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>OWN BOTH</h2>
                 
                 <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>Space is luxury & time is freedom</p>
                 
