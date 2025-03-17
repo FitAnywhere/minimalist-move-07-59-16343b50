@@ -5,7 +5,6 @@ import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useIsMobile } from '@/hooks/use-mobile';
-import FloatingParticles from './FloatingParticles';
 
 const bandsFeatures = [
   {
@@ -29,18 +28,12 @@ const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
   const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
   const [bulletPointsVisible, setBulletPointsVisible] = useState<boolean[]>([false, false, false]);
-  const [headingHovered, setHeadingHovered] = useState(false);
-  const [pulsing, setPulsing] = useState(false);
-  const [bandsHeadingHovered, setBandsHeadingHovered] = useState(false);
-  const [bandsPulsing, setBandsPulsing] = useState(false);
   
   const sectionRef = useRef<HTMLElement>(null);
   const trxVideoRef = useRef<HTMLDivElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
   const trxTextRef = useRef<HTMLDivElement>(null);
   const bandsTextRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const bandsHeadingRef = useRef<HTMLHeadingElement>(null);
   
   const isInView = useInView(sectionRef);
   const isVideoInView = useInView(trxVideoRef, {
@@ -85,45 +78,6 @@ const ProductTabs = () => {
 
   const areAllBandsFeaturesExpanded = () => {
     return bandsFeatures.every((_, index) => bandsExpandedFeatures[index]);
-  };
-
-  const handleHeadingHover = (isHovered: boolean) => {
-    setHeadingHovered(isHovered);
-    if (isHovered) {
-      setPulsing(true);
-      setTimeout(() => setPulsing(false), 300);
-    }
-  };
-
-  const handleBandsHeadingHover = (isHovered: boolean) => {
-    setBandsHeadingHovered(isHovered);
-    if (isHovered) {
-      setBandsPulsing(true);
-      setTimeout(() => setBandsPulsing(false), 300);
-    }
-  };
-
-  // Function to handle touch-based interaction for mobile devices
-  const handleHeadingTouch = () => {
-    if (isMobile) {
-      setHeadingHovered(true);
-      setPulsing(true);
-      setTimeout(() => {
-        setPulsing(false);
-        setHeadingHovered(false);
-      }, 1000);
-    }
-  };
-
-  const handleBandsHeadingTouch = () => {
-    if (isMobile) {
-      setBandsHeadingHovered(true);
-      setBandsPulsing(true);
-      setTimeout(() => {
-        setBandsPulsing(false);
-        setBandsHeadingHovered(false);
-      }, 1000);
-    }
   };
 
   return (
@@ -207,23 +161,15 @@ const ProductTabs = () => {
                   isTrxTextInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}>
                   <h3 
-                    ref={headingRef}
                     className={cn(
-                      "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700 relative z-10",
+                      "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700",
                       isTrxTextInView ? "scale-100" : "scale-95",
-                      "text-shadow-yellow" // Always applying the yellow shadow
+                      "text-shadow-yellow" // Still applying the yellow shadow
                     )}
                     style={{ letterSpacing: "1.2px", color: "#555" }}
-                    onMouseEnter={() => handleHeadingHover(true)}
-                    onMouseLeave={() => handleHeadingHover(false)}
-                    onTouchStart={handleHeadingTouch}
                   >
                     MOVE THE WAY YOUR BODY WAS BUILT TO
                   </h3>
-                  
-                  <div className="absolute inset-0 w-full h-full">
-                    <FloatingParticles isHovered={headingHovered} />
-                  </div>
                 </div>
                 
                 <div className="space-y-8 md:space-y-9 mt-8 relative z-10">
@@ -267,23 +213,15 @@ const ProductTabs = () => {
                   )}
                 >
                   <h3 
-                    ref={bandsHeadingRef}
                     className={cn(
-                      "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700 relative z-10",
+                      "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700",
                       isBandsTextInView ? "scale-100" : "scale-95",
-                      "text-shadow-yellow" // Always applying the yellow shadow
+                      "text-shadow-yellow" // Still applying the yellow shadow
                     )}
                     style={{ letterSpacing: "1.2px", color: "#555" }}
-                    onMouseEnter={() => handleBandsHeadingHover(true)}
-                    onMouseLeave={() => handleBandsHeadingHover(false)}
-                    onTouchStart={handleBandsHeadingTouch}
                   >
                     ADAPTIVE TRAINING FOR EVERY LEVEL
                   </h3>
-                  
-                  <div className="absolute inset-0 w-full h-full">
-                    <FloatingParticles isHovered={bandsHeadingHovered} className="enhanced-particles" />
-                  </div>
                 </div>
                 
                 <div className="space-y-6 mb-6 relative z-10">
@@ -336,3 +274,4 @@ const ProductTabs = () => {
 };
 
 export default ProductTabs;
+
