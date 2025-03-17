@@ -123,7 +123,7 @@ const BundleOffer = () => {
               </div>
               
               <div className="mt-3">
-                <Collapsible open={bonusSectionOpen} onOpenChange={setBonusSectionOpen} className="p-2 rounded-lg border border-yellow-100 transition-all duration-300">
+                <Collapsible open={bonusSectionOpen} onOpenChange={setBonusSectionOpen} className="p-2 rounded-lg border border-green-600 transition-all duration-300">
                   <div className="flex items-center justify-between">
                     <h3 className="text-xl font-bold">BONUSES:</h3>
                     <CollapsibleTrigger className="flex items-center text-sm text-blue-600 hover:text-blue-800 transition-colors">
@@ -132,11 +132,11 @@ const BundleOffer = () => {
                     </CollapsibleTrigger>
                   </div>
                   
-                  <CollapsibleContent className="mt-2 space-y-1.5 transition-all duration-300 ease-in-out">
-                    {bundleItems.filter(item => item.isBonus).map((item, index) => <div key={index} className="flex items-center justify-between p-1.5 rounded-lg bg-white transition-all hover:shadow-sm border border-yellow-50">
+                  <CollapsibleContent className="mt-2 space-y-3 transition-all duration-300 ease-in-out">
+                    {bundleItems.filter(item => item.isBonus).map((item, index) => <div key={index} className="flex items-center justify-between p-1.5 transition-all">
                         <div className="flex items-center gap-2">
                           <div className="flex-shrink-0">
-                            <div className="w-5 h-5 text-yellow-500 flex items-center justify-center">
+                            <div className="w-5 h-5 text-green-600 flex items-center justify-center">
                               <Gift className="w-4 h-4" />
                             </div>
                           </div>
