@@ -24,24 +24,8 @@ const bandsFeatures = [
   }
 ];
 
-const trxFeatures = [
-  {
-    title: "🌀 Adaptive Strength",
-    description: "Tilt, pull, or push. Your intensity, your rules."
-  }, 
-  {
-    title: "🌍 Gravity in Your Favor",
-    description: "No weights. No restrictions. Just pure movement."
-  }, 
-  {
-    title: "🌊 Seamless Motion",
-    description: "Full-body workouts with effortless control."
-  }
-];
-
 const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
-  const [trxExpandedFeatures, setTrxExpandedFeatures] = useState<Record<number, boolean>>({});
   const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
   
   const sectionRef = useRef<HTMLElement>(null);
@@ -56,22 +40,11 @@ const ProductTabs = () => {
     threshold: 0.3
   });
 
-  const toggleTrxFeature = (index: number) => {
-    setTrxExpandedFeatures(prev => ({
-      ...prev,
-      [index]: !prev[index]
-    }));
-  };
-
   const toggleBandsFeature = (index: number) => {
     setBandsExpandedFeatures(prev => ({
       ...prev,
       [index]: !prev[index]
     }));
-  };
-
-  const areAllTrxFeaturesExpanded = () => {
-    return trxFeatures.every((_, index) => trxExpandedFeatures[index]);
   };
 
   const areAllBandsFeaturesExpanded = () => {
@@ -120,84 +93,21 @@ const ProductTabs = () => {
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold mb-1 group transition-all duration-300">
-                    <span className="inline-flex items-center relative group-hover:text-yellow-600">
-                      EXPAND YOUR POWER
-                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></span>
-                    </span>
+                  <h3 className="text-2xl font-bold mb-1">
+                    MOVE THE WAY YOUR BODY WAS BUILT TO
                   </h3>
-                  <p className="text-lg text-gray-700 mb-4">Master your body. Move with purpose.</p>
                 </div>
                 
-                <div className="space-y-5">
-                  {trxFeatures.map((feature, index) => (
-                    <Collapsible 
-                      key={index} 
-                      className="w-full" 
-                      open={!!trxExpandedFeatures[index]} 
-                      onOpenChange={() => toggleTrxFeature(index)}
-                    >
-                      <div 
-                        className={cn(
-                          "transition-all duration-500 transform", 
-                          isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-                        )} 
-                        style={{
-                          transitionDelay: isInView ? `${index * 200}ms` : "0ms"
-                        }}
-                      >
-                        <div className="group relative">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-semibold group-hover:text-black relative">
-                              {feature.title}
-                              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
-                            </h4>
-                          </div>
-                        </div>
-                      </div>
-
-                      <CollapsibleContent className="space-y-4 pl-7 mb-3">
-                        <div 
-                          className={cn(
-                            "transition-all duration-500 opacity-0 translate-y-2", 
-                            trxExpandedFeatures[index] ? "opacity-100 translate-y-0" : ""
-                          )} 
-                          style={{
-                            transitionDelay: trxExpandedFeatures[index] ? `150ms` : "0ms"
-                          }}
-                        >
-                          <p className="text-gray-600 relative">
-                            {feature.description}
-                            <span className="absolute inset-0 bg-gradient-to-r from-yellow-50/0 to-yellow-50/0 hover:from-yellow-50 hover:to-yellow-50/0 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg -z-10"></span>
-                          </p>
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  ))}
-                </div>
-                
-                <div className="mt-4 font-medium text-gray-700 italic">
-                  No more crowded gyms. Just pure movement on your terms.
-                </div>
-                
-                <div className="mt-2">
-                  <button 
-                    onClick={() => {
-                      const allExpanded = areAllTrxFeaturesExpanded();
-                      const newState = !allExpanded;
-                      const updatedState: Record<number, boolean> = {};
-                      trxFeatures.forEach((_, index) => {
-                        updatedState[index] = newState;
-                      });
-                      setTrxExpandedFeatures(updatedState);
-                    }} 
-                    className="flex items-center text-sm font-medium text-gray-600 hover:text-black transition-colors"
-                  >
-                    {areAllTrxFeaturesExpanded() ? 
-                      <>Show Less <ChevronUp className="ml-1 w-4 h-4" /></> : 
-                      <>Show More <ChevronDown className="ml-1 w-4 h-4" /></>
-                    }
-                  </button>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-2">
+                    <p className="text-gray-700">🔹 No machines. No restrictions</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <p className="text-gray-700">🔹 Pull, push, or hold</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <p className="text-gray-700">🔹 Your intensity, your rules</p>
+                  </div>
                 </div>
               </div>
               
