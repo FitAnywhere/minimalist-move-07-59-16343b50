@@ -16,7 +16,6 @@ const ChampionSection = () => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
-  // Animated underline effect
   useEffect(() => {
     if (isInView && titleRef.current) {
       setTimeout(() => {
@@ -25,7 +24,6 @@ const ChampionSection = () => {
     }
   }, [isInView]);
 
-  // Button flicker effect
   useEffect(() => {
     const flickerInterval = setInterval(() => {
       const button = document.getElementById('cta-button');
@@ -39,7 +37,6 @@ const ChampionSection = () => {
     return () => clearInterval(flickerInterval);
   }, []);
 
-  // Improved video handling with proper error handling
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current;
@@ -53,19 +50,15 @@ const ChampionSection = () => {
         setVideoError(true);
       };
 
-      // Add event listeners
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
 
-      // Try to play the video when in view
       if (isInView && !videoError) {
-        // Use a timeout to give browser a moment to process
         const playTimeout = setTimeout(() => {
           const playPromise = video.play();
           if (playPromise !== undefined) {
             playPromise.catch(error => {
               console.error("Video play error:", error);
-              // Only set error if it's not a user interaction error
               if (error.name !== 'NotAllowedError') {
                 setVideoError(true);
               }
@@ -75,7 +68,6 @@ const ChampionSection = () => {
         return () => clearTimeout(playTimeout);
       }
 
-      // Cleanup
       return () => {
         video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('error', handleError);
@@ -83,7 +75,6 @@ const ChampionSection = () => {
     }
   }, [isInView, videoError]);
 
-  // Toggle mute state
   const toggleMute = () => {
     if (videoRef.current) {
       const newMutedState = !isMuted;
@@ -93,51 +84,47 @@ const ChampionSection = () => {
   };
 
   return (
-    <section id="champion" ref={sectionRef} className="py-16">
+    <section id="favorite-workout" ref={sectionRef} className="py-16 bg-white">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Text Content with adjusted spacing */}
             <div className="space-y-6 flex flex-col justify-between h-full">
-              <div className="space-y-3">
-                <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
+              <div className="space-y-3 text-left">
+                <h2 className="text-2xl md:text-3xl font-bold tracking-wide text-black relative inline-block mb-2">
                   FAVORITE WORKOUT
-                  <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
+                  <span className={cn("absolute bottom-0 left-0 w-16 h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
                 
-                <p className="text-2xl text-gray-800 font-medium">
+                <p className="text-lg text-gray-800 font-medium leading-relaxed mb-2">
                   One move in and you're locked in.
                 </p>
               </div>
               
-              {/* Feature points - keeping original spacing */}
-              <div className="space-y-5">
-                <div className="flex items-start gap-2">
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start gap-3 pl-4">
                   <span className="text-xl mt-0.5">🔥</span>
-                  <p className="text-lg leading-relaxed">Mind sharpens, your body follows</p>
+                  <p className="text-base md:text-lg leading-loose">Mind sharpens, your body follows</p>
                 </div>
                 
-                <div className="flex items-start gap-2">
+                <div className="flex items-start gap-3 pl-4">
                   <span className="text-xl mt-0.5">⚡</span>
-                  <p className="text-lg leading-relaxed">Designed for your space</p>
+                  <p className="text-base md:text-lg leading-loose">Designed for your space</p>
                 </div>
                 
-                <div className="flex items-start gap-2">
+                <div className="flex items-start gap-3 pl-4">
                   <span className="text-xl mt-0.5">⏳</span>
-                  <p className="text-lg leading-relaxed">Minimal effort for maximum impact</p>
+                  <p className="text-base md:text-lg leading-loose">Minimal effort for maximum impact</p>
                 </div>
               </div>
               
-              {/* Training tagline with reduced spacing */}
-              <p className="text-lg text-gray-700 italic font-medium leading-relaxed mt-2">
+              <p className="text-sm md:text-base text-gray-600 italic font-medium leading-loose mb-8">
                 Training that fits your lifestyle. Exactly how it should be.
               </p>
               
-              {/* CTA Button with reduced top spacing */}
-              <div className="mt-2">
+              <div>
                 <Button 
                   id="cta-button" 
-                  className="bg-yellow hover:bg-yellow-dark text-black font-bold py-3 px-8 rounded-full text-lg 
+                  className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 px-6 rounded-full text-lg 
                     transition-all duration-300 transform hover:scale-105 hover:animate-[shake_0.3s_ease-in-out] 
                     shadow-lg hover:shadow-xl active:scale-95"
                 >
@@ -146,10 +133,8 @@ const ChampionSection = () => {
               </div>
             </div>
             
-            {/* Video Side */}
             <div className="relative perspective">
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group">
-                {/* Video with better compatibility */}
                 <video 
                   ref={videoRef} 
                   className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
@@ -164,7 +149,6 @@ const ChampionSection = () => {
                   Your browser does not support the video tag.
                 </video>
                 
-                {/* Sound toggle button */}
                 <div className="absolute bottom-3 right-3 z-10">
                   <Toggle 
                     aria-label={isMuted ? "Unmute video" : "Mute video"} 
@@ -188,7 +172,6 @@ const ChampionSection = () => {
                   </Toggle>
                 </div>
                 
-                {/* Pulse Border */}
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
             </div>
