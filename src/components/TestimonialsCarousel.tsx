@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -19,7 +18,7 @@ const testimonials: Testimonial[] = [{
 }, {
   name: "Emily T.",
   role: "Fitness Beginner",
-  quote: "Your video library is golden. I never imagined how many exercises I can do using TRX and bands on PowerTower.",
+  quote: "Your video library is golden. I never imagined how many exercises I can do using TRX and BANDS.",
   video: "/bands.mp4"
 }, {
   name: "John D.",
@@ -82,17 +81,17 @@ const TestimonialsCarousel = () => {
               <div className="order-2 md:order-1 text-left flex flex-col justify-center">
                 <div className="backdrop-blur-md bg-white/80 shadow-md p-7 rounded-xl relative mb-6 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20" 
                   style={{ borderColor: '#444444' }}>
-                  <div className="text-gray-500 opacity-50 absolute left-4 top-4" style={{ color: '#666666' }}>
-                    <Quote className="h-10 w-10" />
+                  <div className="text-gray-500 opacity-50 absolute left-4 top-4 pt-1" style={{ color: '#666666' }}>
+                    <Quote className="h-8 w-8" />
                   </div>
                   
-                  <div className="flex mb-3 mt-4 animate-fade-in">
+                  <div className="flex mb-3 mt-6 animate-fade-in">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="h-5 w-5 text-yellow-400 mr-1" fill="#FFD700" />
                     ))}
                   </div>
                   
-                  <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-5 transition-all duration-500 pt-2 pl-2">
+                  <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-5 transition-all duration-500 pt-3 pl-2">
                     {currentTestimonial.quote}
                   </p>
                   
