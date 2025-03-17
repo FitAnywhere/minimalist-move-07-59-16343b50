@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Flame } from 'lucide-react';
@@ -98,11 +97,11 @@ const ChampionSection = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Text Content with increased line height */}
-            <div className="space-y-8 flex flex-col justify-between h-full">
-              <div className="space-y-4">
+            {/* Text Content with adjusted spacing */}
+            <div className="space-y-6 flex flex-col justify-between h-full">
+              <div className="space-y-3">
                 <h2 ref={titleRef} className="text-black font-bold relative group">
-                  NEW FAVORITE WORKOUT
+                  FAVORITE WORKOUT
                 </h2>
                 
                 <p className="text-2xl text-gray-800 font-medium">
@@ -110,7 +109,7 @@ const ChampionSection = () => {
                 </p>
               </div>
               
-              {/* Feature points with optimized spacing and updated text */}
+              {/* Feature points - keeping original spacing */}
               <div className="space-y-5">
                 <div className="flex items-start gap-2">
                   <span className="text-xl mt-0.5">🔥</span>
@@ -128,13 +127,13 @@ const ChampionSection = () => {
                 </div>
               </div>
               
-              {/* Training tagline */}
-              <p className="text-lg text-gray-700 italic font-medium leading-relaxed">
+              {/* Training tagline with reduced spacing */}
+              <p className="text-lg text-gray-700 italic font-medium leading-relaxed mt-2">
                 Training that fits your lifestyle. Exactly how it should be.
               </p>
               
-              {/* CTA Button */}
-              <div className="mt-auto">
+              {/* CTA Button with reduced top spacing */}
+              <div className="mt-2">
                 <Button 
                   id="cta-button" 
                   className="bg-yellow hover:bg-yellow-dark text-black font-bold py-3 px-8 rounded-full text-lg 
