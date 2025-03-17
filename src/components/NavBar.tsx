@@ -34,6 +34,8 @@ const NavBar = () => {
   }, [isOpen]);
 
   const handleNavLinkClick = (href: string) => {
+    setIsOpen(false); // Close mobile menu if open
+    
     if (isHomePage) {
       // Already on home page, just scroll to the section
       const element = document.querySelector(href);
@@ -50,8 +52,6 @@ const NavBar = () => {
       // Navigate to home page with the hash
       navigate(`/${href}`);
     }
-    
-    setIsOpen(false); // Close mobile menu if open
   };
 
   const navLinks = [
@@ -64,7 +64,8 @@ const NavBar = () => {
   const navigateToHome = (e: React.MouseEvent) => {
     e.preventDefault();
     if (isHomePage) {
-      const heroElement = document.querySelector('#hero') || document.querySelector('main');
+      // Explicitly target the hero section for "ALL YOU NEED"
+      const heroElement = document.querySelector('#hero');
       if (heroElement) {
         window.scrollTo({
           top: heroElement.getBoundingClientRect().top + window.scrollY - 100,
@@ -72,6 +73,7 @@ const NavBar = () => {
         });
       }
     } else {
+      // Navigate to home page without hash to go to the top (ALL YOU NEED section)
       navigate('/');
     }
     setIsOpen(false);

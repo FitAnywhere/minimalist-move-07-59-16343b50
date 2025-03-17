@@ -1,5 +1,6 @@
 
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
 import ProductIntro from '@/components/ProductIntro';
@@ -13,6 +14,9 @@ import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
 
 const Index = () => {
+  const location = useLocation();
+  const initialRenderRef = useRef(true);
+  
   // Add smooth scroll behavior for anchor links and handle URL hash on page load
   useEffect(() => {
     // Handle URL hash on initial load
@@ -27,7 +31,10 @@ const Index = () => {
               behavior: 'smooth'
             });
           }
-        }, 500); // Increased delay to ensure all elements are fully rendered
+        }, 700); // Increased delay to ensure all elements are fully rendered
+      } else if (location.state?.fromExternalPage) {
+        // If user just navigated from another page with no hash, go to top
+        window.scrollTo(0, 0);
       }
     };
     
@@ -59,7 +66,7 @@ const Index = () => {
     return () => {
       document.removeEventListener('click', handleAnchorClick);
     };
-  }, []);
+  }, [location]);
   
   return (
     <div className="overflow-x-hidden">

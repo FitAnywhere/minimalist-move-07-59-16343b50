@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -107,7 +108,7 @@ const TargetAndFAQ = () => {
         </div>
       </section>
       
-      {/* FAQ Section */}
+      {/* FAQ Section - Ensuring this has a proper ID for navigation */}
       <section id="faq" ref={faqSectionRef} className="py-24 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
