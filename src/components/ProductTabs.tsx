@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -190,7 +191,7 @@ const ProductTabs = () => {
                     className={cn(
                       "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700 relative z-10",
                       isTrxTextInView ? "scale-100" : "scale-95",
-                      pulsing ? "text-shadow-yellow" : ""
+                      "text-shadow-yellow" // Always applying the yellow shadow
                     )}
                     style={{ letterSpacing: "1.2px", color: "#555" }}
                     onMouseEnter={() => handleHeadingHover(true)}
@@ -199,7 +200,7 @@ const ProductTabs = () => {
                     MOVE THE WAY YOUR BODY WAS BUILT TO
                   </h3>
                   
-                  {/* Particles container */}
+                  {/* Particles container - always visible */}
                   <div className="absolute inset-0 w-full h-full">
                     <FloatingParticles isHovered={headingHovered} />
                   </div>
@@ -250,7 +251,7 @@ const ProductTabs = () => {
                     className={cn(
                       "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700 relative z-10",
                       isBandsTextInView ? "scale-100" : "scale-95",
-                      "text-shadow-yellow"
+                      "text-shadow-yellow" // Always applying the yellow shadow
                     )}
                     style={{ letterSpacing: "1.2px", color: "#555" }}
                     onMouseEnter={() => handleBandsHeadingHover(true)}
