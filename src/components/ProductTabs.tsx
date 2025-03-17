@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+
+import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Check, Zap, Globe, Feather, Waves, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
 import { useInView } from '@/utils/animations';
@@ -27,10 +28,12 @@ const bandsFeatures = [
 const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
   const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
+  const [bulletPointsVisible, setBulletPointsVisible] = useState<boolean[]>([false, false, false]);
   
   const sectionRef = useRef<HTMLElement>(null);
   const trxVideoRef = useRef<HTMLDivElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
+  const trxTextRef = useRef<HTMLDivElement>(null);
   
   const isInView = useInView(sectionRef);
   const isVideoInView = useInView(trxVideoRef, {
@@ -39,6 +42,28 @@ const ProductTabs = () => {
   const isBandsVideoInView = useInView(bandsVideoRef, {
     threshold: 0.3
   });
+  const isTrxTextInView = useInView(trxTextRef, {
+    threshold: 0.2
+  });
+
+  // Staggered animation for bullet points
+  useEffect(() => {
+    if (isTrxTextInView) {
+      const timers = [0, 200, 400].map((delay, index) => 
+        setTimeout(() => {
+          setBulletPointsVisible(prev => {
+            const newState = [...prev];
+            newState[index] = true;
+            return newState;
+          });
+        }, delay)
+      );
+      
+      return () => {
+        timers.forEach(timer => clearTimeout(timer));
+      };
+    }
+  }, [isTrxTextInView]);
 
   const toggleBandsFeature = (index: number) => {
     setBandsExpandedFeatures(prev => ({
@@ -94,22 +119,46 @@ const ProductTabs = () => {
             activeTab === 'trx' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20 hidden'
           )}>
             <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <h3 className="text-2xl font-bold mb-1">
-                    MOVE THE WAY YOUR BODY WAS BUILT TO
+              <div 
+                ref={trxTextRef} 
+                className={cn(
+                  "space-y-8 md:pr-6 transition-all duration-500",
+                  isTrxTextInView ? "opacity-100" : "opacity-0 translate-y-4"
+                )}
+              >
+                <div className={cn(
+                  "space-y-2 transition-all duration-700",
+                  isTrxTextInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}>
+                  <h3 className={cn(
+                    "text-2xl md:text-3xl font-extrabold mb-3 transition-all duration-500 leading-tight",
+                    isTrxTextInView ? "scale-100" : "scale-95"
+                  )}>
+                    <span className="relative group cursor-default">
+                      MOVE THE WAY YOUR BODY WAS BUILT TO
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 group-hover:w-full transition-all duration-700"></span>
+                    </span>
                   </h3>
                 </div>
                 
-                <div className="space-y-3">
-                  <div className="flex items-start gap-2">
-                    <p className="text-gray-700">🔹 No machines. No restrictions</p>
+                <div className="space-y-6 md:space-y-7 mt-6">
+                  <div className={cn(
+                    "flex items-start gap-3 transition-all duration-700 transform",
+                    bulletPointsVisible[0] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  )}>
+                    <p className="text-gray-700 text-lg hover:scale-[1.02] transition-transform duration-300">🔹 No machines. No restrictions</p>
                   </div>
-                  <div className="flex items-start gap-2">
-                    <p className="text-gray-700">🔹 Pull, push, or hold</p>
+                  <div className={cn(
+                    "flex items-start gap-3 transition-all duration-700 transform",
+                    bulletPointsVisible[1] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  )}>
+                    <p className="text-gray-700 text-lg hover:scale-[1.02] transition-transform duration-300">🔹 Pull, push, or hold</p>
                   </div>
-                  <div className="flex items-start gap-2">
-                    <p className="text-gray-700">🔹 Your intensity, your rules</p>
+                  <div className={cn(
+                    "flex items-start gap-3 transition-all duration-700 transform",
+                    bulletPointsVisible[2] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  )}>
+                    <p className="text-gray-700 text-lg hover:scale-[1.02] transition-transform duration-300">🔹 Your intensity, your rules</p>
                   </div>
                 </div>
               </div>
