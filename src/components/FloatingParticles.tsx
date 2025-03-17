@@ -53,9 +53,13 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
       ? Math.floor(dimensions.width / 10) // More particles for enhanced version
       : Math.floor(dimensions.width / 15);
     
+    // Adjust particle count for mobile screens to improve performance
+    const isMobile = window.innerWidth < 768;
+    const adjustedParticleCount = isMobile ? particleCount * 0.7 : particleCount;
+    
     const particles: Particle[] = [];
 
-    for (let i = 0; i < particleCount; i++) {
+    for (let i = 0; i < adjustedParticleCount; i++) {
       particles.push({
         id: i,
         x: Math.random() * dimensions.width,
@@ -93,17 +97,18 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
         ctx.beginPath();
         
         // Create glow effect
-        if (isEnhanced) {
+        if (isEnhanced || isHovered) {
+          const glowIntensity = isHovered ? particle.glow * 1.4 : particle.glow;
           const gradient = ctx.createRadialGradient(
             particle.x, particle.y, 0,
-            particle.x, particle.y, particle.size * particle.glow
+            particle.x, particle.y, particle.size * glowIntensity
           );
           gradient.addColorStop(0, particle.color);
           gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
           
           ctx.fillStyle = gradient;
-          ctx.globalAlpha = particle.opacity * 0.4;
-          ctx.arc(particle.x, particle.y, particle.size * particle.glow, 0, Math.PI * 2);
+          ctx.globalAlpha = particle.opacity * (isHovered ? 0.5 : 0.4);
+          ctx.arc(particle.x, particle.y, particle.size * glowIntensity, 0, Math.PI * 2);
           ctx.fill();
         }
         
@@ -111,7 +116,7 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fillStyle = particle.color;
-        ctx.globalAlpha = particle.opacity;
+        ctx.globalAlpha = particle.opacity * (isHovered ? 1.2 : 1);
         ctx.fill();
       });
 
@@ -135,12 +140,15 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
           newY += distanceY * gatherSpeed;
           
           // Add subtle pulse effect when hovered
-          const pulseFactor = Math.sin(Date.now() * 0.003) * 0.2;
-          newX += distanceX * pulseFactor * 0.005;
-          newY += distanceY * pulseFactor * 0.005;
+          const pulseFactor = Math.sin(Date.now() * 0.003) * 0.25;
+          newX += distanceX * pulseFactor * 0.007;
+          newY += distanceY * pulseFactor * 0.007;
         } else {
-          // Normal floating movement
-          const floatSpeed = isEnhanced ? 0.6 : 0.5;
+          // Normal floating movement - gentler on mobile for performance
+          const isMobile = window.innerWidth < 768;
+          const floatSpeed = isMobile ? 
+            (isEnhanced ? 0.4 : 0.3) : 
+            (isEnhanced ? 0.6 : 0.5);
           
           newX += Math.sin(Date.now() * 0.001 * particle.speed) * floatSpeed;
           newY += Math.cos(Date.now() * 0.001 * particle.speed) * floatSpeed;
@@ -152,16 +160,26 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
           if (newY > dimensions.height) newY = 0;
         }
 
+        // More dynamic size and opacity changes when hovered
+        const sizePulse = isHovered ? 
+          Math.sin(Date.now() * 0.004) * 0.15 : 
+          Math.sin(Date.now() * 0.002) * 0.1;
+          
+        const opacityPulse = isHovered ?
+          Math.sin(Date.now() * 0.006) * 0.25 : 
+          Math.sin(Date.now() * 0.004) * 0.2;
+
         return {
           ...particle,
           x: newX,
           y: newY,
-          // Subtle size pulsing for enhanced version
-          size: isEnhanced ? 
-            particle.size * (1 + Math.sin(Date.now() * 0.002) * 0.1) : 
+          // Enhanced size pulsing
+          size: isEnhanced || isHovered ? 
+            particle.size * (1 + sizePulse) : 
             particle.size,
-          opacity: isEnhanced && isHovered ? 
-            particle.opacity * (1 + Math.sin(Date.now() * 0.004) * 0.2) : 
+          // Enhanced opacity pulsing
+          opacity: (isEnhanced || isHovered) ? 
+            particle.opacity * (1 + opacityPulse) : 
             particle.opacity
         };
       });
@@ -178,12 +196,20 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
     };
   }, [dimensions, isHovered, isEnhanced]);
 
+  // Use touch events for mobile compatibility
+  const handleTouch = (event: React.TouchEvent) => {
+    event.preventDefault();
+    // The hover effect will be handled by the parent component
+  };
+
   return (
     <canvas 
       ref={canvasRef} 
       className={cn("absolute inset-0 pointer-events-none z-0", className)}
       width={dimensions.width}
       height={dimensions.height}
+      onTouchStart={handleTouch}
+      onTouchEnd={handleTouch}
     />
   );
 };

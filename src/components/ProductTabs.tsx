@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -102,6 +103,29 @@ const ProductTabs = () => {
     }
   };
 
+  // Function to handle touch-based interaction for mobile devices
+  const handleHeadingTouch = () => {
+    if (isMobile) {
+      setHeadingHovered(true);
+      setPulsing(true);
+      setTimeout(() => {
+        setPulsing(false);
+        setHeadingHovered(false);
+      }, 1000);
+    }
+  };
+
+  const handleBandsHeadingTouch = () => {
+    if (isMobile) {
+      setBandsHeadingHovered(true);
+      setBandsPulsing(true);
+      setTimeout(() => {
+        setBandsPulsing(false);
+        setBandsHeadingHovered(false);
+      }, 1000);
+    }
+  };
+
   return (
     <section id="accessories" ref={sectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
@@ -192,6 +216,7 @@ const ProductTabs = () => {
                     style={{ letterSpacing: "1.2px", color: "#555" }}
                     onMouseEnter={() => handleHeadingHover(true)}
                     onMouseLeave={() => handleHeadingHover(false)}
+                    onTouchStart={handleHeadingTouch}
                   >
                     MOVE THE WAY YOUR BODY WAS BUILT TO
                   </h3>
@@ -251,8 +276,9 @@ const ProductTabs = () => {
                     style={{ letterSpacing: "1.2px", color: "#555" }}
                     onMouseEnter={() => handleBandsHeadingHover(true)}
                     onMouseLeave={() => handleBandsHeadingHover(false)}
+                    onTouchStart={handleBandsHeadingTouch}
                   >
-                    FOR EVERY LEVEL
+                    ADAPTIVE TRAINING FOR EVERY LEVEL
                   </h3>
                   
                   <div className="absolute inset-0 w-full h-full">
@@ -310,4 +336,3 @@ const ProductTabs = () => {
 };
 
 export default ProductTabs;
-
