@@ -80,8 +80,9 @@ const TestimonialsCarousel = () => {
           <div className="relative">
             <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
               <div className="order-2 md:order-1 text-left flex flex-col justify-center">
-                <div className="backdrop-blur-md bg-white/80 shadow-md p-7 rounded-xl relative mb-6 transition-all duration-300 hover:shadow-lg border-t-2 border-blue-400 slide-in-right">
-                  <div className="text-blue-500 opacity-30 absolute left-4 top-4">
+                <div className="backdrop-blur-md bg-white/80 shadow-md p-7 rounded-xl relative mb-6 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20" 
+                  style={{ borderColor: '#444444' }}>
+                  <div className="text-gray-500 opacity-50 absolute left-4 top-4" style={{ color: '#666666' }}>
                     <Quote className="h-10 w-10" />
                   </div>
                   
@@ -104,7 +105,7 @@ const TestimonialsCarousel = () => {
                 </div>
                 
                 <div className="flex space-x-3 mt-4 justify-center md:justify-start">
-                  {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-4 h-4 bg-blue-400 rounded-full" : "w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
+                  {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-4 h-4 bg-gray-800 rounded-full" : "w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} style={{ backgroundColor: index === activeIndex ? '#444444' : '' }} />)}
                 </div>
               </div>
               
@@ -115,11 +116,11 @@ const TestimonialsCarousel = () => {
               </div>
             </div>
             
-            <button onClick={prevTestimonial} className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-blue-400" aria-label="Previous testimonial">
+            <button onClick={prevTestimonial} className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-gray-800" aria-label="Previous testimonial" style={{ borderColor: '#444444' }}>
               <ChevronLeft className="w-5 h-5 text-gray-800" />
             </button>
             
-            <button onClick={nextTestimonial} className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-blue-400" aria-label="Next testimonial">
+            <button onClick={nextTestimonial} className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-gray-800" aria-label="Next testimonial" style={{ borderColor: '#444444' }}>
               <ChevronRight className="w-5 h-5 text-gray-800" />
             </button>
           </div>
