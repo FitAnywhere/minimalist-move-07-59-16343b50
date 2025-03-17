@@ -31,9 +31,8 @@ const NavBar = () => {
 
   const navLinks = [
     { name: "PowerTower", href: "#product" },
-    { name: "Accessories", href: "#accessories" },
-    { name: "Bundle", href: "#bundle" },
-    { name: "Testimonials", href: "#testimonials" },
+    { name: "BoxFun", href: "#lifestyle" },
+    { name: "Testimonials", href: "#reviews" },
     { name: "FAQ", href: "#faq" }
   ];
 
@@ -68,7 +67,7 @@ const NavBar = () => {
 
         <div className="hidden md:block">
           <a
-            href="#order"
+            href="#bundle"
             className="bg-black text-white px-6 py-2.5 rounded-full font-medium text-sm hover:bg-black/90 transition-all hover-lift"
           >
             ORDER NOW
@@ -113,7 +112,7 @@ const NavBar = () => {
             ))}
             <div className="pt-4">
               <a
-                href="#order"
+                href="#bundle"
                 className="block w-full bg-black text-white text-center px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-all"
                 onClick={() => setIsOpen(false)}
               >
