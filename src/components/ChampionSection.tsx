@@ -98,9 +98,9 @@ const ChampionSection = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Text Content */}
-            <div className="space-y-6">
-              <div className="space-y-2">
+            {/* Text Content with increased line height */}
+            <div className="space-y-8 flex flex-col justify-between h-full">
+              <div className="space-y-4">
                 <h2 ref={titleRef} className="text-black font-bold relative group">
                   NEW FAVORITE WORKOUT
                 </h2>
@@ -110,31 +110,31 @@ const ChampionSection = () => {
                 </p>
               </div>
               
-              {/* Feature points with optimized spacing */}
-              <div className="space-y-3">
+              {/* Feature points with optimized spacing and updated text */}
+              <div className="space-y-5">
                 <div className="flex items-start gap-2">
                   <span className="text-xl mt-0.5">🔥</span>
-                  <p className="text-lg">Your mind sharpens, your body follows</p>
+                  <p className="text-lg leading-relaxed">Mind sharpens, your body follows</p>
                 </div>
                 
                 <div className="flex items-start gap-2">
                   <span className="text-xl mt-0.5">⚡</span>
-                  <p className="text-lg">Seamless, sleek, and built for your space</p>
+                  <p className="text-lg leading-relaxed">Designed for your space</p>
                 </div>
                 
                 <div className="flex items-start gap-2">
                   <span className="text-xl mt-0.5">⏳</span>
-                  <p className="text-lg">Minimal effort. Maximum impact</p>
+                  <p className="text-lg leading-relaxed">Minimal effort for maximum impact</p>
                 </div>
               </div>
               
               {/* Training tagline */}
-              <p className="text-lg text-gray-700 italic font-medium">
+              <p className="text-lg text-gray-700 italic font-medium leading-relaxed">
                 Training that fits your lifestyle. Exactly how it should be.
               </p>
               
               {/* CTA Button */}
-              <div>
+              <div className="mt-auto">
                 <Button 
                   id="cta-button" 
                   className="bg-yellow hover:bg-yellow-dark text-black font-bold py-3 px-8 rounded-full text-lg 
