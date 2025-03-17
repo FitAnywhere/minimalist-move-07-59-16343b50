@@ -1,8 +1,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame, Video, Clock, Dumbbell, Globe } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
 import { Toggle } from '@/components/ui/toggle';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -14,11 +13,6 @@ import {
   DialogClose,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { 
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -44,20 +38,6 @@ const ChampionSection = () => {
       }, 300);
     }
   }, [isInView]);
-
-  // Button flicker effect
-  useEffect(() => {
-    const flickerInterval = setInterval(() => {
-      const button = document.getElementById('cta-button');
-      if (button) {
-        button.classList.add('opacity-90');
-        setTimeout(() => {
-          button.classList.remove('opacity-90');
-        }, 200);
-      }
-    }, 5000);
-    return () => clearInterval(flickerInterval);
-  }, []);
 
   // Improved video handling with proper error handling
   useEffect(() => {
@@ -165,8 +145,8 @@ const ChampionSection = () => {
                     <Video className="h-5 w-5 text-yellow" />
                   </div>
                   <div>
-                    <p className="text-lg leading-relaxed">
-                      <span className="font-bold">Expert-Guided Workouts</span> – Follow top-tier trainers who know exactly how to push your limits.
+                    <p className="text-lg font-bold">
+                      EXPERT GUIDED
                     </p>
                   </div>
                 </div>
@@ -182,8 +162,8 @@ const ChampionSection = () => {
                     <Clock className="h-5 w-5 text-yellow" />
                   </div>
                   <div>
-                    <p className="text-lg leading-relaxed">
-                      <span className="font-bold">20-Minute Power Sessions</span> – Minimal time. Maximum transformation.
+                    <p className="text-lg font-bold">
+                      20 MINUTE SESSIONS
                     </p>
                   </div>
                 </div>
@@ -199,8 +179,8 @@ const ChampionSection = () => {
                     <Dumbbell className="h-5 w-5 text-yellow" />
                   </div>
                   <div>
-                    <p className="text-lg leading-relaxed">
-                      <span className="font-bold">Adapts to You</span> – Beginner? Pro? The program scales with you—no plateau, just progress.
+                    <p className="text-lg font-bold">
+                      ADAPTS TO YOU
                     </p>
                   </div>
                 </div>
@@ -216,8 +196,8 @@ const ChampionSection = () => {
                     <Globe className="h-5 w-5 text-yellow" />
                   </div>
                   <div>
-                    <p className="text-lg leading-relaxed">
-                      <span className="font-bold">Anytime. Anywhere.</span> – Your workouts move with you. No gym. No limits.
+                    <p className="text-lg font-bold">
+                      ANYTIME, ANYWHERE
                     </p>
                   </div>
                 </div>
@@ -227,20 +207,6 @@ const ChampionSection = () => {
               <p className="text-lg text-gray-700 italic font-medium leading-relaxed mt-2">
                 Training that fits your lifestyle. Exactly how it should be.
               </p>
-              
-              {/* CTA Button with reduced top spacing */}
-              <div className="mt-2">
-                <Button 
-                  id="cta-button" 
-                  className="bg-yellow hover:bg-yellow-dark text-black font-bold py-3 px-8 rounded-full text-lg 
-                    transition-all duration-300 transform hover:scale-105 hover:animate-pulse 
-                    shadow-lg hover:shadow-[0_0_25px_rgba(255,215,0,0.6)] 
-                    active:scale-95"
-                  onClick={() => setShowLibraryAccess(true)}
-                >
-                  <Flame className="mr-2 h-5 w-5" /> UNLOCK MY TRAINING
-                </Button>
-              </div>
             </div>
             
             {/* Video Side */}
@@ -287,8 +253,7 @@ const ChampionSection = () => {
                 
                 {/* Play Full Video Button (centered) */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <Button 
-                    variant="outline"
+                  <button 
                     className="bg-black/50 hover:bg-black/70 text-white border-white border-2 rounded-full px-6 py-5 
                       transition-all duration-300 transform hover:scale-105"
                     onClick={() => setIsPlayingFullVideo(true)}
@@ -297,7 +262,7 @@ const ChampionSection = () => {
                       <Video className="h-5 w-5" />
                       <span>Play Full Video</span>
                     </div>
-                  </Button>
+                  </button>
                 </div>
                 
                 {/* Pulse Border */}
@@ -388,12 +353,12 @@ const ChampionSection = () => {
                 </div>
 
                 <div className="pt-2">
-                  <Button
+                  <button
                     type="submit"
                     className="w-full bg-yellow hover:bg-yellow-dark text-black font-bold py-3 rounded-md"
                   >
                     Get Instant Access
-                  </Button>
+                  </button>
                 </div>
 
                 <p className="text-xs text-gray-500 text-center mt-2">
