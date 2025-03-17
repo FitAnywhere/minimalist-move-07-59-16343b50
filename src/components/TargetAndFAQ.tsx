@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -41,8 +40,8 @@ const faqItems: FAQItem[] = [{
   question: "When will my FitAnywhere bundle be delivered?",
   answer: "We ship to the Netherlands on a weekly basis. Place your order now to be included in the next scheduled shipment."
 }, {
-  question: "Are the resistance bands suitable for beginners?",
-  answer: "Perfect for all levels. Supportive for beginners, resistance for constant gains."
+  question: "Is the PowerTower suitable for beginners?",
+  answer: "Absolutely. Combined with TRX and BANDS, it offers scalable resistance and support, making it ideal for all fitness levels."
 }];
 
 const TargetAndFAQ = () => {
