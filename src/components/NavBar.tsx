@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Menu, X } from 'lucide-react';
@@ -54,10 +55,10 @@ const NavBar = () => {
   };
 
   const navLinks = [
-    { name: "PowerTower", href: "#product" },
-    { name: "BoxFun", href: "#lifestyle" },
-    { name: "Testimonials", href: "#reviews" },
-    { name: "FAQ", href: "#faq" }
+    { name: "PowerTower", href: "#product", section: "OWN BOTH" },
+    { name: "BoxFun", href: "#lifestyle", section: "BECOME WORKOUT ADDICT" },
+    { name: "Testimonials", href: "#reviews", section: "WHY THEY LOVE IT?" },
+    { name: "FAQ", href: "#faq", section: "FREQUENTLY ASKED QUESTIONS" }
   ];
 
   return (
