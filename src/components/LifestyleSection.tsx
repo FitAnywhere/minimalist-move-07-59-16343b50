@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -93,7 +94,7 @@ const LifestyleSection = () => {
     }
   };
 
-  return <section ref={sectionRef} className="py-16 relative overflow-hidden">
+  return <section ref={sectionRef} className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         {Array.from({
         length: 20
@@ -111,9 +112,9 @@ const LifestyleSection = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className={cn("transition-all duration-1000 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
-            <div className="flex flex-col md:flex-row gap-12 items-center mb-8">
+            <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
               <div className="space-y-6 w-full md:w-1/2 flex flex-col h-full justify-between">
-                <div className="space-y-4 text-center md:text-left mb-2 flex-grow-0">
+                <div className="space-y-4 text-center md:text-left mb-6 flex-grow-0">
                   <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
                     BECOME WORKOUT ADDICT
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
@@ -124,7 +125,7 @@ const LifestyleSection = () => {
                   </p>
                 </div>
                 
-                <div className="space-y-4 flex-grow mt-2">
+                <div className="space-y-6 flex-grow">
                   <div 
                     className={cn(
                       "px-6 py-3 rounded-full cursor-pointer", 
@@ -267,22 +268,20 @@ const LifestyleSection = () => {
                   </div>
                 </div>
                 
-                <div className="flex justify-center mt-6 flex-grow-0">
-                  <div className="flex flex-col items-center">
-                    <Button className={cn(
-                      "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", 
-                      "transition-all duration-300 transform hover:scale-105", 
-                      "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", 
-                      "w-auto max-w-fit text-center", 
-                      "flex items-center justify-center space-x-2"
-                    )}>
-                      <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
-                    </Button>
-                    
-                    <p className="text-sm text-gray-500 mt-2 text-center">
-                      Limited stock available
-                    </p>
-                  </div>
+                <div className="flex flex-col items-center mt-8 flex-grow-0">
+                  <Button className={cn(
+                    "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", 
+                    "transition-all duration-300 transform hover:scale-105", 
+                    "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", 
+                    "w-auto max-w-fit text-center", 
+                    "flex items-center justify-center space-x-2"
+                  )}>
+                    <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
+                  </Button>
+                  
+                  <p className="text-sm text-gray-500 mt-2 text-center">
+                    Limited stock available
+                  </p>
                 </div>
               </div>
               
@@ -332,8 +331,11 @@ const LifestyleSection = () => {
                   </div>
                 </div>
                 
-                {/* Specifications button below video - centered */}
-                <div className="flex justify-center w-full mt-4">
+                {/* Specifications button below video */}
+                <div className={cn(
+                  "mt-4 transition-all duration-700 transform", 
+                  isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                )}>
                   <Button 
                     variant="outline" 
                     className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all"
