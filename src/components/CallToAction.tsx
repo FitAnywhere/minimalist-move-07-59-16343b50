@@ -1,9 +1,7 @@
-
 import { useRef } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 const CallToAction = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
@@ -11,7 +9,6 @@ const CallToAction = () => {
 
   // Set up parallax effect
   useParallax(backgroundRef, 0.05);
-  
   return <section id="order" ref={sectionRef} className="relative py-24 bg-black text-white overflow-hidden">
       {/* Parallax Background */}
       <div ref={backgroundRef} className="absolute inset-0 opacity-30">
@@ -36,12 +33,11 @@ const CallToAction = () => {
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
               
-              <p className="mt-6 text-sm text-white/60">Limited units available in 2025</p>
+              <p className="mt-6 text-sm text-white/60">For B2B partnerships and bulk orders, contact us.</p>
             </div>
           </div>
         </div>
       </div>
     </section>;
 };
-
 export default CallToAction;
