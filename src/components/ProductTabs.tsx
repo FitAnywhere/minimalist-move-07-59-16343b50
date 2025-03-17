@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Check, Zap, Globe, Feather, Waves, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -59,7 +60,10 @@ const ProductTabs = () => {
             "text-center mb-12 transition-all duration-700", 
             isInView ? "opacity-100" : "opacity-0 translate-y-8"
           )}>
-            <h2 className="text-black">MAXIMIZE YOUR EXPERIENCE</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
+              MAXIMIZE YOUR EXPERIENCE
+              <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform scale-x-100"></span>
+            </h2>
             
           </div>
           
