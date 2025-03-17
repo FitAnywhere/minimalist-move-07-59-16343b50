@@ -6,20 +6,17 @@ import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-// New structured features with hidden subtext
 const features = [{
-  title: "Unfold & go.",
-  description: "No tools, no installation—just pure movement."
+  title: "UNFOLD & GO",
+  description: "No tools, no installation"
 }, {
-  title: "Seamless design.",
-  description: "Folds away when you're done. Effortless. Invisible."
+  title: "MODERN DESIGN",
+  description: "Folds away when you're done"
 }, {
-  title: "Built to last.",
-  description: "Precision-crafted. Strong. Elegant. Just like you."
-}, {
-  title: "Endless potential.",
-  description: "One station. Infinite possibilities. No limits."
+  title: "INFINITE POSSIBILITIES",
+  description: "One station without limits"
 }];
+
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -28,14 +25,12 @@ const ProductIntro = () => {
     title: false,
     subtitle: false,
     paragraph: false,
-    features: [false, false, false, false],
+    features: [false, false, false],
     finalLine: false
   });
 
-  // Trigger staggered animations when section comes into view
   useEffect(() => {
     if (isInView) {
-      // Staggered animation for text elements
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         title: true
@@ -49,7 +44,6 @@ const ProductIntro = () => {
         paragraph: true
       })), 1300);
 
-      // Staggered animation for feature points
       features.forEach((_, index) => {
         setTimeout(() => {
           setAnimationState(prev => {
@@ -63,71 +57,106 @@ const ProductIntro = () => {
         }, 1800 + index * 250);
       });
 
-      // Final line animation
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         finalLine: true
       })), 3000);
     }
   }, [isInView]);
-  return <section id="product" ref={containerRef} className="py-16 bg-white">
+
+  return (
+    <section id="product" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6 items-center">
-            {/* Text Content Column - Left side */}
             <div className="space-y-8 order-last md:order-first">
-              {/* Section Title */}
               <div className="space-y-4">
-                <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block", 
+                  animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   OWN BOTH
-                  <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
+                  <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
+                    animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
                 
-                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>Space is luxury & time is freedom</p>
-                
-                
+                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", 
+                  animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                  Space is luxury & time is freedom
+                </p>
               </div>
               
-              {/* Feature Points with Toggle */}
               <div className="space-y-5">
-                <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-4">
-                  {features.map((feature, index) => <div key={index} className={cn("transition-all duration-500 transform", animationState.features[index] ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4")} style={{
-                  transitionDelay: `${(index + 1) * 100}ms`
-                }}>
-                      <Card className={cn("p-4 rounded-lg bg-white border border-yellow-100 hover:shadow-md transition-all duration-300", "hover:-translate-y-1 hover:border-yellow-300 group")}>
-                        <h4 className="font-semibold text-base md:text-lg group-hover:text-shadow-yellow">
-                          {feature.title}
-                        </h4>
-                        <CollapsibleContent className="pt-2 text-gray-600 text-sm">
-                          {feature.description}
-                        </CollapsibleContent>
-                      </Card>
-                    </div>)}
+                <Collapsible 
+                  open={isOpen} 
+                  onOpenChange={setIsOpen} 
+                  className="space-y-4"
+                >
+                  <div className="grid grid-cols-1 gap-4">
+                    {features.map((feature, index) => (
+                      <div 
+                        key={index} 
+                        className={cn(
+                          "transition-all duration-500 transform", 
+                          animationState.features[index] ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+                        )} 
+                        style={{
+                          transitionDelay: `${(index + 1) * 100}ms`
+                        }}
+                      >
+                        <Card 
+                          className={cn(
+                            "p-4 rounded-lg bg-white border border-yellow-100",
+                            "transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-yellow-300 group"
+                          )}
+                        >
+                          <h4 className="font-semibold text-base md:text-lg uppercase group-hover:text-shadow-yellow">
+                            ✅ {feature.title}
+                          </h4>
+                          <CollapsibleContent 
+                            className="pt-2 text-gray-600 text-sm transition-all duration-300 ease-in-out"
+                          >
+                            {feature.description}
+                          </CollapsibleContent>
+                        </Card>
+                      </div>
+                    ))}
+                  </div>
                   
-                  <div className="flex justify-center">
+                  <div className="flex justify-center mt-4">
                     <CollapsibleTrigger asChild>
-                      <Button variant="outline" size="sm" className="mt-2 border-yellow-200 hover:border-yellow-400 hover:bg-yellow-50">
-                        {isOpen ? <>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="mt-2 border-yellow-200 hover:border-yellow-400 hover:bg-yellow-50 transition-colors duration-300"
+                      >
+                        {isOpen ? (
+                          <>
                             <ChevronUp className="h-4 w-4 mr-2" />
                             Show Less
-                          </> : <>
+                          </>
+                        ) : (
+                          <>
                             <ChevronDown className="h-4 w-4 mr-2" />
                             See More
-                          </>}
+                          </>
+                        )}
                       </Button>
                     </CollapsibleTrigger>
                   </div>
                 </Collapsible>
               </div>
               
-              {/* Final Line */}
-              <p className={cn("font-medium text-lg italic text-gray-800 transition-all duration-700 transform", animationState.finalLine ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
+              <p className={cn(
+                "font-medium text-lg italic text-gray-800 transition-all duration-700 transform", 
+                animationState.finalLine ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+              )}>
                 Train when you want. Where you want. Without compromise.
               </p>
             </div>
             
-            {/* Video Column - Right side (unchanged) */}
-            <div className={cn("flex justify-center items-center transition-all duration-700 h-full order-first md:order-last", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
+            <div className={cn(
+              "flex justify-center items-center transition-all duration-700 h-full order-first md:order-last", 
+              isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
+            )}>
               <div className="w-full max-w-[70%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
                 <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
                   <source src="/home-360-tb.mp4" type="video/mp4" />
@@ -138,6 +167,8 @@ const ProductIntro = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default ProductIntro;
