@@ -60,7 +60,9 @@ const Index = () => {
       <ProductIntro />
       <ProductTabs />
       <ChampionSection />
-      <LifestyleSection />
+      <div id="lifestyle">
+        <LifestyleSection />
+      </div>
       <BundleOffer />
       <TestimonialsCarousel />
       <TargetAndFAQ />

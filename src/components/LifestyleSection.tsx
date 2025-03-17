@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -115,7 +114,7 @@ const LifestyleSection = () => {
             <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
               <div className="space-y-6 w-full md:w-1/2 flex flex-col h-full justify-between">
                 <div className="space-y-4 text-center md:text-left mb-6 flex-grow-0">
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
+                  <h2 id="become-workout-addict" className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
                     BECOME WORKOUT ADDICT
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                   </h2>
@@ -332,7 +331,6 @@ const LifestyleSection = () => {
                   </div>
                 </div>
                 
-                {/* Specifications button positioned below the video, centered in right column */}
                 <div className={cn(
                   "mt-6 w-full flex justify-center transition-all duration-700 transform", 
                   isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
