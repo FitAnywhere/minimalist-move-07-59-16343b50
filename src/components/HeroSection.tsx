@@ -25,10 +25,9 @@ const HeroSection = () => {
           {/* Mobile Layout (Stack: Headline > Video > Subheadline > CTA) */}
           {isMobile && <div className="text-center order-1 w-full space-y-6">
               {/* Headline with animated underline */}
-              <h1 ref={headlineRef} className={cn("text-4xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+              <h1 ref={headlineRef} className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <span className="relative inline-block">
-                  BREAK FREE &
-                  TRAIN YOUR WAY
+                  ALL YOU NEED
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                 </span>
               </h1>
