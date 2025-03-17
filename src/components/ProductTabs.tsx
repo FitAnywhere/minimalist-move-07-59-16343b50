@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -58,7 +57,6 @@ const ProductTabs = () => {
   
   const isMobile = useIsMobile();
 
-  // Staggered animation for bullet points
   useEffect(() => {
     if (isTrxTextInView) {
       const timers = [0, 200, 400].map((delay, index) => 
@@ -150,7 +148,6 @@ const ProductTabs = () => {
               "grid gap-8 items-center",
               isMobile ? "grid-cols-1" : "md:grid-cols-2"
             )}>
-              {/* Video section - conditionally ordered based on viewport */}
               <div 
                 ref={trxVideoRef} 
                 className={cn(
@@ -173,7 +170,6 @@ const ProductTabs = () => {
                 />
               </div>
               
-              {/* Text section - conditionally ordered based on viewport */}
               <div 
                 ref={trxTextRef} 
                 className={cn(
@@ -200,7 +196,6 @@ const ProductTabs = () => {
                     MOVE THE WAY YOUR BODY WAS BUILT TO
                   </h3>
                   
-                  {/* Particles container - always visible */}
                   <div className="absolute inset-0 w-full h-full">
                     <FloatingParticles isHovered={headingHovered} />
                   </div>
@@ -257,12 +252,11 @@ const ProductTabs = () => {
                     onMouseEnter={() => handleBandsHeadingHover(true)}
                     onMouseLeave={() => handleBandsHeadingHover(false)}
                   >
-                    ADAPTIVE TRAINING FOR EVERY LEVEL
+                    FOR EVERY LEVEL
                   </h3>
                   
-                  {/* Particles container - always visible */}
                   <div className="absolute inset-0 w-full h-full">
-                    <FloatingParticles isHovered={bandsHeadingHovered} />
+                    <FloatingParticles isHovered={bandsHeadingHovered} className="enhanced-particles" />
                   </div>
                 </div>
                 
@@ -316,3 +310,4 @@ const ProductTabs = () => {
 };
 
 export default ProductTabs;
+

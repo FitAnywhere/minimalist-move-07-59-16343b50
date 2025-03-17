@@ -10,6 +10,7 @@ interface Particle {
   speed: number;
   opacity: number;
   color: string;
+  glow: number;
 }
 
 interface FloatingParticlesProps {
@@ -25,7 +26,10 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const particlesRef = useRef<Particle[]>([]);
   const animationRef = useRef<number | null>(null);
-  const colors = ['#FEF7CD', '#FEC6A1', '#E5DEFF', '#FFDEE2'];
+  
+  // Enhanced color palette for a more refined look
+  const colors = ['#FEF7CD', '#FEC6A1', '#E5DEFF', '#FFDEE2', '#FFE098', '#FFF4B0'];
+  const isEnhanced = className?.includes('enhanced-particles');
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -44,8 +48,11 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
 
-    // Initialize particles
-    const particleCount = Math.floor(dimensions.width / 15); // Adjust based on width
+    // Initialize particles with more variety for enhanced version
+    const particleCount = isEnhanced 
+      ? Math.floor(dimensions.width / 10) // More particles for enhanced version
+      : Math.floor(dimensions.width / 15);
+    
     const particles: Particle[] = [];
 
     for (let i = 0; i < particleCount; i++) {
@@ -53,10 +60,11 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
         id: i,
         x: Math.random() * dimensions.width,
         y: Math.random() * dimensions.height,
-        size: Math.random() * 2 + 1,
+        size: Math.random() * (isEnhanced ? 2.5 : 2) + (isEnhanced ? 0.8 : 1),
         speed: Math.random() * 0.5 + 0.1,
-        opacity: Math.random() * 0.5 + 0.2,
-        color: colors[Math.floor(Math.random() * colors.length)]
+        opacity: Math.random() * 0.5 + (isEnhanced ? 0.3 : 0.2),
+        color: colors[Math.floor(Math.random() * colors.length)],
+        glow: isEnhanced ? Math.random() * 5 + 2 : Math.random() * 3 + 1
       });
     }
 
@@ -68,7 +76,7 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [dimensions.width, dimensions.height]);
+  }, [dimensions.width, dimensions.height, isEnhanced]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -81,7 +89,25 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
       ctx.clearRect(0, 0, dimensions.width, dimensions.height);
       
       particlesRef.current.forEach(particle => {
-        // Drawing
+        // Drawing with enhanced glow
+        ctx.beginPath();
+        
+        // Create glow effect
+        if (isEnhanced) {
+          const gradient = ctx.createRadialGradient(
+            particle.x, particle.y, 0,
+            particle.x, particle.y, particle.size * particle.glow
+          );
+          gradient.addColorStop(0, particle.color);
+          gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+          
+          ctx.fillStyle = gradient;
+          ctx.globalAlpha = particle.opacity * 0.4;
+          ctx.arc(particle.x, particle.y, particle.size * particle.glow, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        
+        // Draw particle core
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fillStyle = particle.color;
@@ -102,12 +128,22 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
           // Move particles toward center when hovered
           const distanceX = centerX - particle.x;
           const distanceY = centerY - particle.y;
-          newX += distanceX * 0.01;
-          newY += distanceY * 0.01;
+          
+          // Enhanced gather effect with slight pulsing
+          const gatherSpeed = isEnhanced ? 0.015 : 0.01;
+          newX += distanceX * gatherSpeed;
+          newY += distanceY * gatherSpeed;
+          
+          // Add subtle pulse effect when hovered
+          const pulseFactor = Math.sin(Date.now() * 0.003) * 0.2;
+          newX += distanceX * pulseFactor * 0.005;
+          newY += distanceY * pulseFactor * 0.005;
         } else {
           // Normal floating movement
-          newX += Math.sin(Date.now() * 0.001 * particle.speed) * 0.5;
-          newY += Math.cos(Date.now() * 0.001 * particle.speed) * 0.5;
+          const floatSpeed = isEnhanced ? 0.6 : 0.5;
+          
+          newX += Math.sin(Date.now() * 0.001 * particle.speed) * floatSpeed;
+          newY += Math.cos(Date.now() * 0.001 * particle.speed) * floatSpeed;
           
           // Boundary check
           if (newX < 0) newX = dimensions.width;
@@ -120,6 +156,13 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
           ...particle,
           x: newX,
           y: newY,
+          // Subtle size pulsing for enhanced version
+          size: isEnhanced ? 
+            particle.size * (1 + Math.sin(Date.now() * 0.002) * 0.1) : 
+            particle.size,
+          opacity: isEnhanced && isHovered ? 
+            particle.opacity * (1 + Math.sin(Date.now() * 0.004) * 0.2) : 
+            particle.opacity
         };
       });
 
@@ -133,7 +176,7 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [dimensions, isHovered]);
+  }, [dimensions, isHovered, isEnhanced]);
 
   return (
     <canvas 
