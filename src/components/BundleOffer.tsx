@@ -25,12 +25,12 @@ const bundleItems: BundleItem[] = [{
   description: "Professional TRX-style trainer",
   isBonus: false
 }, {
-  name: "Bands Set",
-  price: "€69.99",
+  name: "BANDS",
+  price: "€129.99",
   description: "Activate every muscle",
   isBonus: false
 }, {
-  name: "FREE Video Library",
+  name: "FREE Training Library",
   price: "€240/year",
   description: "Your personal trainer, on-demand",
   isBonus: true
@@ -68,9 +68,9 @@ const BundleOffer = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
-  const totalValue = 1839.96;
+  const totalValue = 1899.95;
   const yourPrice = 990;
-  const savings = totalValue - yourPrice;
+  const savingsPercentage = 47.89;
   
   return (
     <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-0 mx-0 my-0 bg-inherit">
@@ -168,7 +168,7 @@ const BundleOffer = () => {
                     <div className="flex justify-between items-center">
                       <span className="text-gray-700">Total Value:</span>
                       <span className="font-semibold text-lg line-through text-gray-500">
-                        {isInView ? <CountUp start={0} end={totalValue} duration={2.5} decimals={2} prefix="€" separator="," /> : "€1,839.96"}
+                        {isInView ? <CountUp start={0} end={totalValue} duration={2.5} decimals={2} prefix="€" separator="," /> : "€1,899.95"}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -180,7 +180,7 @@ const BundleOffer = () => {
                     <div className="flex justify-between items-center pt-2 border-t border-gray-200">
                       <span className="font-medium">You Save:</span>
                       <span className="font-bold text-lg text-green-600">
-                        {isInView ? <CountUp start={0} end={savings} duration={2.5} decimals={2} prefix="€" separator="," /> : "€849.96"}
+                        {isInView ? <CountUp start={0} end={savingsPercentage} duration={2} decimals={2} suffix="%" /> : "47.89%"}
                       </span>
                     </div>
                   </CollapsibleContent>
