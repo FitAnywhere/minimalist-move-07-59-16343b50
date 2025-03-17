@@ -6,6 +6,8 @@ import { useInView } from '@/utils/animations';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import FloatingParticles from './FloatingParticles';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const bandsFeatures = [
   {
@@ -29,11 +31,14 @@ const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
   const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
   const [bulletPointsVisible, setBulletPointsVisible] = useState<boolean[]>([false, false, false]);
+  const [headingHovered, setHeadingHovered] = useState(false);
+  const [pulsing, setPulsing] = useState(false);
   
   const sectionRef = useRef<HTMLElement>(null);
   const trxVideoRef = useRef<HTMLDivElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
   const trxTextRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   
   const isInView = useInView(sectionRef);
   const isVideoInView = useInView(trxVideoRef, {
@@ -45,6 +50,8 @@ const ProductTabs = () => {
   const isTrxTextInView = useInView(trxTextRef, {
     threshold: 0.2
   });
+  
+  const isMobile = useIsMobile();
 
   // Staggered animation for bullet points
   useEffect(() => {
@@ -74,6 +81,14 @@ const ProductTabs = () => {
 
   const areAllBandsFeaturesExpanded = () => {
     return bandsFeatures.every((_, index) => bandsExpandedFeatures[index]);
+  };
+
+  const handleHeadingHover = (isHovered: boolean) => {
+    setHeadingHovered(isHovered);
+    if (isHovered) {
+      setPulsing(true);
+      setTimeout(() => setPulsing(false), 300);
+    }
   };
 
   return (
@@ -118,30 +133,66 @@ const ProductTabs = () => {
             "transition-all duration-500", 
             activeTab === 'trx' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20 hidden'
           )}>
-            <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className={cn(
+              "grid gap-8 items-center",
+              isMobile ? "grid-cols-1" : "md:grid-cols-2"
+            )}>
+              {/* Video section - conditionally ordered based on viewport */}
+              <div 
+                ref={trxVideoRef} 
+                className={cn(
+                  "rounded-2xl overflow-hidden transition-all duration-700", 
+                  isVideoInView ? "shadow-[0_0_20px_rgba(255,215,0,0.2)]" : "shadow-lg", 
+                  isVideoInView ? "scale-[1.02]" : "scale-100",
+                  isMobile ? "order-1" : "order-2"
+                )}
+              >
+                <video 
+                  src="/trx.mp4" 
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline 
+                  className={cn(
+                    "w-full h-full object-cover transition-transform duration-1000", 
+                    isVideoInView ? "scale-[1.05]" : "scale-100"
+                  )} 
+                />
+              </div>
+              
+              {/* Text section - conditionally ordered based on viewport */}
               <div 
                 ref={trxTextRef} 
                 className={cn(
                   "space-y-8 md:pr-6 transition-all duration-500",
-                  isTrxTextInView ? "opacity-100" : "opacity-0 translate-y-4"
+                  isTrxTextInView ? "opacity-100" : "opacity-0 translate-y-4",
+                  isMobile ? "order-2" : "order-1"
                 )}
               >
                 <div className={cn(
-                  "space-y-2 transition-all duration-700",
+                  "relative space-y-2 transition-all duration-700",
                   isTrxTextInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}>
-                  <h3 className={cn(
-                    "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700",
-                    isTrxTextInView ? "scale-100" : "scale-95"
-                  )}>
-                    <span className="relative group cursor-default">
-                      MOVE THE WAY YOUR BODY WAS BUILT TO
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 group-hover:w-full transition-all duration-700"></span>
-                    </span>
+                  <h3 
+                    ref={headingRef}
+                    className={cn(
+                      "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700 relative z-10",
+                      isTrxTextInView ? "scale-100" : "scale-95",
+                      pulsing ? "text-shadow-yellow" : ""
+                    )}
+                    onMouseEnter={() => handleHeadingHover(true)}
+                    onMouseLeave={() => handleHeadingHover(false)}
+                  >
+                    MOVE THE WAY YOUR BODY WAS BUILT TO
                   </h3>
+                  
+                  {/* Particles container */}
+                  <div className="absolute inset-0 w-full h-full">
+                    <FloatingParticles isHovered={headingHovered} />
+                  </div>
                 </div>
                 
-                <div className="space-y-8 md:space-y-9 mt-8">
+                <div className="space-y-8 md:space-y-9 mt-8 relative z-10">
                   <div className={cn(
                     "flex items-start gap-3 transition-all duration-700 transform",
                     bulletPointsVisible[0] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -161,27 +212,6 @@ const ProductTabs = () => {
                     <p className="text-gray-700 text-lg font-medium uppercase hover:scale-[1.02] transition-transform duration-300">🔹 YOUR INTENSITY. YOUR RULES.</p>
                   </div>
                 </div>
-              </div>
-              
-              <div 
-                ref={trxVideoRef} 
-                className={cn(
-                  "rounded-2xl overflow-hidden transition-all duration-700", 
-                  isVideoInView ? "shadow-[0_0_20px_rgba(255,215,0,0.2)]" : "shadow-lg", 
-                  isVideoInView ? "scale-[1.02]" : "scale-100"
-                )}
-              >
-                <video 
-                  src="/trx.mp4" 
-                  autoPlay 
-                  muted 
-                  loop 
-                  playsInline 
-                  className={cn(
-                    "w-full h-full object-cover transition-transform duration-1000", 
-                    isVideoInView ? "scale-[1.05]" : "scale-100"
-                  )} 
-                />
               </div>
             </div>
           </div>
