@@ -131,7 +131,7 @@ const ProductTabs = () => {
                   isTrxTextInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}>
                   <h3 className={cn(
-                    "text-2xl md:text-3xl font-extrabold mb-3 transition-all duration-500 leading-tight",
+                    "text-xl md:text-2xl font-semibold mb-3 transition-all duration-500 leading-tight tracking-wider text-gray-700",
                     isTrxTextInView ? "scale-100" : "scale-95"
                   )}>
                     <span className="relative group cursor-default">
@@ -141,24 +141,24 @@ const ProductTabs = () => {
                   </h3>
                 </div>
                 
-                <div className="space-y-6 md:space-y-7 mt-6">
+                <div className="space-y-8 md:space-y-9 mt-8">
                   <div className={cn(
                     "flex items-start gap-3 transition-all duration-700 transform",
                     bulletPointsVisible[0] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                   )}>
-                    <p className="text-gray-700 text-lg hover:scale-[1.02] transition-transform duration-300">🔹 No machines. No restrictions</p>
+                    <p className="text-gray-700 text-lg font-medium uppercase hover:scale-[1.02] transition-transform duration-300">🔹 NO MACHINES. NO RESTRICTIONS.</p>
                   </div>
                   <div className={cn(
                     "flex items-start gap-3 transition-all duration-700 transform",
                     bulletPointsVisible[1] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                   )}>
-                    <p className="text-gray-700 text-lg hover:scale-[1.02] transition-transform duration-300">🔹 Pull, push, or hold</p>
+                    <p className="text-gray-700 text-lg font-medium uppercase hover:scale-[1.02] transition-transform duration-300">🔹 PULL, PUSH, OR HOLD.</p>
                   </div>
                   <div className={cn(
                     "flex items-start gap-3 transition-all duration-700 transform",
                     bulletPointsVisible[2] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                   )}>
-                    <p className="text-gray-700 text-lg hover:scale-[1.02] transition-transform duration-300">🔹 Your intensity, your rules</p>
+                    <p className="text-gray-700 text-lg font-medium uppercase hover:scale-[1.02] transition-transform duration-300">🔹 YOUR INTENSITY. YOUR RULES.</p>
                   </div>
                 </div>
               </div>
