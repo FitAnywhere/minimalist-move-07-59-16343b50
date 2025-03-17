@@ -1,21 +1,17 @@
-
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ChevronDown, Briefcase, Clock, Dumbbell } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-
 interface FAQItem {
   question: string;
   answer: string;
 }
-
 interface TargetAudience {
   icon: React.ElementType;
   title: string;
   description: string;
 }
-
 const targetAudiences: TargetAudience[] = [{
   icon: Briefcase,
   title: "DRIVEN ACHIEVERS",
@@ -29,7 +25,6 @@ const targetAudiences: TargetAudience[] = [{
   title: "WELLNESS SEEKERS",
   description: "For those who see fitness as a lifelong asset."
 }];
-
 const faqItems: FAQItem[] = [{
   question: "How easy is the PowerTower to set up?",
   answer: "Unfold and lock in place. Done in under 2 minutes. No tools, no drilling."
@@ -43,20 +38,16 @@ const faqItems: FAQItem[] = [{
   question: "Are the resistance bands suitable for beginners?",
   answer: "Perfect for all levels. Supportive for beginners, resistance for constant gains."
 }];
-
 const TargetAndFAQ = () => {
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
   const targetSectionRef = useRef<HTMLElement>(null);
   const faqSectionRef = useRef<HTMLElement>(null);
   const isTargetInView = useInView(targetSectionRef);
   const isFaqInView = useInView(faqSectionRef);
-
   const toggleAudience = (index: number) => {
     setActiveAudience(activeAudience === index ? null : index);
   };
-
-  return (
-    <>
+  return <>
       {/* Target Audience Section */}
       <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
         <div className="container mx-auto px-6">
@@ -88,13 +79,15 @@ const TargetAndFAQ = () => {
       </section>
       
       {/* FAQ Section */}
-      <section id="faq" ref={faqSectionRef} className="py-24 bg-inherit">
+      <section id="faq" ref={faqSectionRef} className="py-24 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center mb-12 relative inline-block">
                 FREQUENTLY ASKED QUESTIONS
-                <span className={cn("absolute bottom-0 left-0 right-0 mx-auto h-1 bg-yellow-400 transform transition-transform duration-1000", isFaqInView ? "scale-x-100" : "scale-x-0")} style={{ width: '100%' }}></span>
+                <span className={cn("absolute bottom-0 left-0 right-0 mx-auto h-1 bg-yellow-400 transform transition-transform duration-1000", isFaqInView ? "scale-x-100" : "scale-x-0")} style={{
+                width: '100%'
+              }}></span>
               </h2>
             </div>
             
@@ -118,8 +111,6 @@ const TargetAndFAQ = () => {
           </div>
         </div>
       </section>
-    </>
-  );
+    </>;
 };
-
 export default TargetAndFAQ;
