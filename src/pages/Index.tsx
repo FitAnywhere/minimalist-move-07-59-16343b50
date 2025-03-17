@@ -114,9 +114,7 @@ const Index = () => {
       <div id="reviews">
         <TestimonialsCarousel />
       </div>
-      <div id="faq">
-        <TargetAndFAQ />
-      </div>
+      <TargetAndFAQ />
       <CallToAction />
       <Footer />
     </div>

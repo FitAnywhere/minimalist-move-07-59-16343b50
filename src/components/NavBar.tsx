@@ -40,13 +40,15 @@ const NavBar = () => {
       // Already on home page, just scroll to the section
       const element = document.querySelector(href);
       if (element) {
-        window.scrollTo({
-          top: element.getBoundingClientRect().top + window.scrollY - 100,
-          behavior: 'smooth'
-        });
-        
-        // Update URL without scrolling
-        history.pushState(null, '', href);
+        setTimeout(() => {
+          window.scrollTo({
+            top: element.getBoundingClientRect().top + window.scrollY - 100,
+            behavior: 'smooth'
+          });
+          
+          // Update URL without scrolling
+          history.pushState(null, '', href);
+        }, 100);
       }
     } else {
       // Navigate to home page with the hash and state that indicates we're coming from an external page

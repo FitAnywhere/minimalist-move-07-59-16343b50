@@ -48,7 +48,7 @@ const faqItems: FAQItem[] = [{
 const TargetAndFAQ = () => {
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
   const targetSectionRef = useRef<HTMLElement>(null);
-  const faqSectionRef = useRef<HTMLElement>(null);
+  const faqSectionRef = useRef<HTMLDivElement>(null);
   const isTargetInView = useInView(targetSectionRef);
   const isFaqInView = useInView(faqSectionRef);
   
@@ -58,7 +58,7 @@ const TargetAndFAQ = () => {
   
   return (
     <>
-      {/* Target Audience Section - Now with "target" ID */}
+      {/* Target Audience Section */}
       <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
@@ -109,9 +109,9 @@ const TargetAndFAQ = () => {
         </div>
       </section>
       
-      {/* FAQ Section - Making sure this has a proper ID for navigation */}
-      <section ref={faqSectionRef} className="py-24 bg-gray-50">
-        <div id="faq" className="container mx-auto px-6">
+      {/* FAQ Section - Now with a proper ID directly on the section element */}
+      <section id="faq" ref={faqSectionRef} className="py-24 bg-gray-50">
+        <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center mb-12 relative inline-block">
