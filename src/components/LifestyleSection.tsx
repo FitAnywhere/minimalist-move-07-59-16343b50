@@ -1,9 +1,8 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Rocket, ChevronRight, ChevronDown, X } from 'lucide-react';
+import { Rocket, ChevronRight, ChevronDown, X, FileText } from 'lucide-react';
 import { Toggle } from '@/components/ui/toggle';
 import {
   Dialog,
@@ -94,7 +93,7 @@ const LifestyleSection = () => {
     }
   };
 
-  return <section ref={sectionRef} className="py-24 relative overflow-hidden">
+  return <section ref={sectionRef} className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         {Array.from({
         length: 20
@@ -331,17 +330,16 @@ const LifestyleSection = () => {
                   </div>
                 </div>
                 
-                {/* Specifications button below video */}
                 <div className={cn(
-                  "mt-4 transition-all duration-700 transform", 
+                  "mt-6 w-full flex justify-center transition-all duration-700 transform", 
                   isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                 )}>
                   <Button 
                     variant="outline" 
-                    className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all"
+                    className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all flex items-center gap-2"
                     onClick={() => setShowSpecs(true)}
                   >
-                    Specifications
+                    <FileText className="h-4 w-4" /> Specifications
                   </Button>
                 </div>
               </div>
@@ -350,7 +348,6 @@ const LifestyleSection = () => {
         </div>
       </div>
 
-      {/* Specifications Dialog */}
       <Dialog open={showSpecs} onOpenChange={setShowSpecs}>
         <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
