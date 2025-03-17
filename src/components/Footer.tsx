@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Mail, ArrowUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const [showScrollToTop, setShowScrollToTop] = useState(false);
@@ -34,9 +35,9 @@ const Footer = () => {
               © 2025 FitAnywhere. All rights reserved.
             </div>
             
-            <a href="#" className="hover:text-yellow transition-colors">
+            <Link to="/terms-of-service" className="hover:text-yellow transition-colors">
               Terms of Service
-            </a>
+            </Link>
           </div>
         </div>
       </div>
