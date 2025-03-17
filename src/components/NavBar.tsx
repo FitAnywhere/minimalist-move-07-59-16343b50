@@ -49,8 +49,13 @@ const NavBar = () => {
         history.pushState(null, '', href);
       }
     } else {
-      // Navigate to home page with the hash
-      navigate(`/${href}`);
+      // Navigate to home page with the hash and state that indicates we're coming from an external page
+      navigate('/', { 
+        state: { 
+          fromExternalPage: true,
+          targetSection: href.substring(1) // Remove the # to get just the section name
+        }
+      });
     }
   };
 
@@ -74,7 +79,7 @@ const NavBar = () => {
       }
     } else {
       // Navigate to home page without hash to go to the top (ALL YOU NEED section)
-      navigate('/');
+      navigate('/', { state: { fromExternalPage: true }});
     }
     setIsOpen(false);
   };

@@ -1,5 +1,5 @@
 
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
@@ -15,10 +15,32 @@ import Footer from '@/components/Footer';
 
 const Index = () => {
   const location = useLocation();
-  const initialRenderRef = useRef(true);
+  const initialLoadRef = useRef(true);
   
   // Add smooth scroll behavior for anchor links and handle URL hash on page load
   useEffect(() => {
+    // Handler for navigation from external pages
+    const handleExternalNavigation = () => {
+      if (location.state?.fromExternalPage) {
+        if (location.state.targetSection) {
+          // If we have a specific target section, scroll to it
+          setTimeout(() => {
+            const targetId = `#${location.state.targetSection}`;
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.getBoundingClientRect().top + window.scrollY - 100,
+                behavior: 'smooth'
+              });
+            }
+          }, 800); // Extended delay to ensure all elements are fully rendered
+        } else {
+          // If no specific section, go to top
+          window.scrollTo(0, 0);
+        }
+      }
+    };
+
     // Handle URL hash on initial load
     const handleInitialHash = () => {
       const hash = window.location.hash;
@@ -31,14 +53,18 @@ const Index = () => {
               behavior: 'smooth'
             });
           }
-        }, 700); // Increased delay to ensure all elements are fully rendered
-      } else if (location.state?.fromExternalPage) {
-        // If user just navigated from another page with no hash, go to top
-        window.scrollTo(0, 0);
+        }, 800); // Increased delay to ensure all elements are fully rendered
       }
     };
     
-    handleInitialHash();
+    if (initialLoadRef.current) {
+      if (location.state?.fromExternalPage) {
+        handleExternalNavigation();
+      } else {
+        handleInitialHash();
+      }
+      initialLoadRef.current = false;
+    }
     
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
