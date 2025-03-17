@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Rocket, ChevronRight, ChevronDown, X, FileText } from 'lucide-react';
+import { Rocket, ChevronRight, ChevronDown, X } from 'lucide-react';
 import { Toggle } from '@/components/ui/toggle';
 import {
   Dialog,
@@ -125,6 +125,7 @@ const LifestyleSection = () => {
                 </div>
                 
                 <div className="space-y-6 flex-grow">
+                  
                   <div 
                     className={cn(
                       "px-6 py-3 rounded-full cursor-pointer", 
@@ -285,7 +286,7 @@ const LifestyleSection = () => {
               </div>
               
               <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full">
-                <div className="w-full max-w-xs md:max-w-[72%] md:h-full perspective transition-transform duration-300">
+                <div className="w-full max-w-xs md:max-w-[72%] md:h-full perspective transition-transform duration-300 relative">
                   <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
                     <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl h-full">
                       <video 
@@ -326,21 +327,19 @@ const LifestyleSection = () => {
                       </div>
                       
                       <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
+                      
+                      {/* Specifications button positioned in the middle of the video */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Button 
+                          variant="outline" 
+                          className="uppercase font-bold border-yellow border-2 bg-white/80 hover:bg-white text-black hover:bg-yellow-light/20 transition-all z-10"
+                          onClick={() => setShowSpecs(true)}
+                        >
+                          Specifications
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div className={cn(
-                  "mt-6 w-full flex justify-center transition-all duration-700 transform", 
-                  isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                )}>
-                  <Button 
-                    variant="outline" 
-                    className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all flex items-center gap-2"
-                    onClick={() => setShowSpecs(true)}
-                  >
-                    <FileText className="h-4 w-4" /> Specifications
-                  </Button>
                 </div>
               </div>
             </div>
