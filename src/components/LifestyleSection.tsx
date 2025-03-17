@@ -3,7 +3,7 @@ import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Rocket, ChevronRight, ChevronUp } from 'lucide-react';
+import { Rocket, ChevronRight, ChevronDown } from 'lucide-react';
 
 interface LifestyleFeature {
   title: string;
@@ -24,8 +24,8 @@ const lifestyleFeatures: LifestyleFeature[] = [{
 const LifestyleSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  // Default open the last feature (WORKOUT YOU'LL ACTUALLY LOVE)
-  const [openFeatureIndex, setOpenFeatureIndex] = useState<number>(2);
+  // Default to no open feature
+  const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   
   const isInView = useInView(sectionRef, {
@@ -99,18 +99,29 @@ const LifestyleSection = () => {
                       {lifestyleFeatures[0].title}
                     </h4>
                     
-                    {hoverIndex === 0 && (
-                      openFeatureIndex === 0 ? 
-                      <ChevronUp className="w-4 h-4 animate-slide-in-right" /> :
-                      <ChevronRight className="w-4 h-4 animate-slide-in-right" />
-                    )}
+                    <div 
+                      className={cn(
+                        "transition-all duration-200", 
+                        hoverIndex === 0 ? "transform translate-x-1" : ""
+                      )}
+                    >
+                      {openFeatureIndex === 0 ? 
+                        <ChevronDown className="w-5 h-5" /> : 
+                        <ChevronRight className="w-5 h-5" />
+                      }
+                    </div>
                   </div>
                   
-                  {openFeatureIndex === 0 && (
-                    <p className="text-gray-600 mt-2 animate-fade-in transition-all duration-300 ease-in-out">
+                  <div 
+                    className={cn(
+                      "overflow-hidden transition-all duration-300 ease-in-out",
+                      openFeatureIndex === 0 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
+                    )}
+                  >
+                    <p className="text-gray-600">
                       {lifestyleFeatures[0].description}
                     </p>
-                  )}
+                  </div>
                 </div>
                 
                 {/* Second feature box */}
@@ -136,18 +147,29 @@ const LifestyleSection = () => {
                       {lifestyleFeatures[1].title}
                     </h4>
                     
-                    {hoverIndex === 1 && (
-                      openFeatureIndex === 1 ? 
-                      <ChevronUp className="w-4 h-4 animate-slide-in-right" /> :
-                      <ChevronRight className="w-4 h-4 animate-slide-in-right" />
-                    )}
+                    <div 
+                      className={cn(
+                        "transition-all duration-200", 
+                        hoverIndex === 1 ? "transform translate-x-1" : ""
+                      )}
+                    >
+                      {openFeatureIndex === 1 ? 
+                        <ChevronDown className="w-5 h-5" /> : 
+                        <ChevronRight className="w-5 h-5" />
+                      }
+                    </div>
                   </div>
                   
-                  {openFeatureIndex === 1 && (
-                    <p className="text-gray-600 mt-2 animate-fade-in transition-all duration-300 ease-in-out">
+                  <div 
+                    className={cn(
+                      "overflow-hidden transition-all duration-300 ease-in-out",
+                      openFeatureIndex === 1 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
+                    )}
+                  >
+                    <p className="text-gray-600">
                       {lifestyleFeatures[1].description}
                     </p>
-                  )}
+                  </div>
                 </div>
                 
                 {/* Third feature box */}
@@ -173,18 +195,29 @@ const LifestyleSection = () => {
                       {lifestyleFeatures[2].title}
                     </h4>
                     
-                    {hoverIndex === 2 && (
-                      openFeatureIndex === 2 ? 
-                      <ChevronUp className="w-4 h-4 animate-slide-in-right" /> :
-                      <ChevronRight className="w-4 h-4 animate-slide-in-right" />
-                    )}
+                    <div 
+                      className={cn(
+                        "transition-all duration-200", 
+                        hoverIndex === 2 ? "transform translate-x-1" : ""
+                      )}
+                    >
+                      {openFeatureIndex === 2 ? 
+                        <ChevronDown className="w-5 h-5" /> : 
+                        <ChevronRight className="w-5 h-5" />
+                      }
+                    </div>
                   </div>
                   
-                  {openFeatureIndex === 2 && (
-                    <p className="text-gray-600 mt-2 animate-fade-in transition-all duration-300 ease-in-out">
+                  <div 
+                    className={cn(
+                      "overflow-hidden transition-all duration-300 ease-in-out",
+                      openFeatureIndex === 2 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
+                    )}
+                  >
+                    <p className="text-gray-600">
                       {lifestyleFeatures[2].description}
                     </p>
-                  )}
+                  </div>
                 </div>
                 
                 {/* Redesigned CTA Button - Now below the third box */}
