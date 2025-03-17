@@ -1,10 +1,16 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const features = [{
   title: "UNFOLD & GO",
@@ -20,7 +26,6 @@ const features = [{
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
-  const [isOpen, setIsOpen] = useState(false);
   const [animationState, setAnimationState] = useState({
     title: false,
     subtitle: false,
@@ -85,64 +90,39 @@ const ProductIntro = () => {
               </div>
               
               <div className="space-y-5">
-                <Collapsible 
-                  open={isOpen} 
-                  onOpenChange={setIsOpen} 
-                  className="space-y-4"
-                >
-                  <div className="grid grid-cols-1 gap-4">
-                    {features.map((feature, index) => (
-                      <div 
-                        key={index} 
+                <Accordion type="single" collapsible className="w-full">
+                  {features.map((feature, index) => (
+                    <AccordionItem 
+                      key={index} 
+                      value={`item-${index}`}
+                      className={cn(
+                        "mb-3 transition-all duration-500 transform rounded-lg overflow-hidden", 
+                        animationState.features[index] ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4",
+                        "border border-yellow-100 data-[state=open]:border-yellow-300 data-[state=open]:bg-yellow-50"
+                      )}
+                      style={{
+                        transitionDelay: `${(index + 1) * 100}ms`
+                      }}
+                    >
+                      <AccordionTrigger 
                         className={cn(
-                          "transition-all duration-500 transform", 
-                          animationState.features[index] ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-                        )} 
-                        style={{
-                          transitionDelay: `${(index + 1) * 100}ms`
-                        }}
-                      >
-                        <Card 
-                          className={cn(
-                            "p-4 rounded-lg bg-white border border-yellow-100",
-                            "transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-yellow-300 group"
-                          )}
-                        >
-                          <h4 className="font-semibold text-base md:text-lg uppercase group-hover:text-shadow-yellow">
-                            ✅ {feature.title}
-                          </h4>
-                          <CollapsibleContent 
-                            className="pt-2 text-gray-600 text-sm transition-all duration-300 ease-in-out"
-                          >
-                            {feature.description}
-                          </CollapsibleContent>
-                        </Card>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="flex justify-center mt-4">
-                    <CollapsibleTrigger asChild>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="mt-2 border-yellow-200 hover:border-yellow-400 hover:bg-yellow-50 transition-colors duration-300"
-                      >
-                        {isOpen ? (
-                          <>
-                            <ChevronUp className="h-4 w-4 mr-2" />
-                            Show Less
-                          </>
-                        ) : (
-                          <>
-                            <ChevronDown className="h-4 w-4 mr-2" />
-                            See More
-                          </>
+                          "px-4 py-3 hover:no-underline group transition-all duration-300",
+                          "hover:brightness-105 hover:shadow-md"
                         )}
-                      </Button>
-                    </CollapsibleTrigger>
-                  </div>
-                </Collapsible>
+                      >
+                        <div className="flex items-center">
+                          <span className="text-green-600 mr-2">✅</span>
+                          <span className="font-semibold text-base md:text-lg uppercase group-hover:text-shadow-yellow">
+                            {feature.title}
+                          </span>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="px-4 pb-3 pt-0 text-gray-600 text-sm">
+                        {feature.description}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
               </div>
               
               <p className={cn(
