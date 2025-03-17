@@ -277,7 +277,7 @@ const LifestyleSection = () => {
               </div>
               
               <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full">
-                <div className="w-full max-w-xs md:max-w-[90%] md:h-full perspective transition-transform duration-300">
+                <div className="w-full max-w-xs md:max-w-[72%] md:h-full perspective transition-transform duration-300">
                   <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
                     <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl h-full">
                       <video 
