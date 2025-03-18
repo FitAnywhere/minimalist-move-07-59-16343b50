@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -39,7 +40,7 @@ const testimonials: Testimonial[] = [{
   name: "Jordan P.",
   role: "Calisthenics Enthusiast",
   quote: "BoxFun with PowerTower combo is just priceless!",
-  video: "/boxfuuun.mp4"
+  video: "/1022.mp4"  // Updated this path as "boxfuuun.mp4" doesn't exist
 }];
 
 const TestimonialsCarousel = () => {
