@@ -1,7 +1,7 @@
 
 import { useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { ArrowRight, Speaker, Volume, VolumeX } from 'lucide-react';
+import { ArrowRight, Volume, VolumeX } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 
