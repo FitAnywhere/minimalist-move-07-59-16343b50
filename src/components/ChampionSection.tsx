@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
@@ -32,11 +31,8 @@ const ChampionSection = () => {
     if (videoRef.current) {
       const video = videoRef.current;
       
-      // Clear src and reload to force a fresh attempt
       video.src = '';
       video.load();
-      
-      // Set the new src
       video.src = '/COACH.mp4';
       
       const handleCanPlay = () => {
@@ -54,9 +50,8 @@ const ChampionSection = () => {
       video.addEventListener('error', handleError);
 
       if (isInView && !videoError) {
-        // Small delay to ensure loading has started
         const playAttempt = setTimeout(() => {
-          if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
+          if (video.readyState >= 2) {
             const playPromise = video.play();
             if (playPromise !== undefined) {
               playPromise.catch(error => {
@@ -164,13 +159,13 @@ const ChampionSection = () => {
                 </div>
               </div>
               
-              <p className="text-lg text-gray-700 italic font-medium leading-relaxed mt-2">
+              <p className="text-lg text-gray-700 italic font-medium leading-relaxed mt-2 md:block hidden">
                 Training that fits your lifestyle. Exactly how it should be.
               </p>
             </div>
             
             <div className="relative perspective">
-              <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group">
+              <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-xl hover:scale-[1.02] group">
                 {videoError ? (
                   <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
                     <p className="text-gray-500">Video unavailable</p>
@@ -189,6 +184,10 @@ const ChampionSection = () => {
                 
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
+              
+              <p className="text-lg text-gray-700 italic font-medium leading-relaxed mt-4 md:hidden block text-center">
+                Training that fits your lifestyle. Exactly how it should be.
+              </p>
             </div>
           </div>
         </div>
