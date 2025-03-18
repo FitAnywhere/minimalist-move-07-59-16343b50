@@ -140,14 +140,21 @@ const TestimonialsCarousel = () => {
         <div className="w-full mb-6">
           <div className="relative overflow-hidden rounded-xl">
             <AspectRatio ratio={currentTestimonial.aspectRatio || 9/16} className="overflow-hidden">
-              <div className="relative w-full h-full overflow-hidden">
+              <div className="relative w-full h-full overflow-hidden" style={{ transform: 'scale(1.12)' }}>
                 <iframe 
-                  className="w-full h-full absolute inset-0"
+                  className="w-full h-full absolute inset-0 pointer-events-none select-none"
                   src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/').split('?')[0]}?autoplay=1&mute=1&loop=1&playlist=${currentTestimonial.video.split('/').pop()}&controls=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&enablejsapi=0&origin=${window.location.origin}&widget_referrer=${window.location.origin}&hl=en&color=white&start=0&annotation=0&autohide=1&version=3&widgetid=1`}
                   title={`Testimonial from ${currentTestimonial.name}`}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   frameBorder="0"
                   loading="lazy"
+                  style={{
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                    marginTop: '-60px',
+                    marginBottom: '-60px',
+                    height: 'calc(100% + 120px)',
+                  }}
                 ></iframe>
                 <div 
                   className="absolute inset-0 w-full h-full z-10 bg-transparent cursor-default" 
@@ -156,6 +163,9 @@ const TestimonialsCarousel = () => {
                   onContextMenu={(e) => e.preventDefault()}
                   onMouseDown={(e) => e.preventDefault()}
                   onTouchStart={(e) => e.preventDefault()}
+                  style={{
+                    pointerEvents: 'auto'
+                  }}
                 ></div>
               </div>
             </AspectRatio>
