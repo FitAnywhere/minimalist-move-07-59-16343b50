@@ -40,7 +40,7 @@ const testimonials: Testimonial[] = [{
   name: "Jordan P.",
   role: "Calisthenics Enthusiast",
   quote: "Never had so much fun training!",
-  video: "/boxfuuun.mp4"
+  video: "/enjoy.mp4"
 }];
 
 const TestimonialsCarousel = () => {
