@@ -135,7 +135,7 @@ const ProductTabs = () => {
                 )}
               >
                 <video 
-                  src="/trx.mp4" 
+                  src="/TRXX.mp4" 
                   autoPlay 
                   muted 
                   loop 
