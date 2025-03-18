@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -156,7 +155,7 @@ const TestimonialsCarousel = () => {
               
               <div className="order-1 md:order-2 relative transition-all duration-500">
                 <div className="w-full md:max-w-[80%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
-                  {isVideoError ? (
+                  {videoError ? (
                     <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
                       <p className="text-gray-500">Video unavailable</p>
                     </div>
