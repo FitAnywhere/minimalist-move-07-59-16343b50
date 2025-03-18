@@ -22,7 +22,6 @@ const ChampionSection = () => {
     email: ''
   });
 
-  // Animated underline effect
   useEffect(() => {
     if (isInView && titleRef.current) {
       setTimeout(() => {
@@ -31,7 +30,6 @@ const ChampionSection = () => {
     }
   }, [isInView]);
 
-  // Improved video handling with proper error handling
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current;
@@ -45,19 +43,15 @@ const ChampionSection = () => {
         setVideoError(true);
       };
 
-      // Add event listeners
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
 
-      // Try to play the video when in view
       if (isInView && !videoError) {
-        // Use a timeout to give browser a moment to process
         const playTimeout = setTimeout(() => {
           const playPromise = video.play();
           if (playPromise !== undefined) {
             playPromise.catch(error => {
               console.error("Video play error:", error);
-              // Only set error if it's not a user interaction error
               if (error.name !== 'NotAllowedError') {
                 setVideoError(true);
               }
@@ -67,7 +61,6 @@ const ChampionSection = () => {
         return () => clearTimeout(playTimeout);
       }
 
-      // Cleanup
       return () => {
         video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('error', handleError);
@@ -75,7 +68,6 @@ const ChampionSection = () => {
     }
   }, [isInView, videoError]);
 
-  // Toggle mute state
   const toggleMute = () => {
     if (videoRef.current) {
       const newMutedState = !isMuted;
@@ -84,7 +76,6 @@ const ChampionSection = () => {
     }
   };
 
-  // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       name,
@@ -96,20 +87,17 @@ const ChampionSection = () => {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
     console.log("Form submitted:", formData);
-    // Show a success message or redirect
     setShowLibraryAccess(false);
     alert("Thank you! Access to the video library will be sent to your email.");
   };
+
   return <section id="video-library" ref={sectionRef} className="py-16">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Text Content with adjusted spacing */}
             <div className="space-y-6 flex flex-col justify-between h-full">
               <div className="space-y-3">
                 <h2 ref={titleRef} className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
@@ -118,7 +106,6 @@ const ChampionSection = () => {
                 </h2>
               </div>
               
-              {/* Feature points with fancy animations */}
               <div className="space-y-5">
                 <div className={cn("flex items-start gap-3 transform transition-all duration-500", isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10")} style={{
                 transitionDelay: "100ms"
@@ -173,22 +160,18 @@ const ChampionSection = () => {
                 </div>
               </div>
               
-              {/* Training tagline with reduced spacing */}
               <p className="text-lg text-gray-700 italic font-medium leading-relaxed mt-2">
                 Training that fits your lifestyle. Exactly how it should be.
               </p>
             </div>
             
-            {/* Video Side */}
             <div className="relative perspective">
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group">
-                {/* Video with better compatibility */}
                 <video ref={videoRef} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" playsInline muted={isMuted} autoPlay loop preload="auto" poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png">
                   <source src="/COACH.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
                 
-                {/* Sound toggle button */}
                 <div className="absolute bottom-3 right-3 z-10">
                   <Toggle aria-label={isMuted ? "Unmute video" : "Mute video"} className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center" pressed={!isMuted} onPressedChange={toggleMute}>
                     {isMuted ? <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
@@ -203,7 +186,6 @@ const ChampionSection = () => {
                   </Toggle>
                 </div>
                 
-                {/* Play Full Video Button (centered) */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <button className="bg-black/50 hover:bg-black/70 text-white border-white border-2 rounded-full px-6 py-5 
                       transition-all duration-300 transform hover:scale-105" onClick={() => setIsPlayingFullVideo(true)}>
@@ -214,7 +196,6 @@ const ChampionSection = () => {
                   </button>
                 </div>
                 
-                {/* Pulse Border */}
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
             </div>
@@ -222,7 +203,6 @@ const ChampionSection = () => {
         </div>
       </div>
 
-      {/* Full Video Modal */}
       <Dialog open={isPlayingFullVideo} onOpenChange={setIsPlayingFullVideo}>
         <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-hidden p-1 bg-black">
           <DialogClose className="absolute right-2 top-2 z-10 bg-black/70 text-white rounded-full p-1 hover:bg-black/90">
@@ -241,7 +221,6 @@ const ChampionSection = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Video Library Access Modal */}
       <Dialog open={showLibraryAccess} onOpenChange={setShowLibraryAccess}>
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>

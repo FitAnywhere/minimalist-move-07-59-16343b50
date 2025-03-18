@@ -46,7 +46,7 @@ const HeroSection = () => {
               <div className={cn("w-full transition-all duration-1000 delay-300", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="relative rounded-xl overflow-hidden shadow-lg">
                   <div className="relative w-full h-full">
-                    <video ref={videoRef} src="/public/fitanywhere intro.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
+                    <video ref={videoRef} src="/fitanywhere intro.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
                     <button 
                       onClick={toggleSound}
                       className="absolute bottom-3 right-3 bg-black/40 hover:bg-black/60 rounded-full p-2 transition-all duration-300"
@@ -108,7 +108,7 @@ const HeroSection = () => {
               <div className={cn("order-1 md:order-2 transition-all duration-1000 delay-300 w-full", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
                   <div className="w-full max-w-[95%] mx-auto">
-                    <video ref={videoRef} src="/public/fitanywhere intro.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
+                    <video ref={videoRef} src="/fitanywhere intro.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
                     <button 
                       onClick={toggleSound}
                       className="absolute bottom-4 right-4 bg-black/40 hover:bg-black/60 rounded-full p-2 transition-all duration-300"
