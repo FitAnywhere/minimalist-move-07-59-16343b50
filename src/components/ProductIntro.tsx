@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -36,7 +35,6 @@ const ProductIntro = () => {
     features: [false, false, false],
     finalLine: false
   });
-  // Default to no open feature
   const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [showSpecs, setShowSpecs] = useState(false);
@@ -77,7 +75,6 @@ const ProductIntro = () => {
   }, [isInView]);
 
   const handleFeatureClick = (index: number) => {
-    // Toggle feature - if clicking the open one, close it
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
 
@@ -101,7 +98,6 @@ const ProductIntro = () => {
                 </p>
               </div>
               
-              {/* Video section for mobile only - placed between heading and features */}
               {isMobile && (
                 <div className={cn(
                   "flex justify-center items-center transition-all duration-700 h-full md:hidden", 
@@ -181,7 +177,8 @@ const ProductIntro = () => {
                 )}>
                   <Button 
                     variant="outline" 
-                    className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all"
+                    size="sm"
+                    className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1"
                     onClick={() => setShowSpecs(true)}
                   >
                     Specifications
@@ -190,7 +187,6 @@ const ProductIntro = () => {
               </div>
             </div>
             
-            {/* Video section for desktop only - always visible on right side */}
             <div className={cn(
               "flex justify-center items-center transition-all duration-700 h-full order-first md:order-last hidden md:flex", 
               isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
@@ -206,7 +202,6 @@ const ProductIntro = () => {
         </div>
       </div>
 
-      {/* Specifications Dialog */}
       <Dialog open={showSpecs} onOpenChange={setShowSpecs}>
         <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>

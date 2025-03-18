@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -201,7 +200,8 @@ const LifestyleSection = () => {
                     )}>
                       <Button 
                         variant="outline" 
-                        className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all"
+                        size="sm"
+                        className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1"
                         onClick={() => setShowSpecs(true)}
                       >
                         Specifications
@@ -430,7 +430,8 @@ const LifestyleSection = () => {
                   )}>
                     <Button 
                       variant="outline" 
-                      className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all"
+                      size="sm"
+                      className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1"
                       onClick={() => setShowSpecs(true)}
                     >
                       Specifications
