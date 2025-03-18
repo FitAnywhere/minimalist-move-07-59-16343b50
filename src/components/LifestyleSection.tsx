@@ -59,10 +59,12 @@ const LifestyleSection = () => {
       }
     },
     () => {
-      // When exiting view
-      if (videoRef.current && !videoRef.current.muted) {
-        // Save unmuted state and then mute
-        setLastUnmutedState(true);
+      // When exiting view, save the current mute state before muting
+      if (videoRef.current) {
+        // Only save state if it's currently unmuted
+        if (!videoRef.current.muted) {
+          setLastUnmutedState(true);
+        }
         videoRef.current.muted = true;
         setIsMuted(true);
       }
@@ -130,10 +132,14 @@ const LifestyleSection = () => {
   const toggleMute = () => {
     if (videoRef.current) {
       const newMutedState = !isMuted;
-      setIsMuted(newMutedState);
       videoRef.current.muted = newMutedState;
+      setIsMuted(newMutedState);
+      
+      // Update lastUnmutedState to remember user preference when scrolling back into view
       if (!newMutedState) {
         setLastUnmutedState(true);
+      } else {
+        setLastUnmutedState(false);
       }
     }
   };
