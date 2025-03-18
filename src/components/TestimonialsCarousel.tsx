@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -135,6 +134,38 @@ const TestimonialsCarousel = () => {
     }
   }, [isInView, activeIndex, currentTestimonial.video, currentTestimonial.isYouTube]);
   
+  const renderYouTubeVideo = () => {
+    if (currentTestimonial.isYouTube && isMobile) {
+      return (
+        <div className="w-full mb-6">
+          <div className="relative overflow-hidden rounded-xl">
+            <AspectRatio ratio={currentTestimonial.aspectRatio || 9/16} className="overflow-hidden">
+              <div className="relative w-full h-full overflow-hidden">
+                <iframe 
+                  className="w-full h-full absolute inset-0"
+                  src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/').split('?')[0]}?autoplay=1&mute=1&loop=1&playlist=${currentTestimonial.video.split('/').pop()}&controls=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&enablejsapi=0&origin=${window.location.origin}&widget_referrer=${window.location.origin}&hl=en&color=white&start=0&annotation=0&autohide=1&version=3&widgetid=1`}
+                  title={`Testimonial from ${currentTestimonial.name}`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  frameBorder="0"
+                  loading="lazy"
+                ></iframe>
+                <div 
+                  className="absolute inset-0 w-full h-full z-10 bg-transparent cursor-default" 
+                  aria-hidden="true"
+                  onClick={(e) => e.preventDefault()}
+                  onContextMenu={(e) => e.preventDefault()}
+                  onMouseDown={(e) => e.preventDefault()}
+                  onTouchStart={(e) => e.preventDefault()}
+                ></div>
+              </div>
+            </AspectRatio>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+  
   return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
         <div className="max-w-6xl mx-auto">
@@ -148,6 +179,8 @@ const TestimonialsCarousel = () => {
           <div className="relative">
             <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
               <div className="order-2 md:order-1 text-left flex flex-col justify-center">
+                {renderYouTubeVideo()}
+                
                 <div className="backdrop-blur-md bg-white/80 shadow-md p-7 rounded-xl relative mb-6 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20" 
                   style={{ borderColor: '#444444' }}>
                   <div className="text-gray-500 opacity-50 absolute left-4 top-4 pt-1" style={{ color: '#666666' }}>
@@ -179,7 +212,7 @@ const TestimonialsCarousel = () => {
               
               <div className="order-1 md:order-2 relative transition-all duration-500">
                 <div className="w-full md:max-w-[60%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
-                  {currentTestimonial.isYouTube ? (
+                  {currentTestimonial.isYouTube && !isMobile ? (
                     <div className="relative overflow-hidden rounded-xl">
                       <AspectRatio ratio={currentTestimonial.aspectRatio || 9/16} className="overflow-hidden">
                         <div className="relative w-full h-full overflow-hidden" style={{ transform: isMobile ? 'scale(1)' : 'scale(1.12)' }}>
@@ -216,7 +249,7 @@ const TestimonialsCarousel = () => {
                     <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
                       <p className="text-gray-500">Video unavailable</p>
                     </div>
-                  ) : (
+                  ) : (!currentTestimonial.isYouTube) ? (
                     <video 
                       ref={videoRef} 
                       className="w-full h-full object-cover min-h-[250px] transition-transform duration-500 cursor-pointer" 
@@ -227,7 +260,7 @@ const TestimonialsCarousel = () => {
                       preload="auto"
                       onClick={toggleFullScreen} 
                     />
-                  )}
+                  ) : null}
                 </div>
               </div>
             </div>
