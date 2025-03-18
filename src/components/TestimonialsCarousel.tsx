@@ -14,32 +14,32 @@ const testimonials: Testimonial[] = [{
   name: "Alex G.",
   role: "Busy Professional",
   quote: "I can't believe how much time it saves me!",
-  video: "/trx.mp4"
+  video: "/ALEX GG.mp4"
 }, {
   name: "Emily T.",
   role: "Fitness Beginner",
   quote: "I never imagined how many exercises I can do using TRX and BANDS.",
-  video: "/bands.mp4"
+  video: "/EMILY TT.mp4"
 }, {
   name: "John D.",
   role: "Fitness Enthusiast",
   quote: "Finally, got an efficient training solution!",
-  video: "/trx.mp4"
+  video: "/JOHN DD.mp4"
 }, {
   name: "Chris L.",
   role: "Fitness Advocate",
   quote: "Ordered with friends and got an extra discount. Thank you!",
-  video: "/bands.mp4"
+  video: "/CHRIS LLL.mp4"
 }, {
   name: "Sarah M.",
   role: "Remote Worker",
   quote: "I work from home, and this is exactly what I needed!",
-  video: "/trx.mp4"
+  video: "/SARAH LL.mp4"
 }, {
   name: "Jordan P.",
   role: "Calisthenics Enthusiast",
   quote: "BoxFun with PowerTower combo is just priceless!",
-  video: "/bands.mp4"
+  video: "/boxfuuun.mp4"
 }];
 
 const TestimonialsCarousel = () => {
