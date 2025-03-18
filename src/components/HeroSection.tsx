@@ -11,12 +11,12 @@ const HeroSection = () => {
   const subheadlineRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  const isInView = useInView(heroRef, {}, false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(false); // Changed to false for unmuted by default
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [userMutedChoice, setUserMutedChoice] = useState<boolean | null>(null);
+  const [lastUnmutedState, setLastUnmutedState] = useState<boolean>(false);
 
   const scrollToOwnBoth = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -33,8 +33,37 @@ const HeroSection = () => {
       setIsMuted(videoRef.current.muted);
       // Store user's explicit choice
       setUserMutedChoice(videoRef.current.muted);
+      if (!videoRef.current.muted) {
+        setLastUnmutedState(true);
+      }
     }
   };
+
+  // Use enhanced useInView with callbacks to handle audio when scrolling
+  const isInView = useInView(
+    heroRef, 
+    {}, 
+    false,
+    () => {
+      // When entering view
+      if (videoRef.current && !videoError) {
+        // If user previously unmuted, restore that state
+        if (lastUnmutedState && userMutedChoice === false) {
+          videoRef.current.muted = false;
+          setIsMuted(false);
+        }
+      }
+    },
+    () => {
+      // When exiting view
+      if (videoRef.current && !videoRef.current.muted) {
+        // Save unmuted state and then mute
+        setLastUnmutedState(true);
+        videoRef.current.muted = true;
+        setIsMuted(true);
+      }
+    }
+  );
 
   useEffect(() => {
     if (videoRef.current) {

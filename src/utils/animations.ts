@@ -1,6 +1,13 @@
+
 import { useEffect, useState, useRef, RefObject } from 'react';
 
-export const useInView = (ref: RefObject<HTMLElement>, options = {}, once = true) => {
+export const useInView = (
+  ref: RefObject<HTMLElement>, 
+  options = {}, 
+  once = true,
+  onEnterView?: () => void,
+  onExitView?: () => void
+) => {
   const [isInView, setIsInView] = useState(false);
   
   useEffect(() => {
@@ -9,11 +16,13 @@ export const useInView = (ref: RefObject<HTMLElement>, options = {}, once = true
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         setIsInView(true);
+        onEnterView?.();
         if (once && ref.current) {
           observer.unobserve(ref.current);
         }
       } else if (!once) {
         setIsInView(false);
+        onExitView?.();
       }
     }, {
       threshold: 0.1,
@@ -27,7 +36,7 @@ export const useInView = (ref: RefObject<HTMLElement>, options = {}, once = true
         observer.unobserve(ref.current);
       }
     };
-  }, [ref, options, once]);
+  }, [ref, options, once, onEnterView, onExitView]);
   
   return isInView;
 };

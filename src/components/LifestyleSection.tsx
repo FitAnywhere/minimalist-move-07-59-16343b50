@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -40,10 +41,33 @@ const LifestyleSection = () => {
   const [videoError, setVideoError] = useState(false);
   const [showSpecs, setShowSpecs] = useState(false);
   const isMobile = useIsMobile();
+  const [lastUnmutedState, setLastUnmutedState] = useState<boolean>(false);
   
-  const isInView = useInView(sectionRef, {
-    threshold: 0.2
-  });
+  // Enhanced useInView with callbacks to handle video audio when scrolling
+  const isInView = useInView(
+    sectionRef, 
+    { threshold: 0.2 },
+    false,
+    () => {
+      // When entering view
+      if (videoRef.current && !videoError) {
+        // If user previously unmuted, restore that state
+        if (lastUnmutedState) {
+          videoRef.current.muted = false;
+          setIsMuted(false);
+        }
+      }
+    },
+    () => {
+      // When exiting view
+      if (videoRef.current && !videoRef.current.muted) {
+        // Save unmuted state and then mute
+        setLastUnmutedState(true);
+        videoRef.current.muted = true;
+        setIsMuted(true);
+      }
+    }
+  );
 
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
@@ -108,6 +132,9 @@ const LifestyleSection = () => {
       const newMutedState = !isMuted;
       setIsMuted(newMutedState);
       videoRef.current.muted = newMutedState;
+      if (!newMutedState) {
+        setLastUnmutedState(true);
+      }
     }
   };
 
