@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume, VolumeX } from 'lucide-react';
@@ -27,6 +28,7 @@ const HeroSection = () => {
 
   const toggleSound = () => {
     if (videoRef.current) {
+      // Just toggle muted state without affecting playback
       videoRef.current.muted = !videoRef.current.muted;
       setIsMuted(videoRef.current.muted);
       // Store user's explicit choice
@@ -38,20 +40,19 @@ const HeroSection = () => {
     if (videoRef.current) {
       const video = videoRef.current;
       
-      // Clear src and reload to force a fresh attempt
-      video.src = '';
-      video.load();
-      
-      // Set the new src
-      video.src = '/fitanywhere intro.mp4';
-      
-      // Initialize muted state based on user's choice if they made one
-      if (userMutedChoice !== null) {
-        video.muted = userMutedChoice;
-        setIsMuted(userMutedChoice);
-      } else {
-        // Start with unmuted by default for first load
-        video.muted = false;
+      // Only set source if it needs to be set (first load or src is empty)
+      if (!video.src || video.src === '') {
+        // Set the new src
+        video.src = '/fitanywhere intro.mp4';
+        
+        // Initialize muted state based on user's choice if they made one
+        if (userMutedChoice !== null) {
+          video.muted = userMutedChoice;
+          setIsMuted(userMutedChoice);
+        } else {
+          // Start with unmuted by default for first load
+          video.muted = false;
+        }
       }
       
       const handleCanPlay = () => {
@@ -69,32 +70,35 @@ const HeroSection = () => {
       video.addEventListener('error', handleError);
 
       if (isInView && !videoError) {
-        // Small delay to ensure loading has started
-        const playAttempt = setTimeout(() => {
-          if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-              playPromise.catch(error => {
-                console.error("Hero video play error:", error);
-                // If autoplay with sound fails, try with muted
-                if (error.name === 'NotAllowedError') {
-                  console.log("Autoplay with sound failed, trying muted");
-                  video.muted = true;
-                  setIsMuted(true);
-                  // Don't update userMutedChoice here as this is a browser limitation, not user choice
-                  video.play().catch(err => {
-                    console.error("Muted autoplay also failed:", err);
+        // Check if the video is paused before attempting to play
+        if (video.paused) {
+          // Small delay to ensure loading has started
+          const playAttempt = setTimeout(() => {
+            if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
+              const playPromise = video.play();
+              if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                  console.error("Hero video play error:", error);
+                  // If autoplay with sound fails, try with muted
+                  if (error.name === 'NotAllowedError') {
+                    console.log("Autoplay with sound failed, trying muted");
+                    video.muted = true;
+                    setIsMuted(true);
+                    // Don't update userMutedChoice here as this is a browser limitation, not user choice
+                    video.play().catch(err => {
+                      console.error("Muted autoplay also failed:", err);
+                      setVideoError(true);
+                    });
+                  } else {
                     setVideoError(true);
-                  });
-                } else {
-                  setVideoError(true);
-                }
-              });
+                  }
+                });
+              }
             }
-          }
-        }, 100);
-        
-        return () => clearTimeout(playAttempt);
+          }, 100);
+          
+          return () => clearTimeout(playAttempt);
+        }
       }
 
       return () => {
