@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume, VolumeX } from 'lucide-react';
@@ -16,6 +15,7 @@ const HeroSection = () => {
   const [isMuted, setIsMuted] = useState(false); // Changed to false for unmuted by default
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [userMutedChoice, setUserMutedChoice] = useState<boolean | null>(null);
 
   const scrollToOwnBoth = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -29,6 +29,8 @@ const HeroSection = () => {
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted;
       setIsMuted(videoRef.current.muted);
+      // Store user's explicit choice
+      setUserMutedChoice(videoRef.current.muted);
     }
   };
 
@@ -43,8 +45,14 @@ const HeroSection = () => {
       // Set the new src
       video.src = '/fitanywhere intro.mp4';
       
-      // Set muted to false for unmuted by default
-      video.muted = false;
+      // Initialize muted state based on user's choice if they made one
+      if (userMutedChoice !== null) {
+        video.muted = userMutedChoice;
+        setIsMuted(userMutedChoice);
+      } else {
+        // Start with unmuted by default for first load
+        video.muted = false;
+      }
       
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
@@ -73,6 +81,7 @@ const HeroSection = () => {
                   console.log("Autoplay with sound failed, trying muted");
                   video.muted = true;
                   setIsMuted(true);
+                  // Don't update userMutedChoice here as this is a browser limitation, not user choice
                   video.play().catch(err => {
                     console.error("Muted autoplay also failed:", err);
                     setVideoError(true);
@@ -94,7 +103,7 @@ const HeroSection = () => {
         video.pause();
       };
     }
-  }, [isInView, videoError]);
+  }, [isInView, videoError, userMutedChoice]);
 
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
