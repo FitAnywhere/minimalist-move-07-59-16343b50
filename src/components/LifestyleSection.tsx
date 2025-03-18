@@ -47,6 +47,11 @@ const LifestyleSection = () => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
 
+  const handleStripeCheckout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.open('https://buy.stripe.com/5kA5mKaObcTP0WQ9AH', '_blank');
+  };
+
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current;
@@ -269,13 +274,15 @@ const LifestyleSection = () => {
                 </div>
                 
                 <div className="flex flex-col items-center mt-8 flex-grow-0">
-                  <Button className={cn(
-                    "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", 
-                    "transition-all duration-300 transform hover:scale-105", 
-                    "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", 
-                    "w-auto max-w-fit text-center", 
-                    "flex items-center justify-center space-x-2"
-                  )}>
+                  <Button 
+                    onClick={handleStripeCheckout}
+                    className={cn(
+                      "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", 
+                      "transition-all duration-300 transform hover:scale-105", 
+                      "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", 
+                      "w-auto max-w-fit text-center", 
+                      "flex items-center justify-center space-x-2"
+                    )}>
                     <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
                   </Button>
                   
