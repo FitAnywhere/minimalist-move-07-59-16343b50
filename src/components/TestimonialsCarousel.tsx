@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, User, Quote, Star } from 'lucide-react';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 interface Testimonial {
   name: string;
@@ -10,6 +11,7 @@ interface Testimonial {
   quote: string;
   video: string;
   isYouTube?: boolean;
+  aspectRatio?: number;
 }
 
 const testimonials: Testimonial[] = [{
@@ -42,7 +44,8 @@ const testimonials: Testimonial[] = [{
   role: "Calisthenics Enthusiast",
   quote: "Never had so much fun training!",
   video: "https://youtube.com/shorts/FgF3Cyhw1Do",
-  isYouTube: true
+  isYouTube: true,
+  aspectRatio: 9/16
 }];
 
 const TestimonialsCarousel = () => {
@@ -180,13 +183,17 @@ const TestimonialsCarousel = () => {
               <div className="order-1 md:order-2 relative transition-all duration-500">
                 <div className="w-full md:max-w-[80%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
                   {currentTestimonial.isYouTube ? (
-                    <iframe 
-                      className="w-full aspect-video"
-                      src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/')}`}
-                      title={`Testimonial from ${currentTestimonial.name}`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
+                    <div className="relative">
+                      <AspectRatio ratio={currentTestimonial.aspectRatio || 16/9} className="overflow-hidden">
+                        <iframe 
+                          className="w-full h-full absolute inset-0"
+                          src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/').split('?')[0]}?controls=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3`}
+                          title={`Testimonial from ${currentTestimonial.name}`}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          frameBorder="0"
+                        ></iframe>
+                      </AspectRatio>
+                    </div>
                   ) : videoError ? (
                     <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
                       <p className="text-gray-500">Video unavailable</p>
