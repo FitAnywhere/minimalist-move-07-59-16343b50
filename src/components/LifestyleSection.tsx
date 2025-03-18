@@ -1,9 +1,11 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Rocket, ChevronRight, ChevronDown, X } from 'lucide-react';
 import { Toggle } from '@/components/ui/toggle';
+import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Dialog,
   DialogContent,
@@ -38,6 +40,7 @@ const LifestyleSection = () => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [showSpecs, setShowSpecs] = useState(false);
+  const isMobile = useIsMobile();
   
   const isInView = useInView(sectionRef, {
     threshold: 0.2
@@ -139,6 +142,73 @@ const LifestyleSection = () => {
                     Once you feel that flow, you'll never go back
                   </p>
                 </div>
+                
+                {isMobile && (
+                  <div className="w-full flex flex-col items-center my-6">
+                    <div className="w-full max-w-xs perspective transition-transform duration-300 relative">
+                      <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
+                        <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl h-full">
+                          {videoError ? (
+                            <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                              <p className="text-gray-500">Video unavailable</p>
+                            </div>
+                          ) : (
+                            <video 
+                              ref={videoRef} 
+                              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
+                              playsInline 
+                              muted={isMuted} 
+                              autoPlay 
+                              loop 
+                              preload="auto"
+                            >
+                              <source src="/0314 (3)(1).mp4" type="video/mp4" />
+                              Your browser does not support the video tag.
+                            </video>
+                          )}
+                          
+                          <div className="absolute bottom-3 right-3 z-10">
+                            <Toggle 
+                              aria-label={isMuted ? "Unmute video" : "Mute video"} 
+                              className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center" 
+                              pressed={!isMuted} 
+                              onPressedChange={toggleMute}
+                            >
+                              {isMuted ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                                </svg>
+                              ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                                  <line x1="23" y1="9" x2="17" y2="15" />
+                                  <line x1="17" y1="9" x2="23" y2="15" />
+                                </svg>
+                              )}
+                            </Toggle>
+                          </div>
+                          
+                          <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className={cn(
+                      "mt-6 w-full flex justify-center transition-all duration-700 transform", 
+                      isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                    )}>
+                      <Button 
+                        variant="outline" 
+                        className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all"
+                        onClick={() => setShowSpecs(true)}
+                      >
+                        Specifications
+                      </Button>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="space-y-6 flex-grow">
                   <div 
@@ -302,70 +372,72 @@ const LifestyleSection = () => {
                 </div>
               </div>
               
-              <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full">
-                <div className="w-full max-w-xs md:max-w-[72%] md:h-full perspective transition-transform duration-300 relative">
-                  <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
-                    <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl h-full">
-                      {videoError ? (
-                        <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                          <p className="text-gray-500">Video unavailable</p>
+              {!isMobile && (
+                <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full">
+                  <div className="w-full max-w-xs md:max-w-[72%] md:h-full perspective transition-transform duration-300 relative">
+                    <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
+                      <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl h-full">
+                        {videoError ? (
+                          <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                            <p className="text-gray-500">Video unavailable</p>
+                          </div>
+                        ) : (
+                          <video 
+                            ref={videoRef} 
+                            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
+                            playsInline 
+                            muted={isMuted} 
+                            autoPlay 
+                            loop 
+                            preload="auto"
+                          >
+                            <source src="/0314 (3)(1).mp4" type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                        )}
+                        
+                        <div className="absolute bottom-3 right-3 z-10">
+                          <Toggle 
+                            aria-label={isMuted ? "Unmute video" : "Mute video"} 
+                            className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center" 
+                            pressed={!isMuted} 
+                            onPressedChange={toggleMute}
+                          >
+                            {isMuted ? (
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                              </svg>
+                            ) : (
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                                <line x1="23" y1="9" x2="17" y2="15" />
+                                <line x1="17" y1="9" x2="23" y2="15" />
+                              </svg>
+                            )}
+                          </Toggle>
                         </div>
-                      ) : (
-                        <video 
-                          ref={videoRef} 
-                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
-                          playsInline 
-                          muted={isMuted} 
-                          autoPlay 
-                          loop 
-                          preload="auto"
-                        >
-                          <source src="/0314 (3)(1).mp4" type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
-                      )}
-                      
-                      <div className="absolute bottom-3 right-3 z-10">
-                        <Toggle 
-                          aria-label={isMuted ? "Unmute video" : "Mute video"} 
-                          className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center" 
-                          pressed={!isMuted} 
-                          onPressedChange={toggleMute}
-                        >
-                          {isMuted ? (
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-                              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-                            </svg>
-                          ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                              <line x1="23" y1="9" x2="17" y2="15" />
-                              <line x1="17" y1="9" x2="23" y2="15" />
-                            </svg>
-                          )}
-                        </Toggle>
+                        
+                        <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
                       </div>
-                      
-                      <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
                     </div>
                   </div>
+                  
+                  <div className={cn(
+                    "mt-6 w-full flex justify-center transition-all duration-700 transform", 
+                    isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  )}>
+                    <Button 
+                      variant="outline" 
+                      className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all"
+                      onClick={() => setShowSpecs(true)}
+                    >
+                      Specifications
+                    </Button>
+                  </div>
                 </div>
-                
-                <div className={cn(
-                  "mt-6 w-full flex justify-center transition-all duration-700 transform", 
-                  isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                )}>
-                  <Button 
-                    variant="outline" 
-                    className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all"
-                    onClick={() => setShowSpecs(true)}
-                  >
-                    Specifications
-                  </Button>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
