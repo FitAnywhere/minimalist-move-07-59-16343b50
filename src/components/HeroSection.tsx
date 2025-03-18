@@ -1,5 +1,5 @@
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume, VolumeX } from 'lucide-react';
 import { useInView } from '@/utils/animations';
@@ -14,6 +14,8 @@ const HeroSection = () => {
   const isInView = useInView(heroRef, {}, false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   const scrollToOwnBoth = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -29,6 +31,42 @@ const HeroSection = () => {
       setIsMuted(videoRef.current.muted);
     }
   };
+
+  useEffect(() => {
+    if (videoRef.current) {
+      const video = videoRef.current;
+      
+      const handleCanPlay = () => {
+        setIsVideoLoaded(true);
+        setVideoError(false);
+        console.log("Hero video can play now");
+      };
+      
+      const handleError = (e: Event) => {
+        console.error("Hero video error:", e);
+        setVideoError(true);
+      };
+
+      video.addEventListener('canplay', handleCanPlay);
+      video.addEventListener('error', handleError);
+
+      if (isInView && !videoError) {
+        // Attempt to play video when in view
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.error("Hero video play error:", error);
+            setVideoError(true);
+          });
+        }
+      }
+
+      return () => {
+        video.removeEventListener('canplay', handleCanPlay);
+        video.removeEventListener('error', handleError);
+      };
+    }
+  }, [isInView, videoError]);
 
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
@@ -46,7 +84,19 @@ const HeroSection = () => {
               <div className={cn("w-full transition-all duration-1000 delay-300", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="relative rounded-xl overflow-hidden shadow-lg">
                   <div className="relative w-full h-full">
-                    <video ref={videoRef} src="/fitanywhere intro.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
+                    {videoError ? (
+                      <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                        <p className="text-gray-500">Video unavailable</p>
+                      </div>
+                    ) : (
+                      <video 
+                        ref={videoRef} 
+                        src="/fitanywhere intro.mp4" 
+                        className="w-full h-auto object-contain" 
+                        loop playsInline muted autoPlay
+                        poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png"
+                      />
+                    )}
                     <button 
                       onClick={toggleSound}
                       className="absolute bottom-3 right-3 bg-black/40 hover:bg-black/60 rounded-full p-2 transition-all duration-300"
@@ -108,7 +158,19 @@ const HeroSection = () => {
               <div className={cn("order-1 md:order-2 transition-all duration-1000 delay-300 w-full", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
                   <div className="w-full max-w-[95%] mx-auto">
-                    <video ref={videoRef} src="/fitanywhere intro.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
+                    {videoError ? (
+                      <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                        <p className="text-gray-500">Video unavailable</p>
+                      </div>
+                    ) : (
+                      <video 
+                        ref={videoRef} 
+                        src="/fitanywhere intro.mp4" 
+                        className="w-full h-auto object-contain" 
+                        loop playsInline muted autoPlay
+                        poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png"
+                      />
+                    )}
                     <button 
                       onClick={toggleSound}
                       className="absolute bottom-4 right-4 bg-black/40 hover:bg-black/60 rounded-full p-2 transition-all duration-300"

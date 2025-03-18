@@ -49,15 +49,21 @@ const TestimonialsCarousel = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, {}, false);
   const currentTestimonial = testimonials[activeIndex];
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+
   const nextTestimonial = () => {
     setActiveIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
   };
+  
   const prevTestimonial = () => {
     setActiveIndex(prevIndex => prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1);
   };
+  
   const goToTestimonial = (index: number) => {
     setActiveIndex(index);
   };
+  
   const toggleFullScreen = () => {
     if (videoRef.current) {
       if (document.fullscreenElement) {
@@ -67,6 +73,45 @@ const TestimonialsCarousel = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (videoRef.current) {
+      const video = videoRef.current;
+      
+      const handleCanPlay = () => {
+        setIsVideoLoaded(true);
+        setVideoError(false);
+        console.log("Testimonial video can play now");
+      };
+      
+      const handleError = (e: Event) => {
+        console.error("Testimonial video error:", e);
+        setVideoError(true);
+      };
+
+      video.addEventListener('canplay', handleCanPlay);
+      video.addEventListener('error', handleError);
+
+      // Attempt to load the video when the component is in view
+      if (isInView) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.error("Testimonial video play error:", error);
+            if (error.name !== 'NotAllowedError') {
+              setVideoError(true);
+            }
+          });
+        }
+      }
+
+      return () => {
+        video.removeEventListener('canplay', handleCanPlay);
+        video.removeEventListener('error', handleError);
+      };
+    }
+  }, [isInView, activeIndex]);
+  
   return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
         <div className="max-w-6xl mx-auto">
@@ -110,8 +155,25 @@ const TestimonialsCarousel = () => {
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500">
-                <div className="w-full max-w-[80%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
-                  <video ref={videoRef} src={currentTestimonial.video} className="w-full h-full object-cover min-h-[250px] transition-transform duration-500 cursor-pointer" autoPlay muted loop playsInline onClick={toggleFullScreen} />
+                <div className="w-full md:max-w-[80%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                  {isVideoError ? (
+                    <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                      <p className="text-gray-500">Video unavailable</p>
+                    </div>
+                  ) : (
+                    <video 
+                      ref={videoRef} 
+                      src={currentTestimonial.video} 
+                      className="w-full h-full object-cover min-h-[250px] transition-transform duration-500 cursor-pointer" 
+                      autoPlay 
+                      muted 
+                      loop 
+                      playsInline 
+                      preload="auto"
+                      onClick={toggleFullScreen} 
+                      poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png"
+                    />
+                  )}
                 </div>
               </div>
             </div>
