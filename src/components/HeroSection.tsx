@@ -13,7 +13,7 @@ const HeroSection = () => {
   const isMobile = useIsMobile();
   const isInView = useInView(heroRef, {}, false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false); // Changed to false for unmuted by default
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
@@ -43,6 +43,9 @@ const HeroSection = () => {
       // Set the new src
       video.src = '/fitanywhere intro.mp4';
       
+      // Set muted to false for unmuted by default
+      video.muted = false;
+      
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
         setVideoError(false);
@@ -65,7 +68,16 @@ const HeroSection = () => {
             if (playPromise !== undefined) {
               playPromise.catch(error => {
                 console.error("Hero video play error:", error);
-                if (error.name !== 'NotAllowedError') {
+                // If autoplay with sound fails, try with muted
+                if (error.name === 'NotAllowedError') {
+                  console.log("Autoplay with sound failed, trying muted");
+                  video.muted = true;
+                  setIsMuted(true);
+                  video.play().catch(err => {
+                    console.error("Muted autoplay also failed:", err);
+                    setVideoError(true);
+                  });
+                } else {
                   setVideoError(true);
                 }
               });
