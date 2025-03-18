@@ -9,6 +9,7 @@ interface Testimonial {
   role: string;
   quote: string;
   video: string;
+  isYouTube?: boolean;
 }
 
 const testimonials: Testimonial[] = [{
@@ -40,7 +41,8 @@ const testimonials: Testimonial[] = [{
   name: "Jordan P.",
   role: "Calisthenics Enthusiast",
   quote: "Never had so much fun training!",
-  video: "/enjoy.mp4"
+  video: "https://youtube.com/shorts/FgF3Cyhw1Do",
+  isYouTube: true
 }];
 
 const TestimonialsCarousel = () => {
@@ -65,7 +67,7 @@ const TestimonialsCarousel = () => {
   };
   
   const toggleFullScreen = () => {
-    if (videoRef.current) {
+    if (videoRef.current && !currentTestimonial.isYouTube) {
       if (document.fullscreenElement) {
         document.exitFullscreen();
       } else {
@@ -81,7 +83,7 @@ const TestimonialsCarousel = () => {
   }, [activeIndex]);
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (!currentTestimonial.isYouTube && videoRef.current) {
       const video = videoRef.current;
       
       // Clear src and reload to force a fresh attempt
@@ -131,7 +133,7 @@ const TestimonialsCarousel = () => {
         video.pause();
       };
     }
-  }, [isInView, activeIndex, currentTestimonial.video]);
+  }, [isInView, activeIndex, currentTestimonial.video, currentTestimonial.isYouTube]);
   
   return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
@@ -177,7 +179,15 @@ const TestimonialsCarousel = () => {
               
               <div className="order-1 md:order-2 relative transition-all duration-500">
                 <div className="w-full md:max-w-[80%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
-                  {videoError ? (
+                  {currentTestimonial.isYouTube ? (
+                    <iframe 
+                      className="w-full aspect-video"
+                      src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/')}`}
+                      title={`Testimonial from ${currentTestimonial.name}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  ) : videoError ? (
                     <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
                       <p className="text-gray-500">Video unavailable</p>
                     </div>
