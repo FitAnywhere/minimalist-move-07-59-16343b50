@@ -40,7 +40,7 @@ const testimonials: Testimonial[] = [{
   name: "Jordan P.",
   role: "Calisthenics Enthusiast",
   quote: "BoxFun with PowerTower combo is just priceless!",
-  video: "/1022.mp4"  // Updated this path as "boxfuuun.mp4" doesn't exist
+  video: "/funtraining.mp4"  // Updated video path to the requested file
 }];
 
 const TestimonialsCarousel = () => {
