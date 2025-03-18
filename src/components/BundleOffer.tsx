@@ -73,7 +73,7 @@ const BundleOffer = () => {
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/test_dR602t4zDdk5gBa144', '_blank');
+    window.open('https://buy.stripe.com/bIY6oO1gVaGo7jG144', '_blank');
   };
   
   return (

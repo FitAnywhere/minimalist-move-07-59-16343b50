@@ -88,7 +88,7 @@ const NavBar = () => {
 
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/test_dR602t4zDdk5gBa144', '_blank');
+    window.open('https://buy.stripe.com/bIY6oO1gVaGo7jG144', '_blank');
   };
 
   return (
@@ -127,7 +127,7 @@ const NavBar = () => {
 
         <div className="hidden md:block">
           <a
-            href="https://buy.stripe.com/test_dR602t4zDdk5gBa144"
+            href="https://buy.stripe.com/bIY6oO1gVaGo7jG144"
             className="bg-black text-white px-6 py-2.5 rounded-full font-medium text-sm hover:bg-black/90 transition-all hover-lift"
             onClick={handleCheckout}
           >
@@ -176,7 +176,7 @@ const NavBar = () => {
             ))}
             <div className="pt-4">
               <a
-                href="https://buy.stripe.com/test_dR602t4zDdk5gBa144"
+                href="https://buy.stripe.com/bIY6oO1gVaGo7jG144"
                 className="block w-full bg-black text-white text-center px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-all"
                 onClick={handleCheckout}
               >
