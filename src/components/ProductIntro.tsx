@@ -19,7 +19,7 @@ const features = [{
   description: "No tools, no installation"
 }, {
   title: "MODERN DESIGN",
-  description: "Folds away when you're done"
+  description: "Foldable for easy storage, with adjustable height for low ceilings"
 }, {
   title: "INFINITE POSSIBILITIES",
   description: "One station without limits"
