@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -79,7 +78,6 @@ const TestimonialsCarousel = () => {
     }
   };
 
-  // Reset video state when testimonial changes
   useEffect(() => {
     setIsVideoLoaded(false);
     setVideoError(false);
@@ -89,11 +87,9 @@ const TestimonialsCarousel = () => {
     if (!currentTestimonial.isYouTube && videoRef.current) {
       const video = videoRef.current;
       
-      // Clear src and reload to force a fresh attempt
       video.src = '';
       video.load();
       
-      // Set the new src
       video.src = currentTestimonial.video;
       
       const handleCanPlay = () => {
@@ -110,11 +106,9 @@ const TestimonialsCarousel = () => {
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
 
-      // Attempt to play the video when in view
       if (isInView) {
-        // Small delay to ensure loading has started
         const playAttempt = setTimeout(() => {
-          if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
+          if (video.readyState >= 2) {
             const playPromise = video.play();
             if (playPromise !== undefined) {
               playPromise.catch(error => {
@@ -186,14 +180,19 @@ const TestimonialsCarousel = () => {
                     <div className="relative">
                       <AspectRatio ratio={currentTestimonial.aspectRatio || 9/16} className="overflow-hidden">
                         <iframe 
-                          className="w-full h-full absolute inset-0"
-                          src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/').split('?')[0]}?autoplay=1&loop=1&playlist=${currentTestimonial.video.split('/').pop()}&controls=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&mute=1&playsinline=1&enablejsapi=0`}
+                          className="w-full h-full absolute inset-0 pointer-events-none"
+                          src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/').split('?')[0]}?autoplay=1&mute=1&loop=1&playlist=${currentTestimonial.video.split('/').pop()}&controls=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&enablejsapi=0&origin=${window.location.origin}&widget_referrer=${window.location.origin}&hl=en&color=white&start=0&annotation=0&autohide=1`}
                           title={`Testimonial from ${currentTestimonial.name}`}
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           frameBorder="0"
+                          loading="lazy"
                         ></iframe>
-                        {/* Add overlay div to prevent interactions with the video */}
-                        <div className="absolute inset-0 w-full h-full z-10" aria-hidden="true"></div>
+                        <div 
+                          className="absolute inset-0 w-full h-full z-10 bg-transparent" 
+                          aria-hidden="true"
+                          onClick={(e) => e.preventDefault()}
+                          onContextMenu={(e) => e.preventDefault()}
+                        ></div>
                       </AspectRatio>
                     </div>
                   ) : videoError ? (
@@ -230,4 +229,3 @@ const TestimonialsCarousel = () => {
 };
 
 export default TestimonialsCarousel;
-
