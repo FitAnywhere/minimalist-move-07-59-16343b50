@@ -29,7 +29,7 @@ const testimonials: Testimonial[] = [{
 }, {
   name: "Chris L.",
   role: "Fitness Advocate",
-  quote: "Ordered with friends and got an extra discount. Thank you!",
+  quote: "Ordered multiple for our studio and got an extra discount. Thank you!",
   video: "/CHRIS LLL.mp4"
 }, {
   name: "Sarah M.",
@@ -39,8 +39,8 @@ const testimonials: Testimonial[] = [{
 }, {
   name: "Jordan P.",
   role: "Calisthenics Enthusiast",
-  quote: "BoxFun with PowerTower combo is just priceless!",
-  video: "/funtraining.mp4"  // Updated video path to the requested file
+  quote: "Never had so much fun training!",
+  video: "/funtraining.mp4"
 }];
 
 const TestimonialsCarousel = () => {
