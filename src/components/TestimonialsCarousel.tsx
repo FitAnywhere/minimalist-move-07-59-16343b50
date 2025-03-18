@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -73,43 +74,64 @@ const TestimonialsCarousel = () => {
     }
   };
 
+  // Reset video state when testimonial changes
+  useEffect(() => {
+    setIsVideoLoaded(false);
+    setVideoError(false);
+  }, [activeIndex]);
+
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current;
       
+      // Clear src and reload to force a fresh attempt
+      video.src = '';
+      video.load();
+      
+      // Set the new src
+      video.src = currentTestimonial.video;
+      
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
         setVideoError(false);
-        console.log("Testimonial video can play now");
+        console.log("Testimonial video can play now:", currentTestimonial.video);
       };
       
       const handleError = (e: Event) => {
-        console.error("Testimonial video error:", e);
+        console.error("Testimonial video error:", e, "for video:", currentTestimonial.video);
         setVideoError(true);
       };
 
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
 
-      // Attempt to load the video when the component is in view
+      // Attempt to play the video when in view
       if (isInView) {
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            console.error("Testimonial video play error:", error);
-            if (error.name !== 'NotAllowedError') {
-              setVideoError(true);
+        // Small delay to ensure loading has started
+        const playAttempt = setTimeout(() => {
+          if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(error => {
+                console.error("Testimonial video play error:", error);
+                if (error.name !== 'NotAllowedError') {
+                  setVideoError(true);
+                }
+              });
             }
-          });
-        }
+          }
+        }, 100);
+        
+        return () => clearTimeout(playAttempt);
       }
 
       return () => {
         video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('error', handleError);
+        video.pause();
       };
     }
-  }, [isInView, activeIndex]);
+  }, [isInView, activeIndex, currentTestimonial.video]);
   
   return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
@@ -162,7 +184,6 @@ const TestimonialsCarousel = () => {
                   ) : (
                     <video 
                       ref={videoRef} 
-                      src={currentTestimonial.video} 
                       className="w-full h-full object-cover min-h-[250px] transition-transform duration-500 cursor-pointer" 
                       autoPlay 
                       muted 
@@ -170,7 +191,6 @@ const TestimonialsCarousel = () => {
                       playsInline 
                       preload="auto"
                       onClick={toggleFullScreen} 
-                      poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png"
                     />
                   )}
                 </div>

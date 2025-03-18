@@ -31,11 +31,20 @@ const ChampionSection = () => {
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current;
+      
+      // Clear src and reload to force a fresh attempt
+      video.src = '';
+      video.load();
+      
+      // Set the new src
+      video.src = '/COACH.mp4';
+      
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
         setVideoError(false);
         console.log("Video can play now");
       };
+      
       const handleError = (e: Event) => {
         console.error("Video error:", e);
         setVideoError(true);
@@ -45,23 +54,28 @@ const ChampionSection = () => {
       video.addEventListener('error', handleError);
 
       if (isInView && !videoError) {
-        const playTimeout = setTimeout(() => {
-          const playPromise = video.play();
-          if (playPromise !== undefined) {
-            playPromise.catch(error => {
-              console.error("Video play error:", error);
-              if (error.name !== 'NotAllowedError') {
-                setVideoError(true);
-              }
-            });
+        // Small delay to ensure loading has started
+        const playAttempt = setTimeout(() => {
+          if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(error => {
+                console.error("Video play error:", error);
+                if (error.name !== 'NotAllowedError') {
+                  setVideoError(true);
+                }
+              });
+            }
           }
-        }, 300);
-        return () => clearTimeout(playTimeout);
+        }, 100);
+        
+        return () => clearTimeout(playAttempt);
       }
 
       return () => {
         video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('error', handleError);
+        video.pause();
       };
     }
   }, [isInView, videoError]);
@@ -157,10 +171,21 @@ const ChampionSection = () => {
             
             <div className="relative perspective">
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group">
-                <video ref={videoRef} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" playsInline muted autoPlay loop preload="auto" poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png">
-                  <source src="/COACH.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                {videoError ? (
+                  <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                    <p className="text-gray-500">Video unavailable</p>
+                  </div>
+                ) : (
+                  <video 
+                    ref={videoRef} 
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
+                    playsInline 
+                    muted 
+                    autoPlay 
+                    loop 
+                    preload="auto"
+                  />
+                )}
                 
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
@@ -179,10 +204,16 @@ const ChampionSection = () => {
 
           <div className="grid gap-8 md:grid-cols-2 mt-4">
             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-              <video className="w-full h-full object-cover" autoPlay muted loop>
-                <source src="/COACH.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              {videoError ? (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <p className="text-gray-500">Video unavailable</p>
+                </div>
+              ) : (
+                <video className="w-full h-full object-cover" autoPlay muted loop>
+                  <source src="/COACH.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )}
             </div>
 
             <div>
@@ -219,4 +250,3 @@ const ChampionSection = () => {
 };
 
 export default ChampionSection;
-

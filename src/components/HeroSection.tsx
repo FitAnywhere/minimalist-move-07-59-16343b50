@@ -36,6 +36,13 @@ const HeroSection = () => {
     if (videoRef.current) {
       const video = videoRef.current;
       
+      // Clear src and reload to force a fresh attempt
+      video.src = '';
+      video.load();
+      
+      // Set the new src
+      video.src = '/fitanywhere intro.mp4';
+      
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
         setVideoError(false);
@@ -51,19 +58,28 @@ const HeroSection = () => {
       video.addEventListener('error', handleError);
 
       if (isInView && !videoError) {
-        // Attempt to play video when in view
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            console.error("Hero video play error:", error);
-            setVideoError(true);
-          });
-        }
+        // Small delay to ensure loading has started
+        const playAttempt = setTimeout(() => {
+          if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(error => {
+                console.error("Hero video play error:", error);
+                if (error.name !== 'NotAllowedError') {
+                  setVideoError(true);
+                }
+              });
+            }
+          }
+        }, 100);
+        
+        return () => clearTimeout(playAttempt);
       }
 
       return () => {
         video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('error', handleError);
+        video.pause();
       };
     }
   }, [isInView, videoError]);
@@ -91,10 +107,8 @@ const HeroSection = () => {
                     ) : (
                       <video 
                         ref={videoRef} 
-                        src="/fitanywhere intro.mp4" 
                         className="w-full h-auto object-contain" 
                         loop playsInline muted autoPlay
-                        poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png"
                       />
                     )}
                     <button 
@@ -165,10 +179,8 @@ const HeroSection = () => {
                     ) : (
                       <video 
                         ref={videoRef} 
-                        src="/fitanywhere intro.mp4" 
                         className="w-full h-auto object-contain" 
                         loop playsInline muted autoPlay
-                        poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png"
                       />
                     )}
                     <button 

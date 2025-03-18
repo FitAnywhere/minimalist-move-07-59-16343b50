@@ -55,11 +55,18 @@ const LifestyleSection = () => {
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current;
+      
+      video.src = '';
+      video.load();
+      
+      video.src = '/0314 (3)(1).mp4';
+      
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
         setVideoError(false);
         console.log("Video can play now");
       };
+      
       const handleError = (e: Event) => {
         console.error("Video error:", e);
         setVideoError(true);
@@ -69,23 +76,27 @@ const LifestyleSection = () => {
       video.addEventListener('error', handleError);
 
       if (isInView && !videoError) {
-        const playTimeout = setTimeout(() => {
-          const playPromise = video.play();
-          if (playPromise !== undefined) {
-            playPromise.catch(error => {
-              console.error("Video play error:", error);
-              if (error.name !== 'NotAllowedError') {
-                setVideoError(true);
-              }
-            });
+        const playAttempt = setTimeout(() => {
+          if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(error => {
+                console.error("Video play error:", error);
+                if (error.name !== 'NotAllowedError') {
+                  setVideoError(true);
+                }
+              });
+            }
           }
-        }, 300);
-        return () => clearTimeout(playTimeout);
+        }, 100);
+        
+        return () => clearTimeout(playAttempt);
       }
 
       return () => {
         video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('error', handleError);
+        video.pause();
       };
     }
   }, [isInView, videoError]);
@@ -130,7 +141,6 @@ const LifestyleSection = () => {
                 </div>
                 
                 <div className="space-y-6 flex-grow">
-                  
                   <div 
                     className={cn(
                       "px-6 py-3 rounded-full cursor-pointer", 
@@ -296,19 +306,24 @@ const LifestyleSection = () => {
                 <div className="w-full max-w-xs md:max-w-[72%] md:h-full perspective transition-transform duration-300 relative">
                   <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
                     <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl h-full">
-                      <video 
-                        ref={videoRef} 
-                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
-                        playsInline 
-                        muted={isMuted} 
-                        autoPlay 
-                        loop 
-                        preload="auto" 
-                        poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png"
-                      >
-                        <source src="/0314 (3)(1).mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
+                      {videoError ? (
+                        <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                          <p className="text-gray-500">Video unavailable</p>
+                        </div>
+                      ) : (
+                        <video 
+                          ref={videoRef} 
+                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
+                          playsInline 
+                          muted={isMuted} 
+                          autoPlay 
+                          loop 
+                          preload="auto"
+                        >
+                          <source src="/0314 (3)(1).mp4" type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      )}
                       
                       <div className="absolute bottom-3 right-3 z-10">
                         <Toggle 

@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -33,6 +34,11 @@ const ProductTabs = () => {
   const bandsVideoRef = useRef<HTMLDivElement>(null);
   const trxTextRef = useRef<HTMLDivElement>(null);
   const bandsTextRef = useRef<HTMLDivElement>(null);
+  const trxVideo = useRef<HTMLVideoElement>(null);
+  const bandsVideo = useRef<HTMLVideoElement>(null);
+  
+  const [trxVideoError, setTrxVideoError] = useState(false);
+  const [bandsVideoError, setBandsVideoError] = useState(false);
   
   const isInView = useInView(sectionRef);
   const isVideoInView = useInView(trxVideoRef, {
@@ -67,6 +73,104 @@ const ProductTabs = () => {
       };
     }
   }, [isTrxTextInView]);
+
+  // TRX video loading and error handling
+  useEffect(() => {
+    if (trxVideo.current && isVideoInView) {
+      const video = trxVideo.current;
+      
+      // Clear src and reload to force a fresh attempt
+      video.src = '';
+      video.load();
+      
+      // Set the new src
+      video.src = '/TRXX.mp4';
+      
+      const handleCanPlay = () => {
+        setTrxVideoError(false);
+        console.log("TRX video can play now");
+      };
+      
+      const handleError = (e: Event) => {
+        console.error("TRX video error:", e);
+        setTrxVideoError(true);
+      };
+
+      video.addEventListener('canplay', handleCanPlay);
+      video.addEventListener('error', handleError);
+
+      // Small delay to ensure loading has started
+      const playAttempt = setTimeout(() => {
+        if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              console.error("TRX video play error:", error);
+              if (error.name !== 'NotAllowedError') {
+                setTrxVideoError(true);
+              }
+            });
+          }
+        }
+      }, 100);
+      
+      return () => {
+        clearTimeout(playAttempt);
+        video.removeEventListener('canplay', handleCanPlay);
+        video.removeEventListener('error', handleError);
+        video.pause();
+      };
+    }
+  }, [isVideoInView, activeTab]);
+
+  // Bands video loading and error handling
+  useEffect(() => {
+    if (bandsVideo.current && isBandsVideoInView) {
+      const video = bandsVideo.current;
+      
+      // Clear src and reload to force a fresh attempt
+      video.src = '';
+      video.load();
+      
+      // Set the new src
+      video.src = '/bands.mp4';
+      
+      const handleCanPlay = () => {
+        setBandsVideoError(false);
+        console.log("Bands video can play now");
+      };
+      
+      const handleError = (e: Event) => {
+        console.error("Bands video error:", e);
+        setBandsVideoError(true);
+      };
+
+      video.addEventListener('canplay', handleCanPlay);
+      video.addEventListener('error', handleError);
+
+      // Small delay to ensure loading has started
+      const playAttempt = setTimeout(() => {
+        if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              console.error("Bands video play error:", error);
+              if (error.name !== 'NotAllowedError') {
+                setBandsVideoError(true);
+              }
+            });
+          }
+        }
+      }, 100);
+      
+      return () => {
+        clearTimeout(playAttempt);
+        video.removeEventListener('canplay', handleCanPlay);
+        video.removeEventListener('error', handleError);
+        video.pause();
+      };
+    }
+  }, [isBandsVideoInView, activeTab]);
 
   const toggleBandsFeature = (index: number) => {
     setBandsExpandedFeatures(prev => ({
@@ -134,17 +238,23 @@ const ProductTabs = () => {
                   isMobile ? "order-1" : "order-2"
                 )}
               >
-                <video 
-                  src="/TRXX.mp4" 
-                  autoPlay 
-                  muted 
-                  loop 
-                  playsInline 
-                  className={cn(
-                    "w-full h-full object-cover transition-transform duration-1000", 
-                    isVideoInView ? "scale-[1.05]" : "scale-100"
-                  )} 
-                />
+                {trxVideoError ? (
+                  <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                    <p className="text-gray-500">Video unavailable</p>
+                  </div>
+                ) : (
+                  <video 
+                    ref={trxVideo}
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline 
+                    className={cn(
+                      "w-full h-full object-cover transition-transform duration-1000", 
+                      isVideoInView ? "scale-[1.05]" : "scale-100"
+                    )} 
+                  />
+                )}
               </div>
               
               <div 
@@ -240,17 +350,23 @@ const ProductTabs = () => {
                   isMobile ? "order-1" : "order-2"
                 )}
               >
-                <video 
-                  src="/bands.mp4" 
-                  autoPlay 
-                  muted 
-                  loop 
-                  playsInline 
-                  className={cn(
-                    "w-full h-full object-cover transition-transform duration-1000", 
-                    isBandsVideoInView ? "scale-[1.05]" : "scale-100"
-                  )} 
-                />
+                {bandsVideoError ? (
+                  <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                    <p className="text-gray-500">Video unavailable</p>
+                  </div>
+                ) : (
+                  <video 
+                    ref={bandsVideo}
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline 
+                    className={cn(
+                      "w-full h-full object-cover transition-transform duration-1000", 
+                      isBandsVideoInView ? "scale-[1.05]" : "scale-100"
+                    )} 
+                  />
+                )}
               </div>
             </div>
           </div>
