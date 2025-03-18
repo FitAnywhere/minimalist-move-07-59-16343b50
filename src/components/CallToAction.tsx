@@ -1,7 +1,9 @@
+
 import { useRef } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
 const CallToAction = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
@@ -9,6 +11,12 @@ const CallToAction = () => {
 
   // Set up parallax effect
   useParallax(backgroundRef, 0.05);
+  
+  const handleCheckout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.open('https://buy.stripe.com/test_dR602t4zDdk5gBa144', '_blank');
+  };
+  
   return <section id="order" ref={sectionRef} className="relative py-24 bg-black text-white overflow-hidden">
       {/* Parallax Background */}
       <div ref={backgroundRef} className="absolute inset-0 opacity-30">
@@ -28,7 +36,11 @@ const CallToAction = () => {
             
             
             <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-              <a href="#order" className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group">
+              <a 
+                href="https://buy.stripe.com/test_dR602t4zDdk5gBa144" 
+                className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group"
+                onClick={handleCheckout}
+              >
                 LAST CALL
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
@@ -40,4 +52,5 @@ const CallToAction = () => {
       </div>
     </section>;
 };
+
 export default CallToAction;

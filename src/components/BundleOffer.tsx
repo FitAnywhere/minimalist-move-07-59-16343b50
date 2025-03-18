@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -71,6 +70,11 @@ const BundleOffer = () => {
   const totalValue = 1899.95;
   const yourPrice = 990;
   const savingsPercentage = 47.89;
+  
+  const handleCheckout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.open('https://buy.stripe.com/test_dR602t4zDdk5gBa144', '_blank');
+  };
   
   return (
     <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-0 mx-0 my-0 bg-inherit">
@@ -197,13 +201,16 @@ const BundleOffer = () => {
             </div>
             
             <div className="bg-gray-900 p-4 text-center flex flex-col items-center">
-              <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "w-full sm:w-auto")}>
+              <Button 
+                size="lg" 
+                className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "w-full sm:w-auto")}
+                onClick={handleCheckout}
+              >
                 APPLY TODAY <Rocket className="ml-2 h-5 w-5" />
               </Button>
             </div>
           </div>
           
-          {/* Repositioned text - moved outside the dark box */}
           <div className={cn("text-center py-10 max-w-3xl mx-auto transition-all duration-300", 
               isInView ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
             <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4">
