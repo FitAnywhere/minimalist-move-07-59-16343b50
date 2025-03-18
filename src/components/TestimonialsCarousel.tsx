@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
+import { ChevronLeft, ChevronRight, User, Quote, Star } from 'lucide-react';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -182,7 +182,7 @@ const TestimonialsCarousel = () => {
                   {currentTestimonial.isYouTube ? (
                     <div className="relative overflow-hidden rounded-xl">
                       <AspectRatio ratio={currentTestimonial.aspectRatio || 9/16} className="overflow-hidden">
-                        <div className="relative w-full h-full overflow-hidden">
+                        <div className="relative w-full h-full overflow-hidden" style={{ transform: isMobile ? 'scale(1)' : 'scale(1.12)' }}>
                           <iframe 
                             className="w-full h-full absolute inset-0 pointer-events-none select-none"
                             src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/').split('?')[0]}?autoplay=1&mute=1&loop=1&playlist=${currentTestimonial.video.split('/').pop()}&controls=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&enablejsapi=0&origin=${window.location.origin}&widget_referrer=${window.location.origin}&hl=en&color=white&start=0&annotation=0&autohide=1&version=3&widgetid=1`}
@@ -190,6 +190,13 @@ const TestimonialsCarousel = () => {
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             frameBorder="0"
                             loading="lazy"
+                            style={{
+                              pointerEvents: 'none',
+                              userSelect: 'none',
+                              marginTop: isMobile ? '0' : '-60px',
+                              marginBottom: isMobile ? '0' : '-60px',
+                              height: isMobile ? '100%' : 'calc(100% + 120px)',
+                            }}
                           ></iframe>
                         </div>
                         <div 
@@ -199,6 +206,9 @@ const TestimonialsCarousel = () => {
                           onContextMenu={(e) => e.preventDefault()}
                           onMouseDown={(e) => e.preventDefault()}
                           onTouchStart={(e) => e.preventDefault()}
+                          style={{
+                            pointerEvents: 'auto'
+                          }}
                         ></div>
                       </AspectRatio>
                     </div>
