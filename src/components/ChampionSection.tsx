@@ -5,6 +5,7 @@ import { Toggle } from '@/components/ui/toggle';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from '@/components/ui/dialog';
+
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -115,9 +116,6 @@ const ChampionSection = () => {
                   EXCLUSIVE VIDEO LIBRARY
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
-                
-                
-                
               </div>
               
               {/* Feature points with fancy animations */}
@@ -186,7 +184,7 @@ const ChampionSection = () => {
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group">
                 {/* Video with better compatibility */}
                 <video ref={videoRef} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" playsInline muted={isMuted} autoPlay loop preload="auto" poster="/lovable-uploads/e524ebde-bbdd-4668-bfd4-595182310d6b.png">
-                  <source src="/0314 (3)(1).mp4" type="video/mp4" />
+                  <source src="/COACH.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
                 
@@ -236,7 +234,7 @@ const ChampionSection = () => {
 
           <div className="aspect-video w-full">
             <video className="w-full h-full object-cover" controls autoPlay>
-              <source src="/0314 (3)(1).mp4" type="video/mp4" />
+              <source src="/COACH.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
@@ -255,7 +253,7 @@ const ChampionSection = () => {
           <div className="grid gap-8 md:grid-cols-2 mt-4">
             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
               <video className="w-full h-full object-cover" autoPlay muted loop>
-                <source src="/0314 (3)(1).mp4" type="video/mp4" />
+                <source src="/COACH.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -292,4 +290,5 @@ const ChampionSection = () => {
       </Dialog>
     </section>;
 };
+
 export default ChampionSection;
