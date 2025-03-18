@@ -181,17 +181,19 @@ const TestimonialsCarousel = () => {
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500">
-                <div className="w-full md:max-w-[80%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                <div className="w-full md:max-w-[60%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
                   {currentTestimonial.isYouTube ? (
                     <div className="relative">
-                      <AspectRatio ratio={currentTestimonial.aspectRatio || 16/9} className="overflow-hidden">
+                      <AspectRatio ratio={currentTestimonial.aspectRatio || 9/16} className="overflow-hidden">
                         <iframe 
                           className="w-full h-full absolute inset-0"
-                          src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/').split('?')[0]}?controls=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3`}
+                          src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/').split('?')[0]}?autoplay=1&loop=1&playlist=${currentTestimonial.video.split('/').pop()}&controls=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&mute=1&playsinline=1&enablejsapi=0`}
                           title={`Testimonial from ${currentTestimonial.name}`}
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           frameBorder="0"
                         ></iframe>
+                        {/* Add overlay div to prevent interactions with the video */}
+                        <div className="absolute inset-0 w-full h-full z-10" aria-hidden="true"></div>
                       </AspectRatio>
                     </div>
                   ) : videoError ? (
@@ -228,3 +230,4 @@ const TestimonialsCarousel = () => {
 };
 
 export default TestimonialsCarousel;
+
