@@ -1,7 +1,7 @@
 
 import { useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { ArrowRight, Speaker, SpeakerOff } from 'lucide-react';
+import { ArrowRight, Speaker, Volume, VolumeX } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -53,9 +53,9 @@ const HeroSection = () => {
                       aria-label={isMuted ? "Unmute video" : "Mute video"}
                     >
                       {isMuted ? (
-                        <SpeakerOff className="w-4 h-4 text-white" />
+                        <VolumeX className="w-4 h-4 text-white" />
                       ) : (
-                        <Speaker className="w-4 h-4 text-white" />
+                        <Volume className="w-4 h-4 text-white" />
                       )}
                     </button>
                   </div>
@@ -115,9 +115,9 @@ const HeroSection = () => {
                       aria-label={isMuted ? "Unmute video" : "Mute video"}
                     >
                       {isMuted ? (
-                        <SpeakerOff className="w-5 h-5 text-white" />
+                        <VolumeX className="w-5 h-5 text-white" />
                       ) : (
-                        <Speaker className="w-5 h-5 text-white" />
+                        <Volume className="w-5 h-5 text-white" />
                       )}
                     </button>
                   </div>
