@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+
+import { useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Speaker, SpeakerOff } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -12,12 +13,20 @@ const HeroSection = () => {
   const isMobile = useIsMobile();
   const isInView = useInView(heroRef, {}, false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
 
   const scrollToOwnBoth = (e: React.MouseEvent) => {
     e.preventDefault();
     const productSection = document.getElementById('product');
     if (productSection) {
       productSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const toggleSound = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
     }
   };
 
@@ -37,7 +46,18 @@ const HeroSection = () => {
               <div className={cn("w-full transition-all duration-1000 delay-300", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="relative rounded-xl overflow-hidden shadow-lg">
                   <div className="relative w-full h-full">
-                    <video ref={videoRef} src="Anastazija-banner.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
+                    <video ref={videoRef} src="/public/fitanywhere intro.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
+                    <button 
+                      onClick={toggleSound}
+                      className="absolute bottom-3 right-3 bg-black/40 hover:bg-black/60 rounded-full p-2 transition-all duration-300"
+                      aria-label={isMuted ? "Unmute video" : "Mute video"}
+                    >
+                      {isMuted ? (
+                        <SpeakerOff className="w-4 h-4 text-white" />
+                      ) : (
+                        <Speaker className="w-4 h-4 text-white" />
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -88,7 +108,18 @@ const HeroSection = () => {
               <div className={cn("order-1 md:order-2 transition-all duration-1000 delay-300 w-full", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
                   <div className="w-full max-w-[95%] mx-auto">
-                    <video ref={videoRef} src="Anastazija-banner.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
+                    <video ref={videoRef} src="/public/fitanywhere intro.mp4" className="w-full h-auto object-contain" loop playsInline muted autoPlay />
+                    <button 
+                      onClick={toggleSound}
+                      className="absolute bottom-4 right-4 bg-black/40 hover:bg-black/60 rounded-full p-2 transition-all duration-300"
+                      aria-label={isMuted ? "Unmute video" : "Mute video"}
+                    >
+                      {isMuted ? (
+                        <SpeakerOff className="w-5 h-5 text-white" />
+                      ) : (
+                        <Speaker className="w-5 h-5 text-white" />
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -105,4 +136,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
