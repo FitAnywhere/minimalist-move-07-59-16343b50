@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -51,7 +50,7 @@ const TimeAndCostCalculator = () => {
   // Handle CTA button click - updated to open Stripe checkout
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/bIY6oO1gVaGo7jG144', '_blank');
+    window.open('https://buy.stripe.com/3cs00q7Fjg0I9rO6oq', '_blank');
   };
 
   // Format cost input

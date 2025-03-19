@@ -14,7 +14,7 @@ const CallToAction = () => {
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/bIYg1o5tRg6149228g', '_blank');
+    window.open('https://buy.stripe.com/3cs00q7Fjg0I9rO6oq', '_blank');
   };
   
   return <section id="order" ref={sectionRef} className="relative py-24 bg-black text-white overflow-hidden">
@@ -37,7 +37,7 @@ const CallToAction = () => {
             
             <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
               <a 
-                href="https://buy.stripe.com/bIYg1o5tRg6149228g" 
+                href="https://buy.stripe.com/3cs00q7Fjg0I9rO6oq" 
                 className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group"
                 onClick={handleCheckout}
               >
