@@ -37,14 +37,18 @@ const VimeoPlayer = memo(({
           if (window.Vimeo && window.Vimeo.Player) {
             const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
             setPlayer(vimeoPlayer);
-            setIsPlayerReady(true);
             
             // Set initial audio state
-            vimeoPlayer.setVolume(audioOn ? 1 : 0);
-            vimeoPlayer.setMuted(!audioOn);
+            vimeoPlayer.setVolume(1); // Always set volume to 1 initially
+            vimeoPlayer.setMuted(false); // Ensure it's not muted
             
-            // Ensure video is initially paused
-            vimeoPlayer.pause();
+            // Ensure video is initially paused but at 0.1 seconds
+            vimeoPlayer.pause().then(() => {
+              vimeoPlayer.setCurrentTime(0.1).then(() => {
+                setIsPlayerReady(true);
+                console.log("Vimeo player is ready");
+              });
+            });
             
             // Add event listeners
             vimeoPlayer.on('play', () => {
@@ -57,11 +61,9 @@ const VimeoPlayer = memo(({
             
             vimeoPlayer.on('ended', () => {
               // Reset to beginning for next play
-              vimeoPlayer.setCurrentTime(0);
+              vimeoPlayer.setCurrentTime(0.1);
               setIsPlaying(false);
             });
-            
-            console.log("Vimeo player is ready");
           }
         }
       } catch (e) {
@@ -71,7 +73,7 @@ const VimeoPlayer = memo(({
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [audioOn]);
+  }, []);
 
   // Handle play button click
   const handlePlayClick = (e: React.MouseEvent) => {
@@ -83,9 +85,22 @@ const VimeoPlayer = memo(({
     if (isPlaying) {
       player.pause();
     } else {
+      // Ensure audio is on when playing
+      player.setVolume(1);
+      player.setMuted(false);
+      setAudioOn(true);
+      
       player.play().catch(() => {
         console.log("Failed to play video");
       });
+    }
+  };
+
+  // Set audio state directly
+  const setAudioOn = (state: boolean) => {
+    if (player) {
+      player.setVolume(state ? 1 : 0);
+      player.setMuted(!state);
     }
   };
 
@@ -96,7 +111,7 @@ const VimeoPlayer = memo(({
     const viewStateChanged = wasInViewRef.current !== isInView;
     wasInViewRef.current = isInView;
 
-    // Update audio settings
+    // Update audio settings for toggle button
     player.setVolume(audioOn ? 1 : 0);
     player.setMuted(!audioOn);
     
