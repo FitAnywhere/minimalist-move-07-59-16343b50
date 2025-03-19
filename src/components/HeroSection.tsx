@@ -1,5 +1,5 @@
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import VimeoPlayer from './ui/VimeoPlayer';
@@ -11,22 +11,22 @@ const HeroSection = () => {
   const isMobile = useIsMobile();
   const [audioOn, setAudioOn] = useState(true);
   
-  const scrollToOwnBoth = (e: React.MouseEvent) => {
+  // Use a higher threshold to ensure better video control
+  const isInView = useInView(heroRef, { threshold: 0.4 });
+
+  const scrollToOwnBoth = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     const productSection = document.getElementById('product');
     if (productSection) {
       productSection.scrollIntoView({ behavior: 'smooth' });
     }
-  };
+  }, []);
 
-  const toggleAudio = (e: React.MouseEvent) => {
+  const toggleAudio = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    setAudioOn(!audioOn);
-  };
-
-  // Use a higher threshold to ensure the video gets paused correctly
-  const isInView = useInView(heroRef, { threshold: 0.3 }, false);
+    setAudioOn(prev => !prev);
+  }, []);
 
   return (
     <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white">

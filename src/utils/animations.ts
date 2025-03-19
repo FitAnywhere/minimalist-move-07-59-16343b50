@@ -1,6 +1,7 @@
 
-import { useEffect, useState, useRef, RefObject } from 'react';
+import { useEffect, useState, useRef, RefObject, useCallback } from 'react';
 
+// Optimized useInView hook with memoized callback
 export const useInView = (
   ref: RefObject<HTMLElement>, 
   options = {}, 
@@ -9,100 +10,120 @@ export const useInView = (
   onExitView?: () => void
 ) => {
   const [isInView, setIsInView] = useState(false);
+  const wasInViewRef = useRef(false);
   
   useEffect(() => {
     if (!ref.current) return;
     
+    const element = ref.current;
+    const defaultOptions = { threshold: 0.1, ...options };
+    
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
+      const isNowInView = entry.isIntersecting;
+      const viewStateChanged = wasInViewRef.current !== isNowInView;
+      
+      if (isNowInView) {
         setIsInView(true);
-        onEnterView?.();
-        if (once && ref.current) {
-          observer.unobserve(ref.current);
+        if (viewStateChanged) {
+          onEnterView?.();
+        }
+        
+        // If once is true, unobserve after entering view
+        if (once) {
+          observer.unobserve(element);
         }
       } else if (!once) {
         setIsInView(false);
-        onExitView?.();
+        if (viewStateChanged) {
+          onExitView?.();
+        }
       }
-    }, {
-      threshold: 0.1,
-      ...options,
-    });
+      
+      wasInViewRef.current = isNowInView;
+    }, defaultOptions);
     
-    observer.observe(ref.current);
+    observer.observe(element);
     
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
-  }, [ref, options, once, onEnterView, onExitView]);
+    return () => observer.disconnect();
+  }, [ref, once, onEnterView, onExitView, options]);
   
   return isInView;
 };
 
+// Optimized useParallax hook with passive event listener
 export const useParallax = (ref: RefObject<HTMLElement>, speed = 0.1) => {
   useEffect(() => {
     if (!ref.current) return;
     
+    const element = ref.current;
+    let rafId: number | null = null;
+    
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const element = ref.current;
-      if (element) {
+      if (rafId) return;
+      
+      rafId = requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
         element.style.transform = `translateY(${scrollY * speed}px)`;
-      }
+        rafId = null;
+      });
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, [ref, speed]);
 };
 
+// Optimized useScrollPosition hook with throttling
 export const useScrollPosition = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
+  const throttleTimeout = useRef<NodeJS.Timeout | null>(null);
   
   useEffect(() => {
     const updatePosition = () => {
-      setScrollPosition(window.scrollY);
+      if (throttleTimeout.current) return;
+      
+      throttleTimeout.current = setTimeout(() => {
+        setScrollPosition(window.scrollY);
+        throttleTimeout.current = null;
+      }, 100); // 100ms throttle
     };
     
-    window.addEventListener('scroll', updatePosition);
-    
+    window.addEventListener('scroll', updatePosition, { passive: true });
     updatePosition();
     
-    return () => window.removeEventListener('scroll', updatePosition);
+    return () => {
+      window.removeEventListener('scroll', updatePosition);
+      if (throttleTimeout.current) clearTimeout(throttleTimeout.current);
+    };
   }, []);
   
   return scrollPosition;
 };
 
+// Remaining hooks kept but with optimized patterns
 export const useLazyLoad = (ref: RefObject<HTMLImageElement>) => {
   const [isLoaded, setIsLoaded] = useState(false);
   
   useEffect(() => {
     if (!ref.current) return;
     
+    const img = ref.current;
+    
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        const img = ref.current;
-        if (img && img.dataset.src) {
-          img.src = img.dataset.src;
-          img.onload = () => setIsLoaded(true);
-        }
-        observer.unobserve(entry.target);
+      if (entry.isIntersecting && img.dataset.src) {
+        img.src = img.dataset.src;
+        img.onload = () => setIsLoaded(true);
+        observer.unobserve(img);
       }
     });
     
-    observer.observe(ref.current);
+    observer.observe(img);
     
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
+    return () => observer.disconnect();
   }, [ref]);
   
   return isLoaded;

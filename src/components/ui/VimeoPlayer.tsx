@@ -1,44 +1,29 @@
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, memo } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 
 interface VimeoPlayerProps {
   videoId: string;
   playerId: string;
   className?: string;
-  onPlayerReady?: (player: any) => void;
   isInView: boolean;
   audioOn: boolean;
   toggleAudio: (e: React.MouseEvent) => void;
 }
 
-const VimeoPlayer = ({
+const VimeoPlayer = memo(({
   videoId,
   playerId,
   className = "",
-  onPlayerReady,
   isInView,
   audioOn,
   toggleAudio
 }: VimeoPlayerProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [player, setPlayer] = useState<any>(null);
-  
-  // Load Vimeo API
-  useEffect(() => {
-    if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
-      const script = document.createElement('script');
-      script.src = "https://player.vimeo.com/api/player.js";
-      script.async = true;
-      document.head.appendChild(script);
-      
-      return () => {
-        document.head.removeChild(script);
-      };
-    }
-  }, []);
+  const wasInViewRef = useRef(isInView);
 
-  // Initialize player and handle messages
+  // Initialize player
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
@@ -47,62 +32,47 @@ const VimeoPlayer = ({
         const data = typeof event.data === 'object' ? event.data : JSON.parse(event.data);
         
         if (data.event === "ready" && iframeRef.current) {
-          console.log("Vimeo player is ready");
-          
           if (window.Vimeo && window.Vimeo.Player) {
             const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
             setPlayer(vimeoPlayer);
             
-            vimeoPlayer.setVolume(1);
-            vimeoPlayer.setMuted(false);
-            
-            vimeoPlayer.play().catch((error: any) => {
-              console.log("Auto-play error:", error);
-            });
-            
-            if (onPlayerReady) {
-              onPlayerReady(vimeoPlayer);
-            }
+            // Set initial audio state
+            vimeoPlayer.setVolume(audioOn ? 1 : 0);
+            vimeoPlayer.setMuted(!audioOn);
           }
         }
       } catch (e) {
-        console.error("Error parsing Vimeo message:", e);
+        // Silent error handling to avoid console spam
       }
     };
 
     window.addEventListener('message', handleMessage);
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, [onPlayerReady]);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [audioOn]);
 
   // Control video playback based on visibility
   useEffect(() => {
     if (!player) return;
 
-    if (isInView) {
-      // Set audio state
-      if (audioOn) {
-        player.setVolume(1);
-        player.setMuted(false);
-      } else {
-        player.setVolume(0);
-        player.setMuted(true);
-      }
+    const viewStateChanged = wasInViewRef.current !== isInView;
+    wasInViewRef.current = isInView;
 
-      // Always restart video when coming back into view
-      player.setCurrentTime(0).then(() => {
-        player.play().catch((error: any) => {
-          console.log("Error playing video:", error);
+    if (isInView) {
+      // Update audio settings
+      player.setVolume(audioOn ? 1 : 0);
+      player.setMuted(!audioOn);
+      
+      if (viewStateChanged) {
+        // Restart video when coming back into view
+        player.setCurrentTime(0).then(() => {
+          player.play().catch(() => {
+            // Silent catch for autoplay issues
+          });
         });
-      }).catch((error: any) => {
-        console.log("Error setting current time:", error);
-      });
-    } else {
-      // Always pause when out of view
-      player.pause().catch((error: any) => {
-        console.log("Error pausing video:", error);
-      });
+      }
+    } else if (viewStateChanged) {
+      // Pause when moving out of view
+      player.pause();
     }
   }, [isInView, player, audioOn]);
 
@@ -131,6 +101,9 @@ const VimeoPlayer = ({
       </button>
     </div>
   );
-};
+});
+
+// Display name for React DevTools
+VimeoPlayer.displayName = 'VimeoPlayer';
 
 export default VimeoPlayer;
