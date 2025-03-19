@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -89,7 +88,7 @@ const ProductTabs = () => {
 
   const renderTrxVimeoVideo = () => {
     return (
-      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg mx-auto" style={{ maxWidth: '80%' }}>
+      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
         <AspectRatio ratio={3/4} className="overflow-hidden">
           <iframe 
             src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1"
@@ -106,7 +105,7 @@ const ProductTabs = () => {
 
   const renderBandsVimeoVideo = () => {
     return (
-      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg mx-auto" style={{ maxWidth: '80%' }}>
+      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
         <AspectRatio ratio={3/4} className="overflow-hidden">
           <iframe 
             src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1" 
