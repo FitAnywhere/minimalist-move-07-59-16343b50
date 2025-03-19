@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -103,7 +104,7 @@ const ProductIntro = () => {
                   "flex justify-center items-center transition-all duration-700 h-full md:hidden", 
                   isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
                 )}>
-                  <div className="w-full max-w-[80%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
+                  <div className="w-full max-w-[64%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
                     <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
                       <source src="/home-360-tb.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
@@ -273,3 +274,4 @@ const ProductIntro = () => {
 };
 
 export default ProductIntro;
+
