@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
@@ -25,7 +24,6 @@ const HeroSection = () => {
     }
   };
 
-  // Listen for messages from the Vimeo iframe
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
@@ -36,18 +34,15 @@ const HeroSection = () => {
           console.log("Vimeo player is ready");
           setVimeoPlayerReady(true);
           
-          // Create Vimeo player instance when it's ready
           if (window.Vimeo && window.Vimeo.Player && iframeRef.current) {
             const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
             setPlayer(vimeoPlayer);
             
-            // Set initial audio state to on
             vimeoPlayer.setVolume(1);
             vimeoPlayer.setMuted(false);
           }
         }
       } catch (e) {
-        // Not a JSON message or other error
       }
     };
 
@@ -57,7 +52,6 @@ const HeroSection = () => {
     };
   }, []);
 
-  // Toggle audio on/off
   const toggleAudio = () => {
     if (player) {
       if (audioOn) {
@@ -68,25 +62,20 @@ const HeroSection = () => {
         player.setMuted(false);
       }
       setAudioOn(!audioOn);
-      // Reset scroll mute flag - this was a manual toggle
       setWasScrollMuted(false);
     }
   };
 
-  // Use useInView to handle visibility
   const isInView = useInView(heroRef, {}, false);
 
-  // Handle audio control based on visibility
   useEffect(() => {
     if (player) {
       if (isInView) {
-        // Only turn audio back on if this wasn't scroll-muted before
         if (audioOn && !wasScrollMuted) {
           player.setVolume(1);
           player.setMuted(false);
         }
       } else if (audioOn) {
-        // When scrolling away and audio is on, mute it and track that it was muted by scrolling
         player.setVolume(0);
         player.setMuted(true);
         setWasScrollMuted(true);
@@ -94,7 +83,8 @@ const HeroSection = () => {
     }
   }, [isInView, player, audioOn, wasScrollMuted]);
 
-  // Add Vimeo script to document head
+  const isAudioPlaying = isInView && audioOn && !wasScrollMuted;
+
   useEffect(() => {
     if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
       const script = document.createElement('script');
@@ -135,13 +125,13 @@ const HeroSection = () => {
                   </div>
                   <button 
                     onClick={toggleAudio}
-                    className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300 z-30"
-                    aria-label={audioOn ? "Mute audio" : "Unmute audio"}
+                    className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-1.5 rounded-full transition-all duration-300 z-30"
+                    aria-label={isAudioPlaying ? "Mute audio" : "Unmute audio"}
                   >
-                    {audioOn ? (
-                      <Volume2 size={20} className="text-white" />
+                    {isAudioPlaying ? (
+                      <Volume2 size={16} className="text-white" />
                     ) : (
-                      <VolumeX size={20} className="text-white" />
+                      <VolumeX size={16} className="text-white" />
                     )}
                   </button>
                 </div>
@@ -206,9 +196,9 @@ const HeroSection = () => {
                     <button 
                       onClick={toggleAudio}
                       className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300 z-30"
-                      aria-label={audioOn ? "Mute audio" : "Unmute audio"}
+                      aria-label={isAudioPlaying ? "Mute audio" : "Unmute audio"}
                     >
-                      {audioOn ? (
+                      {isAudioPlaying ? (
                         <Volume2 size={20} className="text-white" />
                       ) : (
                         <VolumeX size={20} className="text-white" />
