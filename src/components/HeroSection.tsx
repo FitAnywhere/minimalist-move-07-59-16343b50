@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
@@ -78,54 +79,36 @@ const HeroSection = () => {
     }
   };
 
-  const isInView = useInView(heroRef, { threshold: 0.3 }, false);
+  const isInView = useInView(heroRef, {}, false);
 
   useEffect(() => {
-    if (player) {
-      if (isInView) {
-        // Set volume according to audio state
-        if (audioOn) {
-          player.setVolume(1);
-          player.setMuted(false);
-        } else {
-          player.setVolume(0);
-          player.setMuted(true);
-        }
-
-        // Always restart video from the beginning when coming back into view
-        player.setCurrentTime(0).then(() => {
-          player.play().catch((error: any) => {
-            console.log("Error playing video:", error);
-          });
-        }).catch((error: any) => {
-          console.log("Error setting current time:", error);
-        });
-        
-        if (firstLoad) {
-          setFirstLoad(false);
-        }
+    if (player && isInView) {
+      // Set volume according to audio state
+      if (audioOn) {
+        player.setVolume(1);
+        player.setMuted(false);
       } else {
-        // Ensure the video is always paused when not in view
-        player.pause().catch((error: any) => {
-          console.log("Error pausing video:", error);
-        });
+        player.setVolume(0);
+        player.setMuted(true);
       }
+
+      // Always restart video from the beginning when coming back into view
+      player.setCurrentTime(0).then(() => {
+        player.play().catch((error: any) => {
+          console.log("Error playing video:", error);
+        });
+      }).catch((error: any) => {
+        console.log("Error setting current time:", error);
+      });
+      
+      if (firstLoad) {
+        setFirstLoad(false);
+      }
+    } else if (player && !isInView) {
+      // Stop the video when out of view
+      player.pause();
     }
   }, [isInView, player, audioOn, firstLoad]);
-
-  useEffect(() => {
-    const checkInterval = setInterval(() => {
-      player.getPaused().then((paused: boolean) => {
-        if (!paused) {
-          player.pause();
-        }
-      }).catch(err => {
-        console.log("Error checking if paused:", err);
-      });
-    }, 1000);
-    
-    return () => clearInterval(checkInterval);
-  }, [isInView, player]);
 
   useEffect(() => {
     if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
