@@ -59,22 +59,26 @@ const TimeAndCostCalculator = () => {
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
 
-  return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
-      <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto text-center">
+  return (
+    <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto">
           <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
-              YOUR HIDDEN COSTS
-              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
-            </h2>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
+                YOUR HIDDEN COSTS
+                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
+              </h2>
+            </div>
             
-            
-            
-            <div className="mt-12 max-w-xl mx-auto">
-              <div className={cn("mb-8 transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
+            {/* Main content area */}
+            <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
+              {/* Desktop & Mobile Layout */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                {/* Left Column - Input Controls */}
                 <div className="space-y-10">
                   {/* Time wasted slider */}
-                  <div>
+                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                     <p className="text-xl mb-3 font-medium text-left">Time spent getting to the gym and back?</p>
                     
                     <div className="flex items-center justify-between mb-2">
@@ -88,10 +92,22 @@ const TimeAndCostCalculator = () => {
                     <div className="py-4">
                       <Slider value={[timeWastedPerVisit]} min={0} max={120} step={5} className="w-full" onValueChange={value => setTimeWastedPerVisit(value[0])} />
                     </div>
+                    
+                    {/* Mobile-only result for time */}
+                    <div className="md:hidden mt-6 bg-gray-50 p-4 rounded-lg">
+                      <div className="flex items-center justify-center mb-2">
+                        <Clock className="w-5 h-5 text-yellow mr-2" />
+                        <h3 className="text-lg font-bold">Time wasted in 20 years</h3>
+                      </div>
+                      <p className="text-2xl font-bold text-yellow pulse-glow">
+                        {shouldAnimate ? <CountUp start={previousTimeWasted} end={timeWastedInYears} duration={1} separator="," suffix=" hours" useEasing /> : "0 hours"}
+                      </p>
+                      <p className="text-gray-600 text-sm mt-1">Lost forever</p>
+                    </div>
                   </div>
                   
                   {/* Gym cost slider */}
-                  <div>
+                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                     <p className="text-xl mb-3 font-medium text-left">How much is your monthly gym bill?</p>
                     
                     <div className="flex items-center justify-between mb-2">
@@ -106,49 +122,70 @@ const TimeAndCostCalculator = () => {
                     <div className="py-4">
                       <Slider value={[gymMonthlyCost]} min={0} max={150} step={5} className="w-full" onValueChange={value => setGymMonthlyCost(value[0])} />
                     </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className={cn("bg-white rounded-2xl p-8 mb-10 transition-all duration-1000 shadow-md border border-gray-100 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center mb-2">
-                      <Clock className="w-6 h-6 text-yellow mr-2" />
-                      <h3 className="text-xl font-bold">Time wasted in 20 years</h3>
+                    
+                    {/* Mobile-only result for money */}
+                    <div className="md:hidden mt-6 bg-gray-50 p-4 rounded-lg">
+                      <div className="flex items-center justify-center mb-2">
+                        <Banknote className="w-5 h-5 text-yellow mr-2" />
+                        <h3 className="text-lg font-bold">Money spent in 20 years</h3>
+                      </div>
+                      <p className="text-2xl font-bold text-yellow pulse-glow">
+                        {shouldAnimate ? <CountUp start={previousMoneyCost} end={moneySpentInYears} duration={1} separator="," prefix="€" suffix="+" useEasing /> : "€0+"}
+                      </p>
+                      <p className="text-gray-600 text-sm mt-1">On memberships</p>
                     </div>
-                    <p className="text-3xl md:text-4xl font-bold text-yellow pulse-glow">
-                      {shouldAnimate ? <CountUp start={previousTimeWasted} end={timeWastedInYears} duration={1} separator="," suffix=" hours" useEasing /> : "0 hours"}
-                    </p>
-                    <p className="text-gray-600 mt-2">Lost forever</p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="flex items-center justify-center mb-2">
-                      <Banknote className="w-6 h-6 text-yellow mr-2" />
-                      <h3 className="text-xl font-bold">Money spent in 20 years</h3>
-                    </div>
-                    <p className="text-3xl md:text-4xl font-bold text-yellow pulse-glow">
-                      {shouldAnimate ? <CountUp start={previousMoneyCost} end={moneySpentInYears} duration={1} separator="," prefix="€" suffix="+" useEasing /> : "€0+"}
-                    </p>
-                    <p className="text-gray-600 mt-2">On memberships</p>
                   </div>
                 </div>
                 
-                <p className="text-center mt-8 font-medium mx-0 my-[25px] px-0 py-0 text-lg">What could you do with that extra time and money?</p>
+                {/* Right Column - Results (Desktop only) */}
+                <div className="hidden md:flex flex-col justify-center">
+                  <div className="bg-white rounded-2xl p-8 shadow-md border border-gray-100 h-full">
+                    <div className="grid grid-rows-2 gap-8 h-full">
+                      {/* Time wasted result */}
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="flex items-center justify-center mb-3">
+                          <Clock className="w-6 h-6 text-yellow mr-2" />
+                          <h3 className="text-xl font-bold">Time wasted in 20 years</h3>
+                        </div>
+                        <p className="text-3xl md:text-4xl font-bold text-yellow pulse-glow">
+                          {shouldAnimate ? <CountUp start={previousTimeWasted} end={timeWastedInYears} duration={1} separator="," suffix=" hours" useEasing /> : "0 hours"}
+                        </p>
+                        <p className="text-gray-600 mt-2">Lost forever</p>
+                      </div>
+                      
+                      {/* Money spent result */}
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="flex items-center justify-center mb-3">
+                          <Banknote className="w-6 h-6 text-yellow mr-2" />
+                          <h3 className="text-xl font-bold">Money spent in 20 years</h3>
+                        </div>
+                        <p className="text-3xl md:text-4xl font-bold text-yellow pulse-glow">
+                          {shouldAnimate ? <CountUp start={previousMoneyCost} end={moneySpentInYears} duration={1} separator="," prefix="€" suffix="+" useEasing /> : "€0+"}
+                        </p>
+                        <p className="text-gray-600 mt-2">On memberships</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               
-              <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-                <Button onClick={handleCTAClick} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group">
-                  OWN YOUR FREEDOM NOW
-                  <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </Button>
+              {/* "What could you do" text and CTA - centered for both mobile and desktop */}
+              <div className="mt-12 text-center">
+                <p className="text-lg font-medium mb-8">What could you do with that extra time and money?</p>
+                
+                <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
+                  <Button onClick={handleCTAClick} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group">
+                    OWN YOUR FREEDOM NOW
+                    <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 
 export default TimeAndCostCalculator;
