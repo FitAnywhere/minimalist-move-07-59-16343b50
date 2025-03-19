@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -37,7 +38,7 @@ const faqItems: FAQItem[] = [{
   answer: "Unfold and lock in place. Done in under 2 minutes. No tools, no drilling."
 }, {
   question: "Is the BoxFun effective for training?",
-  answer: "Yes! Great for warm ups, cardio, and full body movement."
+  answer: "It's great for warm ups, cardio, and full body movement."
 }, {
   question: "When will my FitAnywhere bundle be delivered?",
   answer: "We ship to the Netherlands on a weekly basis. Place your order now to be included in the next scheduled shipment."
