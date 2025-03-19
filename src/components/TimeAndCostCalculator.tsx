@@ -122,7 +122,7 @@ const TimeAndCostCalculator = () => {
                     <p className="text-3xl md:text-4xl font-bold text-yellow pulse-glow">
                       {shouldAnimate ? <CountUp start={previousTimeWasted} end={timeWastedInYears} duration={1} separator="," suffix=" hours" useEasing /> : "0 hours"}
                     </p>
-                    <p className="text-gray-600 mt-2">lost forever</p>
+                    <p className="text-gray-600 mt-2">Lost forever</p>
                   </div>
                   
                   <div className="text-center">
@@ -133,13 +133,11 @@ const TimeAndCostCalculator = () => {
                     <p className="text-3xl md:text-4xl font-bold text-yellow pulse-glow">
                       {shouldAnimate ? <CountUp start={previousMoneyCost} end={moneySpentInYears} duration={1} separator="," prefix="€" suffix="+" useEasing /> : "€0+"}
                     </p>
-                    <p className="text-gray-600 mt-2">on gym memberships</p>
+                    <p className="text-gray-600 mt-2">On memberships</p>
                   </div>
                 </div>
                 
-                <p className="text-center mt-8 text-xl font-medium">
-                  Imagine what you could do with that extra time and money.
-                </p>
+                <p className="text-center mt-8 font-medium mx-0 my-[25px] px-0 py-0 text-lg">What could you do with that extra time and money?</p>
               </div>
               
               <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
