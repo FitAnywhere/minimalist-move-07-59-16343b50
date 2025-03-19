@@ -5,6 +5,7 @@ import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useIsMobile } from '@/hooks/use-mobile';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 const bandsFeatures = [
   {
@@ -34,11 +35,6 @@ const ProductTabs = () => {
   const bandsVideoRef = useRef<HTMLDivElement>(null);
   const trxTextRef = useRef<HTMLDivElement>(null);
   const bandsTextRef = useRef<HTMLDivElement>(null);
-  const trxVideo = useRef<HTMLVideoElement>(null);
-  const bandsVideo = useRef<HTMLVideoElement>(null);
-  
-  const [trxVideoError, setTrxVideoError] = useState(false);
-  const [bandsVideoError, setBandsVideoError] = useState(false);
   
   const isInView = useInView(sectionRef);
   const isVideoInView = useInView(trxVideoRef, {
@@ -55,6 +51,7 @@ const ProductTabs = () => {
   });
   
   const isMobile = useIsMobile();
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   useEffect(() => {
     if (isTrxTextInView) {
@@ -74,103 +71,56 @@ const ProductTabs = () => {
     }
   }, [isTrxTextInView]);
 
-  // TRX video loading and error handling
+  // Load Vimeo script once
   useEffect(() => {
-    if (trxVideo.current && isVideoInView) {
-      const video = trxVideo.current;
-      
-      // Clear src and reload to force a fresh attempt
-      video.src = '';
-      video.load();
-      
-      // Set the new src
-      video.src = '/TRXX.mp4';
-      
-      const handleCanPlay = () => {
-        setTrxVideoError(false);
-        console.log("TRX video can play now");
-      };
-      
-      const handleError = (e: Event) => {
-        console.error("TRX video error:", e);
-        setTrxVideoError(true);
-      };
-
-      video.addEventListener('canplay', handleCanPlay);
-      video.addEventListener('error', handleError);
-
-      // Small delay to ensure loading has started
-      const playAttempt = setTimeout(() => {
-        if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
-          const playPromise = video.play();
-          if (playPromise !== undefined) {
-            playPromise.catch(error => {
-              console.error("TRX video play error:", error);
-              if (error.name !== 'NotAllowedError') {
-                setTrxVideoError(true);
-              }
-            });
-          }
-        }
-      }, 100);
+    if (!window.Vimeo && !isScriptLoaded) {
+      const script = document.createElement('script');
+      script.src = 'https://player.vimeo.com/api/player.js';
+      script.async = true;
+      script.onload = () => setIsScriptLoaded(true);
+      document.body.appendChild(script);
       
       return () => {
-        clearTimeout(playAttempt);
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('error', handleError);
-        video.pause();
+        document.body.removeChild(script);
       };
+    } else if (window.Vimeo) {
+      setIsScriptLoaded(true);
     }
-  }, [isVideoInView, activeTab]);
+  }, [isScriptLoaded]);
 
-  // Bands video loading and error handling
-  useEffect(() => {
-    if (bandsVideo.current && isBandsVideoInView) {
-      const video = bandsVideo.current;
-      
-      // Clear src and reload to force a fresh attempt
-      video.src = '';
-      video.load();
-      
-      // Set the new src
-      video.src = '/bands.mp4';
-      
-      const handleCanPlay = () => {
-        setBandsVideoError(false);
-        console.log("Bands video can play now");
-      };
-      
-      const handleError = (e: Event) => {
-        console.error("Bands video error:", e);
-        setBandsVideoError(true);
-      };
+  const renderTrxVimeoVideo = () => {
+    return (
+      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg">
+        <AspectRatio ratio={3/4} className="overflow-hidden">
+          <iframe 
+            src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1"
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+            className="w-full h-full absolute inset-0"
+            title="TRX video"
+            style={{ border: 'none' }}
+            loading="lazy"
+          ></iframe>
+        </AspectRatio>
+      </div>
+    );
+  };
 
-      video.addEventListener('canplay', handleCanPlay);
-      video.addEventListener('error', handleError);
-
-      // Small delay to ensure loading has started
-      const playAttempt = setTimeout(() => {
-        if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
-          const playPromise = video.play();
-          if (playPromise !== undefined) {
-            playPromise.catch(error => {
-              console.error("Bands video play error:", error);
-              if (error.name !== 'NotAllowedError') {
-                setBandsVideoError(true);
-              }
-            });
-          }
-        }
-      }, 100);
-      
-      return () => {
-        clearTimeout(playAttempt);
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('error', handleError);
-        video.pause();
-      };
-    }
-  }, [isBandsVideoInView, activeTab]);
+  const renderBandsVimeoVideo = () => {
+    return (
+      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg">
+        <AspectRatio ratio={3/4} className="overflow-hidden">
+          <iframe 
+            src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1" 
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+            className="w-full h-full absolute inset-0"
+            title="Bands video"
+            style={{ border: 'none' }}
+            loading="lazy"
+          ></iframe>
+        </AspectRatio>
+      </div>
+    );
+  };
 
   const toggleBandsFeature = (index: number) => {
     setBandsExpandedFeatures(prev => ({
@@ -238,23 +188,7 @@ const ProductTabs = () => {
                   isMobile ? "order-1" : "order-2"
                 )}
               >
-                {trxVideoError ? (
-                  <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                    <p className="text-gray-500">Video unavailable</p>
-                  </div>
-                ) : (
-                  <video 
-                    ref={trxVideo}
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline 
-                    className={cn(
-                      "w-full h-full object-cover transition-transform duration-1000", 
-                      isVideoInView ? "scale-[1.05]" : "scale-100"
-                    )} 
-                  />
-                )}
+                {renderTrxVimeoVideo()}
               </div>
               
               <div 
@@ -350,23 +284,7 @@ const ProductTabs = () => {
                   isMobile ? "order-1" : "order-2"
                 )}
               >
-                {bandsVideoError ? (
-                  <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                    <p className="text-gray-500">Video unavailable</p>
-                  </div>
-                ) : (
-                  <video 
-                    ref={bandsVideo}
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline 
-                    className={cn(
-                      "w-full h-full object-cover transition-transform duration-1000", 
-                      isBandsVideoInView ? "scale-[1.05]" : "scale-100"
-                    )} 
-                  />
-                )}
+                {renderBandsVimeoVideo()}
               </div>
             </div>
           </div>
