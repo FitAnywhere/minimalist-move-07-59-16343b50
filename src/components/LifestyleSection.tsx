@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -55,7 +54,7 @@ const LifestyleSection = () => {
   const [videoError, setVideoError] = useState(false);
   const [showSpecs, setShowSpecs] = useState(false);
   const isMobile = useIsMobile();
-  const [lastUnmutedState, setLastUnmutedState] = useState<boolean>(false);
+  const [userUnmuted, setUserUnmuted] = useState(false);
   
   const isInView = useInView(
     sectionRef, 
@@ -67,7 +66,7 @@ const LifestyleSection = () => {
           console.error("Vimeo play error:", err);
         });
         
-        if (lastUnmutedState) {
+        if (userUnmuted) {
           vimeoPlayerRef.current.setMuted(false);
           setIsMuted(false);
         }
@@ -75,9 +74,6 @@ const LifestyleSection = () => {
     },
     () => {
       if (vimeoPlayerRef.current) {
-        if (!isMuted) {
-          setLastUnmutedState(true);
-        }
         vimeoPlayerRef.current.setMuted(true);
         setIsMuted(true);
       }
@@ -99,19 +95,12 @@ const LifestyleSection = () => {
       vimeoPlayerRef.current.setMuted(newMutedState);
       setIsMuted(newMutedState);
       
-      if (!newMutedState) {
-        setLastUnmutedState(true);
-      } else {
-        setLastUnmutedState(false);
-      }
+      setUserUnmuted(!newMutedState);
     }
   };
 
-  // Initialize Vimeo player
   useEffect(() => {
-    // Only create the player if the iframe is available and we haven't already created one
     if (vimeoIframeRef.current && !vimeoPlayerRef.current && typeof window !== 'undefined') {
-      // Load Vimeo Player API script if it's not already loaded
       if (!window.Vimeo) {
         const script = document.createElement('script');
         script.src = 'https://player.vimeo.com/api/player.js';
@@ -124,14 +113,11 @@ const LifestyleSection = () => {
     }
 
     function initializePlayer() {
-      // Ensure we have the Vimeo API and iframe before proceeding
       if (!window.Vimeo || !vimeoIframeRef.current) return;
       
       try {
-        // @ts-ignore - The Vimeo type isn't in our TS definitions
         const player = new window.Vimeo.Player(vimeoIframeRef.current);
         
-        // Set up initial player settings
         player.ready().then(() => {
           player.setVolume(1);
           player.setMuted(true);
@@ -148,13 +134,11 @@ const LifestyleSection = () => {
           setVideoError(true);
         });
 
-        // Set up event handlers
         player.on('error', (err: any) => {
           console.error("Vimeo player error:", err);
           setVideoError(true);
         });
 
-        // Store the player reference
         vimeoPlayerRef.current = player;
       } catch (error) {
         console.error("Error initializing Vimeo player:", error);
@@ -162,7 +146,6 @@ const LifestyleSection = () => {
       }
     }
 
-    // Clean up on component unmount
     return () => {
       if (vimeoPlayerRef.current) {
         vimeoPlayerRef.current.destroy();
@@ -171,7 +154,6 @@ const LifestyleSection = () => {
     };
   }, []);
 
-  // Render the Vimeo video container
   const renderVimeoVideo = () => {
     return (
       <div className="relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group">
