@@ -1,7 +1,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -13,7 +13,9 @@ const HeroSection = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const isMobile = useIsMobile();
   const [vimeoPlayerReady, setVimeoPlayerReady] = useState(false);
-
+  const [audioOn, setAudioOn] = useState(true);
+  const [player, setPlayer] = useState<any>(null);
+  
   const scrollToOwnBoth = (e: React.MouseEvent) => {
     e.preventDefault();
     const productSection = document.getElementById('product');
@@ -32,6 +34,16 @@ const HeroSection = () => {
         if (data.event === "ready") {
           console.log("Vimeo player is ready");
           setVimeoPlayerReady(true);
+          
+          // Create Vimeo player instance when it's ready
+          if (window.Vimeo && window.Vimeo.Player && iframeRef.current) {
+            const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
+            setPlayer(vimeoPlayer);
+            
+            // Set initial audio state to on
+            vimeoPlayer.setVolume(1);
+            vimeoPlayer.setMuted(false);
+          }
         }
       } catch (e) {
         // Not a JSON message or other error
@@ -44,8 +56,35 @@ const HeroSection = () => {
     };
   }, []);
 
+  // Toggle audio on/off
+  const toggleAudio = () => {
+    if (player) {
+      if (audioOn) {
+        player.setVolume(0);
+        player.setMuted(true);
+      } else {
+        player.setVolume(1);
+        player.setMuted(false);
+      }
+      setAudioOn(!audioOn);
+    }
+  };
+
   // Use useInView to handle visibility
   const isInView = useInView(heroRef, {}, false);
+
+  // Handle audio control based on visibility
+  useEffect(() => {
+    if (player) {
+      if (isInView && audioOn) {
+        player.setVolume(1);
+        player.setMuted(false);
+      } else {
+        player.setVolume(0);
+        player.setMuted(true);
+      }
+    }
+  }, [isInView, player, audioOn]);
 
   // Add Vimeo script to document head
   useEffect(() => {
@@ -79,13 +118,24 @@ const HeroSection = () => {
                   <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
                     <iframe 
                       ref={iframeRef}
-                      src="https://player.vimeo.com/video/1067255623?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&player_id=hero_video_mobile&app_id=58479" 
+                      src="https://player.vimeo.com/video/1067255623?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=1&player_id=hero_video_mobile&app_id=58479" 
                       style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}} 
                       allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
                       title="FitAnywhere"
                       loading="lazy"
                     ></iframe>
                   </div>
+                  <button 
+                    onClick={toggleAudio}
+                    className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300 z-30"
+                    aria-label={audioOn ? "Mute audio" : "Unmute audio"}
+                  >
+                    {audioOn ? (
+                      <Volume2 size={20} className="text-white" />
+                    ) : (
+                      <VolumeX size={20} className="text-white" />
+                    )}
+                  </button>
                 </div>
               </div>
               
@@ -138,13 +188,24 @@ const HeroSection = () => {
                     <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
                       <iframe 
                         ref={iframeRef}
-                        src="https://player.vimeo.com/video/1067255623?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&player_id=hero_video_desktop&app_id=58479" 
+                        src="https://player.vimeo.com/video/1067255623?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=1&player_id=hero_video_desktop&app_id=58479" 
                         style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}} 
                         allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
                         title="FitAnywhere"
                         loading="lazy"
                       ></iframe>
                     </div>
+                    <button 
+                      onClick={toggleAudio}
+                      className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300 z-30"
+                      aria-label={audioOn ? "Mute audio" : "Unmute audio"}
+                    >
+                      {audioOn ? (
+                        <Volume2 size={20} className="text-white" />
+                      ) : (
+                        <VolumeX size={20} className="text-white" />
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>
