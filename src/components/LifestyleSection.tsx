@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -18,6 +19,18 @@ interface LifestyleFeature {
   description: string;
 }
 
+interface VimeoPlayerAPI {
+  play: () => Promise<void>;
+  pause: () => Promise<void>;
+  setVolume: (volume: number) => Promise<void>;
+  setMuted: (muted: boolean) => Promise<void>;
+  setLoop: (loop: boolean) => Promise<void>;
+  setAutopause: (autopause: boolean) => Promise<void>;
+  loadVideo: (videoId: number) => Promise<void>;
+  ready: () => Promise<void>;
+  destroy: () => void;
+}
+
 const lifestyleFeatures: LifestyleFeature[] = [{
   title: "FEEL UNSTOPPABLE",
   description: "Tap into boundless energy to train like never before."
@@ -32,7 +45,9 @@ const lifestyleFeatures: LifestyleFeature[] = [{
 const LifestyleSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const vimeoContainerRef = useRef<HTMLDivElement>(null);
+  const vimeoIframeRef = useRef<HTMLIFrameElement>(null);
+  const vimeoPlayerRef = useRef<VimeoPlayerAPI | null>(null);
   const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [isMuted, setIsMuted] = useState(true);
@@ -47,19 +62,23 @@ const LifestyleSection = () => {
     { threshold: 0.2 },
     false,
     () => {
-      if (videoRef.current && !videoError) {
+      if (vimeoPlayerRef.current && !videoError) {
+        vimeoPlayerRef.current.play().catch(err => {
+          console.error("Vimeo play error:", err);
+        });
+        
         if (lastUnmutedState) {
-          videoRef.current.muted = false;
+          vimeoPlayerRef.current.setMuted(false);
           setIsMuted(false);
         }
       }
     },
     () => {
-      if (videoRef.current) {
-        if (!videoRef.current.muted) {
+      if (vimeoPlayerRef.current) {
+        if (!isMuted) {
           setLastUnmutedState(true);
         }
-        videoRef.current.muted = true;
+        vimeoPlayerRef.current.setMuted(true);
         setIsMuted(true);
       }
     }
@@ -74,59 +93,10 @@ const LifestyleSection = () => {
     window.open('https://buy.stripe.com/5kA5mKaObcTP0WQ9AH', '_blank');
   };
 
-  useEffect(() => {
-    if (videoRef.current) {
-      const video = videoRef.current;
-      
-      video.src = '';
-      video.load();
-      
-      video.src = '/0314 (3)(1).mp4';
-      
-      const handleCanPlay = () => {
-        setIsVideoLoaded(true);
-        setVideoError(false);
-        console.log("Video can play now");
-      };
-      
-      const handleError = (e: Event) => {
-        console.error("Video error:", e);
-        setVideoError(true);
-      };
-
-      video.addEventListener('canplay', handleCanPlay);
-      video.addEventListener('error', handleError);
-
-      if (isInView && !videoError) {
-        const playAttempt = setTimeout(() => {
-          if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-              playPromise.catch(error => {
-                console.error("Video play error:", error);
-                if (error.name !== 'NotAllowedError') {
-                  setVideoError(true);
-                }
-              });
-            }
-          }
-        }, 100);
-        
-        return () => clearTimeout(playAttempt);
-      }
-
-      return () => {
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('error', handleError);
-        video.pause();
-      };
-    }
-  }, [isInView, videoError]);
-
   const toggleMute = () => {
-    if (videoRef.current) {
+    if (vimeoPlayerRef.current) {
       const newMutedState = !isMuted;
-      videoRef.current.muted = newMutedState;
+      vimeoPlayerRef.current.setMuted(newMutedState);
       setIsMuted(newMutedState);
       
       if (!newMutedState) {
@@ -135,6 +105,111 @@ const LifestyleSection = () => {
         setLastUnmutedState(false);
       }
     }
+  };
+
+  // Initialize Vimeo player
+  useEffect(() => {
+    // Only create the player if the iframe is available and we haven't already created one
+    if (vimeoIframeRef.current && !vimeoPlayerRef.current && typeof window !== 'undefined') {
+      // Load Vimeo Player API script if it's not already loaded
+      if (!window.Vimeo) {
+        const script = document.createElement('script');
+        script.src = 'https://player.vimeo.com/api/player.js';
+        script.async = true;
+        script.onload = initializePlayer;
+        document.body.appendChild(script);
+      } else {
+        initializePlayer();
+      }
+    }
+
+    function initializePlayer() {
+      // Ensure we have the Vimeo API and iframe before proceeding
+      if (!window.Vimeo || !vimeoIframeRef.current) return;
+      
+      try {
+        // @ts-ignore - The Vimeo type isn't in our TS definitions
+        const player = new window.Vimeo.Player(vimeoIframeRef.current);
+        
+        // Set up initial player settings
+        player.ready().then(() => {
+          player.setVolume(1);
+          player.setMuted(true);
+          player.setLoop(true);
+          player.setAutopause(false);
+          player.play().catch(err => {
+            console.error("Initial Vimeo play error:", err);
+          });
+          setIsVideoLoaded(true);
+          setVideoError(false);
+          console.log("Vimeo player is ready");
+        }).catch(err => {
+          console.error("Vimeo player ready error:", err);
+          setVideoError(true);
+        });
+
+        // Set up event handlers
+        player.on('error', (err: any) => {
+          console.error("Vimeo player error:", err);
+          setVideoError(true);
+        });
+
+        // Store the player reference
+        vimeoPlayerRef.current = player;
+      } catch (error) {
+        console.error("Error initializing Vimeo player:", error);
+        setVideoError(true);
+      }
+    }
+
+    // Clean up on component unmount
+    return () => {
+      if (vimeoPlayerRef.current) {
+        vimeoPlayerRef.current.destroy();
+        vimeoPlayerRef.current = null;
+      }
+    };
+  }, []);
+
+  // Render the Vimeo video container
+  const renderVimeoVideo = () => {
+    return (
+      <div className="relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group">
+        <div 
+          ref={vimeoContainerRef}
+          className="relative w-full h-0 overflow-hidden"
+          style={{ paddingBottom: '133.33%' }}
+        >
+          {videoError ? (
+            <div className="absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">
+              <p className="text-gray-500">Video unavailable</p>
+            </div>
+          ) : (
+            <iframe 
+              ref={vimeoIframeRef}
+              className="absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105"
+              src="https://player.vimeo.com/video/1067256293?h=297c1637e6&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1&amp;background=1&amp;muted=1"
+              frameBorder="0" 
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+              title="BoxFun"
+            ></iframe>
+          )}
+          
+          <div className="absolute bottom-3 right-3 z-10">
+            <Toggle 
+              aria-label={isMuted ? "Unmute video" : "Mute video"} 
+              className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center" 
+              pressed={!isMuted} 
+              onPressedChange={toggleMute}
+            >
+              {isMuted ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+            </Toggle>
+          </div>
+          
+          <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
+        </div>
+      </div>
+    );
   };
 
   return <section ref={sectionRef} className="py-20 relative overflow-hidden">
@@ -172,39 +247,7 @@ const LifestyleSection = () => {
                   <div className="w-full flex flex-col items-center my-6">
                     <div className="w-full max-w-xs perspective transition-transform duration-300 relative">
                       <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
-                        <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl h-full">
-                          {videoError ? (
-                            <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                              <p className="text-gray-500">Video unavailable</p>
-                            </div>
-                          ) : (
-                            <video 
-                              ref={videoRef} 
-                              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
-                              playsInline 
-                              muted={isMuted} 
-                              autoPlay 
-                              loop 
-                              preload="auto"
-                            >
-                              <source src="/0314 (3)(1).mp4" type="video/mp4" />
-                              Your browser does not support the video tag.
-                            </video>
-                          )}
-                          
-                          <div className="absolute bottom-3 right-3 z-10">
-                            <Toggle 
-                              aria-label={isMuted ? "Unmute video" : "Mute video"} 
-                              className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center" 
-                              pressed={!isMuted} 
-                              onPressedChange={toggleMute}
-                            >
-                              {isMuted ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
-                            </Toggle>
-                          </div>
-                          
-                          <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
-                        </div>
+                        {renderVimeoVideo()}
                       </div>
                     </div>
                     
@@ -390,39 +433,7 @@ const LifestyleSection = () => {
                 <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full">
                   <div className="w-full max-w-xs md:max-w-[72%] md:h-full perspective transition-transform duration-300 relative">
                     <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
-                      <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl h-full">
-                        {videoError ? (
-                          <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                            <p className="text-gray-500">Video unavailable</p>
-                          </div>
-                        ) : (
-                          <video 
-                            ref={videoRef} 
-                            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
-                            playsInline 
-                            muted={isMuted} 
-                            autoPlay 
-                            loop 
-                            preload="auto"
-                          >
-                            <source src="/0314 (3)(1).mp4" type="video/mp4" />
-                            Your browser does not support the video tag.
-                          </video>
-                        )}
-                        
-                        <div className="absolute bottom-3 right-3 z-10">
-                          <Toggle 
-                            aria-label={isMuted ? "Unmute video" : "Mute video"} 
-                            className="bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center" 
-                            pressed={!isMuted} 
-                            onPressedChange={toggleMute}
-                          >
-                            {isMuted ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
-                          </Toggle>
-                        </div>
-                        
-                        <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
-                      </div>
+                      {renderVimeoVideo()}
                     </div>
                   </div>
                   
@@ -507,4 +518,3 @@ const LifestyleSection = () => {
 };
 
 export default LifestyleSection;
-
