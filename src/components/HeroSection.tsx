@@ -5,6 +5,8 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import VimeoPlayer from './ui/VimeoPlayer';
 import ScrollIndicator from './ui/ScrollIndicator';
 import HeroContent from './ui/HeroContent';
+import { ArrowRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -51,10 +53,12 @@ const HeroSection = () => {
           {isMobile ? (
             <>
               <div className="text-center order-1 w-full space-y-6">
-                <HeroContent isInView={isInView} scrollToOwnBoth={scrollToOwnBoth} />
+                {/* Mobile layout with specific order */}
+                <HeroContent isInView={isInView} scrollToOwnBoth={scrollToOwnBoth} isMobile={true} />
                 
+                {/* Video placed between text and button */}
                 <div className={`w-full transition-all duration-1000 delay-300 ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-                  <div className="relative rounded-xl overflow-hidden shadow-lg mx-[-1rem]">
+                  <div className="relative rounded-xl overflow-hidden shadow-lg">
                     <VimeoPlayer
                       videoId="1067255623"
                       playerId="hero_video_mobile"
@@ -64,6 +68,23 @@ const HeroSection = () => {
                       priority={true}
                     />
                   </div>
+                </div>
+                
+                {/* CTA Button placed after video */}
+                <div className={cn(
+                  "mt-4 transition-all duration-1000 delay-500", 
+                  isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                )}>
+                  <button 
+                    onClick={scrollToOwnBoth}
+                    className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-4 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow"
+                  >
+                    EXPLORE
+                    <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </button>
+                  <p className="mt-4 text-sm text-gray-600">
+                    Launching Spring 2025
+                  </p>
                 </div>
               </div>
             </>
