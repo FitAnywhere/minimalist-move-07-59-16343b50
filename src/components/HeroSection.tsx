@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
@@ -71,14 +72,27 @@ const HeroSection = () => {
   useEffect(() => {
     if (player) {
       if (isInView) {
-        if (audioOn && !wasScrollMuted) {
-          player.setVolume(1);
-          player.setMuted(false);
+        // Restart video from beginning when coming back into view
+        player.setCurrentTime(0).then(() => {
+          player.play();
+          
+          // Only turn audio back on if this wasn't scroll-muted before
+          if (audioOn && !wasScrollMuted) {
+            player.setVolume(1);
+            player.setMuted(false);
+          }
+        }).catch((error: any) => {
+          console.log("Error setting current time:", error);
+        });
+      } else {
+        // Pause video when scrolled away
+        player.pause();
+        
+        if (audioOn) {
+          player.setVolume(0);
+          player.setMuted(true);
+          setWasScrollMuted(true);
         }
-      } else if (audioOn) {
-        player.setVolume(0);
-        player.setMuted(true);
-        setWasScrollMuted(true);
       }
     }
   }, [isInView, player, audioOn, wasScrollMuted]);
