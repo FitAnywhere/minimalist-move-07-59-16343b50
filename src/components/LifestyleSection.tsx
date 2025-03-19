@@ -141,7 +141,10 @@ const LifestyleSection = () => {
       <div className="relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group">
         <div 
           ref={vimeoContainerRef}
-          className="relative w-full h-0 overflow-hidden"
+          className={cn(
+            "relative w-full h-0 overflow-hidden",
+            isMobile ? "w-[80%] mx-auto" : "w-full" // Make video 20% smaller on mobile
+          )}
           style={{ paddingBottom: '133.33%' }}
         >
           {videoError ? (
@@ -159,7 +162,10 @@ const LifestyleSection = () => {
             ></iframe>
           )}
           
-          <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
+          <div className={cn(
+            "absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse",
+            isMobile && "w-full" // Ensure border matches the container size
+          )} />
         </div>
       </div>
     );
