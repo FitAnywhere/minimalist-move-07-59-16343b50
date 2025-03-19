@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Testimonial {
@@ -51,7 +50,6 @@ const TestimonialsCarousel = () => {
   const isInView = useInView(sectionRef, {}, false);
   const currentTestimonial = testimonials[activeIndex];
   const isMobile = useIsMobile();
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   const nextTestimonial = () => {
     setActiveIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
@@ -67,39 +65,17 @@ const TestimonialsCarousel = () => {
 
   // Load Vimeo script once
   useEffect(() => {
-    if (!window.Vimeo && !isScriptLoaded) {
+    if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
       const script = document.createElement('script');
       script.src = 'https://player.vimeo.com/api/player.js';
       script.async = true;
-      script.onload = () => setIsScriptLoaded(true);
       document.body.appendChild(script);
       
       return () => {
         document.body.removeChild(script);
       };
-    } else if (window.Vimeo) {
-      setIsScriptLoaded(true);
     }
-  }, [isScriptLoaded]);
-  
-  const renderVimeoVideo = () => {
-    return (
-      <div className="w-full md:max-w-[80%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
-        <div className="relative overflow-hidden rounded-xl">
-          <AspectRatio ratio={16/9} className="overflow-hidden">
-            <iframe 
-              src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=6ed11d11d8&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1`}
-              allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
-              className="w-full h-full absolute inset-0"
-              title={`Testimonial from ${currentTestimonial.name}`}
-              style={{ border: 'none' }}
-              loading="lazy"
-            ></iframe>
-          </AspectRatio>
-        </div>
-      </div>
-    );
-  };
+  }, []);
   
   return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
@@ -144,7 +120,20 @@ const TestimonialsCarousel = () => {
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500">
-                {renderVimeoVideo()}
+                <div className="w-full md:max-w-[80%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                  <div className="relative overflow-hidden rounded-xl">
+                    <div style={{padding:'177.78% 0 0 0', position:'relative'}}>
+                      <iframe 
+                        src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=6ed11d11d8&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0`}
+                        frameBorder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+                        style={{position:'absolute', top:0, left:0, width:'100%', height:'100%'}}
+                        title={`Testimonial from ${currentTestimonial.name}`}
+                        loading="lazy"
+                      ></iframe>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             
@@ -162,3 +151,4 @@ const TestimonialsCarousel = () => {
 };
 
 export default TestimonialsCarousel;
+
