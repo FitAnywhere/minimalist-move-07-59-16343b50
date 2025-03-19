@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -6,6 +7,7 @@ import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import CountUp from 'react-countup';
 import { Input } from '@/components/ui/input';
+
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -45,15 +47,10 @@ const TimeAndCostCalculator = () => {
     return () => clearTimeout(timer);
   }, [timeWastedInYears, moneySpentInYears]);
 
-  // Handle CTA button click
+  // Handle CTA button click - updated to open Stripe checkout
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    const orderSection = document.getElementById('order');
-    if (orderSection) {
-      orderSection.scrollIntoView({
-        behavior: 'smooth'
-      });
-    }
+    window.open('https://buy.stripe.com/bIY6oO1gVaGo7jG144', '_blank');
   };
 
   // Format cost input
@@ -61,6 +58,7 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
+
   return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center">
@@ -137,7 +135,7 @@ const TimeAndCostCalculator = () => {
                   </div>
                 </div>
                 
-                <p className="text-center mt-8 font-medium mx-0 my-[25px] px-0 py-0 text-lg">What could you do with that extra time and money?</p>
+                <p className="text-center mt-8 font-medium mx-0 my-[25px] px-0 py-0 text-lg">What could you do with that extra time and money?</p>
               </div>
               
               <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
@@ -152,4 +150,5 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
+
 export default TimeAndCostCalculator;
