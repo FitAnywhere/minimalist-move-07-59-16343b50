@@ -77,7 +77,7 @@ const TimeAndCostCalculator = () => {
                 <div className="space-y-10">
                   {/* Time wasted slider */}
                   <div>
-                    <p className="text-xl mb-3 font-medium text-left">Total time spent getting to the gym and back?</p>
+                    <p className="text-xl mb-3 font-medium text-left">Time spent getting to the gym and back?</p>
                     
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-gray-600">0 min</span>
