@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
@@ -71,6 +72,7 @@ const HeroSection = () => {
     };
   }, [firstLoad, initialLoadDone]);
 
+  // Modified toggleAudio function to only affect audio without restarting video
   const toggleAudio = () => {
     if (player) {
       if (audioOn) {
@@ -81,8 +83,7 @@ const HeroSection = () => {
         player.setMuted(false);
       }
       setAudioOn(!audioOn);
-      
-      // Don't restart the video when toggling audio
+      // Removed any code that might restart or affect video playback
     }
   };
 
