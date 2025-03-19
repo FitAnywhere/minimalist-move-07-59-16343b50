@@ -11,8 +11,9 @@ const CallToAction = () => {
   const [animatedWords1, setAnimatedWords1] = useState<string[]>([]);
   const [animatedWords2, setAnimatedWords2] = useState<string[]>([]);
   
-  const firstLine = "Was all this engineering worth it?";
-  const secondLine = "Or will you keep wasting time and money on the gym?";
+  // All text converted to uppercase
+  const firstLine = "WAS ALL THIS ENGINEERING WORTH IT?";
+  const secondLine = "OR WILL YOU KEEP WASTING TIME AND MONEY ON THE GYM?";
   
   // Set up parallax effect
   useParallax(backgroundRef, 0.05);
@@ -66,7 +67,7 @@ const CallToAction = () => {
     <section 
       id="order" 
       ref={sectionRef} 
-      className="relative py-32 overflow-hidden min-h-[90vh] flex items-center"
+      className="relative py-20 md:py-24 overflow-hidden min-h-[80vh] md:min-h-[70vh] flex items-center"
       style={{
         background: 'linear-gradient(to bottom, #8A898C 0%, #555555 40%, #333333 70%, #222222 85%, black 100%)'
       }}
@@ -78,7 +79,7 @@ const CallToAction = () => {
       
       <div className="container relative z-20 mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="space-y-12">
+          <div className="space-y-8 md:space-y-6"> {/* Reduced spacing for desktop */}
             {/* First animated line */}
             <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight min-h-[3.5rem] md:min-h-[4rem]">
               {animatedWords1.map((word, index) => (
@@ -115,10 +116,10 @@ const CallToAction = () => {
               ))}
             </h2>
             
-            {/* CTA Button */}
+            {/* CTA Button - reduced top margin for desktop */}
             <div 
               className={cn(
-                "transition-all duration-1000 delay-[1200ms]", 
+                "transition-all duration-1000 delay-[1200ms] mt-6 md:mt-8", 
                 isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
               )}
             >
