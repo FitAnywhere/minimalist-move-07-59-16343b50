@@ -1,21 +1,27 @@
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Clock, Banknote } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
+import CountUp from 'react-countup';
+import { Input } from '@/components/ui/input';
 
 const TimeAndCostCalculator = () => {
-  const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(30); // Default 30 minutes
+  const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
+  const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
+  const [previousTimeWasted, setPreviousTimeWasted] = useState(0);
+  const [previousMoneyCost, setPreviousMoneyCost] = useState(0);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+  
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef);
+  const isInView = useInView(sectionRef, { threshold: 0.3 });
   
   // Constants for calculations
   const VISITS_PER_WEEK = 4;
   const WEEKS_PER_YEAR = 52;
   const YEARS_PROJECTION = 20;
-  const GYM_MONTHLY_COST = 50; // €50/month
   
   // Calculate time wasted in 20 years (in hours)
   const timeWastedInYears = Math.round(
@@ -23,11 +29,24 @@ const TimeAndCostCalculator = () => {
   );
   
   // Calculate money spent in 20 years (in euros)
-  const moneySpentInYears = GYM_MONTHLY_COST * 12 * YEARS_PROJECTION;
+  const moneySpentInYears = gymMonthlyCost * 12 * YEARS_PROJECTION;
   
-  // Format values for display
-  const formattedTimeWasted = timeWastedInYears.toLocaleString();
-  const formattedMoneySpent = moneySpentInYears.toLocaleString();
+  // Trigger animation when component comes into view
+  useEffect(() => {
+    if (isInView && !shouldAnimate) {
+      setShouldAnimate(true);
+    }
+  }, [isInView]);
+
+  // Update previous values for animations
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPreviousTimeWasted(timeWastedInYears);
+      setPreviousMoneyCost(moneySpentInYears);
+    }, 1200); // Slightly longer than the CountUp duration
+    
+    return () => clearTimeout(timer);
+  }, [timeWastedInYears, moneySpentInYears]);
   
   // Handle CTA button click
   const handleCTAClick = (e: React.MouseEvent) => {
@@ -38,15 +57,21 @@ const TimeAndCostCalculator = () => {
     }
   };
   
+  // Format cost input
+  const handleCostInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
+    setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
+  };
+  
   return (
-    <section id="calculator" ref={sectionRef} className="py-24 bg-white">
+    <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className={cn(
             "transition-all duration-1000", 
             isInView ? "opacity-100" : "opacity-0 translate-y-10"
           )}>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-14 relative inline-block">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
               SEE HOW MUCH YOU'RE REALLY LOSING
               <span className={cn(
                 "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
@@ -54,53 +79,123 @@ const TimeAndCostCalculator = () => {
               )}></span>
             </h2>
             
+            <p className="text-gray-700 mt-2 max-w-2xl mx-auto">
+              Time spent traveling both ways, changing, waiting for equipment, social distractions, 
+              locker room time, showering, and cooling down.
+            </p>
+            
             <div className="mt-12 max-w-xl mx-auto">
               <div className={cn(
                 "mb-8 transition-all duration-1000 delay-300", 
                 isInView ? "opacity-100" : "opacity-0 translate-y-8"
               )}>
-                <p className="text-xl mb-3 font-medium">
-                  How much time do you waste per gym visit?
-                </p>
-                <p className="text-gray-600 mb-8">
-                  (travel, changing, waiting for equipment, etc.)
-                </p>
-                
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600">10 min</span>
-                  <span className="text-lg font-bold">{timeWastedPerVisit} min</span>
-                  <span className="text-gray-600">120 min</span>
-                </div>
-                
-                <div className="py-4">
-                  <Slider 
-                    defaultValue={[30]} 
-                    min={10} 
-                    max={120} 
-                    step={5}
-                    className="w-full"
-                    onValueChange={(value) => setTimeWastedPerVisit(value[0])}
-                  />
+                <div className="space-y-10">
+                  {/* Time wasted slider */}
+                  <div>
+                    <p className="text-xl mb-3 font-medium text-left">
+                      How much time do you waste per gym visit?
+                    </p>
+                    
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-gray-600">0 min</span>
+                      <span className="text-lg font-bold bg-gray-100 px-3 py-1 rounded-md">
+                        {timeWastedPerVisit} min
+                      </span>
+                      <span className="text-gray-600">120 min</span>
+                    </div>
+                    
+                    <div className="py-4">
+                      <Slider 
+                        value={[timeWastedPerVisit]} 
+                        min={0} 
+                        max={120} 
+                        step={5}
+                        className="w-full"
+                        onValueChange={(value) => setTimeWastedPerVisit(value[0])}
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Gym cost slider */}
+                  <div>
+                    <p className="text-xl mb-3 font-medium text-left">
+                      How much do you pay for your gym membership per month?
+                    </p>
+                    
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-gray-600">€0</span>
+                      <div className="flex items-center bg-gray-100 rounded-md overflow-hidden">
+                        <span className="px-2 py-1 bg-gray-200 text-gray-800">€</span>
+                        <Input
+                          type="text"
+                          value={gymMonthlyCost}
+                          onChange={handleCostInputChange}
+                          className="w-16 text-center border-0 bg-transparent"
+                        />
+                      </div>
+                      <span className="text-gray-600">€150</span>
+                    </div>
+                    
+                    <div className="py-4">
+                      <Slider 
+                        value={[gymMonthlyCost]} 
+                        min={0} 
+                        max={150} 
+                        step={5}
+                        className="w-full"
+                        onValueChange={(value) => setGymMonthlyCost(value[0])}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               
               <div className={cn(
-                "bg-gray-50 rounded-2xl p-8 mb-10 transition-all duration-1000 delay-500", 
+                "bg-white rounded-2xl p-8 mb-10 transition-all duration-1000 shadow-md border border-gray-100 delay-500", 
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               )}>
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="text-center">
-                    <h3 className="text-xl font-bold mb-2">Time wasted in 20 years</h3>
-                    <p className="text-3xl md:text-4xl font-bold text-yellow">
-                      {formattedTimeWasted} hours
+                    <div className="flex items-center justify-center mb-2">
+                      <Clock className="w-6 h-6 text-yellow mr-2" />
+                      <h3 className="text-xl font-bold">Time wasted in 20 years</h3>
+                    </div>
+                    <p className="text-3xl md:text-4xl font-bold text-yellow pulse-glow">
+                      {shouldAnimate ? (
+                        <CountUp
+                          start={previousTimeWasted}
+                          end={timeWastedInYears}
+                          duration={1}
+                          separator=","
+                          suffix=" hours"
+                          useEasing
+                        />
+                      ) : (
+                        "0 hours"
+                      )}
                     </p>
                     <p className="text-gray-600 mt-2">lost forever</p>
                   </div>
                   
                   <div className="text-center">
-                    <h3 className="text-xl font-bold mb-2">Money spent in 20 years</h3>
-                    <p className="text-3xl md:text-4xl font-bold text-yellow">
-                      €{formattedMoneySpent}+
+                    <div className="flex items-center justify-center mb-2">
+                      <Banknote className="w-6 h-6 text-yellow mr-2" />
+                      <h3 className="text-xl font-bold">Money spent in 20 years</h3>
+                    </div>
+                    <p className="text-3xl md:text-4xl font-bold text-yellow pulse-glow">
+                      {shouldAnimate ? (
+                        <CountUp
+                          start={previousMoneyCost}
+                          end={moneySpentInYears}
+                          duration={1}
+                          separator=","
+                          prefix="€"
+                          suffix="+"
+                          useEasing
+                        />
+                      ) : (
+                        "€0+"
+                      )}
                     </p>
                     <p className="text-gray-600 mt-2">on gym memberships</p>
                   </div>
