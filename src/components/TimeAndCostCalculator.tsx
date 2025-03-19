@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -7,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import CountUp from 'react-countup';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
+
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -57,6 +59,7 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
+
   return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
@@ -73,7 +76,7 @@ const TimeAndCostCalculator = () => {
               {/* Desktop & Mobile Layout */}
               <div className="flex flex-col gap-8">
                 {/* Time Cost Box - Full width on desktop with horizontal layout */}
-                <Card className="rounded-xl shadow-md border border-gray-100 overflow-hidden w-full">
+                <Card className="rounded-xl shadow-md border-2 border-black overflow-hidden w-full">
                   <CardContent className="p-0">
                     {/* For mobile: stack vertically, for desktop: horizontal layout */}
                     <div className="flex flex-col md:flex-row">
@@ -98,7 +101,7 @@ const TimeAndCostCalculator = () => {
                       <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
                         <div className="flex items-center justify-center mb-2">
                           <Clock className="w-5 h-5 text-yellow mr-2" />
-                          <h3 className="text-lg font-bold"> TIME WASTED - 20 YEARS</h3>
+                          <h3 className="text-lg font-bold"> TIME WASTED - 20 YEARS</h3>
                         </div>
                         <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
                           {shouldAnimate ? <CountUp start={previousTimeWasted} end={timeWastedInYears} duration={1} separator="," suffix=" hours" useEasing /> : "0 hours"}
@@ -110,7 +113,7 @@ const TimeAndCostCalculator = () => {
                 </Card>
                 
                 {/* Money Cost Box - Full width on desktop with horizontal layout */}
-                <Card className="rounded-xl shadow-md border border-gray-100 overflow-hidden w-full">
+                <Card className="rounded-xl shadow-md border-2 border-black overflow-hidden w-full">
                   <CardContent className="p-0">
                     {/* For mobile: stack vertically, for desktop: horizontal layout */}
                     <div className="flex flex-col md:flex-row">
@@ -165,4 +168,5 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
+
 export default TimeAndCostCalculator;
