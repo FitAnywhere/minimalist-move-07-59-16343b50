@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
@@ -32,7 +31,6 @@ const HeroSection = () => {
       if (event.origin !== "https://player.vimeo.com") return;
       
       try {
-        // Check if event.data is already an object
         const data = typeof event.data === 'object' ? event.data : JSON.parse(event.data);
         
         if (data.event === "ready") {
@@ -43,19 +41,11 @@ const HeroSection = () => {
             const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
             setPlayer(vimeoPlayer);
             
-            // Only set audio on for the first load
-            if (firstLoad && !initialLoadDone) {
-              vimeoPlayer.setVolume(1);
-              vimeoPlayer.setMuted(false);
-              setInitialLoadDone(true);
-            } else {
-              // Keep audio off for subsequent loads unless manually turned on
-              vimeoPlayer.setVolume(0);
-              vimeoPlayer.setMuted(true);
-              setAudioOn(false);
-            }
+            vimeoPlayer.setVolume(1);
+            vimeoPlayer.setMuted(false);
+            setAudioOn(true);
+            setInitialLoadDone(true);
             
-            // Start playing immediately
             vimeoPlayer.play().catch((error: any) => {
               console.log("Auto-play error:", error);
             });
@@ -70,11 +60,9 @@ const HeroSection = () => {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [firstLoad, initialLoadDone]);
+  }, []);
 
-  // Completely isolated toggleAudio function
   const toggleAudio = (e: React.MouseEvent) => {
-    // Prevent event propagation to avoid any side effects
     e.stopPropagation();
     e.preventDefault();
     
@@ -94,8 +82,6 @@ const HeroSection = () => {
 
   useEffect(() => {
     if (player && isInView) {
-      // Only handle the initial play when coming into view
-      // Do not restart the video when it's already playing
       player.getPaused().then((paused: boolean) => {
         if (paused) {
           player.play().catch((error: any) => {
@@ -103,7 +89,6 @@ const HeroSection = () => {
           });
         }
         
-        // Maintain current audio state without affecting playback
         if (audioOn) {
           player.setVolume(1);
           player.setMuted(false);
@@ -115,12 +100,10 @@ const HeroSection = () => {
         console.log("Error getting paused state:", error);
       });
       
-      // Mark first load as complete
       if (firstLoad) {
         setFirstLoad(false);
       }
     } else if (player && !isInView) {
-      // Pause the video when out of view
       player.pause();
     }
   }, [isInView, player, audioOn, firstLoad]);
