@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
@@ -53,7 +52,6 @@ const HeroSection = () => {
     };
   }, []);
 
-  // Audio toggle without affecting video playback
   const toggleAudio = () => {
     if (player) {
       if (audioOn) {
@@ -72,11 +70,9 @@ const HeroSection = () => {
   useEffect(() => {
     if (player) {
       if (isInView) {
-        // If coming back into view from being out of view
         if (wasScrollMuted) {
           player.setCurrentTime(0).then(() => {
             player.play();
-            // Only restore audio if it was on before
             if (audioOn) {
               player.setVolume(1);
               player.setMuted(false);
@@ -86,11 +82,9 @@ const HeroSection = () => {
           });
           setWasScrollMuted(false);
         } else if (!document.hidden) {
-          // Just play without resetting if we're already in view
           player.play();
         }
       } else {
-        // Pause video when scrolled away
         player.pause();
         if (!wasScrollMuted) {
           setWasScrollMuted(true);
@@ -128,7 +122,7 @@ const HeroSection = () => {
               </h1>
               
               <div className={cn("w-full transition-all duration-1000 delay-300", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="relative rounded-xl overflow-hidden shadow-lg">
+                <div className="relative rounded-xl overflow-hidden shadow-lg mx-[-1rem]">
                   <div style={{padding: '56.25% 0 0 0', position: 'relative', width: '100%'}}>
                     <iframe 
                       ref={iframeRef}
@@ -236,3 +230,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
