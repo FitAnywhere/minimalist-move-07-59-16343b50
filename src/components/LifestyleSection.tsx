@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -79,7 +78,7 @@ const LifestyleSection = () => {
 
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/5kA5mKaObcTP0WQ9AH', '_blank');
+    window.open('https://buy.stripe.com/bIYg1o5tRg6149228g', '_blank');
   };
 
   useEffect(() => {
