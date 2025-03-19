@@ -1,7 +1,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { ArrowRight, Volume, VolumeX } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -10,13 +10,9 @@ const HeroSection = () => {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subheadlineRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const isMobile = useIsMobile();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(false); // Changed to false for unmuted by default
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
-  const [userMutedChoice, setUserMutedChoice] = useState<boolean | null>(null);
-  const [lastUnmutedState, setLastUnmutedState] = useState<boolean>(false);
+  const [vimeoPlayerReady, setVimeoPlayerReady] = useState(false);
 
   const scrollToOwnBoth = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,117 +22,44 @@ const HeroSection = () => {
     }
   };
 
-  const toggleSound = () => {
-    if (videoRef.current) {
-      // Just toggle muted state without affecting playback
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(videoRef.current.muted);
-      // Store user's explicit choice
-      setUserMutedChoice(videoRef.current.muted);
-      if (!videoRef.current.muted) {
-        setLastUnmutedState(true);
-      }
-    }
-  };
-
-  // Use enhanced useInView with callbacks to handle audio when scrolling
-  const isInView = useInView(
-    heroRef, 
-    {}, 
-    false,
-    () => {
-      // When entering view
-      if (videoRef.current && !videoError) {
-        // If user previously unmuted, restore that state
-        if (lastUnmutedState && userMutedChoice === false) {
-          videoRef.current.muted = false;
-          setIsMuted(false);
-        }
-      }
-    },
-    () => {
-      // When exiting view
-      if (videoRef.current && !videoRef.current.muted) {
-        // Save unmuted state and then mute
-        setLastUnmutedState(true);
-        videoRef.current.muted = true;
-        setIsMuted(true);
-      }
-    }
-  );
-
+  // Listen for messages from the Vimeo iframe
   useEffect(() => {
-    if (videoRef.current) {
-      const video = videoRef.current;
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== "https://player.vimeo.com") return;
       
-      // Only set source if it needs to be set (first load or src is empty)
-      if (!video.src || video.src === '') {
-        // Set the new src
-        video.src = '/fitanywhere intro.mp4';
-        
-        // Initialize muted state based on user's choice if they made one
-        if (userMutedChoice !== null) {
-          video.muted = userMutedChoice;
-          setIsMuted(userMutedChoice);
-        } else {
-          // Start with unmuted by default for first load
-          video.muted = false;
+      try {
+        const data = JSON.parse(event.data);
+        if (data.event === "ready") {
+          console.log("Vimeo player is ready");
+          setVimeoPlayerReady(true);
         }
+      } catch (e) {
+        // Not a JSON message or other error
       }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
+  // Use useInView to handle visibility
+  const isInView = useInView(heroRef, {}, false);
+
+  // Add Vimeo script to document head
+  useEffect(() => {
+    if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
+      const script = document.createElement('script');
+      script.src = "https://player.vimeo.com/api/player.js";
+      script.async = true;
+      document.head.appendChild(script);
       
-      const handleCanPlay = () => {
-        setIsVideoLoaded(true);
-        setVideoError(false);
-        console.log("Hero video can play now");
-      };
-      
-      const handleError = (e: Event) => {
-        console.error("Hero video error:", e);
-        setVideoError(true);
-      };
-
-      video.addEventListener('canplay', handleCanPlay);
-      video.addEventListener('error', handleError);
-
-      if (isInView && !videoError) {
-        // Check if the video is paused before attempting to play
-        if (video.paused) {
-          // Small delay to ensure loading has started
-          const playAttempt = setTimeout(() => {
-            if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
-              const playPromise = video.play();
-              if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                  console.error("Hero video play error:", error);
-                  // If autoplay with sound fails, try with muted
-                  if (error.name === 'NotAllowedError') {
-                    console.log("Autoplay with sound failed, trying muted");
-                    video.muted = true;
-                    setIsMuted(true);
-                    // Don't update userMutedChoice here as this is a browser limitation, not user choice
-                    video.play().catch(err => {
-                      console.error("Muted autoplay also failed:", err);
-                      setVideoError(true);
-                    });
-                  } else {
-                    setVideoError(true);
-                  }
-                });
-              }
-            }
-          }, 100);
-          
-          return () => clearTimeout(playAttempt);
-        }
-      }
-
       return () => {
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('error', handleError);
-        video.pause();
+        document.head.removeChild(script);
       };
     }
-  }, [isInView, videoError, userMutedChoice]);
+  }, []);
 
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
@@ -153,29 +76,15 @@ const HeroSection = () => {
               
               <div className={cn("w-full transition-all duration-1000 delay-300", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="relative rounded-xl overflow-hidden shadow-lg">
-                  <div className="relative w-full h-full">
-                    {videoError ? (
-                      <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                        <p className="text-gray-500">Video unavailable</p>
-                      </div>
-                    ) : (
-                      <video 
-                        ref={videoRef} 
-                        className="w-full h-auto object-contain" 
-                        loop playsInline muted autoPlay
-                      />
-                    )}
-                    <button 
-                      onClick={toggleSound}
-                      className="absolute bottom-3 right-3 bg-black/40 hover:bg-black/60 rounded-full p-2 transition-all duration-300"
-                      aria-label={isMuted ? "Unmute video" : "Mute video"}
-                    >
-                      {isMuted ? (
-                        <VolumeX className="w-4 h-4 text-white" />
-                      ) : (
-                        <Volume className="w-4 h-4 text-white" />
-                      )}
-                    </button>
+                  <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
+                    <iframe 
+                      ref={iframeRef}
+                      src="https://player.vimeo.com/video/1067255623?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&player_id=hero_video_mobile&app_id=58479" 
+                      style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}} 
+                      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
+                      title="FitAnywhere"
+                      loading="lazy"
+                    ></iframe>
                   </div>
                 </div>
               </div>
@@ -226,28 +135,16 @@ const HeroSection = () => {
               <div className={cn("order-1 md:order-2 transition-all duration-1000 delay-300 w-full", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
                   <div className="w-full max-w-[95%] mx-auto">
-                    {videoError ? (
-                      <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                        <p className="text-gray-500">Video unavailable</p>
-                      </div>
-                    ) : (
-                      <video 
-                        ref={videoRef} 
-                        className="w-full h-auto object-contain" 
-                        loop playsInline muted autoPlay
-                      />
-                    )}
-                    <button 
-                      onClick={toggleSound}
-                      className="absolute bottom-4 right-4 bg-black/40 hover:bg-black/60 rounded-full p-2 transition-all duration-300"
-                      aria-label={isMuted ? "Unmute video" : "Mute video"}
-                    >
-                      {isMuted ? (
-                        <VolumeX className="w-5 h-5 text-white" />
-                      ) : (
-                        <Volume className="w-5 h-5 text-white" />
-                      )}
-                    </button>
+                    <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
+                      <iframe 
+                        ref={iframeRef}
+                        src="https://player.vimeo.com/video/1067255623?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&player_id=hero_video_desktop&app_id=58479" 
+                        style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}} 
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
+                        title="FitAnywhere"
+                        loading="lazy"
+                      ></iframe>
+                    </div>
                   </div>
                 </div>
               </div>
