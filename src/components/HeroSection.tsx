@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
@@ -93,8 +94,6 @@ const HeroSection = () => {
     }
   }, [isInView, player, audioOn, wasScrollMuted]);
 
-  const isAudioPlaying = isInView && audioOn;
-
   useEffect(() => {
     if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
       const script = document.createElement('script');
@@ -136,9 +135,9 @@ const HeroSection = () => {
                   <button 
                     onClick={toggleAudio}
                     className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-1.5 rounded-full transition-all duration-300 z-30"
-                    aria-label={isAudioPlaying ? "Mute audio" : "Unmute audio"}
+                    aria-label={audioOn ? "Mute audio" : "Unmute audio"}
                   >
-                    {isAudioPlaying ? (
+                    {audioOn ? (
                       <Volume2 size={16} className="text-white" />
                     ) : (
                       <VolumeX size={16} className="text-white" />
@@ -206,9 +205,9 @@ const HeroSection = () => {
                     <button 
                       onClick={toggleAudio}
                       className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300 z-30"
-                      aria-label={isAudioPlaying ? "Mute audio" : "Unmute audio"}
+                      aria-label={audioOn ? "Mute audio" : "Unmute audio"}
                     >
-                      {isAudioPlaying ? (
+                      {audioOn ? (
                         <Volume2 size={20} className="text-white" />
                       ) : (
                         <VolumeX size={20} className="text-white" />
@@ -230,4 +229,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
