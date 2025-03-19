@@ -16,6 +16,7 @@ const HeroSection = () => {
   const [audioOn, setAudioOn] = useState(true);
   const [wasScrollMuted, setWasScrollMuted] = useState(false);
   const [player, setPlayer] = useState<any>(null);
+  const [firstLoad, setFirstLoad] = useState(true);
   
   const scrollToOwnBoth = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -39,11 +40,18 @@ const HeroSection = () => {
             const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
             setPlayer(vimeoPlayer);
             
+            // Set audio on by default and ensure it's not muted
             vimeoPlayer.setVolume(1);
             vimeoPlayer.setMuted(false);
+            
+            // Start playing immediately
+            vimeoPlayer.play().catch((error: any) => {
+              console.log("Auto-play error:", error);
+            });
           }
         }
       } catch (e) {
+        console.error("Error parsing Vimeo message:", e);
       }
     };
 
@@ -83,7 +91,16 @@ const HeroSection = () => {
           });
           setWasScrollMuted(false);
         } else if (!document.hidden) {
-          player.play();
+          player.play().catch((error: any) => {
+            console.log("Error playing video:", error);
+          });
+          
+          // If it's the first load, ensure sound is on
+          if (firstLoad) {
+            player.setVolume(1);
+            player.setMuted(false);
+            setFirstLoad(false);
+          }
         }
       } else {
         player.pause();
@@ -92,7 +109,7 @@ const HeroSection = () => {
         }
       }
     }
-  }, [isInView, player, audioOn, wasScrollMuted]);
+  }, [isInView, player, audioOn, wasScrollMuted, firstLoad]);
 
   useEffect(() => {
     if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
@@ -125,7 +142,7 @@ const HeroSection = () => {
                   <div style={{padding: '56.25% 0 0 0', position: 'relative', width: '100%'}}>
                     <iframe 
                       ref={iframeRef}
-                      src="https://player.vimeo.com/video/1067255623?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=1&player_id=hero_video_mobile&app_id=58479" 
+                      src="https://player.vimeo.com/video/1067255623?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=1&player_id=hero_video_mobile&app_id=58479&autoplay=1" 
                       style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}} 
                       allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
                       title="FitAnywhere"
@@ -195,7 +212,7 @@ const HeroSection = () => {
                     <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
                       <iframe 
                         ref={iframeRef}
-                        src="https://player.vimeo.com/video/1067255623?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=1&player_id=hero_video_desktop&app_id=58479" 
+                        src="https://player.vimeo.com/video/1067255623?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=1&player_id=hero_video_desktop&app_id=58479&autoplay=1" 
                         style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}} 
                         allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
                         title="FitAnywhere"
