@@ -53,7 +53,7 @@ const HeroSection = () => {
     };
   }, []);
 
-  // Modified audio toggle to not affect video playback
+  // Audio toggle without affecting video playback
   const toggleAudio = () => {
     if (player) {
       if (audioOn) {
@@ -64,7 +64,6 @@ const HeroSection = () => {
         player.setMuted(false);
       }
       setAudioOn(!audioOn);
-      setWasScrollMuted(false);
     }
   };
 
@@ -73,36 +72,34 @@ const HeroSection = () => {
   useEffect(() => {
     if (player) {
       if (isInView) {
-        // Check if player was previously out of view to restart
-        if (!wasScrollMuted && !document.hidden) {
+        // If coming back into view from being out of view
+        if (wasScrollMuted) {
           player.setCurrentTime(0).then(() => {
             player.play();
-            
-            // Only turn audio back on if this wasn't scroll-muted before
-            if (audioOn && !wasScrollMuted) {
+            // Only restore audio if it was on before
+            if (audioOn) {
               player.setVolume(1);
               player.setMuted(false);
             }
           }).catch((error: any) => {
             console.log("Error setting current time:", error);
           });
-        } else {
-          // Just resume play without resetting time
+          setWasScrollMuted(false);
+        } else if (!document.hidden) {
+          // Just play without resetting if we're already in view
           player.play();
         }
       } else {
         // Pause video when scrolled away
         player.pause();
-        if (audioOn) {
-          player.setVolume(0);
-          player.setMuted(true);
+        if (!wasScrollMuted) {
           setWasScrollMuted(true);
         }
       }
     }
   }, [isInView, player, audioOn, wasScrollMuted]);
 
-  const isAudioPlaying = isInView && audioOn && !wasScrollMuted;
+  const isAudioPlaying = isInView && audioOn;
 
   useEffect(() => {
     if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
@@ -132,7 +129,7 @@ const HeroSection = () => {
               
               <div className={cn("w-full transition-all duration-1000 delay-300", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="relative rounded-xl overflow-hidden shadow-lg">
-                  <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
+                  <div style={{padding: '56.25% 0 0 0', position: 'relative', width: '100%'}}>
                     <iframe 
                       ref={iframeRef}
                       src="https://player.vimeo.com/video/1067255623?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=1&player_id=hero_video_mobile&app_id=58479" 
