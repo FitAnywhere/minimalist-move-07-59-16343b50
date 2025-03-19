@@ -1,6 +1,6 @@
 
 import { useRef, useState, useEffect, memo } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, Play } from 'lucide-react';
 
 interface VimeoPlayerProps {
   videoId: string;
@@ -21,6 +21,8 @@ const VimeoPlayer = memo(({
 }: VimeoPlayerProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [player, setPlayer] = useState<any>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
   const wasInViewRef = useRef(isInView);
 
   // Initialize player
@@ -35,10 +37,31 @@ const VimeoPlayer = memo(({
           if (window.Vimeo && window.Vimeo.Player) {
             const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
             setPlayer(vimeoPlayer);
+            setIsPlayerReady(true);
             
             // Set initial audio state
             vimeoPlayer.setVolume(audioOn ? 1 : 0);
             vimeoPlayer.setMuted(!audioOn);
+            
+            // Ensure video is initially paused
+            vimeoPlayer.pause();
+            
+            // Add event listeners
+            vimeoPlayer.on('play', () => {
+              setIsPlaying(true);
+            });
+            
+            vimeoPlayer.on('pause', () => {
+              setIsPlaying(false);
+            });
+            
+            vimeoPlayer.on('ended', () => {
+              // Reset to beginning for next play
+              vimeoPlayer.setCurrentTime(0);
+              setIsPlaying(false);
+            });
+            
+            console.log("Vimeo player is ready");
           }
         }
       } catch (e) {
@@ -50,6 +73,22 @@ const VimeoPlayer = memo(({
     return () => window.removeEventListener('message', handleMessage);
   }, [audioOn]);
 
+  // Handle play button click
+  const handlePlayClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!player) return;
+    
+    if (isPlaying) {
+      player.pause();
+    } else {
+      player.play().catch(() => {
+        console.log("Failed to play video");
+      });
+    }
+  };
+
   // Control video playback based on visibility
   useEffect(() => {
     if (!player) return;
@@ -57,37 +96,41 @@ const VimeoPlayer = memo(({
     const viewStateChanged = wasInViewRef.current !== isInView;
     wasInViewRef.current = isInView;
 
-    if (isInView) {
-      // Update audio settings
-      player.setVolume(audioOn ? 1 : 0);
-      player.setMuted(!audioOn);
-      
-      if (viewStateChanged) {
-        // Restart video when coming back into view
-        player.setCurrentTime(0).then(() => {
-          player.play().catch(() => {
-            // Silent catch for autoplay issues
-          });
-        });
-      }
-    } else if (viewStateChanged) {
-      // Pause when moving out of view
+    // Update audio settings
+    player.setVolume(audioOn ? 1 : 0);
+    player.setMuted(!audioOn);
+    
+    // Pause when moving out of view
+    if (!isInView && viewStateChanged && isPlaying) {
       player.pause();
     }
-  }, [isInView, player, audioOn]);
+  }, [isInView, player, audioOn, isPlaying]);
 
   return (
     <div className={`relative ${className}`}>
       <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
         <iframe 
           ref={iframeRef}
-          src={`https://player.vimeo.com/video/${videoId}?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=1&player_id=${playerId}&app_id=58479&autoplay=1`}
+          src={`https://player.vimeo.com/video/${videoId}?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=1&player_id=${playerId}&app_id=58479`}
           style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}} 
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
           title="FitAnywhere"
           loading="lazy"
         ></iframe>
+        
+        {isPlayerReady && !isPlaying && (
+          <button 
+            onClick={handlePlayClick}
+            className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-200 z-20"
+            aria-label="Play video"
+          >
+            <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
+              <Play size={28} className="text-black ml-1" />
+            </div>
+          </button>
+        )}
       </div>
+      
       <button 
         onClick={toggleAudio}
         className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300 z-30"
