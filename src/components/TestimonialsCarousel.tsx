@@ -83,18 +83,17 @@ const TestimonialsCarousel = () => {
   }, [isScriptLoaded]);
   
   const renderVimeoVideo = () => {
-    const aspectRatio = 16/9; // Default aspect ratio
-
     return (
       <div className="w-full md:max-w-[80%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
         <div className="relative overflow-hidden rounded-xl">
-          <AspectRatio ratio={aspectRatio} className="overflow-hidden">
+          <AspectRatio ratio={16/9} className="overflow-hidden">
             <iframe 
-              src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=6ed11d11d8&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1`}
-              frameBorder="0" 
+              src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=6ed11d11d8&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1`}
               allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
               className="w-full h-full absolute inset-0"
               title={`Testimonial from ${currentTestimonial.name}`}
+              style={{ border: 'none' }}
+              loading="lazy"
             ></iframe>
           </AspectRatio>
         </div>
