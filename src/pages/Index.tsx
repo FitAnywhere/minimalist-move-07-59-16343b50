@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -13,7 +12,6 @@ const BundleOffer = lazy(() => import('@/components/BundleOffer'));
 const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
 const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalculator'));
 const TargetAndFAQ = lazy(() => import('@/components/TargetAndFAQ'));
-const PersuasionSection = lazy(() => import('@/components/PersuasionSection'));
 const CallToAction = lazy(() => import('@/components/CallToAction'));
 const Footer = lazy(() => import('@/components/Footer'));
 
@@ -149,7 +147,6 @@ const Index = () => {
         </div>
         <TimeAndCostCalculator />
         <TargetAndFAQ />
-        <PersuasionSection />
         <CallToAction />
         <Footer />
       </Suspense>

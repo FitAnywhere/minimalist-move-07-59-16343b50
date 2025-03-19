@@ -1,5 +1,5 @@
 
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -7,35 +7,121 @@ import { cn } from '@/lib/utils';
 const CallToAction = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef);
-
+  const isInView = useInView(sectionRef, { threshold: 0.3 });
+  const [animatedWords1, setAnimatedWords1] = useState<string[]>([]);
+  const [animatedWords2, setAnimatedWords2] = useState<string[]>([]);
+  
+  const firstLine = "Was all this engineering worth it?";
+  const secondLine = "Or will you keep wasting time and money on the gym?";
+  
   // Set up parallax effect
   useParallax(backgroundRef, 0.05);
+  
+  // Word-by-word animation effect
+  useEffect(() => {
+    if (isInView) {
+      const words1 = firstLine.split(' ');
+      const words2 = secondLine.split(' ');
+      
+      const animateWords = (words: string[], setStateFunction: React.Dispatch<React.SetStateAction<string[]>>) => {
+        let currentIndex = 0;
+        const intervalId = setInterval(() => {
+          if (currentIndex < words.length) {
+            setStateFunction(prev => [...prev, words[currentIndex]]);
+            currentIndex++;
+          } else {
+            clearInterval(intervalId);
+          }
+        }, 200); // 200ms delay between each word
+        
+        return () => clearInterval(intervalId);
+      };
+      
+      // Start first line animation immediately
+      const cleanup1 = animateWords(words1, setAnimatedWords1);
+      
+      // Start second line animation after a delay
+      const timeout = setTimeout(() => {
+        const cleanup2 = animateWords(words2, setAnimatedWords2);
+        return cleanup2;
+      }, words1.length * 250); // Start second line after first line completes (with a little buffer)
+      
+      return () => {
+        cleanup1();
+        clearTimeout(timeout);
+      };
+    } else {
+      // Reset animations when section is out of view
+      setAnimatedWords1([]);
+      setAnimatedWords2([]);
+    }
+  }, [isInView]);
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/3cs00q7Fjg0I9rO6oq', '_blank');
   };
   
-  return <section id="order" ref={sectionRef} className="relative py-24 bg-black text-white overflow-hidden">
+  return (
+    <section 
+      id="order" 
+      ref={sectionRef} 
+      className="relative py-32 overflow-hidden min-h-[90vh] flex items-center"
+      style={{
+        background: 'linear-gradient(to bottom, #8A898C 0%, #555555 40%, #333333 70%, #222222 85%, black 100%)'
+      }}
+    >
       {/* Parallax Background */}
       <div ref={backgroundRef} className="absolute inset-0 opacity-30">
-        
-        
+        {/* Background content if needed */}
       </div>
       
       <div className="container relative z-20 mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
-            
-            
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-6">
-              YOUR NEW LIFESTYLE AWAITS
+          <div className="space-y-12">
+            {/* First animated line */}
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight min-h-[3.5rem] md:min-h-[4rem]">
+              {animatedWords1.map((word, index) => (
+                <span 
+                  key={`${word}-${index}`} 
+                  className={cn(
+                    "inline-block mx-1 transition-all duration-700 opacity-0 translate-y-4",
+                    isInView && "opacity-100 translate-y-0"
+                  )}
+                  style={{ 
+                    transitionDelay: `${index * 200}ms` 
+                  }}
+                >
+                  {word}
+                </span>
+              ))}
             </h2>
             
+            {/* Second animated line */}
+            <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight min-h-[3rem] md:min-h-[3.5rem]">
+              {animatedWords2.map((word, index) => (
+                <span 
+                  key={`${word}-${index}`} 
+                  className={cn(
+                    "inline-block mx-1 transition-all duration-700 opacity-0 translate-y-4",
+                    isInView && "opacity-100 translate-y-0"
+                  )}
+                  style={{ 
+                    transitionDelay: `${(animatedWords1.length * 200) + (index * 200)}ms` 
+                  }}
+                >
+                  {word}
+                </span>
+              ))}
+            </h2>
             
-            
-            <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
+            {/* CTA Button */}
+            <div 
+              className={cn(
+                "transition-all duration-1000 delay-[1200ms]", 
+                isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
+              )}
+            >
               <a 
                 href="https://buy.stripe.com/3cs00q7Fjg0I9rO6oq" 
                 className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group"
@@ -50,7 +136,8 @@ const CallToAction = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 
 export default CallToAction;
