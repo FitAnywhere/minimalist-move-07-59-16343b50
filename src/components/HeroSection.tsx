@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
@@ -17,6 +16,7 @@ const HeroSection = () => {
   const [wasScrollMuted, setWasScrollMuted] = useState(false);
   const [player, setPlayer] = useState<any>(null);
   const [firstLoad, setFirstLoad] = useState(true);
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
   
   const scrollToOwnBoth = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -40,9 +40,17 @@ const HeroSection = () => {
             const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
             setPlayer(vimeoPlayer);
             
-            // Set audio on by default and ensure it's not muted
-            vimeoPlayer.setVolume(1);
-            vimeoPlayer.setMuted(false);
+            // Only set audio on for the first load
+            if (firstLoad && !initialLoadDone) {
+              vimeoPlayer.setVolume(1);
+              vimeoPlayer.setMuted(false);
+              setInitialLoadDone(true);
+            } else {
+              // Keep audio off for subsequent loads unless manually turned on
+              vimeoPlayer.setVolume(0);
+              vimeoPlayer.setMuted(true);
+              setAudioOn(false);
+            }
             
             // Start playing immediately
             vimeoPlayer.play().catch((error: any) => {
@@ -59,7 +67,7 @@ const HeroSection = () => {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, []);
+  }, [firstLoad, initialLoadDone]);
 
   const toggleAudio = () => {
     if (player) {
@@ -79,37 +87,34 @@ const HeroSection = () => {
   useEffect(() => {
     if (player) {
       if (isInView) {
-        if (wasScrollMuted) {
-          player.setCurrentTime(0).then(() => {
-            player.play();
-            if (audioOn) {
-              player.setVolume(1);
-              player.setMuted(false);
-            }
-          }).catch((error: any) => {
-            console.log("Error setting current time:", error);
-          });
-          setWasScrollMuted(false);
-        } else if (!document.hidden) {
+        // Always restart the video when coming back into view
+        player.setCurrentTime(0).then(() => {
           player.play().catch((error: any) => {
             console.log("Error playing video:", error);
           });
           
-          // If it's the first load, ensure sound is on
-          if (firstLoad) {
+          // Maintain current audio state
+          if (audioOn) {
             player.setVolume(1);
             player.setMuted(false);
-            setFirstLoad(false);
+          } else {
+            player.setVolume(0);
+            player.setMuted(true);
           }
+        }).catch((error: any) => {
+          console.log("Error setting current time:", error);
+        });
+        
+        // Mark first load as complete
+        if (firstLoad) {
+          setFirstLoad(false);
         }
       } else {
+        // Pause the video when out of view
         player.pause();
-        if (!wasScrollMuted) {
-          setWasScrollMuted(true);
-        }
       }
     }
-  }, [isInView, player, audioOn, wasScrollMuted, firstLoad]);
+  }, [isInView, player, audioOn, firstLoad]);
 
   useEffect(() => {
     if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
