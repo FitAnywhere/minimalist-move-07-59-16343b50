@@ -61,9 +61,15 @@ const VimeoPlayer = memo(({
             });
             
             vimeoPlayer.on('ended', () => {
+              console.log("Video ended, resetting to 0.1 seconds");
               // When video ends, reset to beginning and show play button again
-              vimeoPlayer.setCurrentTime(0.1);
-              setIsPlaying(false);
+              setIsPlaying(false); // Ensure we set isPlaying to false first
+              vimeoPlayer.setCurrentTime(0.1).then(() => {
+                // Additional confirmation that we're properly stopped
+                vimeoPlayer.pause().then(() => {
+                  console.log("Video reset to 0.1 seconds and paused");
+                });
+              });
             });
           }
         }
