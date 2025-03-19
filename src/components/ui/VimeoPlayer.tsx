@@ -61,7 +61,7 @@ const VimeoPlayer = memo(({
             });
             
             vimeoPlayer.on('ended', () => {
-              // Reset to beginning for next play
+              // When video ends, reset to beginning and show play button again
               vimeoPlayer.setCurrentTime(0.1);
               setIsPlaying(false);
             });
@@ -118,7 +118,7 @@ const VimeoPlayer = memo(({
       <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
         <iframe 
           ref={iframeRef}
-          src={`https://player.vimeo.com/video/${videoId}?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=1&player_id=${playerId}&app_id=58479`}
+          src={`https://player.vimeo.com/video/${videoId}?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=0&player_id=${playerId}&app_id=58479`}
           style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}} 
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
           title="FitAnywhere"
