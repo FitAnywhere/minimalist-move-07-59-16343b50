@@ -14,6 +14,7 @@ const HeroSection = () => {
   const isMobile = useIsMobile();
   const [vimeoPlayerReady, setVimeoPlayerReady] = useState(false);
   const [audioOn, setAudioOn] = useState(true);
+  const [wasScrollMuted, setWasScrollMuted] = useState(false);
   const [player, setPlayer] = useState<any>(null);
   
   const scrollToOwnBoth = (e: React.MouseEvent) => {
@@ -67,6 +68,8 @@ const HeroSection = () => {
         player.setMuted(false);
       }
       setAudioOn(!audioOn);
+      // Reset scroll mute flag - this was a manual toggle
+      setWasScrollMuted(false);
     }
   };
 
@@ -76,15 +79,20 @@ const HeroSection = () => {
   // Handle audio control based on visibility
   useEffect(() => {
     if (player) {
-      if (isInView && audioOn) {
-        player.setVolume(1);
-        player.setMuted(false);
-      } else {
+      if (isInView) {
+        // Only turn audio back on if this wasn't scroll-muted before
+        if (audioOn && !wasScrollMuted) {
+          player.setVolume(1);
+          player.setMuted(false);
+        }
+      } else if (audioOn) {
+        // When scrolling away and audio is on, mute it and track that it was muted by scrolling
         player.setVolume(0);
         player.setMuted(true);
+        setWasScrollMuted(true);
       }
     }
-  }, [isInView, player, audioOn]);
+  }, [isInView, player, audioOn, wasScrollMuted]);
 
   // Add Vimeo script to document head
   useEffect(() => {
