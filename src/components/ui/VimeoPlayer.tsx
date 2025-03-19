@@ -39,10 +39,10 @@ const VimeoPlayer = memo(({
             setPlayer(vimeoPlayer);
             
             // Set initial audio state
-            vimeoPlayer.setVolume(1); // Always set volume to 1 initially
-            vimeoPlayer.setMuted(false); // Ensure it's not muted
+            vimeoPlayer.setVolume(audioOn ? 1 : 0);
+            vimeoPlayer.setMuted(!audioOn);
             
-            // Ensure video is initially paused but at 0.1 seconds
+            // Ensure video is initially paused but at 0.1 seconds for thumbnail
             vimeoPlayer.pause().then(() => {
               vimeoPlayer.setCurrentTime(0.1).then(() => {
                 setIsPlayerReady(true);
@@ -53,6 +53,7 @@ const VimeoPlayer = memo(({
             // Add event listeners
             vimeoPlayer.on('play', () => {
               setIsPlaying(true);
+              console.log("Video can play now");
             });
             
             vimeoPlayer.on('pause', () => {
@@ -73,7 +74,7 @@ const VimeoPlayer = memo(({
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, []);
+  }, [audioOn]);
 
   // Handle play button click
   const handlePlayClick = (e: React.MouseEvent) => {
@@ -88,19 +89,10 @@ const VimeoPlayer = memo(({
       // Ensure audio is on when playing
       player.setVolume(1);
       player.setMuted(false);
-      setAudioOn(true);
       
       player.play().catch(() => {
         console.log("Failed to play video");
       });
-    }
-  };
-
-  // Set audio state directly
-  const setAudioOn = (state: boolean) => {
-    if (player) {
-      player.setVolume(state ? 1 : 0);
-      player.setMuted(!state);
     }
   };
 
@@ -111,7 +103,7 @@ const VimeoPlayer = memo(({
     const viewStateChanged = wasInViewRef.current !== isInView;
     wasInViewRef.current = isInView;
 
-    // Update audio settings for toggle button
+    // Update audio settings
     player.setVolume(audioOn ? 1 : 0);
     player.setMuted(!audioOn);
     
