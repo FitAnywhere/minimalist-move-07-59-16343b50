@@ -76,105 +76,113 @@ const TimeAndCostCalculator = () => {
             <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
               {/* Desktop & Mobile Layout */}
               <div className="flex flex-col gap-8">
-                {/* Time Cost Box - Full width on desktop */}
+                {/* Time Cost Box - Full width on desktop with horizontal layout */}
                 <Card className="rounded-xl shadow-md border border-gray-100 overflow-hidden w-full">
                   <CardContent className="p-0">
-                    <div className="bg-white p-6 md:p-8">
-                      <p className="mb-3 font-medium text-left text-xl">How much time do you spend getting to the gym and back?</p>
-                      
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-gray-600">0 min</span>
-                        <span className="text-lg font-bold bg-gray-100 px-3 py-1 rounded-md">
-                          {timeWastedPerVisit} min
-                        </span>
-                        <span className="text-gray-600">120 min</span>
+                    {/* For mobile: stack vertically, for desktop: horizontal layout */}
+                    <div className="flex flex-col md:flex-row">
+                      {/* Input section - Left side on desktop, top on mobile */}
+                      <div className="bg-white p-6 md:p-8 md:w-1/2">
+                        <p className="mb-3 font-medium text-left text-xl">How much time do you spend getting to the gym and back?</p>
+                        
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-gray-600">0 min</span>
+                          <span className="text-lg font-bold bg-gray-100 px-3 py-1 rounded-md">
+                            {timeWastedPerVisit} min
+                          </span>
+                          <span className="text-gray-600">120 min</span>
+                        </div>
+                        
+                        <div className="py-4 md:py-6">
+                          <Slider 
+                            value={[timeWastedPerVisit]} 
+                            min={0} 
+                            max={120} 
+                            step={5} 
+                            className="w-full" 
+                            onValueChange={value => setTimeWastedPerVisit(value[0])} 
+                          />
+                        </div>
                       </div>
                       
-                      <div className="py-4 md:py-6">
-                        <Slider 
-                          value={[timeWastedPerVisit]} 
-                          min={0} 
-                          max={120} 
-                          step={5} 
-                          className="w-full" 
-                          onValueChange={value => setTimeWastedPerVisit(value[0])} 
-                        />
+                      {/* Time Result - Right side on desktop, bottom on mobile */}
+                      <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
+                        <div className="flex items-center justify-center mb-2">
+                          <Clock className="w-5 h-5 text-yellow mr-2" />
+                          <h3 className="text-lg font-bold">Time wasted in 20 years</h3>
+                        </div>
+                        <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
+                          {shouldAnimate ? 
+                            <CountUp 
+                              start={previousTimeWasted} 
+                              end={timeWastedInYears} 
+                              duration={1} 
+                              separator="," 
+                              suffix=" hours" 
+                              useEasing 
+                            /> : "0 hours"}
+                        </p>
+                        <p className="text-gray-600 text-sm mt-1 text-center">Lost forever</p>
                       </div>
-                    </div>
-                    
-                    {/* Time Result - Always visible */}
-                    <div className="bg-gray-50 p-6 md:p-8 border-t border-gray-100">
-                      <div className="flex items-center justify-center mb-2">
-                        <Clock className="w-5 h-5 text-yellow mr-2" />
-                        <h3 className="text-lg font-bold">Time wasted in 20 years</h3>
-                      </div>
-                      <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
-                        {shouldAnimate ? 
-                          <CountUp 
-                            start={previousTimeWasted} 
-                            end={timeWastedInYears} 
-                            duration={1} 
-                            separator="," 
-                            suffix=" hours" 
-                            useEasing 
-                          /> : "0 hours"}
-                      </p>
-                      <p className="text-gray-600 text-sm mt-1 text-center">Lost forever</p>
                     </div>
                   </CardContent>
                 </Card>
                 
-                {/* Money Cost Box - Full width on desktop */}
+                {/* Money Cost Box - Full width on desktop with horizontal layout */}
                 <Card className="rounded-xl shadow-md border border-gray-100 overflow-hidden w-full">
                   <CardContent className="p-0">
-                    <div className="bg-white p-6 md:p-8">
-                      <p className="text-xl mb-3 font-medium text-left">How much is your monthly gym bill?</p>
-                      
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-gray-600">€0</span>
-                        <div className="flex items-center bg-gray-100 rounded-md overflow-hidden">
-                          <span className="px-2 py-1 bg-gray-200 text-gray-800">€</span>
-                          <Input 
-                            type="text" 
-                            value={gymMonthlyCost} 
-                            onChange={handleCostInputChange} 
-                            className="w-16 text-center border-0 bg-transparent" 
+                    {/* For mobile: stack vertically, for desktop: horizontal layout */}
+                    <div className="flex flex-col md:flex-row">
+                      {/* Input section - Left side on desktop, top on mobile */}
+                      <div className="bg-white p-6 md:p-8 md:w-1/2">
+                        <p className="text-xl mb-3 font-medium text-left">How much is your monthly gym bill?</p>
+                        
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-gray-600">€0</span>
+                          <div className="flex items-center bg-gray-100 rounded-md overflow-hidden">
+                            <span className="px-2 py-1 bg-gray-200 text-gray-800">€</span>
+                            <Input 
+                              type="text" 
+                              value={gymMonthlyCost} 
+                              onChange={handleCostInputChange} 
+                              className="w-16 text-center border-0 bg-transparent" 
+                            />
+                          </div>
+                          <span className="text-gray-600">€150</span>
+                        </div>
+                        
+                        <div className="py-4 md:py-6">
+                          <Slider 
+                            value={[gymMonthlyCost]} 
+                            min={0} 
+                            max={150} 
+                            step={5} 
+                            className="w-full" 
+                            onValueChange={value => setGymMonthlyCost(value[0])} 
                           />
                         </div>
-                        <span className="text-gray-600">€150</span>
                       </div>
                       
-                      <div className="py-4 md:py-6">
-                        <Slider 
-                          value={[gymMonthlyCost]} 
-                          min={0} 
-                          max={150} 
-                          step={5} 
-                          className="w-full" 
-                          onValueChange={value => setGymMonthlyCost(value[0])} 
-                        />
+                      {/* Money Result - Right side on desktop, bottom on mobile */}
+                      <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
+                        <div className="flex items-center justify-center mb-2">
+                          <Banknote className="w-5 h-5 text-yellow mr-2" />
+                          <h3 className="text-lg font-bold">Money spent in 20 years</h3>
+                        </div>
+                        <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
+                          {shouldAnimate ? 
+                            <CountUp 
+                              start={previousMoneyCost} 
+                              end={moneySpentInYears} 
+                              duration={1} 
+                              separator="," 
+                              prefix="€" 
+                              suffix="+" 
+                              useEasing 
+                            /> : "€0+"}
+                        </p>
+                        <p className="text-gray-600 text-sm mt-1 text-center">On memberships</p>
                       </div>
-                    </div>
-                    
-                    {/* Money Result - Always visible */}
-                    <div className="bg-gray-50 p-6 md:p-8 border-t border-gray-100">
-                      <div className="flex items-center justify-center mb-2">
-                        <Banknote className="w-5 h-5 text-yellow mr-2" />
-                        <h3 className="text-lg font-bold">Money spent in 20 years</h3>
-                      </div>
-                      <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
-                        {shouldAnimate ? 
-                          <CountUp 
-                            start={previousMoneyCost} 
-                            end={moneySpentInYears} 
-                            duration={1} 
-                            separator="," 
-                            prefix="€" 
-                            suffix="+" 
-                            useEasing 
-                          /> : "€0+"}
-                      </p>
-                      <p className="text-gray-600 text-sm mt-1 text-center">On memberships</p>
                     </div>
                   </CardContent>
                 </Card>
