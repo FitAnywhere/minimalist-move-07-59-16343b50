@@ -96,22 +96,16 @@ const LifestyleSection = () => {
   const toggleMute = () => {
     if (vimeoPlayerRef.current) {
       const newMutedState = !isMuted;
+      vimeoPlayerRef.current.setMuted(newMutedState);
+      setIsMuted(newMutedState);
       
       setUserInteracted(true);
       
-      vimeoPlayerRef.current.setMuted(newMutedState)
-        .then(() => {
-          setIsMuted(newMutedState);
-          
-          if (!newMutedState) {
-            setLastUnmutedState(true);
-          } else {
-            setLastUnmutedState(false);
-          }
-        })
-        .catch(err => {
-          console.error("Error toggling mute state:", err);
-        });
+      if (!newMutedState) {
+        setLastUnmutedState(true);
+      } else {
+        setLastUnmutedState(false);
+      }
     }
   };
 
@@ -139,11 +133,9 @@ const LifestyleSection = () => {
           player.setMuted(true);
           player.setLoop(true);
           player.setAutopause(false);
-          
           player.play().catch(err => {
             console.error("Initial Vimeo play error:", err);
           });
-          
           setIsVideoLoaded(true);
           setVideoError(false);
           console.log("Vimeo player is ready");
@@ -155,10 +147,6 @@ const LifestyleSection = () => {
         player.on('error', (err) => {
           console.error("Vimeo player error:", err);
           setVideoError(true);
-        });
-
-        player.on('volumechange', (data) => {
-          console.log("Volume changed:", data);
         });
 
         vimeoPlayerRef.current = player;
@@ -192,7 +180,7 @@ const LifestyleSection = () => {
             <iframe 
               ref={vimeoIframeRef}
               className="absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105"
-              src="https://player.vimeo.com/video/1067256293?h=297c1637e6&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1&amp;background=0&amp;muted=1"
+              src="https://player.vimeo.com/video/1067256293?h=297c1637e6&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1&amp;background=1&amp;muted=1"
               frameBorder="0" 
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
               title="BoxFun"
