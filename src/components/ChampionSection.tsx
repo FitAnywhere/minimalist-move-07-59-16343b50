@@ -4,6 +4,7 @@ import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from '@/components/ui/dialog';
+
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -17,6 +18,7 @@ const ChampionSection = () => {
     name: '',
     email: ''
   });
+
   useEffect(() => {
     if (isInView && titleRef.current) {
       setTimeout(() => {
@@ -24,6 +26,7 @@ const ChampionSection = () => {
       }, 300);
     }
   }, [isInView]);
+
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current;
@@ -64,6 +67,7 @@ const ChampionSection = () => {
       };
     }
   }, [isInView, videoError]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       name,
@@ -74,12 +78,14 @@ const ChampionSection = () => {
       [name]: value
     }));
   };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     setShowLibraryAccess(false);
     alert("Thank you! Access to the video library will be sent to your email.");
   };
+
   return <section id="video-library" ref={sectionRef} className="py-16">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
@@ -87,13 +93,12 @@ const ChampionSection = () => {
             <div className="space-y-6 flex flex-col justify-between h-full">
               <div className="space-y-3">
                 <h2 ref={titleRef} className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-                  EXCLUSIVE VIDEO LIBRARY
+                  TRAINING LIBRARY
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
               </div>
               
               <div className="space-y-5">
-                
                 
                 <div className={cn("flex items-start gap-3 transform transition-all duration-500", isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10")} style={{
                 transitionDelay: "200ms"
@@ -207,4 +212,5 @@ const ChampionSection = () => {
       </Dialog>
     </section>;
 };
+
 export default ChampionSection;
