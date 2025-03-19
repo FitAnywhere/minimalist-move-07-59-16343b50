@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -8,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import CountUp from 'react-countup';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -59,7 +57,6 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
-
   return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
@@ -82,7 +79,7 @@ const TimeAndCostCalculator = () => {
                     <div className="flex flex-col md:flex-row">
                       {/* Input section - Left side on desktop, top on mobile */}
                       <div className="bg-white p-6 md:p-8 md:w-1/2">
-                        <p className="mb-3 font-medium text-left text-lg">How much time do you spend going to the gym and back?</p>
+                        <p className="mb-3 text-left text-lg font-bold">How much time do you spend going to the gym and back?</p>
                         
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-gray-600">0 min</span>
@@ -119,7 +116,7 @@ const TimeAndCostCalculator = () => {
                     <div className="flex flex-col md:flex-row">
                       {/* Input section - Left side on desktop, top on mobile */}
                       <div className="bg-white p-6 md:p-8 md:w-1/2">
-                        <p className="mb-3 font-medium text-left text-lg">How much is your monthly gym membership?</p>
+                        <p className="mb-3 text-left text-lg font-bold">How much is your monthly gym membership?</p>
                         
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-gray-600">€0</span>
@@ -168,5 +165,4 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
-
 export default TimeAndCostCalculator;
