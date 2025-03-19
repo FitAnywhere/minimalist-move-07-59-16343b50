@@ -31,7 +31,9 @@ const HeroSection = () => {
       if (event.origin !== "https://player.vimeo.com") return;
       
       try {
-        const data = JSON.parse(event.data);
+        // Check if event.data is already an object
+        const data = typeof event.data === 'object' ? event.data : JSON.parse(event.data);
+        
         if (data.event === "ready") {
           console.log("Vimeo player is ready");
           setVimeoPlayerReady(true);
@@ -79,6 +81,8 @@ const HeroSection = () => {
         player.setMuted(false);
       }
       setAudioOn(!audioOn);
+      
+      // Don't restart the video when toggling audio
     }
   };
 
