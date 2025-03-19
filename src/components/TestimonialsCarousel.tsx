@@ -1,7 +1,8 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight, User, Quote, Star } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -9,54 +10,48 @@ interface Testimonial {
   name: string;
   role: string;
   quote: string;
-  video: string;
-  isYouTube?: boolean;
-  aspectRatio?: number;
+  vimeoId: string;
 }
 
 const testimonials: Testimonial[] = [{
   name: "Alex G.",
   role: "Busy Professional",
   quote: "I can't believe how much time it saves me!",
-  video: "/ALEX GG.mp4"
+  vimeoId: "1067256239"
 }, {
   name: "Emily T.",
   role: "Fitness Beginner",
   quote: "I never imagined how many exercises I can do using TRX and BANDS.",
-  video: "/EMILY TT.mp4"
+  vimeoId: "1067256372"
 }, {
   name: "John D.",
   role: "Fitness Enthusiast",
   quote: "Finally, got an efficient training solution!",
-  video: "/JOHN DD.mp4"
+  vimeoId: "1067256399"
 }, {
   name: "Chris L.",
   role: "Fitness Advocate",
   quote: "Ordered multiple for our studio and got an extra discount. Thank you!",
-  video: "/CHRIS LLL.mp4"
+  vimeoId: "1067256325"
 }, {
   name: "Sarah M.",
   role: "Remote Worker",
   quote: "I work from home, and this is exactly what I needed!",
-  video: "/SARAH LL.mp4"
+  vimeoId: "1067256419"
 }, {
   name: "Jordan P.",
   role: "Calisthenics Enthusiast",
   quote: "Never had so much fun training!",
-  video: "https://youtube.com/shorts/FgF3Cyhw1Do",
-  isYouTube: true,
-  aspectRatio: 9/16
+  vimeoId: "1067259441"
 }];
 
 const TestimonialsCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, {}, false);
   const currentTestimonial = testimonials[activeIndex];
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
   const isMobile = useIsMobile();
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   const nextTestimonial = () => {
     setActiveIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
@@ -69,111 +64,42 @@ const TestimonialsCarousel = () => {
   const goToTestimonial = (index: number) => {
     setActiveIndex(index);
   };
-  
-  const toggleFullScreen = () => {
-    if (videoRef.current && !currentTestimonial.isYouTube) {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      } else {
-        videoRef.current.requestFullscreen();
-      }
-    }
-  };
 
+  // Load Vimeo script once
   useEffect(() => {
-    setIsVideoLoaded(false);
-    setVideoError(false);
-  }, [activeIndex]);
-
-  useEffect(() => {
-    if (!currentTestimonial.isYouTube && videoRef.current) {
-      const video = videoRef.current;
+    if (!window.Vimeo && !isScriptLoaded) {
+      const script = document.createElement('script');
+      script.src = 'https://player.vimeo.com/api/player.js';
+      script.async = true;
+      script.onload = () => setIsScriptLoaded(true);
+      document.body.appendChild(script);
       
-      video.src = '';
-      video.load();
-      
-      video.src = currentTestimonial.video;
-      
-      const handleCanPlay = () => {
-        setIsVideoLoaded(true);
-        setVideoError(false);
-        console.log("Testimonial video can play now:", currentTestimonial.video);
-      };
-      
-      const handleError = (e: Event) => {
-        console.error("Testimonial video error:", e, "for video:", currentTestimonial.video);
-        setVideoError(true);
-      };
-
-      video.addEventListener('canplay', handleCanPlay);
-      video.addEventListener('error', handleError);
-
-      if (isInView) {
-        const playAttempt = setTimeout(() => {
-          if (video.readyState >= 2) {
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-              playPromise.catch(error => {
-                console.error("Testimonial video play error:", error);
-                if (error.name !== 'NotAllowedError') {
-                  setVideoError(true);
-                }
-              });
-            }
-          }
-        }, 100);
-        
-        return () => clearTimeout(playAttempt);
-      }
-
       return () => {
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('error', handleError);
-        video.pause();
+        document.body.removeChild(script);
       };
+    } else if (window.Vimeo) {
+      setIsScriptLoaded(true);
     }
-  }, [isInView, activeIndex, currentTestimonial.video, currentTestimonial.isYouTube]);
+  }, [isScriptLoaded]);
   
-  const renderYouTubeVideo = () => {
-    if (currentTestimonial.isYouTube && isMobile) {
-      return (
-        <div className="w-full mb-6">
-          <div className="relative overflow-hidden rounded-xl">
-            <AspectRatio ratio={currentTestimonial.aspectRatio || 9/16} className="overflow-hidden">
-              <div className="relative w-full h-full overflow-hidden" style={{ transform: 'scale(1.12)' }}>
-                <iframe 
-                  className="w-full h-full absolute inset-0 pointer-events-none select-none"
-                  src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/').split('?')[0]}?autoplay=1&mute=1&loop=1&playlist=${currentTestimonial.video.split('/').pop()}&controls=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&enablejsapi=0&origin=${window.location.origin}&widget_referrer=${window.location.origin}&hl=en&color=white&start=0&annotation=0&autohide=1&version=3&widgetid=1`}
-                  title={`Testimonial from ${currentTestimonial.name}`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  frameBorder="0"
-                  loading="lazy"
-                  style={{
-                    pointerEvents: 'none',
-                    userSelect: 'none',
-                    marginTop: '-60px',
-                    marginBottom: '-60px',
-                    height: 'calc(100% + 120px)',
-                  }}
-                ></iframe>
-                <div 
-                  className="absolute inset-0 w-full h-full z-10 bg-transparent cursor-default" 
-                  aria-hidden="true"
-                  onClick={(e) => e.preventDefault()}
-                  onContextMenu={(e) => e.preventDefault()}
-                  onMouseDown={(e) => e.preventDefault()}
-                  onTouchStart={(e) => e.preventDefault()}
-                  style={{
-                    pointerEvents: 'auto'
-                  }}
-                ></div>
-              </div>
-            </AspectRatio>
-          </div>
+  const renderVimeoVideo = () => {
+    const aspectRatio = 16/9; // Default aspect ratio
+
+    return (
+      <div className="w-full md:max-w-[80%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+        <div className="relative overflow-hidden rounded-xl">
+          <AspectRatio ratio={aspectRatio} className="overflow-hidden">
+            <iframe 
+              src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=6ed11d11d8&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1`}
+              frameBorder="0" 
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+              className="w-full h-full absolute inset-0"
+              title={`Testimonial from ${currentTestimonial.name}`}
+            ></iframe>
+          </AspectRatio>
         </div>
-      );
-    }
-    return null;
+      </div>
+    );
   };
   
   return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
@@ -189,8 +115,6 @@ const TestimonialsCarousel = () => {
           <div className="relative">
             <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
               <div className="order-2 md:order-1 text-left flex flex-col justify-center">
-                {renderYouTubeVideo()}
-                
                 <div className="backdrop-blur-md bg-white/80 shadow-md p-7 rounded-xl relative mb-6 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20" 
                   style={{ borderColor: '#444444' }}>
                   <div className="text-gray-500 opacity-50 absolute left-4 top-4 pt-1" style={{ color: '#666666' }}>
@@ -221,57 +145,7 @@ const TestimonialsCarousel = () => {
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500">
-                <div className="w-full md:max-w-[60%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
-                  {currentTestimonial.isYouTube && !isMobile ? (
-                    <div className="relative overflow-hidden rounded-xl">
-                      <AspectRatio ratio={currentTestimonial.aspectRatio || 9/16} className="overflow-hidden">
-                        <div className="relative w-full h-full overflow-hidden" style={{ transform: isMobile ? 'scale(1)' : 'scale(1.12)' }}>
-                          <iframe 
-                            className="w-full h-full absolute inset-0 pointer-events-none select-none"
-                            src={`${currentTestimonial.video.replace('youtube.com/shorts/', 'youtube.com/embed/').split('?')[0]}?autoplay=1&mute=1&loop=1&playlist=${currentTestimonial.video.split('/').pop()}&controls=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&enablejsapi=0&origin=${window.location.origin}&widget_referrer=${window.location.origin}&hl=en&color=white&start=0&annotation=0&autohide=1&version=3&widgetid=1`}
-                            title={`Testimonial from ${currentTestimonial.name}`}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            frameBorder="0"
-                            loading="lazy"
-                            style={{
-                              pointerEvents: 'none',
-                              userSelect: 'none',
-                              marginTop: isMobile ? '0' : '-60px',
-                              marginBottom: isMobile ? '0' : '-60px',
-                              height: isMobile ? '100%' : 'calc(100% + 120px)',
-                            }}
-                          ></iframe>
-                        </div>
-                        <div 
-                          className="absolute inset-0 w-full h-full z-10 bg-transparent cursor-default" 
-                          aria-hidden="true"
-                          onClick={(e) => e.preventDefault()}
-                          onContextMenu={(e) => e.preventDefault()}
-                          onMouseDown={(e) => e.preventDefault()}
-                          onTouchStart={(e) => e.preventDefault()}
-                          style={{
-                            pointerEvents: 'auto'
-                          }}
-                        ></div>
-                      </AspectRatio>
-                    </div>
-                  ) : videoError ? (
-                    <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                      <p className="text-gray-500">Video unavailable</p>
-                    </div>
-                  ) : (!currentTestimonial.isYouTube) ? (
-                    <video 
-                      ref={videoRef} 
-                      className="w-full h-full object-cover min-h-[250px] transition-transform duration-500 cursor-pointer" 
-                      autoPlay 
-                      muted 
-                      loop 
-                      playsInline 
-                      preload="auto"
-                      onClick={toggleFullScreen} 
-                    />
-                  ) : null}
-                </div>
+                {renderVimeoVideo()}
               </div>
             </div>
             
