@@ -159,10 +159,10 @@ const TestimonialsCarousel = () => {
               </div>
               
               {/* Right Column - Video */}
-              <div className="order-1 md:order-2 relative transition-all duration-500 w-full">
-                {/* Mobile Video (full-width container, properly sized) */}
+              <div className="order-1 md:order-2 relative transition-all duration-500 w-full flex justify-center">
+                {/* Mobile Video (50% smaller with centerd container) */}
                 {isMobile && (
-                  <div className="w-full rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-gray-100">
+                  <div className="w-1/2 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-gray-100">
                     <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
                       <iframe 
                         key={`mobile-${currentTestimonial.vimeoId}-${key}`}
@@ -183,9 +183,9 @@ const TestimonialsCarousel = () => {
                   </div>
                 )}
                 
-                {/* Desktop Video (smaller size) */}
+                {/* Desktop Video (50% smaller) */}
                 {!isMobile && (
-                  <div className="w-full max-w-md mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                  <div className="w-1/2 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
                     <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
                       <iframe 
                         key={`desktop-${currentTestimonial.vimeoId}-${key}`}
