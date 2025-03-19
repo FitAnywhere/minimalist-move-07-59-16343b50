@@ -11,6 +11,7 @@ const ChampionSection = lazy(() => import('@/components/ChampionSection'));
 const LifestyleSection = lazy(() => import('@/components/LifestyleSection'));
 const BundleOffer = lazy(() => import('@/components/BundleOffer'));
 const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
+const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalculator'));
 const TargetAndFAQ = lazy(() => import('@/components/TargetAndFAQ'));
 const CallToAction = lazy(() => import('@/components/CallToAction'));
 const Footer = lazy(() => import('@/components/Footer'));
@@ -145,6 +146,7 @@ const Index = () => {
         <div id="reviews">
           <TestimonialsCarousel />
         </div>
+        <TimeAndCostCalculator />
         <TargetAndFAQ />
         <CallToAction />
         <Footer />
