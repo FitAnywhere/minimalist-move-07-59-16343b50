@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -181,8 +182,7 @@ const ProductTabs = () => {
                 ref={trxVideoRef} 
                 className={cn(
                   "rounded-2xl overflow-hidden transition-all duration-700 flex justify-center", 
-                  isVideoInView ? "shadow-[0_0_20px_rgba(255,215,0,0.2)]" : "shadow-lg", 
-                  isVideoInView ? "scale-[1.02]" : "scale-100",
+                  "shadow-lg", 
                   isMobile ? "order-1" : "order-2"
                 )}
               >
@@ -277,8 +277,7 @@ const ProductTabs = () => {
                 ref={bandsVideoRef} 
                 className={cn(
                   "rounded-2xl overflow-hidden transition-all duration-700 flex justify-center", 
-                  isBandsVideoInView ? "shadow-[0_0_20px_rgba(255,215,0,0.2)]" : "shadow-lg", 
-                  isBandsVideoInView ? "scale-[1.02]" : "scale-100",
+                  "shadow-lg", 
                   isMobile ? "order-1" : "order-2"
                 )}
               >
