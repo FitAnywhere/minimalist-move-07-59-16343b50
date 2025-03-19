@@ -12,43 +12,50 @@ interface Testimonial {
   hash: string;
 }
 
-const testimonials: Testimonial[] = [{
-  name: "Alex G.",
-  role: "Busy Professional",
-  quote: "I can't believe how much time it saves me!",
-  vimeoId: "1067256239",
-  hash: "d5e32d0eef"
-}, {
-  name: "Emily T.",
-  role: "Fitness Beginner",
-  quote: "I never imagined how many exercises I can do using TRX and BANDS.",
-  vimeoId: "1067256372",
-  hash: "70ab6c252c"
-}, {
-  name: "John D.",
-  role: "Fitness Enthusiast",
-  quote: "Finally, got an efficient training solution!",
-  vimeoId: "1067256399",
-  hash: "317d8d1581"
-}, {
-  name: "Chris L.",
-  role: "Fitness Advocate",
-  quote: "Ordered multiple for our studio and got an extra discount. Thank you!",
-  vimeoId: "1067256325",
-  hash: "d9d4133cc1"
-}, {
-  name: "Sarah M.",
-  role: "Remote Worker",
-  quote: "I work from home, and this is exactly what I needed!",
-  vimeoId: "1067256419",
-  hash: "9896ed5d93"
-}, {
-  name: "Jordan P.",
-  role: "Calisthenics Enthusiast",
-  quote: "Never had so much fun training!",
-  vimeoId: "1067259441",
-  hash: "6ed11d11d8"
-}];
+const testimonials: Testimonial[] = [
+  {
+    name: "Alex G.",
+    role: "Busy Professional",
+    quote: "I can't believe how much time it saves me!",
+    vimeoId: "1067256239",
+    hash: "d5e32d0eef"
+  },
+  {
+    name: "Emily T.",
+    role: "Fitness Beginner",
+    quote: "I never imagined how many exercises I can do using TRX and BANDS.",
+    vimeoId: "1067256372",
+    hash: "70ab6c252c"
+  },
+  {
+    name: "John D.",
+    role: "Fitness Enthusiast",
+    quote: "Finally, got an efficient training solution!",
+    vimeoId: "1067256399",
+    hash: "317d8d1581"
+  },
+  {
+    name: "Chris L.",
+    role: "Fitness Advocate",
+    quote: "Ordered multiple for our studio and got an extra discount. Thank you!",
+    vimeoId: "1067256325",
+    hash: "d9d4133cc1"
+  },
+  {
+    name: "Sarah M.",
+    role: "Remote Worker",
+    quote: "I work from home, and this is exactly what I needed!",
+    vimeoId: "1067256419",
+    hash: "9896ed5d93"
+  },
+  {
+    name: "Jordan P.",
+    role: "Calisthenics Enthusiast",
+    quote: "Never had so much fun training!",
+    vimeoId: "1067259441",
+    hash: "6ed11d11d8"
+  }
+];
 
 const TestimonialsCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -190,7 +197,6 @@ const TestimonialsCarousel = () => {
                         title={`Testimonial from ${currentTestimonial.name}`}
                         onLoad={() => handleVideoLoaded(currentTestimonial.vimeoId)}
                         loading="eager"
-                        fetchpriority="auto"
                       ></iframe>
                       {!videosLoaded[currentTestimonial.vimeoId] && (
                         <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
@@ -213,7 +219,6 @@ const TestimonialsCarousel = () => {
                         title={`Testimonial from ${currentTestimonial.name}`}
                         onLoad={() => handleVideoLoaded(currentTestimonial.vimeoId)}
                         loading="eager"
-                        fetchpriority="auto"
                       ></iframe>
                       {!videosLoaded[currentTestimonial.vimeoId] && (
                         <div className="absolute inset-0 flex items-center justify-center bg-gray-100">

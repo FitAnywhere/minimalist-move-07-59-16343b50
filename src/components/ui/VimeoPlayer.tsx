@@ -155,8 +155,8 @@ const VimeoPlayer = memo(({
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
           title="FitAnywhere"
           loading={priority ? "eager" : "lazy"}
-          importance={priority ? "high" : "auto"}
           fetchpriority={priority ? "high" : "auto"}
+          importance={priority ? "high" : "auto"}
         ></iframe>
         
         {isPlayerReady && !isPlaying && (

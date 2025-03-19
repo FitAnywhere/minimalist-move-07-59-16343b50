@@ -104,7 +104,6 @@ const ProductTabs = () => {
             title="TRX video"
             style={{ border: 'none' }}
             loading="eager"
-            fetchpriority="high"
           ></iframe>
         </AspectRatio>
       </div>
@@ -122,7 +121,6 @@ const ProductTabs = () => {
             title="Bands video"
             style={{ border: 'none' }}
             loading="eager"
-            fetchpriority="high"
           ></iframe>
         </AspectRatio>
       </div>

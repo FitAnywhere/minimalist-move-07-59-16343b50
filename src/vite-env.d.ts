@@ -15,3 +15,11 @@ interface Window {
     Player: any;
   };
 }
+
+// Extend HTMLIFrameElement attributes with modern loading attributes
+declare namespace React {
+  interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
+    fetchpriority?: 'high' | 'low' | 'auto';
+    importance?: 'high' | 'low' | 'auto';
+  }
+}
