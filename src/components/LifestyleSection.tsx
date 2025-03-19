@@ -68,8 +68,8 @@ const LifestyleSection = () => {
         });
         
         if (lastUnmutedState && userInteracted) {
-          vimeoPlayerRef.current.setMuted(true);
-          setIsMuted(true);
+          vimeoPlayerRef.current.setMuted(false);
+          setIsMuted(false);
         }
       }
     },
@@ -97,10 +97,11 @@ const LifestyleSection = () => {
     if (vimeoPlayerRef.current) {
       const newMutedState = !isMuted;
       
+      setUserInteracted(true);
+      
       vimeoPlayerRef.current.setMuted(newMutedState)
         .then(() => {
           setIsMuted(newMutedState);
-          setUserInteracted(true);
           
           if (!newMutedState) {
             setLastUnmutedState(true);
@@ -138,9 +139,11 @@ const LifestyleSection = () => {
           player.setMuted(true);
           player.setLoop(true);
           player.setAutopause(false);
+          
           player.play().catch(err => {
             console.error("Initial Vimeo play error:", err);
           });
+          
           setIsVideoLoaded(true);
           setVideoError(false);
           console.log("Vimeo player is ready");
@@ -152,6 +155,10 @@ const LifestyleSection = () => {
         player.on('error', (err) => {
           console.error("Vimeo player error:", err);
           setVideoError(true);
+        });
+
+        player.on('volumechange', (data) => {
+          console.log("Volume changed:", data);
         });
 
         vimeoPlayerRef.current = player;
@@ -185,7 +192,7 @@ const LifestyleSection = () => {
             <iframe 
               ref={vimeoIframeRef}
               className="absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105"
-              src="https://player.vimeo.com/video/1067256293?h=297c1637e6&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1"
+              src="https://player.vimeo.com/video/1067256293?h=297c1637e6&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1&amp;background=0&amp;muted=1"
               frameBorder="0" 
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
               title="BoxFun"
@@ -200,8 +207,8 @@ const LifestyleSection = () => {
               onPressedChange={toggleMute}
             >
               {isMuted ? 
-                <VolumeX className="h-5 w-5" /> : 
-                <Volume2 className="h-5 w-5" />
+                <Volume2 className="h-5 w-5" /> : 
+                <VolumeX className="h-5 w-5" />
               }
             </Toggle>
           </div>
