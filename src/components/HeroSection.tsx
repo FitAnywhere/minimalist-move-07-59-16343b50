@@ -72,8 +72,12 @@ const HeroSection = () => {
     };
   }, [firstLoad, initialLoadDone]);
 
-  // Modified toggleAudio function to only affect audio without restarting video
-  const toggleAudio = () => {
+  // Completely isolated toggleAudio function
+  const toggleAudio = (e: React.MouseEvent) => {
+    // Prevent event propagation to avoid any side effects
+    e.stopPropagation();
+    e.preventDefault();
+    
     if (player) {
       if (audioOn) {
         player.setVolume(0);
@@ -83,41 +87,41 @@ const HeroSection = () => {
         player.setMuted(false);
       }
       setAudioOn(!audioOn);
-      // Removed any code that might restart or affect video playback
     }
   };
 
   const isInView = useInView(heroRef, {}, false);
 
   useEffect(() => {
-    if (player) {
-      if (isInView) {
-        // Always restart the video when coming back into view
-        player.setCurrentTime(0).then(() => {
+    if (player && isInView) {
+      // Only handle the initial play when coming into view
+      // Do not restart the video when it's already playing
+      player.getPaused().then((paused: boolean) => {
+        if (paused) {
           player.play().catch((error: any) => {
             console.log("Error playing video:", error);
           });
-          
-          // Maintain current audio state
-          if (audioOn) {
-            player.setVolume(1);
-            player.setMuted(false);
-          } else {
-            player.setVolume(0);
-            player.setMuted(true);
-          }
-        }).catch((error: any) => {
-          console.log("Error setting current time:", error);
-        });
-        
-        // Mark first load as complete
-        if (firstLoad) {
-          setFirstLoad(false);
         }
-      } else {
-        // Pause the video when out of view
-        player.pause();
+        
+        // Maintain current audio state without affecting playback
+        if (audioOn) {
+          player.setVolume(1);
+          player.setMuted(false);
+        } else {
+          player.setVolume(0);
+          player.setMuted(true);
+        }
+      }).catch((error: any) => {
+        console.log("Error getting paused state:", error);
+      });
+      
+      // Mark first load as complete
+      if (firstLoad) {
+        setFirstLoad(false);
       }
+    } else if (player && !isInView) {
+      // Pause the video when out of view
+      player.pause();
     }
   }, [isInView, player, audioOn, firstLoad]);
 
