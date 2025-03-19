@@ -4,13 +4,22 @@ import * as React from "react"
 const MOBILE_BREAKPOINT = 768
 
 export function useIsMobile() {
+  const [windowWidth, setWindowWidth] = React.useState<number>(
+    typeof window !== 'undefined' ? window.innerWidth : 0
+  )
   const [isMobile, setIsMobile] = React.useState<boolean>(
     typeof window !== 'undefined' ? window.innerWidth < MOBILE_BREAKPOINT : false
   )
 
   React.useEffect(() => {
+    // Immediately set initial values
+    setWindowWidth(window.innerWidth)
+    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+    
     const handleResize = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+      const width = window.innerWidth
+      setWindowWidth(width)
+      setIsMobile(width < MOBILE_BREAKPOINT)
     }
     
     // Add event listener for resize
@@ -42,6 +51,11 @@ export function useIsMobile() {
       }
     }
   }, [])
+
+  // Add console log to debug mobile detection
+  React.useEffect(() => {
+    console.log(`Window width: ${windowWidth}, Is Mobile: ${isMobile}`)
+  }, [windowWidth, isMobile])
 
   return isMobile
 }

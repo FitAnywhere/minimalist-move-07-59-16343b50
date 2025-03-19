@@ -58,17 +58,21 @@ const TestimonialsCarousel = () => {
   const currentTestimonial = testimonials[activeIndex];
   const isMobile = useIsMobile();
   const [videosLoaded, setVideosLoaded] = useState<{[key: string]: boolean}>({});
+  const [key, setKey] = useState(0); // Force re-render of iframe
 
   const nextTestimonial = () => {
     setActiveIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
+    setKey(prev => prev + 1); // Increment key to force re-render
   };
   
   const prevTestimonial = () => {
     setActiveIndex(prevIndex => prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1);
+    setKey(prev => prev + 1); // Increment key to force re-render
   };
   
   const goToTestimonial = (index: number) => {
     setActiveIndex(index);
+    setKey(prev => prev + 1); // Increment key to force re-render
   };
 
   // Handle video load state
@@ -92,6 +96,24 @@ const TestimonialsCarousel = () => {
       };
     }
   }, []);
+
+  // Reset the video loaded state when changing testimonials
+  useEffect(() => {
+    setVideosLoaded(prev => ({
+      ...prev,
+      [currentTestimonial.vimeoId]: false
+    }));
+    
+    // Set a timeout to mark video as loaded even if event doesn't fire
+    const timer = setTimeout(() => {
+      setVideosLoaded(prev => ({
+        ...prev,
+        [currentTestimonial.vimeoId]: true
+      }));
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, [activeIndex, currentTestimonial.vimeoId]);
   
   return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
@@ -105,6 +127,7 @@ const TestimonialsCarousel = () => {
           
           <div className="relative">
             <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
+              {/* Left Column - Testimonial */}
               <div className="order-2 md:order-1 text-left flex flex-col justify-center">
                 <div className="backdrop-blur-md bg-white/80 shadow-md p-7 rounded-xl relative mb-6 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20" 
                   style={{ borderColor: '#444444' }}>
@@ -135,12 +158,14 @@ const TestimonialsCarousel = () => {
                 </div>
               </div>
               
-              <div className="order-1 md:order-2 relative transition-all duration-500">
-                <div className="w-full mx-auto md:w-4/5 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
-                  <div className="relative overflow-hidden rounded-xl">
+              {/* Right Column - Video */}
+              <div className="order-1 md:order-2 relative transition-all duration-500 w-full">
+                {/* Mobile Video (full-width container, properly sized) */}
+                {isMobile && (
+                  <div className="w-full rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-gray-100">
                     <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
                       <iframe 
-                        key={currentTestimonial.vimeoId}
+                        key={`mobile-${currentTestimonial.vimeoId}-${key}`}
                         src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=${currentTestimonial.hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0`}
                         frameBorder="0" 
                         allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
@@ -156,7 +181,30 @@ const TestimonialsCarousel = () => {
                       )}
                     </div>
                   </div>
-                </div>
+                )}
+                
+                {/* Desktop Video (smaller size) */}
+                {!isMobile && (
+                  <div className="w-full max-w-md mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                    <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
+                      <iframe 
+                        key={`desktop-${currentTestimonial.vimeoId}-${key}`}
+                        src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=${currentTestimonial.hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0`}
+                        frameBorder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+                        style={{position:'absolute', top:0, left:0, width:'100%', height:'100%'}}
+                        title={`Testimonial from ${currentTestimonial.name}`}
+                        onLoad={() => handleVideoLoaded(currentTestimonial.vimeoId)}
+                        loading="lazy"
+                      ></iframe>
+                      {!videosLoaded[currentTestimonial.vimeoId] && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                          <div className="w-8 h-8 border-4 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             
