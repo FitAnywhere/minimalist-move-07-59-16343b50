@@ -75,11 +75,11 @@ const TimeAndCostCalculator = () => {
             {/* Main content area */}
             <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
               {/* Desktop & Mobile Layout */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Left Box - Time Cost */}
-                <Card className="rounded-xl shadow-md border border-gray-100 overflow-hidden">
+              <div className="flex flex-col gap-8">
+                {/* Time Cost Box - Full width on desktop */}
+                <Card className="rounded-xl shadow-md border border-gray-100 overflow-hidden w-full">
                   <CardContent className="p-0">
-                    <div className="bg-white p-6">
+                    <div className="bg-white p-6 md:p-8">
                       <p className="mb-3 font-medium text-left text-xl">How much time do you spend getting to the gym and back?</p>
                       
                       <div className="flex items-center justify-between mb-2">
@@ -90,7 +90,7 @@ const TimeAndCostCalculator = () => {
                         <span className="text-gray-600">120 min</span>
                       </div>
                       
-                      <div className="py-4">
+                      <div className="py-4 md:py-6">
                         <Slider 
                           value={[timeWastedPerVisit]} 
                           min={0} 
@@ -103,12 +103,12 @@ const TimeAndCostCalculator = () => {
                     </div>
                     
                     {/* Time Result - Always visible */}
-                    <div className="bg-gray-50 p-6 border-t border-gray-100">
+                    <div className="bg-gray-50 p-6 md:p-8 border-t border-gray-100">
                       <div className="flex items-center justify-center mb-2">
                         <Clock className="w-5 h-5 text-yellow mr-2" />
                         <h3 className="text-lg font-bold">Time wasted in 20 years</h3>
                       </div>
-                      <p className="text-2xl font-bold text-yellow pulse-glow text-center">
+                      <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
                         {shouldAnimate ? 
                           <CountUp 
                             start={previousTimeWasted} 
@@ -124,10 +124,10 @@ const TimeAndCostCalculator = () => {
                   </CardContent>
                 </Card>
                 
-                {/* Right Box - Money Cost */}
-                <Card className="rounded-xl shadow-md border border-gray-100 overflow-hidden">
+                {/* Money Cost Box - Full width on desktop */}
+                <Card className="rounded-xl shadow-md border border-gray-100 overflow-hidden w-full">
                   <CardContent className="p-0">
-                    <div className="bg-white p-6">
+                    <div className="bg-white p-6 md:p-8">
                       <p className="text-xl mb-3 font-medium text-left">How much is your monthly gym bill?</p>
                       
                       <div className="flex items-center justify-between mb-2">
@@ -144,7 +144,7 @@ const TimeAndCostCalculator = () => {
                         <span className="text-gray-600">€150</span>
                       </div>
                       
-                      <div className="py-4">
+                      <div className="py-4 md:py-6">
                         <Slider 
                           value={[gymMonthlyCost]} 
                           min={0} 
@@ -157,12 +157,12 @@ const TimeAndCostCalculator = () => {
                     </div>
                     
                     {/* Money Result - Always visible */}
-                    <div className="bg-gray-50 p-6 border-t border-gray-100">
+                    <div className="bg-gray-50 p-6 md:p-8 border-t border-gray-100">
                       <div className="flex items-center justify-center mb-2">
                         <Banknote className="w-5 h-5 text-yellow mr-2" />
                         <h3 className="text-lg font-bold">Money spent in 20 years</h3>
                       </div>
-                      <p className="text-2xl font-bold text-yellow pulse-glow text-center">
+                      <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
                         {shouldAnimate ? 
                           <CountUp 
                             start={previousMoneyCost} 
