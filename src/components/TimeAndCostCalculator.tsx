@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -7,7 +6,6 @@ import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import CountUp from 'react-countup';
 import { Input } from '@/components/ui/input';
-
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -58,9 +56,7 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
-
-  return (
-    <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
+  return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
@@ -79,7 +75,7 @@ const TimeAndCostCalculator = () => {
                 <div className="space-y-10">
                   {/* Time wasted slider */}
                   <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <p className="text-xl mb-3 font-medium text-left">Time spent getting to the gym and back?</p>
+                    <p className="mb-3 font-medium text-left text-xl">How much time do you spend getting to the gym and back?</p>
                     
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-gray-600">0 min</span>
@@ -184,8 +180,6 @@ const TimeAndCostCalculator = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default TimeAndCostCalculator;
