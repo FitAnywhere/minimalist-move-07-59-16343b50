@@ -10,38 +10,45 @@ interface Testimonial {
   role: string;
   quote: string;
   vimeoId: string;
+  hash: string;
 }
 
 const testimonials: Testimonial[] = [{
   name: "Alex G.",
   role: "Busy Professional",
   quote: "I can't believe how much time it saves me!",
-  vimeoId: "1067256239"
+  vimeoId: "1067256239",
+  hash: "d5e32d0eef"
 }, {
   name: "Emily T.",
   role: "Fitness Beginner",
   quote: "I never imagined how many exercises I can do using TRX and BANDS.",
-  vimeoId: "1067256372"
+  vimeoId: "1067256372",
+  hash: "70ab6c252c"
 }, {
   name: "John D.",
   role: "Fitness Enthusiast",
   quote: "Finally, got an efficient training solution!",
-  vimeoId: "1067256399"
+  vimeoId: "1067256399",
+  hash: "317d8d1581"
 }, {
   name: "Chris L.",
   role: "Fitness Advocate",
   quote: "Ordered multiple for our studio and got an extra discount. Thank you!",
-  vimeoId: "1067256325"
+  vimeoId: "1067256325",
+  hash: "d9d4133cc1"
 }, {
   name: "Sarah M.",
   role: "Remote Worker",
   quote: "I work from home, and this is exactly what I needed!",
-  vimeoId: "1067256419"
+  vimeoId: "1067256419",
+  hash: "9896ed5d93"
 }, {
   name: "Jordan P.",
   role: "Calisthenics Enthusiast",
   quote: "Never had so much fun training!",
-  vimeoId: "1067259441"
+  vimeoId: "1067259441",
+  hash: "6ed11d11d8"
 }];
 
 const TestimonialsCarousel = () => {
@@ -50,6 +57,7 @@ const TestimonialsCarousel = () => {
   const isInView = useInView(sectionRef, {}, false);
   const currentTestimonial = testimonials[activeIndex];
   const isMobile = useIsMobile();
+  const [videosLoaded, setVideosLoaded] = useState<{[key: string]: boolean}>({});
 
   const nextTestimonial = () => {
     setActiveIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
@@ -61,6 +69,14 @@ const TestimonialsCarousel = () => {
   
   const goToTestimonial = (index: number) => {
     setActiveIndex(index);
+  };
+
+  // Handle video load state
+  const handleVideoLoaded = (vimeoId: string) => {
+    setVideosLoaded(prev => ({
+      ...prev,
+      [vimeoId]: true
+    }));
   };
 
   // Load Vimeo script once
@@ -120,17 +136,24 @@ const TestimonialsCarousel = () => {
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500">
-                <div className="w-full md:max-w-[80%] mx-auto md:mx-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                <div className="w-full mx-auto md:w-4/5 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
                   <div className="relative overflow-hidden rounded-xl">
-                    <div style={{padding:'177.78% 0 0 0', position:'relative'}}>
+                    <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
                       <iframe 
-                        src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=6ed11d11d8&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0`}
+                        key={currentTestimonial.vimeoId}
+                        src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=${currentTestimonial.hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0`}
                         frameBorder="0" 
                         allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
                         style={{position:'absolute', top:0, left:0, width:'100%', height:'100%'}}
                         title={`Testimonial from ${currentTestimonial.name}`}
+                        onLoad={() => handleVideoLoaded(currentTestimonial.vimeoId)}
                         loading="lazy"
                       ></iframe>
+                      {!videosLoaded[currentTestimonial.vimeoId] && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                          <div className="w-8 h-8 border-4 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -151,4 +174,3 @@ const TestimonialsCarousel = () => {
 };
 
 export default TestimonialsCarousel;
-
