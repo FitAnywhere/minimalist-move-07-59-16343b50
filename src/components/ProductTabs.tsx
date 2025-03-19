@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -71,7 +70,6 @@ const ProductTabs = () => {
     }
   }, [isTrxTextInView]);
 
-  // Load Vimeo script once
   useEffect(() => {
     if (!window.Vimeo && !isScriptLoaded) {
       const script = document.createElement('script');
@@ -90,7 +88,7 @@ const ProductTabs = () => {
 
   const renderTrxVimeoVideo = () => {
     return (
-      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg">
+      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg mx-auto" style={{ maxWidth: '80%' }}>
         <AspectRatio ratio={3/4} className="overflow-hidden">
           <iframe 
             src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1"
@@ -107,7 +105,7 @@ const ProductTabs = () => {
 
   const renderBandsVimeoVideo = () => {
     return (
-      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg">
+      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg mx-auto" style={{ maxWidth: '80%' }}>
         <AspectRatio ratio={3/4} className="overflow-hidden">
           <iframe 
             src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1" 
@@ -182,7 +180,7 @@ const ProductTabs = () => {
               <div 
                 ref={trxVideoRef} 
                 className={cn(
-                  "rounded-2xl overflow-hidden transition-all duration-700", 
+                  "rounded-2xl overflow-hidden transition-all duration-700 flex justify-center", 
                   isVideoInView ? "shadow-[0_0_20px_rgba(255,215,0,0.2)]" : "shadow-lg", 
                   isVideoInView ? "scale-[1.02]" : "scale-100",
                   isMobile ? "order-1" : "order-2"
@@ -278,7 +276,7 @@ const ProductTabs = () => {
               <div 
                 ref={bandsVideoRef} 
                 className={cn(
-                  "rounded-2xl overflow-hidden transition-all duration-700", 
+                  "rounded-2xl overflow-hidden transition-all duration-700 flex justify-center", 
                   isBandsVideoInView ? "shadow-[0_0_20px_rgba(255,215,0,0.2)]" : "shadow-lg", 
                   isBandsVideoInView ? "scale-[1.02]" : "scale-100",
                   isMobile ? "order-1" : "order-2"
