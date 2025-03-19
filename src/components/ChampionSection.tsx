@@ -4,7 +4,6 @@ import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from '@/components/ui/dialog';
-
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -18,7 +17,6 @@ const ChampionSection = () => {
     name: '',
     email: ''
   });
-
   useEffect(() => {
     if (isInView && titleRef.current) {
       setTimeout(() => {
@@ -26,29 +24,23 @@ const ChampionSection = () => {
       }, 300);
     }
   }, [isInView]);
-
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current;
-      
       video.src = '';
       video.load();
       video.src = '/COACH.mp4';
-      
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
         setVideoError(false);
         console.log("Video can play now");
       };
-      
       const handleError = (e: Event) => {
         console.error("Video error:", e);
         setVideoError(true);
       };
-
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
-
       if (isInView && !videoError) {
         const playAttempt = setTimeout(() => {
           if (video.readyState >= 2) {
@@ -63,10 +55,8 @@ const ChampionSection = () => {
             }
           }
         }, 100);
-        
         return () => clearTimeout(playAttempt);
       }
-
       return () => {
         video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('error', handleError);
@@ -74,7 +64,6 @@ const ChampionSection = () => {
       };
     }
   }, [isInView, videoError]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       name,
@@ -85,14 +74,12 @@ const ChampionSection = () => {
       [name]: value
     }));
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     setShowLibraryAccess(false);
     alert("Thank you! Access to the video library will be sent to your email.");
   };
-
   return <section id="video-library" ref={sectionRef} className="py-16">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
@@ -106,18 +93,7 @@ const ChampionSection = () => {
               </div>
               
               <div className="space-y-5">
-                <div className={cn("flex items-start gap-3 transform transition-all duration-500", isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10")} style={{
-                transitionDelay: "100ms"
-              }}>
-                  <div className="flex-shrink-0 p-2 bg-gray-100 rounded-full shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-                    <Video className="h-5 w-5 text-yellow" />
-                  </div>
-                  <div>
-                    <p className="text-lg font-bold">
-                      EXPERT GUIDED
-                    </p>
-                  </div>
-                </div>
+                
                 
                 <div className={cn("flex items-start gap-3 transform transition-all duration-500", isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10")} style={{
                 transitionDelay: "200ms"
@@ -166,21 +142,9 @@ const ChampionSection = () => {
             
             <div className="relative perspective">
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-xl hover:scale-[1.02] group">
-                {videoError ? (
-                  <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                {videoError ? <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
                     <p className="text-gray-500">Video unavailable</p>
-                  </div>
-                ) : (
-                  <video 
-                    ref={videoRef} 
-                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
-                    playsInline 
-                    muted 
-                    autoPlay 
-                    loop 
-                    preload="auto"
-                  />
-                )}
+                  </div> : <video ref={videoRef} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" playsInline muted autoPlay loop preload="auto" />}
                 
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
@@ -203,16 +167,12 @@ const ChampionSection = () => {
 
           <div className="grid gap-8 md:grid-cols-2 mt-4">
             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-              {videoError ? (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+              {videoError ? <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                   <p className="text-gray-500">Video unavailable</p>
-                </div>
-              ) : (
-                <video className="w-full h-full object-cover" autoPlay muted loop>
+                </div> : <video className="w-full h-full object-cover" autoPlay muted loop>
                   <source src="/COACH.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
-                </video>
-              )}
+                </video>}
             </div>
 
             <div>
@@ -247,5 +207,4 @@ const ChampionSection = () => {
       </Dialog>
     </section>;
 };
-
 export default ChampionSection;
