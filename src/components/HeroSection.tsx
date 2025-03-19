@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
@@ -55,7 +54,6 @@ const HeroSection = () => {
 
   const toggleAudio = () => {
     if (player) {
-      // Toggle audio without restarting video
       if (audioOn) {
         player.setVolume(0);
         player.setMuted(true);
@@ -73,32 +71,14 @@ const HeroSection = () => {
   useEffect(() => {
     if (player) {
       if (isInView) {
-        // Check if player was previously out of view to restart
-        if (!wasScrollMuted && !document.hidden) {
-          player.setCurrentTime(0).then(() => {
-            player.play();
-            
-            // Only turn audio back on if this wasn't scroll-muted before
-            if (audioOn && !wasScrollMuted) {
-              player.setVolume(1);
-              player.setMuted(false);
-            }
-          }).catch((error: any) => {
-            console.log("Error setting current time:", error);
-          });
-        } else {
-          // Just resume play without resetting time
-          player.play();
+        if (audioOn && !wasScrollMuted) {
+          player.setVolume(1);
+          player.setMuted(false);
         }
-      } else {
-        // Pause video when scrolled away
-        player.pause();
-        
-        if (audioOn) {
-          player.setVolume(0);
-          player.setMuted(true);
-          setWasScrollMuted(true);
-        }
+      } else if (audioOn) {
+        player.setVolume(0);
+        player.setMuted(true);
+        setWasScrollMuted(true);
       }
     }
   }, [isInView, player, audioOn, wasScrollMuted]);
@@ -132,7 +112,7 @@ const HeroSection = () => {
               </h1>
               
               <div className={cn("w-full transition-all duration-1000 delay-300", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="relative rounded-xl overflow-hidden shadow-lg mx-auto w-[95%]">
+                <div className="relative rounded-xl overflow-hidden shadow-lg">
                   <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
                     <iframe 
                       ref={iframeRef}
@@ -145,13 +125,13 @@ const HeroSection = () => {
                   </div>
                   <button 
                     onClick={toggleAudio}
-                    className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-1 rounded-full transition-all duration-300 z-30"
+                    className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-1.5 rounded-full transition-all duration-300 z-30"
                     aria-label={isAudioPlaying ? "Mute audio" : "Unmute audio"}
                   >
                     {isAudioPlaying ? (
-                      <Volume2 size={14} className="text-white" />
+                      <Volume2 size={16} className="text-white" />
                     ) : (
-                      <VolumeX size={14} className="text-white" />
+                      <VolumeX size={16} className="text-white" />
                     )}
                   </button>
                 </div>
