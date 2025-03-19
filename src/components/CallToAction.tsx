@@ -120,10 +120,10 @@ const CallToAction = () => {
               ))}
             </h2>
             
-            {/* CTA Button - reduced top margin for desktop */}
+            {/* CTA Button - increased top margin for desktop to create more space */}
             <div 
               className={cn(
-                "transition-all duration-1000 delay-[1200ms] mt-4 md:mt-6", 
+                "transition-all duration-1000 delay-[1200ms] mt-8 md:mt-12", 
                 isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
               )}
             >
