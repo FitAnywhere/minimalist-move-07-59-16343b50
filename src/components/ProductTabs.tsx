@@ -53,6 +53,29 @@ const ProductTabs = () => {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   useEffect(() => {
+    if (!window.Vimeo && !isScriptLoaded) {
+      const script = document.createElement('script');
+      script.src = 'https://player.vimeo.com/api/player.js';
+      script.async = true;
+      script.onload = () => setIsScriptLoaded(true);
+      document.body.appendChild(script);
+    } else if (window.Vimeo) {
+      setIsScriptLoaded(true);
+    }
+    
+    const videoIds = ['1067257145', '1067257124'];
+    
+    videoIds.forEach(videoId => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'fetch';
+      link.href = `https://player.vimeo.com/video/${videoId}`;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    });
+  }, [isScriptLoaded]);
+
+  useEffect(() => {
     if (isTrxTextInView) {
       const timers = [0, 200, 400].map((delay, index) => 
         setTimeout(() => {
@@ -70,33 +93,18 @@ const ProductTabs = () => {
     }
   }, [isTrxTextInView]);
 
-  useEffect(() => {
-    if (!window.Vimeo && !isScriptLoaded) {
-      const script = document.createElement('script');
-      script.src = 'https://player.vimeo.com/api/player.js';
-      script.async = true;
-      script.onload = () => setIsScriptLoaded(true);
-      document.body.appendChild(script);
-      
-      return () => {
-        document.body.removeChild(script);
-      };
-    } else if (window.Vimeo) {
-      setIsScriptLoaded(true);
-    }
-  }, [isScriptLoaded]);
-
   const renderTrxVimeoVideo = () => {
     return (
       <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
         <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
           <iframe 
-            src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1"
+            src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto"
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
             className="w-full h-full absolute inset-0"
             title="TRX video"
             style={{ border: 'none' }}
-            loading="lazy"
+            loading="eager"
+            fetchpriority="high"
           ></iframe>
         </AspectRatio>
       </div>
@@ -108,12 +116,13 @@ const ProductTabs = () => {
       <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
         <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
           <iframe 
-            src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1" 
+            src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto" 
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
             className="w-full h-full absolute inset-0"
             title="Bands video"
             style={{ border: 'none' }}
-            loading="lazy"
+            loading="eager"
+            fetchpriority="high"
           ></iframe>
         </AspectRatio>
       </div>

@@ -1,5 +1,5 @@
 
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import VimeoPlayer from './ui/VimeoPlayer';
@@ -10,9 +10,23 @@ const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const [audioOn, setAudioOn] = useState(true);
+  const [vimeoApiLoaded, setVimeoApiLoaded] = useState(false);
   
   // Use a higher threshold to ensure better video control
   const isInView = useInView(heroRef, { threshold: 0.4 });
+
+  // Ensure Vimeo API is loaded immediately
+  useEffect(() => {
+    if (!window.Vimeo && !document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://player.vimeo.com/api/player.js';
+      script.async = true;
+      script.onload = () => setVimeoApiLoaded(true);
+      document.head.appendChild(script);
+    } else {
+      setVimeoApiLoaded(true);
+    }
+  }, []);
 
   const scrollToOwnBoth = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -47,6 +61,7 @@ const HeroSection = () => {
                       isInView={isInView}
                       audioOn={audioOn}
                       toggleAudio={toggleAudio}
+                      priority={true}
                     />
                   </div>
                 </div>
@@ -65,6 +80,7 @@ const HeroSection = () => {
                       isInView={isInView}
                       audioOn={audioOn}
                       toggleAudio={toggleAudio}
+                      priority={true}
                     />
                   </div>
                 </div>

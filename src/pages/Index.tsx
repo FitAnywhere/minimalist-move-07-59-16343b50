@@ -26,9 +26,45 @@ const Index = () => {
   const location = useLocation();
   const initialLoadRef = useRef(true);
   
-  // Improved scroll handling
+  // Add preload for Vimeo API
   useEffect(() => {
-    // Handle navigation from external pages
+    // Preload Vimeo player API
+    const preloadVimeoAPI = () => {
+      if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
+        const script = document.createElement('script');
+        script.src = 'https://player.vimeo.com/api/player.js';
+        script.async = true;
+        document.body.appendChild(script);
+      }
+    };
+    
+    // Add preload hints for critical videos
+    const addVideoPreloadHints = () => {
+      const videoIds = [
+        '1067255623', // Hero video - highest priority
+        '1067257145', // TRX video
+        '1067257124', // Bands video
+        '1067256239', // Testimonial videos
+        '1067256372',
+        '1067256399'
+      ];
+      
+      videoIds.forEach((id, index) => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'fetch';
+        link.href = `https://player.vimeo.com/video/${id}`;
+        link.crossOrigin = 'anonymous';
+        // Set highest priority for hero video
+        link.setAttribute('importance', index === 0 ? 'high' : 'auto');
+        document.head.appendChild(link);
+      });
+    };
+    
+    preloadVimeoAPI();
+    addVideoPreloadHints();
+    
+    // Improved scroll handling
     const handleNavigation = () => {
       const handleTargetSection = (targetId: string) => {
         setTimeout(() => {

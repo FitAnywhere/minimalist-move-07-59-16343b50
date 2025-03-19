@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -60,6 +59,30 @@ const TestimonialsCarousel = () => {
   const [videosLoaded, setVideosLoaded] = useState<{[key: string]: boolean}>({});
   const [key, setKey] = useState(0); // Force re-render of iframe
 
+  useEffect(() => {
+    if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://player.vimeo.com/api/player.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+    
+    const preloadTestimonials = () => {
+      testimonials.forEach((testimonial, index) => {
+        setTimeout(() => {
+          const preloadLink = document.createElement('link');
+          preloadLink.rel = 'preload';
+          preloadLink.as = 'fetch';
+          preloadLink.href = `https://player.vimeo.com/video/${testimonial.vimeoId}?h=${testimonial.hash}`;
+          preloadLink.crossOrigin = 'anonymous';
+          document.head.appendChild(preloadLink);
+        }, index < 3 ? 0 : index * 1000);
+      });
+    };
+    
+    preloadTestimonials();
+  }, []);
+
   const nextTestimonial = () => {
     setActiveIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
     setKey(prev => prev + 1); // Increment key to force re-render
@@ -75,7 +98,6 @@ const TestimonialsCarousel = () => {
     setKey(prev => prev + 1); // Increment key to force re-render
   };
 
-  // Handle video load state
   const handleVideoLoaded = (vimeoId: string) => {
     setVideosLoaded(prev => ({
       ...prev,
@@ -83,28 +105,26 @@ const TestimonialsCarousel = () => {
     }));
   };
 
-  // Load Vimeo script once
   useEffect(() => {
-    if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
-      const script = document.createElement('script');
-      script.src = 'https://player.vimeo.com/api/player.js';
-      script.async = true;
-      document.body.appendChild(script);
+    if (videosLoaded[currentTestimonial.vimeoId]) {
+      const nextIndex = (activeIndex + 1) % testimonials.length;
+      const nextTestimonial = testimonials[nextIndex];
       
-      return () => {
-        document.body.removeChild(script);
-      };
+      const preloadLink = document.createElement('link');
+      preloadLink.rel = 'preload';
+      preloadLink.as = 'fetch';
+      preloadLink.href = `https://player.vimeo.com/video/${nextTestimonial.vimeoId}?h=${nextTestimonial.hash}`;
+      preloadLink.crossOrigin = 'anonymous';
+      document.head.appendChild(preloadLink);
     }
-  }, []);
+  }, [videosLoaded, activeIndex, currentTestimonial.vimeoId]);
 
-  // Reset the video loaded state when changing testimonials
   useEffect(() => {
     setVideosLoaded(prev => ({
       ...prev,
       [currentTestimonial.vimeoId]: false
     }));
     
-    // Set a timeout to mark video as loaded even if event doesn't fire
     const timer = setTimeout(() => {
       setVideosLoaded(prev => ({
         ...prev,
@@ -127,7 +147,6 @@ const TestimonialsCarousel = () => {
           
           <div className="relative">
             <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
-              {/* Left Column - Testimonial - 20% smaller */}
               <div className="order-2 md:order-1 text-left flex flex-col justify-center scale-80 transform origin-center">
                 <div className="backdrop-blur-md bg-white/80 shadow-md p-5 rounded-xl relative mb-5 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20" 
                   style={{ borderColor: '#444444' }}>
@@ -158,21 +177,20 @@ const TestimonialsCarousel = () => {
                 </div>
               </div>
               
-              {/* Right Column - Video - 20% bigger */}
               <div className="order-1 md:order-2 relative transition-all duration-500 w-full flex justify-center">
-                {/* Mobile Video (20% bigger) */}
                 {isMobile && (
                   <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-gray-100">
                     <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
                       <iframe 
                         key={`mobile-${currentTestimonial.vimeoId}-${key}`}
-                        src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=${currentTestimonial.hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0`}
+                        src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=${currentTestimonial.hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0&preload=auto`}
                         frameBorder="0" 
                         allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
                         style={{position:'absolute', top:0, left:0, width:'100%', height:'100%'}}
                         title={`Testimonial from ${currentTestimonial.name}`}
                         onLoad={() => handleVideoLoaded(currentTestimonial.vimeoId)}
-                        loading="lazy"
+                        loading="eager"
+                        fetchpriority="auto"
                       ></iframe>
                       {!videosLoaded[currentTestimonial.vimeoId] && (
                         <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
@@ -183,19 +201,19 @@ const TestimonialsCarousel = () => {
                   </div>
                 )}
                 
-                {/* Desktop Video (20% bigger) */}
                 {!isMobile && (
                   <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
                     <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
                       <iframe 
                         key={`desktop-${currentTestimonial.vimeoId}-${key}`}
-                        src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=${currentTestimonial.hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0`}
+                        src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=${currentTestimonial.hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0&preload=auto`}
                         frameBorder="0" 
                         allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
                         style={{position:'absolute', top:0, left:0, width:'100%', height:'100%'}}
                         title={`Testimonial from ${currentTestimonial.name}`}
                         onLoad={() => handleVideoLoaded(currentTestimonial.vimeoId)}
-                        loading="lazy"
+                        loading="eager"
+                        fetchpriority="auto"
                       ></iframe>
                       {!videosLoaded[currentTestimonial.vimeoId] && (
                         <div className="absolute inset-0 flex items-center justify-center bg-gray-100">

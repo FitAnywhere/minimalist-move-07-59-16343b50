@@ -9,6 +9,7 @@ interface VimeoPlayerProps {
   isInView: boolean;
   audioOn: boolean;
   toggleAudio: (e: React.MouseEvent) => void;
+  priority?: boolean;
 }
 
 const VimeoPlayer = memo(({
@@ -17,7 +18,8 @@ const VimeoPlayer = memo(({
   className = "",
   isInView,
   audioOn,
-  toggleAudio
+  toggleAudio,
+  priority = false
 }: VimeoPlayerProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [player, setPlayer] = useState<any>(null);
@@ -93,8 +95,8 @@ const VimeoPlayer = memo(({
       player.pause();
     } else {
       // Ensure audio is on when playing
-      player.setVolume(1);
-      player.setMuted(false);
+      player.setVolume(audioOn ? 1 : 0);
+      player.setMuted(!audioOn);
       
       player.play().catch(() => {
         console.log("Failed to play video");
@@ -119,16 +121,42 @@ const VimeoPlayer = memo(({
     }
   }, [isInView, player, audioOn, isPlaying]);
 
+  // Build iframe query params
+  const buildIframeSrc = () => {
+    const params = new URLSearchParams({
+      h: 'd77ee52644',
+      title: '0',
+      byline: '0',
+      portrait: '0',
+      badge: '0',
+      autopause: '0',
+      background: '1',
+      loop: '0',
+      player_id: playerId,
+      app_id: '58479',
+      dnt: '1'
+    });
+    
+    // Add autoplay for hero section (priority) video only if supported
+    if (priority) {
+      params.append('preload', 'auto');
+    }
+    
+    return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
+  };
+
   return (
     <div className={`relative ${className}`}>
       <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
         <iframe 
           ref={iframeRef}
-          src={`https://player.vimeo.com/video/${videoId}?h=d77ee52644&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&loop=0&player_id=${playerId}&app_id=58479`}
+          src={buildIframeSrc()}
           style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}} 
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
           title="FitAnywhere"
-          loading="lazy"
+          loading={priority ? "eager" : "lazy"}
+          importance={priority ? "high" : "auto"}
+          fetchpriority={priority ? "high" : "auto"}
         ></iframe>
         
         {isPlayerReady && !isPlaying && (
