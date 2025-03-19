@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -137,14 +138,18 @@ const LifestyleSection = () => {
   }, []);
 
   const renderVimeoVideo = () => {
+    const mobileVideoWidth = "80%"; // 20% smaller on mobile
+    
     return (
-      <div className="relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group">
+      <div className={cn(
+        "relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group",
+        isMobile && "mx-auto" // Center on mobile
+      )}
+      style={isMobile ? { width: mobileVideoWidth } : undefined}
+      >
         <div 
           ref={vimeoContainerRef}
-          className={cn(
-            "relative w-full h-0 overflow-hidden",
-            isMobile ? "w-[80%] mx-auto" : "w-full" // Make video 20% smaller on mobile
-          )}
+          className="relative w-full h-0 overflow-hidden"
           style={{ paddingBottom: '133.33%' }}
         >
           {videoError ? (
@@ -162,10 +167,7 @@ const LifestyleSection = () => {
             ></iframe>
           )}
           
-          <div className={cn(
-            "absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse",
-            isMobile && "w-full" // Ensure border matches the container size
-          )} />
+          <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
         </div>
       </div>
     );
@@ -205,9 +207,7 @@ const LifestyleSection = () => {
                 {isMobile && (
                   <div className="w-full flex flex-col items-center my-6">
                     <div className="w-full max-w-xs perspective transition-transform duration-300 relative">
-                      <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
-                        {renderVimeoVideo()}
-                      </div>
+                      {renderVimeoVideo()}
                     </div>
                     
                     <div className={cn(
@@ -391,9 +391,7 @@ const LifestyleSection = () => {
               {!isMobile && (
                 <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full">
                   <div className="w-full max-w-xs md:max-w-[72%] md:h-full perspective transition-transform duration-300 relative">
-                    <div className="relative transition-all duration-300 hover:scale-105 hover:shadow-xl group h-full">
-                      {renderVimeoVideo()}
-                    </div>
+                    {renderVimeoVideo()}
                   </div>
                   
                   <div className={cn(
