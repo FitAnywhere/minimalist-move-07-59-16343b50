@@ -5,19 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Rocket, ChevronRight, ChevronDown, X } from 'lucide-react';
 import { Toggle } from '@/components/ui/toggle';
 import { useIsMobile } from '@/hooks/use-mobile';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
-} from '@/components/ui/dialog';
-
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 interface LifestyleFeature {
   title: string;
   description: string;
 }
-
 interface VimeoPlayerAPI {
   play: () => Promise<void>;
   pause: () => Promise<void>;
@@ -29,7 +21,6 @@ interface VimeoPlayerAPI {
   ready: () => Promise<void>;
   destroy: () => void;
 }
-
 const lifestyleFeatures: LifestyleFeature[] = [{
   title: "FEEL UNSTOPPABLE",
   description: "Tap into boundless energy to train like never before."
@@ -40,7 +31,6 @@ const lifestyleFeatures: LifestyleFeature[] = [{
   title: "WORKOUT YOU'LL ACTUALLY LOVE",
   description: "It's addictive in the best way possible."
 }];
-
 const LifestyleSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -53,34 +43,26 @@ const LifestyleSection = () => {
   const [videoError, setVideoError] = useState(false);
   const [showSpecs, setShowSpecs] = useState(false);
   const isMobile = useIsMobile();
-  
-  const isInView = useInView(
-    sectionRef, 
-    { threshold: 0.2 },
-    false,
-    () => {
-      if (vimeoPlayerRef.current && !videoError) {
-        vimeoPlayerRef.current.play().catch(err => {
-          console.error("Vimeo play error:", err);
-        });
-      }
-    },
-    () => {
-      if (vimeoPlayerRef.current) {
-        vimeoPlayerRef.current.setMuted(true);
-      }
+  const isInView = useInView(sectionRef, {
+    threshold: 0.2
+  }, false, () => {
+    if (vimeoPlayerRef.current && !videoError) {
+      vimeoPlayerRef.current.play().catch(err => {
+        console.error("Vimeo play error:", err);
+      });
     }
-  );
-
+  }, () => {
+    if (vimeoPlayerRef.current) {
+      vimeoPlayerRef.current.setMuted(true);
+    }
+  });
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
-
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/bIYg1o5tRg6149228g', '_blank');
   };
-
   useEffect(() => {
     if (vimeoIframeRef.current && !vimeoPlayerRef.current && typeof window !== 'undefined') {
       if (!window.Vimeo) {
@@ -93,13 +75,10 @@ const LifestyleSection = () => {
         initializePlayer();
       }
     }
-
     function initializePlayer() {
       if (!window.Vimeo || !vimeoIframeRef.current) return;
-      
       try {
         const player = new window.Vimeo.Player(vimeoIframeRef.current);
-        
         player.ready().then(() => {
           player.setVolume(1);
           player.setMuted(true);
@@ -115,19 +94,16 @@ const LifestyleSection = () => {
           console.error("Vimeo player ready error:", err);
           setVideoError(true);
         });
-
         player.on('error', (err: any) => {
           console.error("Vimeo player error:", err);
           setVideoError(true);
         });
-
         vimeoPlayerRef.current = player;
       } catch (error) {
         console.error("Error initializing Vimeo player:", error);
         setVideoError(true);
       }
     }
-
     return () => {
       if (vimeoPlayerRef.current) {
         vimeoPlayerRef.current.destroy();
@@ -135,43 +111,26 @@ const LifestyleSection = () => {
       }
     };
   }, []);
-
   const renderVimeoVideo = () => {
     const mobileVideoWidth = "80%"; // 20% smaller on mobile
-    
-    return (
-      <div className={cn(
-        "relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group",
-        isMobile && "mx-auto" // Center on mobile
-      )}
-      style={isMobile ? { width: mobileVideoWidth } : undefined}
-      >
-        <div 
-          ref={vimeoContainerRef}
-          className="relative w-full h-0 overflow-hidden"
-          style={{ paddingBottom: '133.33%' }}
-        >
-          {videoError ? (
-            <div className="absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">
+
+    return <div className={cn("relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group", isMobile && "mx-auto" // Center on mobile
+    )} style={isMobile ? {
+      width: mobileVideoWidth
+    } : undefined}>
+        <div ref={vimeoContainerRef} className="relative w-full h-0 overflow-hidden" style={{
+        paddingBottom: '133.33%'
+      }}>
+          {videoError ? <div className="absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">
               <p className="text-gray-500">Video unavailable</p>
-            </div>
-          ) : (
-            <iframe 
-              ref={vimeoIframeRef}
-              className="absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105"
-              src="https://player.vimeo.com/video/1067256293?h=297c1637e6&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1&amp;background=1&amp;muted=1"
-              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-              style={{ border: 'none' }}
-              title="BoxFun"
-            ></iframe>
-          )}
+            </div> : <iframe ref={vimeoIframeRef} className="absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105" src="https://player.vimeo.com/video/1067256293?h=297c1637e6&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1&amp;background=1&amp;muted=1" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
+          border: 'none'
+        }} title="BoxFun"></iframe>}
           
           <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
         </div>
-      </div>
-    );
+      </div>;
   };
-
   return <section ref={sectionRef} className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         {Array.from({
@@ -198,169 +157,79 @@ const LifestyleSection = () => {
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                   </h2>
                   
-                  <p className="text-gray-800 font-medium text-lg">
-                    Once you feel that flow, you'll never go back
-                  </p>
+                  
                 </div>
                 
-                {isMobile && (
-                  <div className="w-full flex flex-col items-center my-6">
+                {isMobile && <div className="w-full flex flex-col items-center my-6">
                     <div className="w-full max-w-xs perspective transition-transform duration-300 relative">
                       {renderVimeoVideo()}
                     </div>
                     
-                    <div className={cn(
-                      "mt-6 w-full flex justify-center transition-all duration-700 transform", 
-                      isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                    )}>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1"
-                        onClick={() => setShowSpecs(true)}
-                      >
+                    <div className={cn("mt-6 w-full flex justify-center transition-all duration-700 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
+                      <Button variant="outline" size="sm" className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1" onClick={() => setShowSpecs(true)}>
                         Specifications
                       </Button>
                     </div>
-                  </div>
-                )}
+                  </div>}
                 
                 <div className="space-y-6 flex-grow">
-                  <div 
-                    className={cn(
-                      "px-6 py-3 rounded-full cursor-pointer", 
-                      "transition-all duration-300 ease-in-out", 
-                      "shadow-md", 
-                      "transform opacity-0",
-                      openFeatureIndex === 0 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
-                      isInView ? "animate-fade-in opacity-100" : ""
-                    )} 
-                    style={{
-                      animationDelay: "300ms",
-                      animationDuration: "0.4s"
-                    }} 
-                    onClick={() => handleFeatureClick(0)}
-                    onMouseEnter={() => setHoverIndex(0)} 
-                    onMouseLeave={() => setHoverIndex(null)}
-                  >
+                  <div className={cn("px-6 py-3 rounded-full cursor-pointer", "transition-all duration-300 ease-in-out", "shadow-md", "transform opacity-0", openFeatureIndex === 0 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white", isInView ? "animate-fade-in opacity-100" : "")} style={{
+                  animationDelay: "300ms",
+                  animationDuration: "0.4s"
+                }} onClick={() => handleFeatureClick(0)} onMouseEnter={() => setHoverIndex(0)} onMouseLeave={() => setHoverIndex(null)}>
                     <div className="flex justify-between items-center">
                       <h4 className="text-lg font-semibold">
                         {lifestyleFeatures[0].title}
                       </h4>
                       
-                      <div 
-                        className={cn(
-                          "transition-all duration-200", 
-                          hoverIndex === 0 ? "transform translate-x-1" : ""
-                        )}
-                      >
-                        {openFeatureIndex === 0 ? 
-                          <ChevronDown className="w-5 h-5" /> : 
-                          <ChevronRight className="w-5 h-5" />
-                        }
+                      <div className={cn("transition-all duration-200", hoverIndex === 0 ? "transform translate-x-1" : "")}>
+                        {openFeatureIndex === 0 ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
                       </div>
                     </div>
                     
-                    <div 
-                      className={cn(
-                        "overflow-hidden transition-all duration-300 ease-in-out",
-                        openFeatureIndex === 0 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
-                      )}
-                    >
+                    <div className={cn("overflow-hidden transition-all duration-300 ease-in-out", openFeatureIndex === 0 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0")}>
                       <p className="text-gray-600">
                         {lifestyleFeatures[0].description}
                       </p>
                     </div>
                   </div>
                   
-                  <div 
-                    className={cn(
-                      "px-6 py-3 rounded-full cursor-pointer", 
-                      "transition-all duration-300 ease-in-out", 
-                      "shadow-md", 
-                      "transform opacity-0",
-                      openFeatureIndex === 1 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
-                      isInView ? "animate-fade-in opacity-100" : ""
-                    )} 
-                    style={{
-                      animationDelay: "500ms",
-                      animationDuration: "0.4s"
-                    }} 
-                    onClick={() => handleFeatureClick(1)}
-                    onMouseEnter={() => setHoverIndex(1)} 
-                    onMouseLeave={() => setHoverIndex(null)}
-                  >
+                  <div className={cn("px-6 py-3 rounded-full cursor-pointer", "transition-all duration-300 ease-in-out", "shadow-md", "transform opacity-0", openFeatureIndex === 1 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white", isInView ? "animate-fade-in opacity-100" : "")} style={{
+                  animationDelay: "500ms",
+                  animationDuration: "0.4s"
+                }} onClick={() => handleFeatureClick(1)} onMouseEnter={() => setHoverIndex(1)} onMouseLeave={() => setHoverIndex(null)}>
                     <div className="flex justify-between items-center">
                       <h4 className="text-lg font-semibold">
                         {lifestyleFeatures[1].title}
                       </h4>
                       
-                      <div 
-                        className={cn(
-                          "transition-all duration-200", 
-                          hoverIndex === 1 ? "transform translate-x-1" : ""
-                        )}
-                      >
-                        {openFeatureIndex === 1 ? 
-                          <ChevronDown className="w-5 h-5" /> : 
-                          <ChevronRight className="w-5 h-5" />
-                        }
+                      <div className={cn("transition-all duration-200", hoverIndex === 1 ? "transform translate-x-1" : "")}>
+                        {openFeatureIndex === 1 ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
                       </div>
                     </div>
                     
-                    <div 
-                      className={cn(
-                        "overflow-hidden transition-all duration-300 ease-in-out",
-                        openFeatureIndex === 1 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
-                      )}
-                    >
+                    <div className={cn("overflow-hidden transition-all duration-300 ease-in-out", openFeatureIndex === 1 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0")}>
                       <p className="text-gray-600">
                         {lifestyleFeatures[1].description}
                       </p>
                     </div>
                   </div>
                   
-                  <div 
-                    className={cn(
-                      "px-6 py-3 rounded-full cursor-pointer", 
-                      "transition-all duration-300 ease-in-out", 
-                      "shadow-md", 
-                      "transform opacity-0",
-                      openFeatureIndex === 2 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
-                      isInView ? "animate-fade-in opacity-100" : ""
-                    )} 
-                    style={{
-                      animationDelay: "700ms",
-                      animationDuration: "0.4s"
-                    }} 
-                    onClick={() => handleFeatureClick(2)}
-                    onMouseEnter={() => setHoverIndex(2)} 
-                    onMouseLeave={() => setHoverIndex(null)}
-                  >
+                  <div className={cn("px-6 py-3 rounded-full cursor-pointer", "transition-all duration-300 ease-in-out", "shadow-md", "transform opacity-0", openFeatureIndex === 2 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white", isInView ? "animate-fade-in opacity-100" : "")} style={{
+                  animationDelay: "700ms",
+                  animationDuration: "0.4s"
+                }} onClick={() => handleFeatureClick(2)} onMouseEnter={() => setHoverIndex(2)} onMouseLeave={() => setHoverIndex(null)}>
                     <div className="flex justify-between items-center">
                       <h4 className="text-lg font-semibold">
                         {lifestyleFeatures[2].title}
                       </h4>
                       
-                      <div 
-                        className={cn(
-                          "transition-all duration-200", 
-                          hoverIndex === 2 ? "transform translate-x-1" : ""
-                        )}
-                      >
-                        {openFeatureIndex === 2 ? 
-                          <ChevronDown className="w-5 h-5" /> : 
-                          <ChevronRight className="w-5 h-5" />
-                        }
+                      <div className={cn("transition-all duration-200", hoverIndex === 2 ? "transform translate-x-1" : "")}>
+                        {openFeatureIndex === 2 ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
                       </div>
                     </div>
                     
-                    <div 
-                      className={cn(
-                        "overflow-hidden transition-all duration-300 ease-in-out",
-                        openFeatureIndex === 2 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
-                      )}
-                    >
+                    <div className={cn("overflow-hidden transition-all duration-300 ease-in-out", openFeatureIndex === 2 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0")}>
                       <p className="text-gray-600">
                         {lifestyleFeatures[2].description}
                       </p>
@@ -369,15 +238,7 @@ const LifestyleSection = () => {
                 </div>
                 
                 <div className="flex flex-col items-center mt-8 flex-grow-0">
-                  <Button 
-                    onClick={handleStripeCheckout}
-                    className={cn(
-                      "bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", 
-                      "transition-all duration-300 transform hover:scale-105", 
-                      "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", 
-                      "w-auto max-w-fit text-center", 
-                      "flex items-center justify-center space-x-2"
-                    )}>
+                  <Button onClick={handleStripeCheckout} className={cn("bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", "transition-all duration-300 transform hover:scale-105", "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", "w-auto max-w-fit text-center", "flex items-center justify-center space-x-2")}>
                     <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
                   </Button>
                   
@@ -387,27 +248,17 @@ const LifestyleSection = () => {
                 </div>
               </div>
               
-              {!isMobile && (
-                <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full">
+              {!isMobile && <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full">
                   <div className="w-full max-w-xs md:max-w-[72%] md:h-full perspective transition-transform duration-300 relative">
                     {renderVimeoVideo()}
                   </div>
                   
-                  <div className={cn(
-                    "mt-6 w-full flex justify-center transition-all duration-700 transform", 
-                    isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                  )}>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1"
-                      onClick={() => setShowSpecs(true)}
-                    >
+                  <div className={cn("mt-6 w-full flex justify-center transition-all duration-700 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
+                    <Button variant="outline" size="sm" className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1" onClick={() => setShowSpecs(true)}>
                       Specifications
                     </Button>
                   </div>
-                </div>
-              )}
+                </div>}
             </div>
           </div>
         </div>
@@ -472,5 +323,4 @@ const LifestyleSection = () => {
       </Dialog>
     </section>;
 };
-
 export default LifestyleSection;

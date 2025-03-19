@@ -4,7 +4,6 @@ import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from '@/components/ui/dialog';
-
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -18,7 +17,6 @@ const ChampionSection = () => {
     name: '',
     email: ''
   });
-
   useEffect(() => {
     if (isInView && titleRef.current) {
       setTimeout(() => {
@@ -26,7 +24,6 @@ const ChampionSection = () => {
       }, 300);
     }
   }, [isInView]);
-
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current;
@@ -67,7 +64,6 @@ const ChampionSection = () => {
       };
     }
   }, [isInView, videoError]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       name,
@@ -78,14 +74,12 @@ const ChampionSection = () => {
       [name]: value
     }));
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     setShowLibraryAccess(false);
     alert("Thank you! Access to the video library will be sent to your email.");
   };
-
   return <section id="video-library" ref={sectionRef} className="py-16">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
@@ -154,9 +148,7 @@ const ChampionSection = () => {
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
               
-              <p className="text-lg text-gray-700 italic font-medium leading-relaxed mt-4 md:hidden block text-center">
-                Training that fits your lifestyle. Exactly how it should be.
-              </p>
+              <p className="text-lg text-gray-700 italic font-medium leading-relaxed mt-4 md:hidden block text-center">Training that fits your lifestyle</p>
             </div>
           </div>
         </div>
@@ -212,5 +204,4 @@ const ChampionSection = () => {
       </Dialog>
     </section>;
 };
-
 export default ChampionSection;
