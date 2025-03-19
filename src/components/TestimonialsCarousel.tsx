@@ -127,42 +127,42 @@ const TestimonialsCarousel = () => {
           
           <div className="relative">
             <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
-              {/* Left Column - Testimonial */}
-              <div className="order-2 md:order-1 text-left flex flex-col justify-center">
-                <div className="backdrop-blur-md bg-white/80 shadow-md p-7 rounded-xl relative mb-6 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20" 
+              {/* Left Column - Testimonial - 20% smaller */}
+              <div className="order-2 md:order-1 text-left flex flex-col justify-center scale-80 transform origin-center">
+                <div className="backdrop-blur-md bg-white/80 shadow-md p-5 rounded-xl relative mb-5 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20" 
                   style={{ borderColor: '#444444' }}>
-                  <div className="text-gray-500 opacity-50 absolute left-4 top-4 pt-1" style={{ color: '#666666' }}>
-                    <Quote className="h-8 w-8" />
+                  <div className="text-gray-500 opacity-50 absolute left-3 top-3 pt-1" style={{ color: '#666666' }}>
+                    <Quote className="h-6 w-6" />
                   </div>
                   
-                  <div className="flex mb-3 mt-6 animate-fade-in">
+                  <div className="flex mb-2 mt-5 animate-fade-in">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-yellow-400 mr-1" fill="#FFD700" />
+                      <Star key={i} className="h-4 w-4 text-yellow-400 mr-1" fill="#FFD700" />
                     ))}
                   </div>
                   
-                  <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-5 transition-all duration-500 pt-3 pl-2">
+                  <p className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 transition-all duration-500 pt-2 pl-2">
                     {currentTestimonial.quote}
                   </p>
                   
-                  <div className="flex items-center mt-4 animate-fade-in">
+                  <div className="flex items-center mt-3 animate-fade-in">
                     <div>
-                      <p className="font-semibold text-gray-800">{currentTestimonial.name}</p>
-                      <p className="text-sm text-gray-500">{currentTestimonial.role}</p>
+                      <p className="font-semibold text-gray-800 text-sm">{currentTestimonial.name}</p>
+                      <p className="text-xs text-gray-500">{currentTestimonial.role}</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="flex space-x-3 mt-4 justify-center md:justify-start">
-                  {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-4 h-4 bg-gray-800 rounded-full" : "w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} style={{ backgroundColor: index === activeIndex ? '#444444' : '' }} />)}
+                <div className="flex space-x-2 mt-3 justify-center md:justify-start">
+                  {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-3 h-3 bg-gray-800 rounded-full" : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} style={{ backgroundColor: index === activeIndex ? '#444444' : '' }} />)}
                 </div>
               </div>
               
-              {/* Right Column - Video */}
+              {/* Right Column - Video - 20% bigger */}
               <div className="order-1 md:order-2 relative transition-all duration-500 w-full flex justify-center">
-                {/* Mobile Video (50% smaller with centerd container) */}
+                {/* Mobile Video (20% bigger) */}
                 {isMobile && (
-                  <div className="w-1/2 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-gray-100">
+                  <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-gray-100">
                     <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
                       <iframe 
                         key={`mobile-${currentTestimonial.vimeoId}-${key}`}
@@ -183,9 +183,9 @@ const TestimonialsCarousel = () => {
                   </div>
                 )}
                 
-                {/* Desktop Video (50% smaller) */}
+                {/* Desktop Video (20% bigger) */}
                 {!isMobile && (
-                  <div className="w-1/2 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                  <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
                     <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
                       <iframe 
                         key={`desktop-${currentTestimonial.vimeoId}-${key}`}
@@ -208,12 +208,12 @@ const TestimonialsCarousel = () => {
               </div>
             </div>
             
-            <button onClick={prevTestimonial} className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-gray-800" aria-label="Previous testimonial" style={{ borderColor: '#444444' }}>
-              <ChevronLeft className="w-5 h-5 text-gray-800" />
+            <button onClick={prevTestimonial} className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-gray-800" aria-label="Previous testimonial" style={{ borderColor: '#444444' }}>
+              <ChevronLeft className="w-4 h-4 text-gray-800" />
             </button>
             
-            <button onClick={nextTestimonial} className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-gray-800" aria-label="Next testimonial" style={{ borderColor: '#444444' }}>
-              <ChevronRight className="w-5 h-5 text-gray-800" />
+            <button onClick={nextTestimonial} className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-gray-800" aria-label="Next testimonial" style={{ borderColor: '#444444' }}>
+              <ChevronRight className="w-4 h-4 text-gray-800" />
             </button>
           </div>
         </div>
