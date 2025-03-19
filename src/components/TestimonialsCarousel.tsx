@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -57,6 +58,7 @@ const TestimonialsCarousel = () => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const isMobile = useIsMobile();
+  const [retryCount, setRetryCount] = useState(0);
 
   const nextTestimonial = () => {
     setActiveIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
@@ -83,16 +85,23 @@ const TestimonialsCarousel = () => {
   useEffect(() => {
     setIsVideoLoaded(false);
     setVideoError(false);
+    setRetryCount(0); // Reset retry count on testimonial change
   }, [activeIndex]);
 
   useEffect(() => {
     if (!currentTestimonial.isYouTube && videoRef.current) {
       const video = videoRef.current;
       
-      video.src = '';
-      video.load();
-      
-      video.src = currentTestimonial.video;
+      const loadVideo = () => {
+        console.log("Loading testimonial video with retry count:", retryCount);
+        video.src = '';
+        video.load();
+        
+        // Small delay before setting the source
+        setTimeout(() => {
+          video.src = currentTestimonial.video;
+        }, 100);
+      };
       
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
@@ -102,11 +111,25 @@ const TestimonialsCarousel = () => {
       
       const handleError = (e: Event) => {
         console.error("Testimonial video error:", e, "for video:", currentTestimonial.video);
-        setVideoError(true);
+        
+        // Implement retry logic
+        if (retryCount < 3) {
+          console.log("Retrying testimonial video load, attempt:", retryCount + 1);
+          setRetryCount(prevCount => prevCount + 1);
+          
+          // Try again after a short delay
+          setTimeout(() => {
+            loadVideo();
+          }, 1000);
+        } else {
+          setVideoError(true);
+        }
       };
 
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
+
+      loadVideo();
 
       if (isInView) {
         const playAttempt = setTimeout(() => {
@@ -116,12 +139,15 @@ const TestimonialsCarousel = () => {
               playPromise.catch(error => {
                 console.error("Testimonial video play error:", error);
                 if (error.name !== 'NotAllowedError') {
-                  setVideoError(true);
+                  // Only set error if it's not a permission issue (which is often solved with muting)
+                  if (retryCount >= 3) {
+                    setVideoError(true);
+                  }
                 }
               });
             }
           }
-        }, 100);
+        }, 300);
         
         return () => clearTimeout(playAttempt);
       }
@@ -132,7 +158,7 @@ const TestimonialsCarousel = () => {
         video.pause();
       };
     }
-  }, [isInView, activeIndex, currentTestimonial.video, currentTestimonial.isYouTube]);
+  }, [isInView, activeIndex, currentTestimonial.video, currentTestimonial.isYouTube, retryCount]);
   
   const renderYouTubeVideo = () => {
     if (currentTestimonial.isYouTube && isMobile) {

@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -39,6 +38,8 @@ const ProductTabs = () => {
   
   const [trxVideoError, setTrxVideoError] = useState(false);
   const [bandsVideoError, setBandsVideoError] = useState(false);
+  const [trxRetryCount, setTrxRetryCount] = useState(0);
+  const [bandsRetryCount, setBandsRetryCount] = useState(0);
   
   const isInView = useInView(sectionRef);
   const isVideoInView = useInView(trxVideoRef, {
@@ -79,12 +80,18 @@ const ProductTabs = () => {
     if (trxVideo.current && isVideoInView) {
       const video = trxVideo.current;
       
-      // Clear src and reload to force a fresh attempt
-      video.src = '';
-      video.load();
-      
-      // Set the new src
-      video.src = '/TRXX.mp4';
+      const loadVideo = () => {
+        console.log("Loading TRX video with retry count:", trxRetryCount);
+        // Clear src and reload to force a fresh attempt
+        video.src = '';
+        video.load();
+        
+        // Small delay before setting source
+        setTimeout(() => {
+          // Set the new src
+          video.src = '/TRXX.mp4';
+        }, 100);
+      };
       
       const handleCanPlay = () => {
         setTrxVideoError(false);
@@ -93,11 +100,25 @@ const ProductTabs = () => {
       
       const handleError = (e: Event) => {
         console.error("TRX video error:", e);
-        setTrxVideoError(true);
+        
+        // Implement retry logic
+        if (trxRetryCount < 3) {
+          console.log("Retrying TRX video load, attempt:", trxRetryCount + 1);
+          setTrxRetryCount(prevCount => prevCount + 1);
+          
+          // Try again after a short delay
+          setTimeout(() => {
+            loadVideo();
+          }, 1000);
+        } else {
+          setTrxVideoError(true);
+        }
       };
 
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
+
+      loadVideo();
 
       // Small delay to ensure loading has started
       const playAttempt = setTimeout(() => {
@@ -107,12 +128,14 @@ const ProductTabs = () => {
             playPromise.catch(error => {
               console.error("TRX video play error:", error);
               if (error.name !== 'NotAllowedError') {
-                setTrxVideoError(true);
+                if (trxRetryCount >= 3) {
+                  setTrxVideoError(true);
+                }
               }
             });
           }
         }
-      }, 100);
+      }, 300);
       
       return () => {
         clearTimeout(playAttempt);
@@ -121,19 +144,25 @@ const ProductTabs = () => {
         video.pause();
       };
     }
-  }, [isVideoInView, activeTab]);
+  }, [isVideoInView, activeTab, trxRetryCount]);
 
   // Bands video loading and error handling
   useEffect(() => {
     if (bandsVideo.current && isBandsVideoInView) {
       const video = bandsVideo.current;
       
-      // Clear src and reload to force a fresh attempt
-      video.src = '';
-      video.load();
-      
-      // Set the new src
-      video.src = '/bands.mp4';
+      const loadVideo = () => {
+        console.log("Loading Bands video with retry count:", bandsRetryCount);
+        // Clear src and reload to force a fresh attempt
+        video.src = '';
+        video.load();
+        
+        // Small delay before setting source
+        setTimeout(() => {
+          // Set the new src
+          video.src = '/bands.mp4';
+        }, 100);
+      };
       
       const handleCanPlay = () => {
         setBandsVideoError(false);
@@ -142,11 +171,25 @@ const ProductTabs = () => {
       
       const handleError = (e: Event) => {
         console.error("Bands video error:", e);
-        setBandsVideoError(true);
+        
+        // Implement retry logic
+        if (bandsRetryCount < 3) {
+          console.log("Retrying Bands video load, attempt:", bandsRetryCount + 1);
+          setBandsRetryCount(prevCount => prevCount + 1);
+          
+          // Try again after a short delay
+          setTimeout(() => {
+            loadVideo();
+          }, 1000);
+        } else {
+          setBandsVideoError(true);
+        }
       };
 
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
+
+      loadVideo();
 
       // Small delay to ensure loading has started
       const playAttempt = setTimeout(() => {
@@ -156,12 +199,14 @@ const ProductTabs = () => {
             playPromise.catch(error => {
               console.error("Bands video play error:", error);
               if (error.name !== 'NotAllowedError') {
-                setBandsVideoError(true);
+                if (bandsRetryCount >= 3) {
+                  setBandsVideoError(true);
+                }
               }
             });
           }
         }
-      }, 100);
+      }, 300);
       
       return () => {
         clearTimeout(playAttempt);
@@ -170,7 +215,13 @@ const ProductTabs = () => {
         video.pause();
       };
     }
-  }, [isBandsVideoInView, activeTab]);
+  }, [isBandsVideoInView, activeTab, bandsRetryCount]);
+
+  // Reset retry counts when tab changes
+  useEffect(() => {
+    setTrxRetryCount(0);
+    setBandsRetryCount(0);
+  }, [activeTab]);
 
   const toggleBandsFeature = (index: number) => {
     setBandsExpandedFeatures(prev => ({
