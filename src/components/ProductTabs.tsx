@@ -88,8 +88,8 @@ const ProductTabs = () => {
 
   const renderTrxVimeoVideo = () => {
     return (
-      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
-        <AspectRatio ratio={3/4} className="overflow-hidden">
+      <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
+        <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
           <iframe 
             src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1"
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
@@ -105,8 +105,8 @@ const ProductTabs = () => {
 
   const renderBandsVimeoVideo = () => {
     return (
-      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
-        <AspectRatio ratio={3/4} className="overflow-hidden">
+      <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
+        <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
           <iframe 
             src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1" 
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
@@ -180,8 +180,7 @@ const ProductTabs = () => {
               <div 
                 ref={trxVideoRef} 
                 className={cn(
-                  "rounded-2xl overflow-hidden transition-all duration-700 flex justify-center", 
-                  "shadow-lg", 
+                  "transition-all duration-700", 
                   isMobile ? "order-1" : "order-2"
                 )}
               >
@@ -275,8 +274,7 @@ const ProductTabs = () => {
               <div 
                 ref={bandsVideoRef} 
                 className={cn(
-                  "rounded-2xl overflow-hidden transition-all duration-700 flex justify-center", 
-                  "shadow-lg", 
+                  "transition-all duration-700", 
                   isMobile ? "order-1" : "order-2"
                 )}
               >
