@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume, VolumeX } from 'lucide-react';
@@ -11,12 +12,11 @@ const HeroSection = () => {
   const ctaRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(false); // Changed to false for unmuted by default
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [userMutedChoice, setUserMutedChoice] = useState<boolean | null>(null);
   const [lastUnmutedState, setLastUnmutedState] = useState<boolean>(false);
-  const [retryCount, setRetryCount] = useState(0);
 
   const scrollToOwnBoth = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -28,8 +28,10 @@ const HeroSection = () => {
 
   const toggleSound = () => {
     if (videoRef.current) {
+      // Just toggle muted state without affecting playback
       videoRef.current.muted = !videoRef.current.muted;
       setIsMuted(videoRef.current.muted);
+      // Store user's explicit choice
       setUserMutedChoice(videoRef.current.muted);
       if (!videoRef.current.muted) {
         setLastUnmutedState(true);
@@ -37,12 +39,15 @@ const HeroSection = () => {
     }
   };
 
+  // Use enhanced useInView with callbacks to handle audio when scrolling
   const isInView = useInView(
     heroRef, 
     {}, 
     false,
     () => {
+      // When entering view
       if (videoRef.current && !videoError) {
+        // If user previously unmuted, restore that state
         if (lastUnmutedState && userMutedChoice === false) {
           videoRef.current.muted = false;
           setIsMuted(false);
@@ -50,7 +55,9 @@ const HeroSection = () => {
       }
     },
     () => {
+      // When exiting view
       if (videoRef.current && !videoRef.current.muted) {
+        // Save unmuted state and then mute
         setLastUnmutedState(true);
         videoRef.current.muted = true;
         setIsMuted(true);
@@ -62,18 +69,20 @@ const HeroSection = () => {
     if (videoRef.current) {
       const video = videoRef.current;
       
-      const loadVideo = () => {
-        if (!video.src || video.src === '') {
-          console.log("Loading hero video with retry count:", retryCount);
-          video.src = '/fitanywhere intro.mp4';
-          if (userMutedChoice !== null) {
-            video.muted = userMutedChoice;
-            setIsMuted(userMutedChoice);
-          } else {
-            video.muted = false;
-          }
+      // Only set source if it needs to be set (first load or src is empty)
+      if (!video.src || video.src === '') {
+        // Set the new src
+        video.src = '/fitanywhere intro.mp4';
+        
+        // Initialize muted state based on user's choice if they made one
+        if (userMutedChoice !== null) {
+          video.muted = userMutedChoice;
+          setIsMuted(userMutedChoice);
+        } else {
+          // Start with unmuted by default for first load
+          video.muted = false;
         }
-      };
+      }
       
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
@@ -83,36 +92,28 @@ const HeroSection = () => {
       
       const handleError = (e: Event) => {
         console.error("Hero video error:", e);
-        
-        if (retryCount < 3) {
-          console.log("Retrying hero video load, attempt:", retryCount + 1);
-          setRetryCount(prevCount => prevCount + 1);
-          video.src = '';
-          setTimeout(() => {
-            loadVideo();
-          }, 1000);
-        } else {
-          setVideoError(true);
-        }
+        setVideoError(true);
       };
 
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
 
-      loadVideo();
-
       if (isInView && !videoError) {
+        // Check if the video is paused before attempting to play
         if (video.paused) {
+          // Small delay to ensure loading has started
           const playAttempt = setTimeout(() => {
-            if (video.readyState >= 2) {
+            if (video.readyState >= 2) { // HAVE_CURRENT_DATA or better
               const playPromise = video.play();
               if (playPromise !== undefined) {
                 playPromise.catch(error => {
                   console.error("Hero video play error:", error);
+                  // If autoplay with sound fails, try with muted
                   if (error.name === 'NotAllowedError') {
                     console.log("Autoplay with sound failed, trying muted");
                     video.muted = true;
                     setIsMuted(true);
+                    // Don't update userMutedChoice here as this is a browser limitation, not user choice
                     video.play().catch(err => {
                       console.error("Muted autoplay also failed:", err);
                       setVideoError(true);
@@ -135,7 +136,7 @@ const HeroSection = () => {
         video.pause();
       };
     }
-  }, [isInView, videoError, userMutedChoice, retryCount]);
+  }, [isInView, videoError, userMutedChoice]);
 
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>

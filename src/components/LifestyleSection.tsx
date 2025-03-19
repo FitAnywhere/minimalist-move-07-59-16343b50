@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -39,7 +38,6 @@ const LifestyleSection = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
   const [showSpecs, setShowSpecs] = useState(false);
   const isMobile = useIsMobile();
   const [lastUnmutedState, setLastUnmutedState] = useState<boolean>(false);
@@ -80,16 +78,10 @@ const LifestyleSection = () => {
     if (videoRef.current) {
       const video = videoRef.current;
       
-      const loadVideo = () => {
-        console.log("Loading lifestyle video with retry count:", retryCount);
-        video.src = '';
-        video.load();
-        
-        // Small delay before setting source
-        setTimeout(() => {
-          video.src = '/0314 (3)(1).mp4';
-        }, 100);
-      };
+      video.src = '';
+      video.load();
+      
+      video.src = '/0314 (3)(1).mp4';
       
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
@@ -99,25 +91,11 @@ const LifestyleSection = () => {
       
       const handleError = (e: Event) => {
         console.error("Video error:", e);
-        
-        // Implement retry logic
-        if (retryCount < 3) {
-          console.log("Retrying lifestyle video load, attempt:", retryCount + 1);
-          setRetryCount(prevCount => prevCount + 1);
-          
-          // Try again after a short delay
-          setTimeout(() => {
-            loadVideo();
-          }, 1000);
-        } else {
-          setVideoError(true);
-        }
+        setVideoError(true);
       };
 
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
-
-      loadVideo();
 
       if (isInView && !videoError) {
         const playAttempt = setTimeout(() => {
@@ -127,14 +105,12 @@ const LifestyleSection = () => {
               playPromise.catch(error => {
                 console.error("Video play error:", error);
                 if (error.name !== 'NotAllowedError') {
-                  if (retryCount >= 3) {
-                    setVideoError(true);
-                  }
+                  setVideoError(true);
                 }
               });
             }
           }
-        }, 300);
+        }, 100);
         
         return () => clearTimeout(playAttempt);
       }
@@ -145,7 +121,7 @@ const LifestyleSection = () => {
         video.pause();
       };
     }
-  }, [isInView, videoError, retryCount]);
+  }, [isInView, videoError]);
 
   const toggleMute = () => {
     if (videoRef.current) {
@@ -531,3 +507,4 @@ const LifestyleSection = () => {
 };
 
 export default LifestyleSection;
+
