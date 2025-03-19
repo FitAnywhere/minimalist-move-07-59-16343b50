@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -71,7 +72,7 @@ const TimeAndCostCalculator = () => {
             isInView ? "opacity-100" : "opacity-0 translate-y-10"
           )}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
-              SEE THE DAMAGE
+              WHAT'S IT COSTING YOU?
               <span className={cn(
                 "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
                 isInView ? "scale-x-100" : "scale-x-0"
