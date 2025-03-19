@@ -21,6 +21,10 @@ const CallToAction = () => {
   // Word-by-word animation effect
   useEffect(() => {
     if (isInView) {
+      // Reset animations to prevent duplicates
+      setAnimatedWords1([]);
+      setAnimatedWords2([]);
+      
       const words1 = firstLine.split(' ');
       const words2 = secondLine.split(' ');
       
@@ -79,7 +83,7 @@ const CallToAction = () => {
       
       <div className="container relative z-20 mx-auto px-4 md:px-6">
         <div className="max-w-5xl mx-auto text-center">
-          <div className="space-y-6 md:space-y-4"> {/* Further reduced spacing */}
+          <div className="space-y-6 md:space-y-4">
             {/* First animated line */}
             <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight min-h-[3.5rem] md:min-h-[4rem] px-2 md:px-0">
               {animatedWords1.map((word, index) => (
