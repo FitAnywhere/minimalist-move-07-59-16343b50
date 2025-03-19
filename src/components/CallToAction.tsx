@@ -67,7 +67,7 @@ const CallToAction = () => {
     <section 
       id="order" 
       ref={sectionRef} 
-      className="relative py-20 md:py-24 overflow-hidden min-h-[80vh] md:min-h-[70vh] flex items-center"
+      className="relative py-12 md:py-16 overflow-hidden min-h-[60vh] md:min-h-[50vh] flex items-center"
       style={{
         background: 'linear-gradient(to bottom, #8A898C 0%, #555555 40%, #333333 70%, #222222 85%, black 100%)'
       }}
@@ -77,11 +77,11 @@ const CallToAction = () => {
         {/* Background content if needed */}
       </div>
       
-      <div className="container relative z-20 mx-auto px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="space-y-8 md:space-y-6"> {/* Reduced spacing for desktop */}
+      <div className="container relative z-20 mx-auto px-4 md:px-6">
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="space-y-6 md:space-y-4"> {/* Further reduced spacing */}
             {/* First animated line */}
-            <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight min-h-[3.5rem] md:min-h-[4rem]">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight min-h-[3.5rem] md:min-h-[4rem] px-2 md:px-0">
               {animatedWords1.map((word, index) => (
                 <span 
                   key={`${word}-${index}`} 
@@ -99,7 +99,7 @@ const CallToAction = () => {
             </h2>
             
             {/* Second animated line */}
-            <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight min-h-[3rem] md:min-h-[3.5rem]">
+            <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight min-h-[3rem] md:min-h-[3.5rem] px-2 md:px-0">
               {animatedWords2.map((word, index) => (
                 <span 
                   key={`${word}-${index}`} 
@@ -119,7 +119,7 @@ const CallToAction = () => {
             {/* CTA Button - reduced top margin for desktop */}
             <div 
               className={cn(
-                "transition-all duration-1000 delay-[1200ms] mt-6 md:mt-8", 
+                "transition-all duration-1000 delay-[1200ms] mt-4 md:mt-6", 
                 isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
               )}
             >
