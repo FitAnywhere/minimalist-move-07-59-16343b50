@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -124,7 +123,7 @@ const TargetAndFAQ = () => {
             <div className="text-center mb-12">
               <div className="flex items-center justify-center gap-3 mb-12">
                 <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center relative inline-block">
-                  FAQ
+                  FREQUENTLY ASKED QUESTIONS
                   <span className={cn("absolute bottom-0 left-0 right-0 mx-auto h-1 bg-yellow-400 transform transition-transform duration-1000", isFaqInView ? "scale-x-100" : "scale-x-0")} style={{
                     width: '100%'
                   }}></span>
