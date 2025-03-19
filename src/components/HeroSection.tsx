@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
@@ -82,28 +83,29 @@ const HeroSection = () => {
 
   useEffect(() => {
     if (player && isInView) {
-      player.getPaused().then((paused: boolean) => {
-        if (paused) {
-          player.play().catch((error: any) => {
-            console.log("Error playing video:", error);
-          });
-        }
-        
-        if (audioOn) {
-          player.setVolume(1);
-          player.setMuted(false);
-        } else {
-          player.setVolume(0);
-          player.setMuted(true);
-        }
+      // Set volume according to audio state
+      if (audioOn) {
+        player.setVolume(1);
+        player.setMuted(false);
+      } else {
+        player.setVolume(0);
+        player.setMuted(true);
+      }
+
+      // Always restart video from the beginning when coming back into view
+      player.setCurrentTime(0).then(() => {
+        player.play().catch((error: any) => {
+          console.log("Error playing video:", error);
+        });
       }).catch((error: any) => {
-        console.log("Error getting paused state:", error);
+        console.log("Error setting current time:", error);
       });
       
       if (firstLoad) {
         setFirstLoad(false);
       }
     } else if (player && !isInView) {
+      // Stop the video when out of view
       player.pause();
     }
   }, [isInView, player, audioOn, firstLoad]);
