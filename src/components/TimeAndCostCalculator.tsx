@@ -94,7 +94,7 @@ const TimeAndCostCalculator = () => {
                   
                   {/* Gym cost slider */}
                   <div>
-                    <p className="text-xl mb-3 font-medium text-left">How much is your gym bill?</p>
+                    <p className="text-xl mb-3 font-medium text-left">How much is your monthly gym bill?</p>
                     
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-gray-600">€0</span>
