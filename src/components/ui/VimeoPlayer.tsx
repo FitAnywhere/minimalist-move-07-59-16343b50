@@ -1,6 +1,8 @@
 
 import { useRef, useState, useEffect, memo } from 'react';
-import { Volume2, VolumeX, Play } from 'lucide-react';
+import { Volume2, VolumeX, Play, Loader } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Progress } from '@/components/ui/progress';
 
 interface VimeoPlayerProps {
   videoId: string;
@@ -25,10 +27,30 @@ const VimeoPlayer = memo(({
   const [player, setPlayer] = useState<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingState, setLoadingState] = useState<'initial' | 'loading' | 'ready' | 'error'>('initial');
   const wasInViewRef = useRef(isInView);
+
+  // Simulate loading progress
+  useEffect(() => {
+    if (loadingState === 'loading') {
+      const interval = setInterval(() => {
+        setLoadingProgress(prev => {
+          const next = prev + Math.random() * 15;
+          return next > 90 ? 90 : next; // Cap at 90% until actually loaded
+        });
+      }, 300);
+      
+      return () => clearInterval(interval);
+    } else if (loadingState === 'ready') {
+      setLoadingProgress(100);
+    }
+  }, [loadingState]);
 
   // Initialize player
   useEffect(() => {
+    setLoadingState('loading');
+    
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
       
@@ -47,6 +69,7 @@ const VimeoPlayer = memo(({
             // Ensure video is initially paused but at 0.1 seconds for thumbnail
             vimeoPlayer.pause().then(() => {
               vimeoPlayer.setCurrentTime(0.1).then(() => {
+                setLoadingState('ready');
                 setIsPlayerReady(true);
                 console.log("Vimeo player is ready");
               });
@@ -72,6 +95,11 @@ const VimeoPlayer = memo(({
                   console.log("Video reset to 0.1 seconds and paused");
                 });
               });
+            });
+            
+            vimeoPlayer.on('error', () => {
+              setLoadingState('error');
+              console.error("Vimeo player error");
             });
           }
         }
@@ -148,10 +176,49 @@ const VimeoPlayer = memo(({
   return (
     <div className={`relative ${className}`}>
       <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
+        {/* Video Loading States */}
+        {loadingState !== 'ready' && (
+          <div className="absolute inset-0 bg-gray-100 rounded overflow-hidden flex flex-col items-center justify-center z-10">
+            {loadingState === 'error' ? (
+              <div className="text-center p-4">
+                <p className="text-gray-500 mb-2">Unable to load video</p>
+                <button 
+                  onClick={() => window.location.reload()}
+                  className="text-sm text-blue-500 hover:underline"
+                >
+                  Retry
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="w-full h-full absolute">
+                  <Skeleton className="w-full h-full bg-gray-200/70" />
+                </div>
+                <div className="relative z-10 flex flex-col items-center justify-center gap-3">
+                  <Loader size={30} className="text-yellow-400 animate-spin" />
+                  <div className="w-48 text-center">
+                    <Progress value={loadingProgress} className="h-1.5 bg-gray-200/70" />
+                    <p className="text-xs text-gray-500 mt-2">Loading video...</p>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+        
         <iframe 
           ref={iframeRef}
           src={buildIframeSrc()}
-          style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}} 
+          style={{
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            width: '100%', 
+            height: '100%', 
+            border: 'none',
+            opacity: loadingState === 'ready' ? 1 : 0, 
+            transition: 'opacity 0.3s ease-in-out'
+          }} 
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
           title="FitAnywhere"
           loading={priority ? "eager" : "lazy"}
