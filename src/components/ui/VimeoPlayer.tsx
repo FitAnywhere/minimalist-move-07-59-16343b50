@@ -1,6 +1,7 @@
 
 import { useRef, useState, useEffect, memo } from 'react';
 import { Loader } from 'lucide-react';
+import { Skeleton } from './skeleton';
 import { Progress } from './progress';
 
 interface VimeoPlayerProps {
@@ -25,7 +26,6 @@ const VimeoPlayer = memo(({
   const wasInViewRef = useRef(isInView);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const [vimeoApiInitialized, setVimeoApiInitialized] = useState(false);
 
   // Initialize loading animation
   useEffect(() => {
@@ -46,85 +46,64 @@ const VimeoPlayer = memo(({
     }
   }, [isLoading, isPlayerReady, priority]);
 
-  // Check if Vimeo API is available
-  useEffect(() => {
-    if (window.Vimeo && window.Vimeo.Player) {
-      setVimeoApiInitialized(true);
-    } else {
-      // Check if the script is already being loaded
-      const existingScript = document.querySelector('script[src="https://player.vimeo.com/api/player.js"]');
-      
-      if (!existingScript) {
-        const script = document.createElement('script');
-        script.src = 'https://player.vimeo.com/api/player.js';
-        script.async = true;
-        script.onload = () => setVimeoApiInitialized(true);
-        document.head.appendChild(script);
-      } else {
-        // If script is already loading, we need to wait for it
-        existingScript.addEventListener('load', () => setVimeoApiInitialized(true));
-      }
-    }
-  }, []);
-
   // Initialize player
   useEffect(() => {
-    if (!vimeoApiInitialized || !iframeRef.current) return;
-    
-    try {
-      const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
-      setPlayer(vimeoPlayer);
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== "https://player.vimeo.com") return;
       
-      // Ensure video is initially paused but at 0.1 seconds for thumbnail
-      vimeoPlayer.ready().then(() => {
-        vimeoPlayer.pause().then(() => {
-          vimeoPlayer.setCurrentTime(0.1).then(() => {
-            setIsPlayerReady(true);
-            console.log(`Vimeo player ${playerId} is ready`);
+      try {
+        const data = typeof event.data === 'object' ? event.data : JSON.parse(event.data);
+        
+        if (data.event === "ready" && iframeRef.current) {
+          if (window.Vimeo && window.Vimeo.Player) {
+            const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
+            setPlayer(vimeoPlayer);
             
-            // Complete the loading progress
-            setLoadingProgress(100);
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 300); // small delay for smooth transition
-          }).catch(error => console.error("Failed to set current time:", error));
-        }).catch(error => console.error("Failed to pause:", error));
-      }).catch(error => console.error("Player not ready:", error));
-      
-      // Add event listeners
-      vimeoPlayer.on('play', () => {
-        setIsPlaying(true);
-        console.log("Video can play now");
-      });
-      
-      vimeoPlayer.on('pause', () => {
-        setIsPlaying(false);
-      });
-      
-      vimeoPlayer.on('ended', () => {
-        console.log("Video ended, resetting to 0.1 seconds");
-        // When video ends, reset to beginning and show play button again
-        setIsPlaying(false); // Ensure we set isPlaying to false first
-        vimeoPlayer.setCurrentTime(0.1).then(() => {
-          // Additional confirmation that we're properly stopped
-          vimeoPlayer.pause().then(() => {
-            console.log("Video reset to 0.1 seconds and paused");
-          });
-        });
-      });
-      
-      return () => {
-        vimeoPlayer.off('play');
-        vimeoPlayer.off('pause');
-        vimeoPlayer.off('ended');
-        vimeoPlayer.destroy().catch(() => {
-          // Silent catch for cleanup errors
-        });
-      };
-    } catch (e) {
-      console.error("Error initializing Vimeo player:", e);
-    }
-  }, [vimeoApiInitialized, playerId]);
+            // Ensure video is initially paused but at 0.1 seconds for thumbnail
+            vimeoPlayer.pause().then(() => {
+              vimeoPlayer.setCurrentTime(0.1).then(() => {
+                setIsPlayerReady(true);
+                console.log("Vimeo player is ready");
+                
+                // Complete the loading progress
+                setLoadingProgress(100);
+                setTimeout(() => {
+                  setIsLoading(false);
+                }, 300); // small delay for smooth transition
+              });
+            });
+            
+            // Add event listeners
+            vimeoPlayer.on('play', () => {
+              setIsPlaying(true);
+              console.log("Video can play now");
+            });
+            
+            vimeoPlayer.on('pause', () => {
+              setIsPlaying(false);
+            });
+            
+            vimeoPlayer.on('ended', () => {
+              console.log("Video ended, resetting to 0.1 seconds");
+              // When video ends, reset to beginning and show play button again
+              setIsPlaying(false); // Ensure we set isPlaying to false first
+              vimeoPlayer.setCurrentTime(0.1).then(() => {
+                // Additional confirmation that we're properly stopped
+                vimeoPlayer.pause().then(() => {
+                  console.log("Video reset to 0.1 seconds and paused");
+                });
+              });
+            });
+          }
+        }
+      } catch (e) {
+        // Silent error handling to avoid console spam
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   // Handle play button click
   const handlePlayClick = (e: React.MouseEvent) => {
@@ -158,6 +137,7 @@ const VimeoPlayer = memo(({
   // Build iframe query params
   const buildIframeSrc = () => {
     const params = new URLSearchParams({
+      h: 'd77ee52644',
       title: '0',
       byline: '0',
       portrait: '0',
@@ -167,8 +147,7 @@ const VimeoPlayer = memo(({
       loop: '0',
       player_id: playerId,
       app_id: '58479',
-      dnt: '1',
-      muted: '1'
+      dnt: '1'
     });
     
     // Add autoplay for hero section (priority) video only if supported

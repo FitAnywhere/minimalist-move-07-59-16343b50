@@ -68,22 +68,20 @@ const TestimonialsCarousel = () => {
   const [key, setKey] = useState(0); // Force re-render of video component
 
   useEffect(() => {
-    // Ensure Vimeo player script is loaded
-    if (!window.Vimeo && !document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
+    if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
       const script = document.createElement('script');
       script.src = 'https://player.vimeo.com/api/player.js';
       script.async = true;
-      document.head.appendChild(script);
+      document.body.appendChild(script);
     }
     
-    // Preload testimonial videos
     const preloadTestimonials = () => {
       testimonials.forEach((testimonial, index) => {
         setTimeout(() => {
           const preloadLink = document.createElement('link');
           preloadLink.rel = 'preload';
           preloadLink.as = 'fetch';
-          preloadLink.href = `https://player.vimeo.com/video/${testimonial.vimeoId}`;
+          preloadLink.href = `https://player.vimeo.com/video/${testimonial.vimeoId}?h=${testimonial.hash}`;
           preloadLink.crossOrigin = 'anonymous';
           document.head.appendChild(preloadLink);
         }, index < 3 ? 0 : index * 1000);

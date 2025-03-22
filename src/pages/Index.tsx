@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -27,21 +26,19 @@ const Index = () => {
   const location = useLocation();
   const initialLoadRef = useRef(true);
   
-  // Preload Vimeo API early
+  // Add preload for Vimeo API
   useEffect(() => {
-    // Function to load Vimeo API immediately as high priority
+    // Preload Vimeo player API
     const preloadVimeoAPI = () => {
-      if (!window.Vimeo && !document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
-        console.log("Preloading Vimeo API");
+      if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
         const script = document.createElement('script');
         script.src = 'https://player.vimeo.com/api/player.js';
         script.async = true;
-        script.setAttribute('importance', 'high'); // Mark as high priority
-        document.head.appendChild(script);
+        document.body.appendChild(script);
       }
     };
     
-    // Add preload hints for critical videos with proper headers
+    // Add preload hints for critical videos
     const addVideoPreloadHints = () => {
       const videoIds = [
         '1067255623', // Hero video - highest priority
@@ -61,17 +58,9 @@ const Index = () => {
         // Set highest priority for hero video
         link.setAttribute('importance', index === 0 ? 'high' : 'auto');
         document.head.appendChild(link);
-        
-        // For the first few videos, do a prefetch XMLHttpRequest to warm up connections
-        if (index < 3) {
-          const xhr = new XMLHttpRequest();
-          xhr.open('GET', `https://player.vimeo.com/video/${id}`, true);
-          xhr.send();
-        }
       });
     };
     
-    // Execute preloading immediately
     preloadVimeoAPI();
     addVideoPreloadHints();
     
