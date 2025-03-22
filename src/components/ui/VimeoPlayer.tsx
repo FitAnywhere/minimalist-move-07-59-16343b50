@@ -47,13 +47,16 @@ const VimeoPlayer = memo(({
             vimeoPlayer.pause().then(() => {
               vimeoPlayer.setCurrentTime(0.1).then(() => {
                 setIsPlayerReady(true);
+                // Hide the loading screen once we've set up the player at 0.1 seconds
+                setIsLoading(false);
+                // Make the video visible immediately when ready
+                setVideoVisible(true);
                 console.log("Vimeo player is ready");
               });
             });
             
             vimeoPlayer.on('play', () => {
               setIsPlaying(true);
-              // Only set video as visible after it's actually playing
               setVideoVisible(true);
               setIsLoading(false);
               console.log("Video can play now");
@@ -72,7 +75,8 @@ const VimeoPlayer = memo(({
             });
             
             vimeoPlayer.on('loaded', () => {
-              // Don't hide loader yet, wait for actual playback
+              // Make the video visible immediately when loaded
+              setVideoVisible(true);
               console.log("Video loaded but waiting for play event");
             });
             
@@ -108,9 +112,6 @@ const VimeoPlayer = memo(({
     if (isPlaying) {
       player.pause();
     } else {
-      // Show loading state when attempting to play
-      setIsLoading(true);
-      
       player.setVolume(audioOn ? 1 : 0);
       player.setMuted(!audioOn);
       
