@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect, memo } from 'react';
 import { Volume2, VolumeX, Play } from 'lucide-react';
 import { Skeleton } from './skeleton';
@@ -28,7 +29,17 @@ const VimeoPlayer = memo(({
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const progressTimerRef = useRef<NodeJS.Timeout | null>(null);
   const wasInViewRef = useRef(isInView);
+
+  // Clear any existing progress timers when component unmounts
+  useEffect(() => {
+    return () => {
+      if (progressTimerRef.current) {
+        clearTimeout(progressTimerRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -55,6 +66,7 @@ const VimeoPlayer = memo(({
             vimeoPlayer.on('play', () => {
               setIsPlaying(true);
               setIsLoading(false);
+              setLoadingProgress(100);
               console.log("Video can play now");
             });
             
@@ -68,11 +80,13 @@ const VimeoPlayer = memo(({
             
             vimeoPlayer.on('bufferend', () => {
               setIsLoading(false);
+              setLoadingProgress(100);
             });
             
             vimeoPlayer.on('progress', (data: any) => {
               if (data && data.percent) {
-                setLoadingProgress(Math.round(data.percent * 100));
+                // Ensure progress never goes backwards
+                setLoadingProgress(prev => Math.max(prev, Math.round(data.percent * 100)));
               }
             });
             
@@ -93,32 +107,47 @@ const VimeoPlayer = memo(({
           }
         }
       } catch (e) {
+        console.error("Error handling Vimeo message:", e);
       }
     };
 
     window.addEventListener('message', handleMessage);
     
-    const loadingTimer = setTimeout(() => {
-      if (isLoading && loadingProgress === 0) {
-        let progress = 0;
-        const interval = setInterval(() => {
-          progress += 5;
-          if (progress > 95) {
-            clearInterval(interval);
-          } else {
-            setLoadingProgress(progress);
-          }
-        }, 300);
-        
-        return () => clearInterval(interval);
+    // Start loading animation with smoother progression
+    if (isLoading && loadingProgress === 0) {
+      // Clear any existing timers
+      if (progressTimerRef.current) {
+        clearTimeout(progressTimerRef.current);
       }
-    }, 1000);
+      
+      let progress = 0;
+      const simulateLoading = () => {
+        progress += Math.random() * 3 + 1; // Random increment between 1-4
+        if (progress > 90) {
+          // Cap at 90% for simulated loading - the real events will take it to 100%
+          progress = 90;
+          return;
+        }
+        
+        setLoadingProgress(Math.min(Math.round(progress), 90));
+        
+        // Continue simulation until we reach 90%
+        if (progress < 90) {
+          progressTimerRef.current = setTimeout(simulateLoading, 300);
+        }
+      };
+      
+      // Begin simulation after a short delay
+      progressTimerRef.current = setTimeout(simulateLoading, 300);
+    }
     
     return () => {
       window.removeEventListener('message', handleMessage);
-      clearTimeout(loadingTimer);
+      if (progressTimerRef.current) {
+        clearTimeout(progressTimerRef.current);
+      }
     };
-  }, [audioOn]);
+  }, [audioOn, isLoading, loadingProgress]);
 
   const handlePlayClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -132,8 +161,10 @@ const VimeoPlayer = memo(({
       player.setVolume(audioOn ? 1 : 0);
       player.setMuted(!audioOn);
       
-      player.play().catch(() => {
-        console.log("Failed to play video");
+      player.play().catch((error: any) => {
+        console.log("Failed to play video:", error);
+        // Reset loading state if play fails
+        setIsLoading(false);
       });
     }
   };
