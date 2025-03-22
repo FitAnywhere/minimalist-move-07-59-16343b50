@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack, Loader } from 'lucide-react';
@@ -105,18 +104,28 @@ const ProductTabs = () => {
       try {
         const data = typeof event.data === 'object' ? event.data : JSON.parse(event.data);
         
-        // Handle TRX video events
-        if (data.player_id === "trx_video" && data.event === "play") {
-          setTrxVideoLoading(false);
-          setTrxVideoVisible(true);
-          console.log("TRX video is now playing");
+        if (data.player_id === "trx_video") {
+          if (data.event === "ready") {
+            console.log("TRX video is ready");
+          }
+          
+          if (data.event === "play") {
+            console.log("TRX video is now playing");
+            setTrxVideoLoading(false);
+            setTrxVideoVisible(true);
+          }
         }
         
-        // Handle Bands video events
-        if (data.player_id === "bands_video" && data.event === "play") {
-          setBandsVideoLoading(false);
-          setBandsVideoVisible(true);
-          console.log("Bands video is now playing");
+        if (data.player_id === "bands_video") {
+          if (data.event === "ready") {
+            console.log("Bands video is ready");
+          }
+          
+          if (data.event === "play") {
+            console.log("Bands video is now playing");
+            setBandsVideoLoading(false);
+            setBandsVideoVisible(true);
+          }
         }
       } catch (e) {
         console.error("Error handling Vimeo message:", e);
