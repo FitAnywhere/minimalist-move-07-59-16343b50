@@ -28,10 +28,39 @@ const VimeoPlayer = memo(({
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loadError, setLoadError] = useState(false);
   const playerInitAttempted = useRef(false);
+  
+  // Check if Vimeo API is loaded
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  
+  useEffect(() => {
+    if (window.Vimeo && window.Vimeo.Player) {
+      setIsScriptLoaded(true);
+      return;
+    }
+
+    const existingScript = document.querySelector('script[src="https://player.vimeo.com/api/player.js"]');
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.src = 'https://player.vimeo.com/api/player.js';
+      script.async = true;
+      script.onload = () => {
+        console.log('Vimeo API script loaded');
+        setIsScriptLoaded(true);
+      };
+      script.onerror = (error) => {
+        console.error('Error loading Vimeo API script:', error);
+        setLoadError(true);
+        setIsLoading(false);
+      };
+      document.body.appendChild(script);
+    } else if (!isScriptLoaded) {
+      setIsScriptLoaded(true);
+    }
+  }, []);
 
   // Initialize player when Vimeo API is available
   useEffect(() => {
-    if (!playerInitAttempted.current && iframeRef.current && window.Vimeo?.Player) {
+    if (!playerInitAttempted.current && iframeRef.current && window.Vimeo?.Player && isScriptLoaded) {
       playerInitAttempted.current = true;
       try {
         console.log(`Initializing Vimeo player for ${playerId}`);
@@ -89,34 +118,6 @@ const VimeoPlayer = memo(({
       }
     }
   }, [playerId, isScriptLoaded]);
-
-  // Check if Vimeo API is loaded
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-  useEffect(() => {
-    if (window.Vimeo && window.Vimeo.Player) {
-      setIsScriptLoaded(true);
-      return;
-    }
-
-    const existingScript = document.querySelector('script[src="https://player.vimeo.com/api/player.js"]');
-    if (!existingScript) {
-      const script = document.createElement('script');
-      script.src = 'https://player.vimeo.com/api/player.js';
-      script.async = true;
-      script.onload = () => {
-        console.log('Vimeo API script loaded');
-        setIsScriptLoaded(true);
-      };
-      script.onerror = (error) => {
-        console.error('Error loading Vimeo API script:', error);
-        setLoadError(true);
-        setIsLoading(false);
-      };
-      document.body.appendChild(script);
-    } else if (!isScriptLoaded) {
-      setIsScriptLoaded(true);
-    }
-  }, []);
 
   // Initialize loading animation
   useEffect(() => {
@@ -214,7 +215,7 @@ const VimeoPlayer = memo(({
                   setLoadError(false);
                   setIsLoading(true);
                   playerInitAttempted.current = false;
-                  loadingProgress(0);
+                  setLoadingProgress(0);
                 }}
                 className="px-4 py-2 bg-yellow hover:bg-yellow-dark text-black rounded-md text-sm"
               >
