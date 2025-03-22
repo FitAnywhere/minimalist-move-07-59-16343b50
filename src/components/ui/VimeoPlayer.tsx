@@ -26,84 +26,127 @@ const VimeoPlayer = memo(({
   const wasInViewRef = useRef(isInView);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadError, setLoadError] = useState(false);
+  const playerInitAttempted = useRef(false);
+
+  // Initialize player when Vimeo API is available
+  useEffect(() => {
+    if (!playerInitAttempted.current && iframeRef.current && window.Vimeo?.Player) {
+      playerInitAttempted.current = true;
+      try {
+        console.log(`Initializing Vimeo player for ${playerId}`);
+        const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
+        setPlayer(vimeoPlayer);
+        
+        // Set up player event listeners
+        vimeoPlayer.on('ready', () => {
+          console.log(`Vimeo player ${playerId} is ready`);
+          setIsPlayerReady(true);
+          setLoadingProgress(100);
+          
+          // Ensure video is initially paused but at 0.1 seconds for thumbnail
+          vimeoPlayer.pause().then(() => {
+            vimeoPlayer.setCurrentTime(0.1).then(() => {
+              setTimeout(() => {
+                setIsLoading(false);
+              }, 300);
+            }).catch(err => {
+              console.log(`Error setting current time for ${playerId}:`, err);
+              setIsLoading(false);
+            });
+          }).catch(err => {
+            console.log(`Error pausing ${playerId}:`, err);
+            setIsLoading(false);
+          });
+        });
+        
+        vimeoPlayer.on('play', () => {
+          setIsPlaying(true);
+          console.log(`Video ${playerId} is playing`);
+        });
+        
+        vimeoPlayer.on('pause', () => {
+          setIsPlaying(false);
+        });
+        
+        vimeoPlayer.on('ended', () => {
+          console.log(`Video ${playerId} ended, resetting`);
+          setIsPlaying(false);
+          vimeoPlayer.setCurrentTime(0.1).then(() => {
+            vimeoPlayer.pause();
+          });
+        });
+
+        vimeoPlayer.on('error', (error: any) => {
+          console.error(`Vimeo player ${playerId} error:`, error);
+          setLoadError(true);
+          setIsLoading(false);
+        });
+      } catch (error) {
+        console.error(`Error initializing Vimeo player ${playerId}:`, error);
+        setLoadError(true);
+        setIsLoading(false);
+      }
+    }
+  }, [playerId, isScriptLoaded]);
+
+  // Check if Vimeo API is loaded
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  useEffect(() => {
+    if (window.Vimeo && window.Vimeo.Player) {
+      setIsScriptLoaded(true);
+      return;
+    }
+
+    const existingScript = document.querySelector('script[src="https://player.vimeo.com/api/player.js"]');
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.src = 'https://player.vimeo.com/api/player.js';
+      script.async = true;
+      script.onload = () => {
+        console.log('Vimeo API script loaded');
+        setIsScriptLoaded(true);
+      };
+      script.onerror = (error) => {
+        console.error('Error loading Vimeo API script:', error);
+        setLoadError(true);
+        setIsLoading(false);
+      };
+      document.body.appendChild(script);
+    } else if (!isScriptLoaded) {
+      setIsScriptLoaded(true);
+    }
+  }, []);
 
   // Initialize loading animation
   useEffect(() => {
-    if (isLoading) {
-      const duration = priority ? 1500 : 2500; // faster loading for priority videos
+    if (isLoading && !loadError) {
+      const duration = priority ? 1500 : 2500;
       const interval = 100;
       const increment = 100 / (duration / interval);
       
       const timer = setInterval(() => {
         setLoadingProgress(prev => {
           const newProgress = prev + increment;
-          // Cap at 90% until actually loaded
           return isPlayerReady ? 100 : Math.min(newProgress, 90);
         });
       }, interval);
       
       return () => clearInterval(timer);
     }
-  }, [isLoading, isPlayerReady, priority]);
+  }, [isLoading, isPlayerReady, priority, loadError]);
 
-  // Initialize player
+  // Control video playback based on visibility
   useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== "https://player.vimeo.com") return;
-      
-      try {
-        const data = typeof event.data === 'object' ? event.data : JSON.parse(event.data);
-        
-        if (data.event === "ready" && iframeRef.current) {
-          if (window.Vimeo && window.Vimeo.Player) {
-            const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
-            setPlayer(vimeoPlayer);
-            
-            // Ensure video is initially paused but at 0.1 seconds for thumbnail
-            vimeoPlayer.pause().then(() => {
-              vimeoPlayer.setCurrentTime(0.1).then(() => {
-                setIsPlayerReady(true);
-                console.log("Vimeo player is ready");
-                
-                // Complete the loading progress
-                setLoadingProgress(100);
-                setTimeout(() => {
-                  setIsLoading(false);
-                }, 300); // small delay for smooth transition
-              });
-            });
-            
-            // Add event listeners
-            vimeoPlayer.on('play', () => {
-              setIsPlaying(true);
-              console.log("Video can play now");
-            });
-            
-            vimeoPlayer.on('pause', () => {
-              setIsPlaying(false);
-            });
-            
-            vimeoPlayer.on('ended', () => {
-              console.log("Video ended, resetting to 0.1 seconds");
-              // When video ends, reset to beginning and show play button again
-              setIsPlaying(false); // Ensure we set isPlaying to false first
-              vimeoPlayer.setCurrentTime(0.1).then(() => {
-                // Additional confirmation that we're properly stopped
-                vimeoPlayer.pause().then(() => {
-                  console.log("Video reset to 0.1 seconds and paused");
-                });
-              });
-            });
-          }
-        }
-      } catch (e) {
-        // Silent error handling to avoid console spam
-      }
-    };
+    if (!player) return;
 
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, []);
+    const viewStateChanged = wasInViewRef.current !== isInView;
+    wasInViewRef.current = isInView;
+    
+    if (!isInView && viewStateChanged && isPlaying) {
+      player.pause().catch(err => console.error(`Error pausing ${playerId}:`, err));
+    }
+  }, [isInView, player, isPlaying, playerId]);
 
   // Handle play button click
   const handlePlayClick = (e: React.MouseEvent) => {
@@ -113,26 +156,11 @@ const VimeoPlayer = memo(({
     if (!player) return;
     
     if (isPlaying) {
-      player.pause();
+      player.pause().catch(err => console.error(`Error pausing ${playerId}:`, err));
     } else {
-      player.play().catch(() => {
-        console.log("Failed to play video");
-      });
+      player.play().catch(err => console.error(`Error playing ${playerId}:`, err));
     }
   };
-
-  // Control video playback based on visibility
-  useEffect(() => {
-    if (!player) return;
-
-    const viewStateChanged = wasInViewRef.current !== isInView;
-    wasInViewRef.current = isInView;
-    
-    // Pause when moving out of view
-    if (!isInView && viewStateChanged && isPlaying) {
-      player.pause();
-    }
-  }, [isInView, player, isPlaying]);
 
   // Build iframe query params
   const buildIframeSrc = () => {
@@ -150,7 +178,6 @@ const VimeoPlayer = memo(({
       dnt: '1'
     });
     
-    // Add autoplay for hero section (priority) video only if supported
     if (priority) {
       params.append('preload', 'auto');
     }
@@ -161,8 +188,8 @@ const VimeoPlayer = memo(({
   return (
     <div className={`relative ${className}`}>
       <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
-        {isLoading && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/5 backdrop-blur-sm z-30">
+        {isLoading && !loadError && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white z-30">
             <div className="flex flex-col items-center justify-center w-full h-full">
               <Loader className="w-10 h-10 text-yellow animate-spin mb-4" />
               <div className="w-3/4 max-w-xs">
@@ -177,6 +204,25 @@ const VimeoPlayer = memo(({
             </div>
           </div>
         )}
+
+        {loadError && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white z-30">
+            <div className="text-center p-4">
+              <p className="text-red-500 font-medium mb-2">Video could not be loaded</p>
+              <button 
+                onClick={() => {
+                  setLoadError(false);
+                  setIsLoading(true);
+                  playerInitAttempted.current = false;
+                  loadingProgress(0);
+                }}
+                className="px-4 py-2 bg-yellow hover:bg-yellow-dark text-black rounded-md text-sm"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        )}
         
         <iframe 
           ref={iframeRef}
@@ -188,7 +234,7 @@ const VimeoPlayer = memo(({
             width: '100%', 
             height: '100%', 
             border: 'none',
-            opacity: isLoading ? 0 : 1,
+            opacity: isLoading || loadError ? 0 : 1,
             transition: 'opacity 0.3s ease-in-out'
           }} 
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
@@ -198,7 +244,7 @@ const VimeoPlayer = memo(({
           importance={priority ? "high" : "auto"}
         ></iframe>
         
-        {isPlayerReady && !isPlaying && !isLoading && (
+        {isPlayerReady && !isPlaying && !isLoading && !loadError && (
           <button 
             onClick={handlePlayClick}
             className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-200 z-20"

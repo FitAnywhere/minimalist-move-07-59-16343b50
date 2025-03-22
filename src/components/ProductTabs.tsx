@@ -51,19 +51,8 @@ const ProductTabs = () => {
   });
   
   const isMobile = useIsMobile();
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   useEffect(() => {
-    if (!window.Vimeo && !isScriptLoaded) {
-      const script = document.createElement('script');
-      script.src = 'https://player.vimeo.com/api/player.js';
-      script.async = true;
-      script.onload = () => setIsScriptLoaded(true);
-      document.body.appendChild(script);
-    } else if (window.Vimeo) {
-      setIsScriptLoaded(true);
-    }
-    
     const videoIds = ['1067257145', '1067257124'];
     
     videoIds.forEach(videoId => {
@@ -74,7 +63,7 @@ const ProductTabs = () => {
       link.crossOrigin = 'anonymous';
       document.head.appendChild(link);
     });
-  }, [isScriptLoaded]);
+  }, []);
 
   useEffect(() => {
     if (isTrxTextInView) {
