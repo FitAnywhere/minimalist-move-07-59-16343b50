@@ -1,7 +1,8 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote, Star, Loader } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Testimonial {
@@ -199,8 +200,30 @@ const TestimonialsCarousel = () => {
                         loading="eager"
                       ></iframe>
                       {!videosLoaded[currentTestimonial.vimeoId] && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                          <div className="w-8 h-8 border-4 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
+                          <div className="flex flex-col items-center justify-center space-y-4">
+                            <div className="relative">
+                              {/* Outer ring */}
+                              <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
+                              
+                              {/* Middle ring */}
+                              <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
+                                <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
+                              </div>
+                              
+                              {/* Inner spinner */}
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <Loader className="w-8 h-8 text-yellow animate-spin" />
+                              </div>
+                            </div>
+                            
+                            <div className="text-white font-medium tracking-wide text-center">
+                              <p>LOADING VIDEO</p>
+                              <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
+                                <div className="h-full bg-yellow animate-pulse"></div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -221,8 +244,30 @@ const TestimonialsCarousel = () => {
                         loading="eager"
                       ></iframe>
                       {!videosLoaded[currentTestimonial.vimeoId] && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                          <div className="w-8 h-8 border-4 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
+                          <div className="flex flex-col items-center justify-center space-y-4">
+                            <div className="relative">
+                              {/* Outer ring */}
+                              <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
+                              
+                              {/* Middle ring */}
+                              <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
+                                <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
+                              </div>
+                              
+                              {/* Inner spinner */}
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <Loader className="w-8 h-8 text-yellow animate-spin" />
+                              </div>
+                            </div>
+                            
+                            <div className="text-white font-medium tracking-wide text-center">
+                              <p>LOADING VIDEO</p>
+                              <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
+                                <div className="h-full bg-yellow animate-pulse"></div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
