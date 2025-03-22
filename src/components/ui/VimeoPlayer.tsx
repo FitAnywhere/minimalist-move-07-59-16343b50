@@ -1,6 +1,8 @@
 
 import { useRef, useState, useEffect, memo } from 'react';
 import { Volume2, VolumeX, Play } from 'lucide-react';
+import { Skeleton } from './skeleton';
+import { Progress } from './progress';
 
 interface VimeoPlayerProps {
   videoId: string;
@@ -25,6 +27,8 @@ const VimeoPlayer = memo(({
   const [player, setPlayer] = useState<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const wasInViewRef = useRef(isInView);
 
   // Initialize player
@@ -55,11 +59,31 @@ const VimeoPlayer = memo(({
             // Add event listeners
             vimeoPlayer.on('play', () => {
               setIsPlaying(true);
+              setIsLoading(false);
               console.log("Video can play now");
             });
             
             vimeoPlayer.on('pause', () => {
               setIsPlaying(false);
+            });
+            
+            vimeoPlayer.on('bufferstart', () => {
+              setIsLoading(true);
+            });
+            
+            vimeoPlayer.on('bufferend', () => {
+              setIsLoading(false);
+            });
+            
+            vimeoPlayer.on('progress', (data: any) => {
+              if (data && data.percent) {
+                setLoadingProgress(Math.round(data.percent * 100));
+              }
+            });
+            
+            vimeoPlayer.on('loaded', () => {
+              setIsLoading(false);
+              setLoadingProgress(100);
             });
             
             vimeoPlayer.on('ended', () => {
@@ -81,7 +105,28 @@ const VimeoPlayer = memo(({
     };
 
     window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
+    
+    // Simulate loading progress if no progress events received
+    const loadingTimer = setTimeout(() => {
+      if (isLoading && loadingProgress === 0) {
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += 5;
+          if (progress > 95) {
+            clearInterval(interval);
+          } else {
+            setLoadingProgress(progress);
+          }
+        }, 300);
+        
+        return () => clearInterval(interval);
+      }
+    }, 1000);
+    
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      clearTimeout(loadingTimer);
+    };
   }, [audioOn]);
 
   // Handle play button click
@@ -148,6 +193,17 @@ const VimeoPlayer = memo(({
   return (
     <div className={`relative ${className}`}>
       <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
+        {/* Loading state */}
+        {isLoading && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 z-10 rounded-lg">
+            <Skeleton className="w-16 h-16 rounded-full mb-4" />
+            <div className="w-3/4 max-w-xs">
+              <Progress value={loadingProgress} className="h-2 bg-gray-200" />
+              <p className="text-center text-sm text-gray-500 mt-2">Loading video... {loadingProgress}%</p>
+            </div>
+          </div>
+        )}
+        
         <iframe 
           ref={iframeRef}
           src={buildIframeSrc()}
