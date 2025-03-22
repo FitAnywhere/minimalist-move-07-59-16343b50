@@ -25,27 +25,16 @@ const SectionLoader = () => (
 const Index = () => {
   const location = useLocation();
   const initialLoadRef = useRef(true);
-  const vimeoScriptLoadedRef = useRef(false);
   
   // Add preload for Vimeo API
   useEffect(() => {
-    // Load Vimeo player API immediately
-    const loadVimeoAPI = () => {
-      if (vimeoScriptLoadedRef.current) return;
-      
+    // Preload Vimeo player API
+    const preloadVimeoAPI = () => {
       if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
-        vimeoScriptLoadedRef.current = true;
         const script = document.createElement('script');
         script.src = 'https://player.vimeo.com/api/player.js';
         script.async = true;
-        script.onload = () => {
-          console.log("Vimeo API loaded successfully");
-        };
-        script.onerror = (error) => {
-          console.error("Error loading Vimeo API:", error);
-          vimeoScriptLoadedRef.current = false;
-        };
-        document.head.appendChild(script);
+        document.body.appendChild(script);
       }
     };
     
@@ -72,8 +61,7 @@ const Index = () => {
       });
     };
     
-    // Execute loading functions immediately
-    loadVimeoAPI();
+    preloadVimeoAPI();
     addVideoPreloadHints();
     
     // Improved scroll handling

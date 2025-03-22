@@ -1,10 +1,8 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import VimeoPlayer from './ui/VimeoPlayer';
 
 interface Testimonial {
   name: string;
@@ -65,7 +63,8 @@ const TestimonialsCarousel = () => {
   const isInView = useInView(sectionRef, {}, false);
   const currentTestimonial = testimonials[activeIndex];
   const isMobile = useIsMobile();
-  const [key, setKey] = useState(0); // Force re-render of video component
+  const [videosLoaded, setVideosLoaded] = useState<{[key: string]: boolean}>({});
+  const [key, setKey] = useState(0); // Force re-render of iframe
 
   useEffect(() => {
     if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
@@ -105,6 +104,43 @@ const TestimonialsCarousel = () => {
     setActiveIndex(index);
     setKey(prev => prev + 1); // Increment key to force re-render
   };
+
+  const handleVideoLoaded = (vimeoId: string) => {
+    setVideosLoaded(prev => ({
+      ...prev,
+      [vimeoId]: true
+    }));
+  };
+
+  useEffect(() => {
+    if (videosLoaded[currentTestimonial.vimeoId]) {
+      const nextIndex = (activeIndex + 1) % testimonials.length;
+      const nextTestimonial = testimonials[nextIndex];
+      
+      const preloadLink = document.createElement('link');
+      preloadLink.rel = 'preload';
+      preloadLink.as = 'fetch';
+      preloadLink.href = `https://player.vimeo.com/video/${nextTestimonial.vimeoId}?h=${nextTestimonial.hash}`;
+      preloadLink.crossOrigin = 'anonymous';
+      document.head.appendChild(preloadLink);
+    }
+  }, [videosLoaded, activeIndex, currentTestimonial.vimeoId]);
+
+  useEffect(() => {
+    setVideosLoaded(prev => ({
+      ...prev,
+      [currentTestimonial.vimeoId]: false
+    }));
+    
+    const timer = setTimeout(() => {
+      setVideosLoaded(prev => ({
+        ...prev,
+        [currentTestimonial.vimeoId]: true
+      }));
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, [activeIndex, currentTestimonial.vimeoId]);
   
   return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
@@ -149,16 +185,49 @@ const TestimonialsCarousel = () => {
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500 w-full flex justify-center">
-                <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
-                  <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
-                    <VimeoPlayer
-                      key={`${currentTestimonial.vimeoId}-${key}`}
-                      videoId={currentTestimonial.vimeoId}
-                      playerId={`testimonial-${activeIndex}`}
-                      isInView={isInView}
-                    />
+                {isMobile && (
+                  <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-gray-100">
+                    <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
+                      <iframe 
+                        key={`mobile-${currentTestimonial.vimeoId}-${key}`}
+                        src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=${currentTestimonial.hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0&preload=auto`}
+                        frameBorder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+                        style={{position:'absolute', top:0, left:0, width:'100%', height:'100%'}}
+                        title={`Testimonial from ${currentTestimonial.name}`}
+                        onLoad={() => handleVideoLoaded(currentTestimonial.vimeoId)}
+                        loading="eager"
+                      ></iframe>
+                      {!videosLoaded[currentTestimonial.vimeoId] && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                          <div className="w-8 h-8 border-4 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
+                
+                {!isMobile && (
+                  <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                    <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-gray-100">
+                      <iframe 
+                        key={`desktop-${currentTestimonial.vimeoId}-${key}`}
+                        src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=${currentTestimonial.hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0&preload=auto`}
+                        frameBorder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+                        style={{position:'absolute', top:0, left:0, width:'100%', height:'100%'}}
+                        title={`Testimonial from ${currentTestimonial.name}`}
+                        onLoad={() => handleVideoLoaded(currentTestimonial.vimeoId)}
+                        loading="eager"
+                      ></iframe>
+                      {!videosLoaded[currentTestimonial.vimeoId] && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                          <div className="w-8 h-8 border-4 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             
