@@ -1,6 +1,6 @@
 
 import { useRef, useState, useEffect, memo } from 'react';
-import { Volume2, VolumeX, Play, Loader } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import { Skeleton } from './skeleton';
 import { Progress } from './progress';
 
@@ -9,8 +9,6 @@ interface VimeoPlayerProps {
   playerId: string;
   className?: string;
   isInView: boolean;
-  audioOn: boolean;
-  toggleAudio: (e: React.MouseEvent) => void;
   priority?: boolean;
 }
 
@@ -19,8 +17,6 @@ const VimeoPlayer = memo(({
   playerId,
   className = "",
   isInView,
-  audioOn,
-  toggleAudio,
   priority = false
 }: VimeoPlayerProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -62,10 +58,6 @@ const VimeoPlayer = memo(({
           if (window.Vimeo && window.Vimeo.Player) {
             const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
             setPlayer(vimeoPlayer);
-            
-            // Set initial audio state
-            vimeoPlayer.setVolume(audioOn ? 1 : 0);
-            vimeoPlayer.setMuted(!audioOn);
             
             // Ensure video is initially paused but at 0.1 seconds for thumbnail
             vimeoPlayer.pause().then(() => {
@@ -111,7 +103,7 @@ const VimeoPlayer = memo(({
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [audioOn]);
+  }, []);
 
   // Handle play button click
   const handlePlayClick = (e: React.MouseEvent) => {
@@ -123,10 +115,6 @@ const VimeoPlayer = memo(({
     if (isPlaying) {
       player.pause();
     } else {
-      // Ensure audio is on when playing
-      player.setVolume(audioOn ? 1 : 0);
-      player.setMuted(!audioOn);
-      
       player.play().catch(() => {
         console.log("Failed to play video");
       });
@@ -139,16 +127,12 @@ const VimeoPlayer = memo(({
 
     const viewStateChanged = wasInViewRef.current !== isInView;
     wasInViewRef.current = isInView;
-
-    // Update audio settings
-    player.setVolume(audioOn ? 1 : 0);
-    player.setMuted(!audioOn);
     
     // Pause when moving out of view
     if (!isInView && viewStateChanged && isPlaying) {
       player.pause();
     }
-  }, [isInView, player, audioOn, isPlaying]);
+  }, [isInView, player, isPlaying]);
 
   // Build iframe query params
   const buildIframeSrc = () => {
@@ -221,23 +205,13 @@ const VimeoPlayer = memo(({
             aria-label="Play video"
           >
             <div className="w-16 h-16 bg-yellow/90 rounded-full flex items-center justify-center transition-transform hover:scale-105 duration-200">
-              <Play size={28} className="text-black ml-1" />
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-black ml-1">
+                <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
+              </svg>
             </div>
           </button>
         )}
       </div>
-      
-      <button 
-        onClick={toggleAudio}
-        className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300 z-30"
-        aria-label={audioOn ? "Mute audio" : "Unmute audio"}
-      >
-        {audioOn ? (
-          <Volume2 size={20} className="text-white" />
-        ) : (
-          <VolumeX size={20} className="text-white" />
-        )}
-      </button>
     </div>
   );
 });

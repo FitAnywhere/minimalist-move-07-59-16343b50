@@ -29,7 +29,6 @@ const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
   const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
   const [bulletPointsVisible, setBulletPointsVisible] = useState<boolean[]>([false, false, false]);
-  const [audioOn, setAudioOn] = useState(false);
   
   const sectionRef = useRef<HTMLElement>(null);
   const trxVideoRef = useRef<HTMLDivElement>(null);
@@ -95,12 +94,6 @@ const ProductTabs = () => {
     }
   }, [isTrxTextInView]);
 
-  const toggleAudio = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setAudioOn(prev => !prev);
-  };
-
   return (
     <section id="accessories" ref={sectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
@@ -160,8 +153,6 @@ const ProductTabs = () => {
                       videoId="1067257145"
                       playerId="trx-video"
                       isInView={isVideoInView}
-                      audioOn={audioOn}
-                      toggleAudio={toggleAudio}
                     />
                   </AspectRatio>
                 </div>
@@ -264,8 +255,6 @@ const ProductTabs = () => {
                       videoId="1067257124"
                       playerId="bands-video"
                       isInView={isBandsVideoInView}
-                      audioOn={audioOn}
-                      toggleAudio={toggleAudio}
                     />
                   </AspectRatio>
                 </div>

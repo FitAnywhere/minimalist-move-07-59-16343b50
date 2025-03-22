@@ -65,7 +65,6 @@ const TestimonialsCarousel = () => {
   const isInView = useInView(sectionRef, {}, false);
   const currentTestimonial = testimonials[activeIndex];
   const isMobile = useIsMobile();
-  const [audioOn, setAudioOn] = useState(false);
   const [key, setKey] = useState(0); // Force re-render of video component
 
   useEffect(() => {
@@ -105,12 +104,6 @@ const TestimonialsCarousel = () => {
   const goToTestimonial = (index: number) => {
     setActiveIndex(index);
     setKey(prev => prev + 1); // Increment key to force re-render
-  };
-
-  const toggleAudio = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setAudioOn(prev => !prev);
   };
   
   return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
@@ -163,8 +156,6 @@ const TestimonialsCarousel = () => {
                       videoId={currentTestimonial.vimeoId}
                       playerId={`testimonial-${activeIndex}`}
                       isInView={isInView}
-                      audioOn={audioOn}
-                      toggleAudio={toggleAudio}
                     />
                   </div>
                 </div>
