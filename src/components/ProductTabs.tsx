@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -54,16 +55,18 @@ const ProductTabs = () => {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   useEffect(() => {
-    if (!window.Vimeo && !isScriptLoaded) {
+    // Ensure Vimeo API is loaded
+    if (!window.Vimeo && !document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
       const script = document.createElement('script');
       script.src = 'https://player.vimeo.com/api/player.js';
       script.async = true;
       script.onload = () => setIsScriptLoaded(true);
-      document.body.appendChild(script);
+      document.head.appendChild(script);
     } else if (window.Vimeo) {
       setIsScriptLoaded(true);
     }
     
+    // Preload video sources
     const videoIds = ['1067257145', '1067257124'];
     
     videoIds.forEach(videoId => {
@@ -74,7 +77,7 @@ const ProductTabs = () => {
       link.crossOrigin = 'anonymous';
       document.head.appendChild(link);
     });
-  }, [isScriptLoaded]);
+  }, []);
 
   useEffect(() => {
     if (isTrxTextInView) {
