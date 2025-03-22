@@ -1,8 +1,6 @@
 
 import { useRef, useState, useEffect, memo } from 'react';
-import { Volume2, VolumeX, Play } from 'lucide-react';
-import { Skeleton } from './skeleton';
-import { Progress } from './progress';
+import { Volume2, VolumeX, Play, Loader } from 'lucide-react';
 
 interface VimeoPlayerProps {
   videoId: string;
@@ -28,19 +26,8 @@ const VimeoPlayer = memo(({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const progressTimerRef = useRef<NodeJS.Timeout | null>(null);
   const wasInViewRef = useRef(isInView);
-
-  // Clear any existing progress timers when component unmounts
-  useEffect(() => {
-    return () => {
-      if (progressTimerRef.current) {
-        clearTimeout(progressTimerRef.current);
-      }
-    };
-  }, []);
-
+  
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
@@ -66,7 +53,6 @@ const VimeoPlayer = memo(({
             vimeoPlayer.on('play', () => {
               setIsPlaying(true);
               setIsLoading(false);
-              setLoadingProgress(100);
               console.log("Video can play now");
             });
             
@@ -80,19 +66,10 @@ const VimeoPlayer = memo(({
             
             vimeoPlayer.on('bufferend', () => {
               setIsLoading(false);
-              setLoadingProgress(100);
-            });
-            
-            vimeoPlayer.on('progress', (data: any) => {
-              if (data && data.percent) {
-                // Ensure progress never goes backwards
-                setLoadingProgress(prev => Math.max(prev, Math.round(data.percent * 100)));
-              }
             });
             
             vimeoPlayer.on('loaded', () => {
               setIsLoading(false);
-              setLoadingProgress(100);
             });
             
             vimeoPlayer.on('ended', () => {
@@ -113,41 +90,10 @@ const VimeoPlayer = memo(({
 
     window.addEventListener('message', handleMessage);
     
-    // Start loading animation with smoother progression
-    if (isLoading && loadingProgress === 0) {
-      // Clear any existing timers
-      if (progressTimerRef.current) {
-        clearTimeout(progressTimerRef.current);
-      }
-      
-      let progress = 0;
-      const simulateLoading = () => {
-        progress += Math.random() * 3 + 1; // Random increment between 1-4
-        if (progress > 90) {
-          // Cap at 90% for simulated loading - the real events will take it to 100%
-          progress = 90;
-          return;
-        }
-        
-        setLoadingProgress(Math.min(Math.round(progress), 90));
-        
-        // Continue simulation until we reach 90%
-        if (progress < 90) {
-          progressTimerRef.current = setTimeout(simulateLoading, 300);
-        }
-      };
-      
-      // Begin simulation after a short delay
-      progressTimerRef.current = setTimeout(simulateLoading, 300);
-    }
-    
     return () => {
       window.removeEventListener('message', handleMessage);
-      if (progressTimerRef.current) {
-        clearTimeout(progressTimerRef.current);
-      }
     };
-  }, [audioOn, isLoading, loadingProgress]);
+  }, [audioOn]);
 
   const handlePlayClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -163,7 +109,6 @@ const VimeoPlayer = memo(({
       
       player.play().catch((error: any) => {
         console.log("Failed to play video:", error);
-        // Reset loading state if play fails
         setIsLoading(false);
       });
     }
@@ -210,28 +155,28 @@ const VimeoPlayer = memo(({
       <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
         {isLoading && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 z-10 rounded-lg">
-            <div className="relative w-20 h-20 mb-5">
-              <div className="absolute inset-0 rounded-full bg-yellow opacity-30 animate-pulse"></div>
-              <div className="absolute inset-2 rounded-full bg-yellow opacity-60 animate-pulse animation-delay-200"></div>
-              <div className="absolute inset-4 rounded-full bg-yellow opacity-80 animate-pulse animation-delay-300"></div>
-              <div className="absolute inset-6 rounded-full bg-white flex items-center justify-center">
-                <svg className="w-5 h-5 text-black animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="relative">
+                {/* Outer ring */}
+                <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
+                
+                {/* Middle ring */}
+                <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
+                  <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
+                </div>
+                
+                {/* Inner spinner */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Loader className="w-8 h-8 text-yellow animate-spin" />
+                </div>
               </div>
-            </div>
-            
-            <div className="w-3/4 max-w-xs">
-              <div className="h-1.5 w-full bg-white/20 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-yellow transition-all duration-300 rounded-full"
-                  style={{ width: `${loadingProgress}%` }}
-                ></div>
+              
+              <div className="text-white font-medium tracking-wide text-center">
+                <p>LOADING VIDEO</p>
+                <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
+                  <div className="h-full bg-yellow animate-pulse"></div>
+                </div>
               </div>
-              <p className="text-center text-sm text-white/80 mt-3 font-medium tracking-wide">
-                LOADING VIDEO... {loadingProgress}%
-              </p>
             </div>
           </div>
         )}
