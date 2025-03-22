@@ -1,5 +1,5 @@
 
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback, useEffect, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import VimeoPlayer from './ui/VimeoPlayer';
@@ -8,7 +8,8 @@ import HeroContent from './ui/HeroContent';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const HeroSection = () => {
+// Memoize the HeroSection component to prevent unnecessary rerenders
+const HeroSection = memo(() => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const [audioOn, setAudioOn] = useState(true);
@@ -17,19 +18,30 @@ const HeroSection = () => {
   // Use a higher threshold to ensure better video control
   const isInView = useInView(heroRef, { threshold: 0.4 });
 
-  // Ensure Vimeo API is loaded immediately
+  // Use a more optimized approach for loading the Vimeo API
   useEffect(() => {
-    if (!window.Vimeo && !document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
+    // Check if the script is already in the DOM before adding it
+    if (!window.Vimeo && !document.getElementById('vimeo-api')) {
       const script = document.createElement('script');
       script.src = 'https://player.vimeo.com/api/player.js';
+      script.id = 'vimeo-api';
       script.async = true;
       script.onload = () => setVimeoApiLoaded(true);
       document.head.appendChild(script);
     } else {
       setVimeoApiLoaded(true);
     }
+
+    return () => {
+      // Only remove if we added it
+      const script = document.getElementById('vimeo-api');
+      if (script && script.dataset.added === 'true') {
+        script.remove();
+      }
+    };
   }, []);
 
+  // Memoize event handlers
   const scrollToOwnBoth = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     const productSection = document.getElementById('product');
@@ -114,6 +126,8 @@ const HeroSection = () => {
       <ScrollIndicator />
     </section>
   );
-};
+});
+
+HeroSection.displayName = 'HeroSection';
 
 export default HeroSection;

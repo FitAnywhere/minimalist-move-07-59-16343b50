@@ -1,5 +1,5 @@
 
-import { useRef, useState, useEffect, memo } from 'react';
+import { useRef, useState, useEffect, memo, useCallback } from 'react';
 import { Volume2, VolumeX, Play, Loader } from 'lucide-react';
 
 interface VimeoPlayerProps {
@@ -12,6 +12,7 @@ interface VimeoPlayerProps {
   priority?: boolean;
 }
 
+// Optimized Vimeo Player with better loading states and event handling
 const VimeoPlayer = memo(({
   videoId,
   playerId,
@@ -28,7 +29,34 @@ const VimeoPlayer = memo(({
   const [isLoading, setIsLoading] = useState(true);
   const [videoVisible, setVideoVisible] = useState(false);
   const wasInViewRef = useRef(isInView);
+  const messageHandlerRef = useRef<(event: MessageEvent) => void>();
   
+  // Memoize the iframe source URL
+  const buildIframeSrc = useCallback(() => {
+    const params = new URLSearchParams({
+      h: 'd77ee52644',
+      title: '0',
+      byline: '0',
+      portrait: '0',
+      badge: '0',
+      autopause: '0',
+      background: '1',
+      loop: '0',
+      player_id: playerId,
+      app_id: '58479',
+      dnt: '1',
+      autoplay: '1', // Always try to autoplay
+      muted: '1'     // Start muted to ensure autoplay works
+    });
+    
+    if (priority) {
+      params.append('preload', 'auto');
+    }
+    
+    return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
+  }, [videoId, playerId, priority]);
+
+  // Optimized message handler with memoization
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
@@ -44,22 +72,10 @@ const VimeoPlayer = memo(({
             vimeoPlayer.setVolume(audioOn ? 1 : 0);
             vimeoPlayer.setMuted(!audioOn);
             
-            vimeoPlayer.pause().then(() => {
-              vimeoPlayer.setCurrentTime(0.1).then(() => {
-                setIsPlayerReady(true);
-                // Hide the loading screen once we've set up the player at 0.1 seconds
-                setIsLoading(false);
-                // Make the video visible immediately when ready
-                setVideoVisible(true);
-                console.log("Vimeo player is ready");
-              });
-            });
-            
             vimeoPlayer.on('play', () => {
               setIsPlaying(true);
               setVideoVisible(true);
               setIsLoading(false);
-              console.log("Video can play now");
             });
             
             vimeoPlayer.on('pause', () => {
@@ -75,19 +91,28 @@ const VimeoPlayer = memo(({
             });
             
             vimeoPlayer.on('loaded', () => {
-              // Make the video visible immediately when loaded
               setVideoVisible(true);
-              console.log("Video loaded but waiting for play event");
+              setIsPlayerReady(true);
+              setIsLoading(false);
+              
+              // Try to start playback immediately
+              vimeoPlayer.play().catch(() => {
+                console.log("Auto-play prevented, waiting for user interaction");
+              });
             });
             
             vimeoPlayer.on('ended', () => {
-              console.log("Video ended, resetting to 0.1 seconds");
               setIsPlaying(false);
               vimeoPlayer.setCurrentTime(0.1).then(() => {
-                vimeoPlayer.pause().then(() => {
-                  console.log("Video reset to 0.1 seconds and paused");
-                });
+                vimeoPlayer.pause();
               });
+            });
+            
+            // Pre-seek to 0.1 seconds to show the first frame
+            vimeoPlayer.setCurrentTime(0.1).then(() => {
+              setIsPlayerReady(true);
+              setIsLoading(false);
+              setVideoVisible(true);
             });
           }
         }
@@ -96,14 +121,18 @@ const VimeoPlayer = memo(({
       }
     };
 
+    messageHandlerRef.current = handleMessage;
     window.addEventListener('message', handleMessage);
     
     return () => {
-      window.removeEventListener('message', handleMessage);
+      if (messageHandlerRef.current) {
+        window.removeEventListener('message', messageHandlerRef.current);
+      }
     };
   }, [audioOn]);
 
-  const handlePlayClick = (e: React.MouseEvent) => {
+  // Memoized play handler
+  const handlePlayClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
@@ -120,43 +149,29 @@ const VimeoPlayer = memo(({
         setIsLoading(false);
       });
     }
-  };
+  }, [player, isPlaying, audioOn]);
 
+  // Optimize audio and visibility handling based on view state
   useEffect(() => {
     if (!player) return;
 
     const viewStateChanged = wasInViewRef.current !== isInView;
     wasInViewRef.current = isInView;
 
-    player.setVolume(audioOn ? 1 : 0);
-    player.setMuted(!audioOn);
-    
-    if (!isInView && viewStateChanged && isPlaying) {
-      player.pause();
+    // Don't pause/play on every render, only when view state changes
+    if (viewStateChanged) {
+      player.setVolume(audioOn ? 1 : 0);
+      player.setMuted(!audioOn);
+      
+      if (!isInView && isPlaying) {
+        player.pause();
+      } else if (isInView && isPlayerReady && !isPlaying) {
+        player.play().catch(() => {
+          // Silent catch - some browsers prevent autoplay
+        });
+      }
     }
-  }, [isInView, player, audioOn, isPlaying]);
-
-  const buildIframeSrc = () => {
-    const params = new URLSearchParams({
-      h: 'd77ee52644',
-      title: '0',
-      byline: '0',
-      portrait: '0',
-      badge: '0',
-      autopause: '0',
-      background: '1',
-      loop: '0',
-      player_id: playerId,
-      app_id: '58479',
-      dnt: '1'
-    });
-    
-    if (priority) {
-      params.append('preload', 'auto');
-    }
-    
-    return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
-  };
+  }, [isInView, player, audioOn, isPlaying, isPlayerReady]);
 
   return (
     <div className={`relative ${className}`}>

@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback, memo } from 'react';
 import { cn } from '@/lib/utils';
 
 interface Particle {
@@ -18,7 +18,7 @@ interface FloatingParticlesProps {
   isHovered?: boolean;
 }
 
-const FloatingParticles: React.FC<FloatingParticlesProps> = ({ 
+const FloatingParticles: React.FC<FloatingParticlesProps> = memo(({ 
   className,
   isHovered = false
 }) => {
@@ -26,27 +26,33 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const particlesRef = useRef<Particle[]>([]);
   const animationRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number>(0);
+  const frameRateRef = useRef<number>(0);
   
   // Enhanced color palette for a more refined look
   const colors = ['#FEF7CD', '#FEC6A1', '#E5DEFF', '#FFDEE2', '#FFE098', '#FFF4B0'];
   const isEnhanced = className?.includes('enhanced-particles');
 
-  useEffect(() => {
+  // Memoize dimension update function
+  const updateDimensions = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const updateDimensions = () => {
-      const container = canvas.parentElement;
-      if (container) {
-        const { width, height } = container.getBoundingClientRect();
+    const container = canvas.parentElement;
+    if (container) {
+      const { width, height } = container.getBoundingClientRect();
+      if (width !== dimensions.width || height !== dimensions.height) {
         setDimensions({ width, height });
         canvas.width = width;
         canvas.height = height;
       }
-    };
+    }
+  }, [dimensions.width, dimensions.height]);
 
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
+  // Initialize particles once on mount
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || dimensions.width === 0) return;
 
     // Initialize particles with more variety for enhanced version
     const particleCount = isEnhanced 
@@ -55,7 +61,7 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
     
     // Adjust particle count for mobile screens to improve performance
     const isMobile = window.innerWidth < 768;
-    const adjustedParticleCount = isMobile ? particleCount * 0.7 : particleCount;
+    const adjustedParticleCount = isMobile ? Math.floor(particleCount * 0.6) : particleCount;
     
     const particles: Particle[] = [];
 
@@ -73,23 +79,43 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
     }
 
     particlesRef.current = particles;
-
-    return () => {
-      window.removeEventListener('resize', updateDimensions);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
   }, [dimensions.width, dimensions.height, isEnhanced]);
 
+  // Handle window resize with throttling
+  useEffect(() => {
+    const handleResize = () => {
+      if (frameRateRef.current % 5 === 0) { // Only update dimensions every 5 frames
+        updateDimensions();
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', handleResize, { passive: true });
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [updateDimensions]);
+
+  // Animation loop with frame rate control
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || dimensions.width === 0) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    const draw = () => {
+    const drawParticles = (timestamp: number) => {
+      // Control frame rate (target 30fps for better performance)
+      const elapsed = timestamp - lastTimeRef.current;
+      if (elapsed < 33) { // ~30fps (1000ms / 30 = 33.33ms per frame)
+        animationRef.current = requestAnimationFrame(drawParticles);
+        return;
+      }
+
+      lastTimeRef.current = timestamp;
+      frameRateRef.current++;
+      
       ctx.clearRect(0, 0, dimensions.width, dimensions.height);
       
       particlesRef.current.forEach(particle => {
@@ -120,17 +146,18 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
         ctx.fill();
       });
 
-      // Update positions
+      // Update positions - optimized calculations
+      const centerX = dimensions.width / 2;
+      const centerY = dimensions.height / 2;
+      const now = Date.now() * 0.001;
+      const isMobile = window.innerWidth < 768;
+      
       particlesRef.current = particlesRef.current.map(particle => {
-        // Center coordinates (for hover effect)
-        const centerX = dimensions.width / 2;
-        const centerY = dimensions.height / 2;
-
         let newX = particle.x;
         let newY = particle.y;
 
         if (isHovered) {
-          // Move particles toward center when hovered
+          // Move particles toward center when hovered - optimized calculation
           const distanceX = centerX - particle.x;
           const distanceY = centerY - particle.y;
           
@@ -139,55 +166,60 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
           newX += distanceX * gatherSpeed;
           newY += distanceY * gatherSpeed;
           
-          // Add subtle pulse effect when hovered
-          const pulseFactor = Math.sin(Date.now() * 0.003) * 0.25;
+          // Add subtle pulse effect when hovered - using pre-calculated sine value
+          const pulseFactor = Math.sin(now * 3) * 0.25;
           newX += distanceX * pulseFactor * 0.007;
           newY += distanceY * pulseFactor * 0.007;
         } else {
           // Normal floating movement - gentler on mobile for performance
-          const isMobile = window.innerWidth < 768;
           const floatSpeed = isMobile ? 
             (isEnhanced ? 0.4 : 0.3) : 
             (isEnhanced ? 0.6 : 0.5);
           
-          newX += Math.sin(Date.now() * 0.001 * particle.speed) * floatSpeed;
-          newY += Math.cos(Date.now() * 0.001 * particle.speed) * floatSpeed;
+          // Pre-calculate sin/cos values for performance
+          const sinVal = Math.sin(now * particle.speed);
+          const cosVal = Math.cos(now * particle.speed);
           
-          // Boundary check
+          newX += sinVal * floatSpeed;
+          newY += cosVal * floatSpeed;
+          
+          // Boundary check - optimized to avoid unnecessary calculations
           if (newX < 0) newX = dimensions.width;
-          if (newX > dimensions.width) newX = 0;
+          else if (newX > dimensions.width) newX = 0;
           if (newY < 0) newY = dimensions.height;
-          if (newY > dimensions.height) newY = 0;
+          else if (newY > dimensions.height) newY = 0;
         }
 
-        // More dynamic size and opacity changes when hovered
+        // More efficient calculation of size and opacity pulsing
+        const commonSinValue = Math.sin(now * 2);
+        
         const sizePulse = isHovered ? 
-          Math.sin(Date.now() * 0.004) * 0.15 : 
-          Math.sin(Date.now() * 0.002) * 0.1;
+          commonSinValue * 0.15 : 
+          commonSinValue * 0.1;
           
         const opacityPulse = isHovered ?
-          Math.sin(Date.now() * 0.006) * 0.25 : 
-          Math.sin(Date.now() * 0.004) * 0.2;
+          commonSinValue * 0.25 : 
+          commonSinValue * 0.2;
 
         return {
           ...particle,
           x: newX,
           y: newY,
-          // Enhanced size pulsing
+          // Enhanced size pulsing - more efficient calculation
           size: isEnhanced || isHovered ? 
             particle.size * (1 + sizePulse) : 
             particle.size,
-          // Enhanced opacity pulsing
+          // Enhanced opacity pulsing - more efficient calculation
           opacity: (isEnhanced || isHovered) ? 
             particle.opacity * (1 + opacityPulse) : 
             particle.opacity
         };
       });
 
-      animationRef.current = requestAnimationFrame(draw);
+      animationRef.current = requestAnimationFrame(drawParticles);
     };
 
-    draw();
+    animationRef.current = requestAnimationFrame(drawParticles);
 
     return () => {
       if (animationRef.current) {
@@ -212,6 +244,8 @@ const FloatingParticles: React.FC<FloatingParticlesProps> = ({
       onTouchEnd={handleTouch}
     />
   );
-};
+});
+
+FloatingParticles.displayName = 'FloatingParticles';
 
 export default FloatingParticles;

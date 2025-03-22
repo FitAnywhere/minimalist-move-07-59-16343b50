@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+
+import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Quote, Star, Loader } from 'lucide-react';
@@ -57,6 +58,80 @@ const testimonials: Testimonial[] = [
   }
 ];
 
+// Memoized video component for better performance
+const TestimonialVideo = memo(({ 
+  vimeoId, 
+  hash, 
+  onLoaded, 
+  isVisible,
+  isMobile,
+  uniqueKey
+}: { 
+  vimeoId: string, 
+  hash: string, 
+  onLoaded: (vimeoId: string) => void,
+  isVisible: boolean,
+  isMobile: boolean,
+  uniqueKey: string
+}) => {
+  return (
+    <div 
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        opacity: isVisible ? 1 : 0,
+        transition: 'opacity 0.3s ease-in',
+        backgroundColor: 'black',
+        zIndex: 5
+      }}
+    >
+      <iframe 
+        key={uniqueKey}
+        src={`https://player.vimeo.com/video/${vimeoId}?h=${hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0&preload=auto`}
+        frameBorder="0" 
+        allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+        style={{position:'absolute', top:0, left:0, width:'100%', height:'100%', backgroundColor: 'black'}}
+        title={`Testimonial video ${vimeoId}`}
+        onLoad={() => onLoaded(vimeoId)}
+        loading="eager"
+      ></iframe>
+    </div>
+  );
+});
+
+TestimonialVideo.displayName = 'TestimonialVideo';
+
+// Loading indicator component
+const VideoLoader = memo(() => (
+  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
+    <div className="flex flex-col items-center justify-center space-y-4">
+      <div className="relative">
+        <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
+        
+        <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
+          <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
+        </div>
+        
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Loader className="w-8 h-8 text-yellow animate-spin" />
+        </div>
+      </div>
+      
+      <div className="text-white font-medium tracking-wide text-center">
+        <p>LOADING VIDEO</p>
+        <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
+          <div className="h-full bg-yellow animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+));
+
+VideoLoader.displayName = 'VideoLoader';
+
 const TestimonialsCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
@@ -67,17 +142,40 @@ const TestimonialsCarousel = () => {
   const [videoVisible, setVideoVisible] = useState<{[key: string]: boolean}>({});
   const [key, setKey] = useState(0);
   const [preloadedVideos, setPreloadedVideos] = useState<string[]>([]);
+  const vimeoScriptLoadedRef = useRef(false);
 
+  // Optimized Vimeo script loading
   useEffect(() => {
-    if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
+    if (vimeoScriptLoadedRef.current) return;
+    
+    if (!document.getElementById('vimeo-player-api')) {
       const script = document.createElement('script');
+      script.id = 'vimeo-player-api';
       script.src = 'https://player.vimeo.com/api/player.js';
       script.async = true;
+      script.onload = () => {
+        vimeoScriptLoadedRef.current = true;
+      };
       document.body.appendChild(script);
+    } else {
+      vimeoScriptLoadedRef.current = true;
     }
     
+    // Preload the first 3 testimonial videos for better UX
     const preloadTestimonials = () => {
-      testimonials.forEach((testimonial, index) => {
+      testimonials.slice(0, 3).forEach((testimonial) => {
+        const preloadLink = document.createElement('link');
+        preloadLink.rel = 'preload';
+        preloadLink.as = 'fetch';
+        preloadLink.href = `https://player.vimeo.com/video/${testimonial.vimeoId}?h=${testimonial.hash}`;
+        preloadLink.crossOrigin = 'anonymous';
+        document.head.appendChild(preloadLink);
+        
+        setPreloadedVideos(prev => [...prev, testimonial.vimeoId]);
+      });
+      
+      // Lazily preload the rest
+      testimonials.slice(3).forEach((testimonial, index) => {
         setTimeout(() => {
           const preloadLink = document.createElement('link');
           preloadLink.rel = 'preload';
@@ -87,38 +185,41 @@ const TestimonialsCarousel = () => {
           document.head.appendChild(preloadLink);
           
           setPreloadedVideos(prev => [...prev, testimonial.vimeoId]);
-        }, index < 3 ? 0 : index * 500);
+        }, (index + 1) * 500);
       });
     };
     
-    preloadTestimonials();
-  }, []);
+    if (isInView) {
+      preloadTestimonials();
+    }
+  }, [isInView]);
 
-  const nextTestimonial = () => {
+  // Memoized navigation handlers
+  const nextTestimonial = useCallback(() => {
     setVideoVisible(prev => ({
       ...prev,
       [currentTestimonial.vimeoId]: false
     }));
     
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       setActiveIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
       setKey(prev => prev + 1);
-    }, 50);
-  };
+    });
+  }, [currentTestimonial.vimeoId]);
   
-  const prevTestimonial = () => {
+  const prevTestimonial = useCallback(() => {
     setVideoVisible(prev => ({
       ...prev,
       [currentTestimonial.vimeoId]: false
     }));
     
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       setActiveIndex(prevIndex => prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1);
       setKey(prev => prev + 1);
-    }, 50);
-  };
+    });
+  }, [currentTestimonial.vimeoId]);
   
-  const goToTestimonial = (index: number) => {
+  const goToTestimonial = useCallback((index: number) => {
     if (index === activeIndex) return;
     
     setVideoVisible(prev => ({
@@ -126,26 +227,28 @@ const TestimonialsCarousel = () => {
       [currentTestimonial.vimeoId]: false
     }));
     
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       setActiveIndex(index);
       setKey(prev => prev + 1);
-    }, 50);
-  };
+    });
+  }, [activeIndex, currentTestimonial.vimeoId]);
 
-  const handleVideoLoaded = (vimeoId: string) => {
+  // Handle video loaded event
+  const handleVideoLoaded = useCallback((vimeoId: string) => {
     setVideosLoaded(prev => ({
       ...prev,
       [vimeoId]: true
     }));
     
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       setVideoVisible(prev => ({
         ...prev,
         [vimeoId]: true
       }));
-    }, 50);
-  };
+    });
+  }, []);
 
+  // Preload next video when current is loaded
   useEffect(() => {
     if (videosLoaded[currentTestimonial.vimeoId]) {
       const nextIndex = (activeIndex + 1) % testimonials.length;
@@ -164,23 +267,16 @@ const TestimonialsCarousel = () => {
     }
   }, [videosLoaded, activeIndex, currentTestimonial.vimeoId, preloadedVideos]);
 
+  // Update video visibility when active index changes
   useEffect(() => {
-    if (!videosLoaded[currentTestimonial.vimeoId]) {
-      setVideoVisible(prev => ({
-        ...prev,
-        [currentTestimonial.vimeoId]: false
-      }));
-    } else {
-      setTimeout(() => {
-        setVideoVisible(prev => ({
-          ...prev,
-          [currentTestimonial.vimeoId]: true
-        }));
-      }, 100);
-    }
+    setVideoVisible(prev => ({
+      ...prev,
+      [currentTestimonial.vimeoId]: videosLoaded[currentTestimonial.vimeoId] || false
+    }));
   }, [activeIndex, currentTestimonial.vimeoId, videosLoaded]);
   
-  return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
+  return (
+    <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center mb-12 transition-all duration-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
@@ -218,134 +314,63 @@ const TestimonialsCarousel = () => {
                 </div>
                 
                 <div className="flex space-x-2 mt-3 justify-center md:justify-start">
-                  {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-3 h-3 bg-gray-800 rounded-full" : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} style={{ backgroundColor: index === activeIndex ? '#444444' : '' }} />)}
+                  {testimonials.map((_, index) => (
+                    <button 
+                      key={index} 
+                      onClick={() => goToTestimonial(index)} 
+                      className={cn(
+                        "transition-all duration-300", 
+                        index === activeIndex 
+                          ? "w-3 h-3 bg-gray-800 rounded-full" 
+                          : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400"
+                      )} 
+                      aria-label={`Go to testimonial ${index + 1}`} 
+                      style={{ backgroundColor: index === activeIndex ? '#444444' : '' }} 
+                    />
+                  ))}
                 </div>
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500 w-full flex justify-center">
-                {isMobile && (
-                  <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black">
-                    <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-black">
-                      <div 
-                        style={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          width: '100%',
-                          height: '100%',
-                          opacity: videoVisible[currentTestimonial.vimeoId] ? 1 : 0,
-                          transition: 'opacity 0.3s ease-in',
-                          backgroundColor: 'black',
-                          zIndex: 5
-                        }}
-                      >
-                        <iframe 
-                          key={`mobile-${currentTestimonial.vimeoId}-${key}`}
-                          src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=${currentTestimonial.hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0&preload=auto`}
-                          frameBorder="0" 
-                          allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
-                          style={{position:'absolute', top:0, left:0, width:'100%', height:'100%', backgroundColor: 'black'}}
-                          title={`Testimonial from ${currentTestimonial.name}`}
-                          onLoad={() => handleVideoLoaded(currentTestimonial.vimeoId)}
-                          loading="eager"
-                        ></iframe>
-                      </div>
-                      {!videoVisible[currentTestimonial.vimeoId] && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
-                          <div className="flex flex-col items-center justify-center space-y-4">
-                            <div className="relative">
-                              <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
-                              
-                              <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
-                                <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
-                              </div>
-                              
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <Loader className="w-8 h-8 text-yellow animate-spin" />
-                              </div>
-                            </div>
-                            
-                            <div className="text-white font-medium tracking-wide text-center">
-                              <p>LOADING VIDEO</p>
-                              <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
-                                <div className="h-full bg-yellow animate-pulse"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black">
+                  <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-black">
+                    <TestimonialVideo
+                      vimeoId={currentTestimonial.vimeoId}
+                      hash={currentTestimonial.hash}
+                      onLoaded={handleVideoLoaded}
+                      isVisible={videoVisible[currentTestimonial.vimeoId] || false}
+                      isMobile={isMobile}
+                      uniqueKey={`${currentTestimonial.vimeoId}-${key}`}
+                    />
+                    
+                    {!videoVisible[currentTestimonial.vimeoId] && <VideoLoader />}
                   </div>
-                )}
-                
-                {!isMobile && (
-                  <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black">
-                    <div style={{padding:'177.78% 0 0 0', position:'relative'}} className="bg-black">
-                      <div 
-                        style={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          width: '100%',
-                          height: '100%',
-                          opacity: videoVisible[currentTestimonial.vimeoId] ? 1 : 0,
-                          transition: 'opacity 0.3s ease-in',
-                          backgroundColor: 'black',
-                          zIndex: 5
-                        }}
-                      >
-                        <iframe 
-                          key={`desktop-${currentTestimonial.vimeoId}-${key}`}
-                          src={`https://player.vimeo.com/video/${currentTestimonial.vimeoId}?h=${currentTestimonial.hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0&preload=auto`}
-                          frameBorder="0" 
-                          allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
-                          style={{position:'absolute', top:0, left:0, width:'100%', height:'100%', backgroundColor: 'black'}}
-                          title={`Testimonial from ${currentTestimonial.name}`}
-                          onLoad={() => handleVideoLoaded(currentTestimonial.vimeoId)}
-                          loading="eager"
-                        ></iframe>
-                      </div>
-                      {!videoVisible[currentTestimonial.vimeoId] && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
-                          <div className="flex flex-col items-center justify-center space-y-4">
-                            <div className="relative">
-                              <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
-                              
-                              <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
-                                <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
-                              </div>
-                              
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <Loader className="w-8 h-8 text-yellow animate-spin" />
-                              </div>
-                            </div>
-                            
-                            <div className="text-white font-medium tracking-wide text-center">
-                              <p>LOADING VIDEO</p>
-                              <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
-                                <div className="h-full bg-yellow animate-pulse"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
+                </div>
               </div>
             </div>
             
-            <button onClick={prevTestimonial} className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-gray-800" aria-label="Previous testimonial" style={{ borderColor: '#444444' }}>
+            <button 
+              onClick={prevTestimonial} 
+              className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-gray-800" 
+              aria-label="Previous testimonial" 
+              style={{ borderColor: '#444444' }}
+            >
               <ChevronLeft className="w-4 h-4 text-gray-800" />
             </button>
             
-            <button onClick={nextTestimonial} className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-gray-800" aria-label="Next testimonial" style={{ borderColor: '#444444' }}>
+            <button 
+              onClick={nextTestimonial} 
+              className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border border-gray-800" 
+              aria-label="Next testimonial" 
+              style={{ borderColor: '#444444' }}
+            >
               <ChevronRight className="w-4 h-4 text-gray-800" />
             </button>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 
 export default TestimonialsCarousel;
