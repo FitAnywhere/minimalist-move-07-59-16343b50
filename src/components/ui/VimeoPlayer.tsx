@@ -1,6 +1,8 @@
 
 import { useRef, useState, useEffect, memo } from 'react';
-import { Volume2, VolumeX, Play } from 'lucide-react';
+import { Volume2, VolumeX, Play, Loader } from 'lucide-react';
+import { Skeleton } from './skeleton';
+import { Progress } from './progress';
 
 interface VimeoPlayerProps {
   videoId: string;
@@ -26,6 +28,27 @@ const VimeoPlayer = memo(({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const wasInViewRef = useRef(isInView);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  // Initialize loading animation
+  useEffect(() => {
+    if (isLoading) {
+      const duration = priority ? 1500 : 2500; // faster loading for priority videos
+      const interval = 100;
+      const increment = 100 / (duration / interval);
+      
+      const timer = setInterval(() => {
+        setLoadingProgress(prev => {
+          const newProgress = prev + increment;
+          // Cap at 90% until actually loaded
+          return isPlayerReady ? 100 : Math.min(newProgress, 90);
+        });
+      }, interval);
+      
+      return () => clearInterval(timer);
+    }
+  }, [isLoading, isPlayerReady, priority]);
 
   // Initialize player
   useEffect(() => {
@@ -49,6 +72,12 @@ const VimeoPlayer = memo(({
               vimeoPlayer.setCurrentTime(0.1).then(() => {
                 setIsPlayerReady(true);
                 console.log("Vimeo player is ready");
+                
+                // Complete the loading progress
+                setLoadingProgress(100);
+                setTimeout(() => {
+                  setIsLoading(false);
+                }, 300); // small delay for smooth transition
               });
             });
             
@@ -148,10 +177,36 @@ const VimeoPlayer = memo(({
   return (
     <div className={`relative ${className}`}>
       <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
+        {isLoading && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/5 backdrop-blur-sm z-30">
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <Loader className="w-10 h-10 text-yellow animate-spin mb-4" />
+              <div className="w-3/4 max-w-xs">
+                <Progress 
+                  value={loadingProgress} 
+                  className="h-2 bg-gray-200" 
+                />
+              </div>
+              <p className="text-black/70 mt-3 text-sm font-medium">
+                {loadingProgress < 100 ? 'Loading video...' : 'Ready'}
+              </p>
+            </div>
+          </div>
+        )}
+        
         <iframe 
           ref={iframeRef}
           src={buildIframeSrc()}
-          style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}} 
+          style={{
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            width: '100%', 
+            height: '100%', 
+            border: 'none',
+            opacity: isLoading ? 0 : 1,
+            transition: 'opacity 0.3s ease-in-out'
+          }} 
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
           title="FitAnywhere"
           loading={priority ? "eager" : "lazy"}
@@ -159,13 +214,13 @@ const VimeoPlayer = memo(({
           importance={priority ? "high" : "auto"}
         ></iframe>
         
-        {isPlayerReady && !isPlaying && (
+        {isPlayerReady && !isPlaying && !isLoading && (
           <button 
             onClick={handlePlayClick}
             className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-200 z-20"
             aria-label="Play video"
           >
-            <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-yellow/90 rounded-full flex items-center justify-center transition-transform hover:scale-105 duration-200">
               <Play size={28} className="text-black ml-1" />
             </div>
           </button>

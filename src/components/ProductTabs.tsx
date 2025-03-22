@@ -5,6 +5,7 @@ import { useInView } from '@/utils/animations';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import VimeoPlayer from './ui/VimeoPlayer';
 
 const bandsFeatures = [
   {
@@ -28,6 +29,7 @@ const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
   const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
   const [bulletPointsVisible, setBulletPointsVisible] = useState<boolean[]>([false, false, false]);
+  const [audioOn, setAudioOn] = useState(false);
   
   const sectionRef = useRef<HTMLElement>(null);
   const trxVideoRef = useRef<HTMLDivElement>(null);
@@ -93,49 +95,10 @@ const ProductTabs = () => {
     }
   }, [isTrxTextInView]);
 
-  const renderTrxVimeoVideo = () => {
-    return (
-      <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
-        <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
-          <iframe 
-            src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto"
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
-            className="w-full h-full absolute inset-0"
-            title="TRX video"
-            style={{ border: 'none' }}
-            loading="eager"
-          ></iframe>
-        </AspectRatio>
-      </div>
-    );
-  };
-
-  const renderBandsVimeoVideo = () => {
-    return (
-      <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
-        <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
-          <iframe 
-            src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
-            className="w-full h-full absolute inset-0"
-            title="Bands video"
-            style={{ border: 'none' }}
-            loading="eager"
-          ></iframe>
-        </AspectRatio>
-      </div>
-    );
-  };
-
-  const toggleBandsFeature = (index: number) => {
-    setBandsExpandedFeatures(prev => ({
-      ...prev,
-      [index]: !prev[index]
-    }));
-  };
-
-  const areAllBandsFeaturesExpanded = () => {
-    return bandsFeatures.every((_, index) => bandsExpandedFeatures[index]);
+  const toggleAudio = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setAudioOn(prev => !prev);
   };
 
   return (
@@ -191,7 +154,17 @@ const ProductTabs = () => {
                   isMobile ? "order-1" : "order-2"
                 )}
               >
-                {renderTrxVimeoVideo()}
+                <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
+                  <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
+                    <VimeoPlayer
+                      videoId="1067257145"
+                      playerId="trx-video"
+                      isInView={isVideoInView}
+                      audioOn={audioOn}
+                      toggleAudio={toggleAudio}
+                    />
+                  </AspectRatio>
+                </div>
               </div>
               
               <div 
@@ -285,7 +258,17 @@ const ProductTabs = () => {
                   isMobile ? "order-1" : "order-2"
                 )}
               >
-                {renderBandsVimeoVideo()}
+                <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
+                  <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
+                    <VimeoPlayer
+                      videoId="1067257124"
+                      playerId="bands-video"
+                      isInView={isBandsVideoInView}
+                      audioOn={audioOn}
+                      toggleAudio={toggleAudio}
+                    />
+                  </AspectRatio>
+                </div>
               </div>
             </div>
           </div>
