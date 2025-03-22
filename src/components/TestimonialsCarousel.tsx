@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -71,7 +70,6 @@ const TestimonialsCarousel = () => {
   const [key, setKey] = useState(0);
   const [preloadedVideos, setPreloadedVideos] = useState<string[]>([]);
   
-  // Reference to store Vimeo players
   const players = useRef<{[key: string]: any}>({});
   const videoContainers = useRef<{[key: string]: HTMLDivElement | null}>({});
   
@@ -139,16 +137,16 @@ const TestimonialsCarousel = () => {
     }, 50);
   };
 
-  // This function is called when play actually starts
   const handleVideoPlaying = (vimeoId: string) => {
+    console.log(`Video ${vimeoId} is now playing`);
     setVideosPlaying(prev => ({
       ...prev,
       [vimeoId]: true
     }));
   };
 
-  // This function is called when iframe is loaded
   const handleVideoLoaded = (vimeoId: string) => {
+    console.log(`Video ${vimeoId} iframe is loaded`);
     setVideosLoaded(prev => ({
       ...prev,
       [vimeoId]: true
@@ -173,7 +171,6 @@ const TestimonialsCarousel = () => {
     }
   }, [videosLoaded, activeIndex, currentTestimonial.vimeoId, preloadedVideos]);
 
-  // Listen for play events from the iframe
   useEffect(() => {
     const messageHandler = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
@@ -184,11 +181,18 @@ const TestimonialsCarousel = () => {
         if (data.event === "play") {
           const vimeoId = data.player_id?.split('-')[0];
           if (vimeoId) {
+            console.log(`Detected play event for video ${vimeoId}`);
             handleVideoPlaying(vimeoId);
+          }
+        } else if (data.event === "ready") {
+          const vimeoId = data.player_id?.split('-')[0];
+          if (vimeoId) {
+            console.log(`Player ${vimeoId} is ready`);
+            handleVideoLoaded(vimeoId);
           }
         }
       } catch (e) {
-        // Silently fail for non-JSON messages
+        console.error("Error parsing Vimeo message:", e);
       }
     };
     
@@ -198,7 +202,7 @@ const TestimonialsCarousel = () => {
       window.removeEventListener('message', messageHandler);
     };
   }, []);
-  
+
   return (
     <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
@@ -270,7 +274,9 @@ const TestimonialsCarousel = () => {
                           left:0, 
                           width:'100%', 
                           height:'100%', 
-                          backgroundColor: 'black'
+                          backgroundColor: 'black',
+                          opacity: videosPlaying[currentTestimonial.vimeoId] ? 1 : 0,
+                          transition: 'opacity 0.3s ease-in-out'
                         }}
                         title={`Testimonial from ${currentTestimonial.name}`}
                         onLoad={() => handleVideoLoaded(currentTestimonial.vimeoId)}
@@ -278,30 +284,35 @@ const TestimonialsCarousel = () => {
                       ></iframe>
                     </div>
                     
-                    {(!videosPlaying[currentTestimonial.vimeoId]) && (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg transition-opacity duration-300">
-                        <div className="flex flex-col items-center justify-center space-y-4">
-                          <div className="relative">
-                            <div className="w-20 h-20 rounded-full border-4 border-yellow-400/30 animate-pulse" />
-                            
-                            <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
-                              <div className="w-14 h-14 rounded-full border-4 border-yellow-400/50 animate-pulse animation-delay-200" />
-                            </div>
-                            
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <Loader className="w-8 h-8 text-yellow-400 animate-spin" />
-                            </div>
+                    <div 
+                      className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg transition-opacity duration-300"
+                      style={{
+                        opacity: videosPlaying[currentTestimonial.vimeoId] ? 0 : 1,
+                        visibility: videosPlaying[currentTestimonial.vimeoId] ? 'hidden' : 'visible',
+                        transition: 'opacity 0.3s ease-in-out, visibility 0.3s ease-in-out'
+                      }}
+                    >
+                      <div className="flex flex-col items-center justify-center space-y-4">
+                        <div className="relative">
+                          <div className="w-20 h-20 rounded-full border-4 border-yellow-400/30 animate-pulse" />
+                          
+                          <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
+                            <div className="w-14 h-14 rounded-full border-4 border-yellow-400/50 animate-pulse animation-delay-200" />
                           </div>
                           
-                          <div className="text-white font-medium tracking-wide text-center">
-                            <p>LOADING VIDEO</p>
-                            <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
-                              <div className="h-full bg-yellow-400 animate-pulse"></div>
-                            </div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <Loader className="w-8 h-8 text-yellow-400 animate-spin" />
+                          </div>
+                        </div>
+                        
+                        <div className="text-white font-medium tracking-wide text-center">
+                          <p>LOADING VIDEO</p>
+                          <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
+                            <div className="h-full bg-yellow-400 animate-pulse"></div>
                           </div>
                         </div>
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -322,3 +333,4 @@ const TestimonialsCarousel = () => {
 };
 
 export default TestimonialsCarousel;
+
