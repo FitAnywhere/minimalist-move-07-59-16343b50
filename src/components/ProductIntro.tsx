@@ -42,19 +42,25 @@ const ProductIntro = () => {
 
   useEffect(() => {
     if (isInView) {
+      // Reduced delay for title animation from 300ms to 100ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         title: true
-      })), 300);
+      })), 100);
+      
+      // Reduced delay for subtitle animation from 800ms to 300ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         subtitle: true
-      })), 800);
+      })), 300);
+      
+      // Reduced delay for paragraph animation from 1300ms to 500ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         paragraph: true
-      })), 1300);
+      })), 500);
 
+      // Reduced initial delay for features from 1800ms to 700ms and time between features from 250ms to 150ms
       features.forEach((_, index) => {
         setTimeout(() => {
           setAnimationState(prev => {
@@ -65,13 +71,14 @@ const ProductIntro = () => {
               features: updatedFeatures
             };
           });
-        }, 1800 + index * 250);
+        }, 700 + index * 150);
       });
 
+      // Reduced delay for final line from 3000ms to 1200ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         finalLine: true
-      })), 3000);
+      })), 1200);
     }
   }, [isInView]);
 
@@ -274,4 +281,3 @@ const ProductIntro = () => {
 };
 
 export default ProductIntro;
-
