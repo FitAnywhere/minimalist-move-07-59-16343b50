@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
+import { Zap, ChevronDown, ChevronUp, Flame, Backpack, Loader } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -28,7 +28,9 @@ const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
   const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
   const [bulletPointsVisible, setBulletPointsVisible] = useState<boolean[]>([false, false, false]);
-  
+  const [trxVideoLoaded, setTrxVideoLoaded] = useState(false);
+  const [bandsVideoLoaded, setBandsVideoLoaded] = useState(false);
+
   const sectionRef = useRef<HTMLElement>(null);
   const trxVideoRef = useRef<HTMLDivElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
@@ -93,18 +95,89 @@ const ProductTabs = () => {
     }
   }, [isTrxTextInView]);
 
+  const handleTrxVideoMessage = (event) => {
+    if (event.origin !== "https://player.vimeo.com") return;
+    
+    try {
+      const data = typeof event.data === 'object' ? event.data : JSON.parse(event.data);
+      if (data.event === "play" && data.data && data.data.url && data.data.url.includes("1067257145")) {
+        setTrxVideoLoaded(true);
+        console.log("TRX video is now playing");
+      }
+    } catch (e) {
+      console.error("Error handling TRX video message:", e);
+    }
+  };
+
+  const handleBandsVideoMessage = (event) => {
+    if (event.origin !== "https://player.vimeo.com") return;
+    
+    try {
+      const data = typeof event.data === 'object' ? event.data : JSON.parse(event.data);
+      if (data.event === "play" && data.data && data.data.url && data.data.url.includes("1067257124")) {
+        setBandsVideoLoaded(true);
+        console.log("Bands video is now playing");
+      }
+    } catch (e) {
+      console.error("Error handling Bands video message:", e);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('message', handleTrxVideoMessage);
+    window.addEventListener('message', handleBandsVideoMessage);
+    
+    return () => {
+      window.removeEventListener('message', handleTrxVideoMessage);
+      window.removeEventListener('message', handleBandsVideoMessage);
+    };
+  }, []);
+
   const renderTrxVimeoVideo = () => {
     return (
       <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
         <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
-          <iframe 
-            src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto"
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
-            className="w-full h-full absolute inset-0"
-            title="TRX video"
-            style={{ border: 'none' }}
-            loading="eager"
-          ></iframe>
+          <div className="w-full h-full relative">
+            <iframe 
+              src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto"
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+              className="w-full h-full absolute inset-0"
+              title="TRX video"
+              style={{ 
+                border: 'none',
+                opacity: trxVideoLoaded ? 1 : 0,
+                transition: 'opacity 0.3s ease-in',
+                backgroundColor: 'black',
+                zIndex: 5
+              }}
+              loading="eager"
+            ></iframe>
+            
+            {!trxVideoLoaded && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
+                <div className="flex flex-col items-center justify-center space-y-4">
+                  <div className="relative">
+                    <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
+                    
+                    <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
+                      <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
+                    </div>
+                    
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Loader className="w-8 h-8 text-yellow animate-spin" />
+                    </div>
+                  </div>
+                  
+                  <div className="text-white font-medium tracking-wide text-center">
+                    <p>LOADING VIDEO</p>
+                    <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
+                      <div className="h-full bg-yellow animate-pulse"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </AspectRatio>
       </div>
     );
@@ -114,14 +187,47 @@ const ProductTabs = () => {
     return (
       <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
         <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
-          <iframe 
-            src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
-            className="w-full h-full absolute inset-0"
-            title="Bands video"
-            style={{ border: 'none' }}
-            loading="eager"
-          ></iframe>
+          <div className="w-full h-full relative">
+            <iframe 
+              src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto" 
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+              className="w-full h-full absolute inset-0"
+              title="Bands video"
+              style={{ 
+                border: 'none',
+                opacity: bandsVideoLoaded ? 1 : 0,
+                transition: 'opacity 0.3s ease-in',
+                backgroundColor: 'black',
+                zIndex: 5
+              }}
+              loading="eager"
+            ></iframe>
+            
+            {!bandsVideoLoaded && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
+                <div className="flex flex-col items-center justify-center space-y-4">
+                  <div className="relative">
+                    <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
+                    
+                    <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
+                      <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
+                    </div>
+                    
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Loader className="w-8 h-8 text-yellow animate-spin" />
+                    </div>
+                  </div>
+                  
+                  <div className="text-white font-medium tracking-wide text-center">
+                    <p>LOADING VIDEO</p>
+                    <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
+                      <div className="h-full bg-yellow animate-pulse"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </AspectRatio>
       </div>
     );
