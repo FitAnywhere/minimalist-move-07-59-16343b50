@@ -1,6 +1,7 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
+import { Zap, ChevronDown, ChevronUp, Flame, Backpack, Loader } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -28,6 +29,10 @@ const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
   const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
   const [bulletPointsVisible, setBulletPointsVisible] = useState<boolean[]>([false, false, false]);
+  const [trxVideoLoading, setTrxVideoLoading] = useState(true);
+  const [bandsVideoLoading, setBandsVideoLoading] = useState(true);
+  const [trxVideoVisible, setTrxVideoVisible] = useState(false);
+  const [bandsVideoVisible, setBandsVideoVisible] = useState(false);
   
   const sectionRef = useRef<HTMLElement>(null);
   const trxVideoRef = useRef<HTMLDivElement>(null);
@@ -93,16 +98,79 @@ const ProductTabs = () => {
     }
   }, [isTrxTextInView]);
 
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== "https://player.vimeo.com") return;
+      
+      try {
+        const data = typeof event.data === 'object' ? event.data : JSON.parse(event.data);
+        
+        // Handle TRX video events
+        if (data.player_id === "trx_video" && data.event === "play") {
+          setTrxVideoLoading(false);
+          setTrxVideoVisible(true);
+          console.log("TRX video is now playing");
+        }
+        
+        // Handle Bands video events
+        if (data.player_id === "bands_video" && data.event === "play") {
+          setBandsVideoLoading(false);
+          setBandsVideoVisible(true);
+          console.log("Bands video is now playing");
+        }
+      } catch (e) {
+        console.error("Error handling Vimeo message:", e);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
   const renderTrxVimeoVideo = () => {
     return (
       <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
         <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
+          {trxVideoLoading && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
+              <div className="flex flex-col items-center justify-center space-y-4">
+                <div className="relative">
+                  {/* Outer ring */}
+                  <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
+                  
+                  {/* Middle ring */}
+                  <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
+                  </div>
+                  
+                  {/* Inner spinner */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Loader className="w-8 h-8 text-yellow animate-spin" />
+                  </div>
+                </div>
+                
+                <div className="text-white font-medium tracking-wide text-center">
+                  <p>LOADING VIDEO</p>
+                  <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
+                    <div className="h-full bg-yellow animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           <iframe 
-            src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto"
+            src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto&player_id=trx_video"
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
             className="w-full h-full absolute inset-0"
             title="TRX video"
-            style={{ border: 'none' }}
+            style={{ 
+              border: 'none',
+              opacity: trxVideoVisible ? 1 : 0,
+              transition: 'opacity 0.3s ease-in'
+            }}
             loading="eager"
           ></iframe>
         </AspectRatio>
@@ -114,12 +182,43 @@ const ProductTabs = () => {
     return (
       <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
         <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
+          {bandsVideoLoading && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
+              <div className="flex flex-col items-center justify-center space-y-4">
+                <div className="relative">
+                  {/* Outer ring */}
+                  <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
+                  
+                  {/* Middle ring */}
+                  <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
+                  </div>
+                  
+                  {/* Inner spinner */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Loader className="w-8 h-8 text-yellow animate-spin" />
+                  </div>
+                </div>
+                
+                <div className="text-white font-medium tracking-wide text-center">
+                  <p>LOADING VIDEO</p>
+                  <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
+                    <div className="h-full bg-yellow animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           <iframe 
-            src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto" 
+            src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto&player_id=bands_video" 
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
             className="w-full h-full absolute inset-0"
             title="Bands video"
-            style={{ border: 'none' }}
+            style={{ 
+              border: 'none',
+              opacity: bandsVideoVisible ? 1 : 0,
+              transition: 'opacity 0.3s ease-in'
+            }}
             loading="eager"
           ></iframe>
         </AspectRatio>
