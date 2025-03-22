@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect, memo } from 'react';
 import { Volume2, VolumeX, Play } from 'lucide-react';
 import { Skeleton } from './skeleton';
@@ -31,7 +30,6 @@ const VimeoPlayer = memo(({
   const [loadingProgress, setLoadingProgress] = useState(0);
   const wasInViewRef = useRef(isInView);
 
-  // Initialize player
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
@@ -44,11 +42,9 @@ const VimeoPlayer = memo(({
             const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
             setPlayer(vimeoPlayer);
             
-            // Set initial audio state
             vimeoPlayer.setVolume(audioOn ? 1 : 0);
             vimeoPlayer.setMuted(!audioOn);
             
-            // Ensure video is initially paused but at 0.1 seconds for thumbnail
             vimeoPlayer.pause().then(() => {
               vimeoPlayer.setCurrentTime(0.1).then(() => {
                 setIsPlayerReady(true);
@@ -56,7 +52,6 @@ const VimeoPlayer = memo(({
               });
             });
             
-            // Add event listeners
             vimeoPlayer.on('play', () => {
               setIsPlaying(true);
               setIsLoading(false);
@@ -88,10 +83,8 @@ const VimeoPlayer = memo(({
             
             vimeoPlayer.on('ended', () => {
               console.log("Video ended, resetting to 0.1 seconds");
-              // When video ends, reset to beginning and show play button again
-              setIsPlaying(false); // Ensure we set isPlaying to false first
+              setIsPlaying(false);
               vimeoPlayer.setCurrentTime(0.1).then(() => {
-                // Additional confirmation that we're properly stopped
                 vimeoPlayer.pause().then(() => {
                   console.log("Video reset to 0.1 seconds and paused");
                 });
@@ -100,13 +93,11 @@ const VimeoPlayer = memo(({
           }
         }
       } catch (e) {
-        // Silent error handling to avoid console spam
       }
     };
 
     window.addEventListener('message', handleMessage);
     
-    // Simulate loading progress if no progress events received
     const loadingTimer = setTimeout(() => {
       if (isLoading && loadingProgress === 0) {
         let progress = 0;
@@ -129,7 +120,6 @@ const VimeoPlayer = memo(({
     };
   }, [audioOn]);
 
-  // Handle play button click
   const handlePlayClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -139,7 +129,6 @@ const VimeoPlayer = memo(({
     if (isPlaying) {
       player.pause();
     } else {
-      // Ensure audio is on when playing
       player.setVolume(audioOn ? 1 : 0);
       player.setMuted(!audioOn);
       
@@ -149,24 +138,20 @@ const VimeoPlayer = memo(({
     }
   };
 
-  // Control video playback based on visibility
   useEffect(() => {
     if (!player) return;
 
     const viewStateChanged = wasInViewRef.current !== isInView;
     wasInViewRef.current = isInView;
 
-    // Update audio settings
     player.setVolume(audioOn ? 1 : 0);
     player.setMuted(!audioOn);
     
-    // Pause when moving out of view
     if (!isInView && viewStateChanged && isPlaying) {
       player.pause();
     }
   }, [isInView, player, audioOn, isPlaying]);
 
-  // Build iframe query params
   const buildIframeSrc = () => {
     const params = new URLSearchParams({
       h: 'd77ee52644',
@@ -182,7 +167,6 @@ const VimeoPlayer = memo(({
       dnt: '1'
     });
     
-    // Add autoplay for hero section (priority) video only if supported
     if (priority) {
       params.append('preload', 'auto');
     }
@@ -193,13 +177,30 @@ const VimeoPlayer = memo(({
   return (
     <div className={`relative ${className}`}>
       <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
-        {/* Loading state */}
         {isLoading && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 z-10 rounded-lg">
-            <Skeleton className="w-16 h-16 rounded-full mb-4" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 z-10 rounded-lg">
+            <div className="relative w-20 h-20 mb-5">
+              <div className="absolute inset-0 rounded-full bg-yellow opacity-30 animate-pulse"></div>
+              <div className="absolute inset-2 rounded-full bg-yellow opacity-60 animate-pulse animation-delay-200"></div>
+              <div className="absolute inset-4 rounded-full bg-yellow opacity-80 animate-pulse animation-delay-300"></div>
+              <div className="absolute inset-6 rounded-full bg-white flex items-center justify-center">
+                <svg className="w-5 h-5 text-black animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </div>
+            </div>
+            
             <div className="w-3/4 max-w-xs">
-              <Progress value={loadingProgress} className="h-2 bg-gray-200" />
-              <p className="text-center text-sm text-gray-500 mt-2">Loading video... {loadingProgress}%</p>
+              <div className="h-1.5 w-full bg-white/20 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-yellow transition-all duration-300 rounded-full"
+                  style={{ width: `${loadingProgress}%` }}
+                ></div>
+              </div>
+              <p className="text-center text-sm text-white/80 mt-3 font-medium tracking-wide">
+                LOADING VIDEO... {loadingProgress}%
+              </p>
             </div>
           </div>
         )}
@@ -221,8 +222,8 @@ const VimeoPlayer = memo(({
             className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-200 z-20"
             aria-label="Play video"
           >
-            <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
-              <Play size={28} className="text-black ml-1" />
+            <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center hover:bg-yellow/90 transition-colors duration-300 group">
+              <Play size={28} className="text-black ml-1 group-hover:scale-110 transition-transform duration-300" />
             </div>
           </button>
         )}
@@ -243,7 +244,6 @@ const VimeoPlayer = memo(({
   );
 });
 
-// Display name for React DevTools
 VimeoPlayer.displayName = 'VimeoPlayer';
 
 export default VimeoPlayer;
