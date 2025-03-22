@@ -26,6 +26,7 @@ const VimeoPlayer = memo(({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [videoVisible, setVideoVisible] = useState(false);
   const wasInViewRef = useRef(isInView);
   
   useEffect(() => {
@@ -52,6 +53,8 @@ const VimeoPlayer = memo(({
             
             vimeoPlayer.on('play', () => {
               setIsPlaying(true);
+              // Only set video as visible after it's actually playing
+              setVideoVisible(true);
               setIsLoading(false);
               console.log("Video can play now");
             });
@@ -69,7 +72,8 @@ const VimeoPlayer = memo(({
             });
             
             vimeoPlayer.on('loaded', () => {
-              setIsLoading(false);
+              // Don't hide loader yet, wait for actual playback
+              console.log("Video loaded but waiting for play event");
             });
             
             vimeoPlayer.on('ended', () => {
@@ -104,6 +108,9 @@ const VimeoPlayer = memo(({
     if (isPlaying) {
       player.pause();
     } else {
+      // Show loading state when attempting to play
+      setIsLoading(true);
+      
       player.setVolume(audioOn ? 1 : 0);
       player.setMuted(!audioOn);
       
@@ -154,7 +161,7 @@ const VimeoPlayer = memo(({
     <div className={`relative ${className}`}>
       <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
         {isLoading && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 z-10 rounded-lg">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
             <div className="flex flex-col items-center justify-center space-y-4">
               <div className="relative">
                 {/* Outer ring */}
@@ -181,16 +188,25 @@ const VimeoPlayer = memo(({
           </div>
         )}
         
-        <iframe 
-          ref={iframeRef}
-          src={buildIframeSrc()}
-          style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}} 
-          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
-          title="FitAnywhere"
-          loading={priority ? "eager" : "lazy"}
-          fetchpriority={priority ? "high" : "auto"}
-          importance={priority ? "high" : "auto"}
-        ></iframe>
+        <div 
+          className="absolute inset-0 w-full h-full"
+          style={{ 
+            opacity: videoVisible ? 1 : 0,
+            transition: 'opacity 0.3s ease-in',
+            zIndex: 5
+          }}
+        >
+          <iframe 
+            ref={iframeRef}
+            src={buildIframeSrc()}
+            style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}} 
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
+            title="FitAnywhere"
+            loading={priority ? "eager" : "lazy"}
+            fetchpriority={priority ? "high" : "auto"}
+            importance={priority ? "high" : "auto"}
+          ></iframe>
+        </div>
         
         {isPlayerReady && !isPlaying && (
           <button 
