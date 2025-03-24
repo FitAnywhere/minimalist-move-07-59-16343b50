@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -59,8 +58,7 @@ const BundleOffer = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   
-  // Fix: Pass the correct arguments to useInView
-  const isInView = useInView(sectionRef, { threshold: 0.2 });
+  const isInView = useInView(sectionRef, { threshold: 0.2 }, true);
   const isMobile = useIsMobile();
   
   const handleCheckout = (e: React.MouseEvent) => {
@@ -213,7 +211,6 @@ const BundleOffer = () => {
             </div>
           </div>
           
-          {/* Updated pricing section for mobile layout */}
           <div className={cn(
             "mb-8 transition-all duration-1000 delay-500", 
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
