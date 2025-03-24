@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -65,9 +64,7 @@ const BundleOffer = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, {
-    threshold: 0.1
-  });
+  const isInView = useInView(sectionRef, { threshold: 0.1 }, true);
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -87,7 +84,6 @@ const BundleOffer = () => {
       setScrollProgress(emblaApi.scrollProgress() * 100);
     });
     
-    // Initial call to set states
     onSelect();
     
     return () => {
@@ -117,7 +113,6 @@ const BundleOffer = () => {
             </h2>
           </div>
           
-          {/* Product Carousel */}
           <div className={cn(
             "mb-10 transition-all duration-1000", 
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -165,7 +160,6 @@ const BundleOffer = () => {
               </button>
             </div>
             
-            {/* Progress bar */}
             <div className="mt-4 px-4">
               <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                 <div 
@@ -192,7 +186,6 @@ const BundleOffer = () => {
             </div>
           </div>
           
-          {/* Gift Items */}
           <div className={cn(
             "mb-10 transition-all duration-1000 delay-300", 
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -221,7 +214,6 @@ const BundleOffer = () => {
             </div>
           </div>
           
-          {/* Pricing Section */}
           <div className={cn(
             "bg-white rounded-lg shadow-md p-6 mb-8 border border-gray-200 transition-all duration-1000 delay-500", 
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -290,7 +282,6 @@ const BundleOffer = () => {
             </div>
           </div>
           
-          {/* Motivational Message */}
           <div className={cn(
             "text-center py-10 max-w-3xl mx-auto transition-all duration-300", 
             isInView ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4"
