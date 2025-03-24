@@ -1,10 +1,13 @@
+
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
 
-// Lazy load components that aren't immediately visible
-const ProductIntro = lazy(() => import('@/components/ProductIntro'));
+// Import critical components eagerly instead of lazy loading
+import ProductIntro from '@/components/ProductIntro';
+
+// Continue lazy loading other components
 const ProductTabs = lazy(() => import('@/components/ProductTabs'));
 const ChampionSection = lazy(() => import('@/components/ChampionSection'));
 const LifestyleSection = lazy(() => import('@/components/LifestyleSection'));
@@ -130,11 +133,15 @@ const Index = () => {
         <HeroSection />
       </div>
       
-      <Suspense fallback={<SectionLoader />}>
-        <div id="product">
-          <ProductIntro />
+      {/* ProductIntro is now eagerly loaded */}
+      <div id="product">
+        <ProductIntro />
+        <Suspense fallback={<SectionLoader />}>
           <ProductTabs />
-        </div>
+        </Suspense>
+      </div>
+      
+      <Suspense fallback={<SectionLoader />}>
         <ChampionSection />
         <div id="lifestyle">
           <LifestyleSection />
