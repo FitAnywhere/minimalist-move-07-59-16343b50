@@ -6,6 +6,7 @@ import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-rea
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import useEmblaCarousel from 'embla-carousel-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Product {
   name: string;
@@ -59,6 +60,7 @@ const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   // Fix for TS2554 error - passing the correct arguments to useInView
   const isInView = useInView(sectionRef, { threshold: 0.2 });
+  const isMobile = useIsMobile();
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -210,52 +212,94 @@ const BundleOffer = () => {
             </div>
           </div>
           
-          {/* Updated pricing section - removed background box */}
+          {/* Updated pricing section for mobile layout */}
           <div className={cn(
             "mb-8 transition-all duration-1000 delay-500", 
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
-              <div className="flex items-center gap-2">
-                <span className="text-xl md:text-2xl text-gray-700 line-through">
-                  €{isInView ? (
+            {isMobile ? (
+              <div className="flex items-center justify-center gap-4">
+                <div className="flex items-center">
+                  <div className="flex flex-col items-start">
+                    <span className="text-xl text-gray-700 line-through mb-1">
+                      €{isInView ? (
+                        <CountUp 
+                          start={0} 
+                          end={originalPrice} 
+                          duration={2} 
+                          separator="," 
+                        />
+                      ) : originalPrice}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl font-bold">
+                        €{isInView ? (
+                          <CountUp 
+                            start={0} 
+                            end={currentPrice} 
+                            duration={2} 
+                            separator="," 
+                          />
+                        ) : currentPrice}
+                        <span className="font-bold">+ VAT</span>
+                      </span>
+                      <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
+                        {isInView ? (
+                          <CountUp 
+                            start={0} 
+                            end={discountPercentage} 
+                            duration={2} 
+                            decimals={1} 
+                            suffix="% OFF" 
+                          />
+                        ) : `${discountPercentage}% OFF`}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl md:text-2xl text-gray-700 line-through">
+                    €{isInView ? (
+                      <CountUp 
+                        start={0} 
+                        end={originalPrice} 
+                        duration={2} 
+                        separator="," 
+                      />
+                    ) : originalPrice}
+                  </span>
+                </div>
+                
+                <div className="flex items-center">
+                  <span className="text-2xl md:text-3xl font-bold">
+                    €{isInView ? (
+                      <CountUp 
+                        start={0} 
+                        end={currentPrice} 
+                        duration={2} 
+                        separator="," 
+                      />
+                    ) : currentPrice}
+                    <span className="font-bold ml-1">+ VAT</span>
+                  </span>
+                </div>
+                
+                <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
+                  {isInView ? (
                     <CountUp 
                       start={0} 
-                      end={originalPrice} 
+                      end={discountPercentage} 
                       duration={2} 
-                      separator="," 
+                      decimals={1} 
+                      suffix="% OFF" 
                     />
-                  ) : originalPrice}
-                </span>
+                  ) : `${discountPercentage}% OFF`}
+                </div>
               </div>
-              
-              <div className="flex items-center">
-                <span className="text-2xl md:text-3xl font-bold">
-                  €{isInView ? (
-                    <CountUp 
-                      start={0} 
-                      end={currentPrice} 
-                      duration={2} 
-                      separator="," 
-                    />
-                  ) : currentPrice}
-                  {/* Updated "+ VAT" styling to match */}
-                  <span className="font-bold ml-1">+ VAT</span>
-                </span>
-              </div>
-              
-              <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
-                {isInView ? (
-                  <CountUp 
-                    start={0} 
-                    end={discountPercentage} 
-                    duration={2} 
-                    decimals={1} 
-                    suffix="% OFF" 
-                  />
-                ) : `${discountPercentage}% OFF`}
-              </div>
-            </div>
+            )}
           </div>
           
           <div className={cn(
@@ -267,7 +311,6 @@ const BundleOffer = () => {
             </p>
           </div>
           
-          {/* Updated CTA button with new text, animated icon, and styling */}
           <div className="flex justify-center mb-8">
             <Button 
               size="lg" 
