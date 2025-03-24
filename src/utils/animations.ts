@@ -1,11 +1,11 @@
 
 import { useEffect, useState, useRef, RefObject, useCallback } from 'react';
 
-// Optimized useInView hook with memoized callback and better performance
+// Modify useInView hook to have better TypeScript support with default parameters
 export const useInView = (
   ref: RefObject<HTMLElement>, 
-  options = {}, 
-  once = true,
+  options: IntersectionObserverInit = {}, 
+  once: boolean = true,
   onEnterView?: () => void,
   onExitView?: () => void
 ) => {
