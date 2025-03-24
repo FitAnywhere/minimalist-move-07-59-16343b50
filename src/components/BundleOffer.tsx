@@ -57,8 +57,8 @@ const BundleOffer = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  // Fix for TS2554 error - passing an object as the second argument and false as third
-  const isInView = useInView(sectionRef, { threshold: 0.2 }, false);
+  // Fix for TS2554 error - passing the correct arguments to useInView
+  const isInView = useInView(sectionRef, { threshold: 0.2 });
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -117,10 +117,10 @@ const BundleOffer = () => {
                   {products.map((product, index) => (
                     <div key={index} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_66.66%] lg:flex-[0_0_50%] px-2 sm:px-4">
                       <div className={cn(
-                        "border border-yellow-400 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg bg-white",
+                        "rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg bg-white",
                         "h-full"
                       )}>
-                        <div className="h-64 md:h-72 flex items-center justify-center p-6">
+                        <div className="h-72 md:h-80 flex items-center justify-center p-4">
                           <img 
                             src={product.image} 
                             alt={product.name}
@@ -174,8 +174,8 @@ const BundleOffer = () => {
             <div className="mt-6 px-4">
               <div className="max-w-md mx-auto h-2 bg-white border border-black rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-yellow-400 transition-all duration-300 ease-out"
-                  style={{ width: `${scrollProgress}%` }}
+                  className="h-full bg-yellow-400 will-change-transform"
+                  style={{ width: `${scrollProgress}%`, transition: 'width 50ms ease-out' }}
                 ></div>
               </div>
             </div>
