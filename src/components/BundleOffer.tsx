@@ -58,7 +58,8 @@ const BundleOffer = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   
-  const isInView = useInView(sectionRef, { threshold: 0.2 }, true, undefined, undefined);
+  // Fix: Ensure we pass the correct number of arguments to useInView according to its definition
+  const isInView = useInView(sectionRef);
   const isMobile = useIsMobile();
   
   const handleCheckout = (e: React.MouseEvent) => {
