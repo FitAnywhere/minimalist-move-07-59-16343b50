@@ -1,17 +1,10 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, ShoppingBag, Percent, Euro } from 'lucide-react';
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
 import useEmblaCarousel from 'embla-carousel-react';
 
 interface Product {
@@ -60,11 +53,11 @@ const giftItems: GiftItem[] = [
 ];
 
 const BundleOffer = () => {
-  const [emblaRef, emblaApi] = useEmblaCarousel();
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, startIndex: 0, align: 'start' });
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { threshold: 0.1 }, true);
+  const isInView = useInView(sectionRef, { threshold: 0.2 }, true);
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -97,7 +90,7 @@ const BundleOffer = () => {
   const discountPercentage = 56.5;
   
   return (
-    <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 mx-0 my-0 bg-white">
+    <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className={cn(
@@ -118,26 +111,26 @@ const BundleOffer = () => {
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}>
             <div className="relative">
-              <div className="embla overflow-hidden" ref={emblaRef}>
-                <div className="embla__container flex">
+              <div className="overflow-hidden" ref={emblaRef}>
+                <div className="flex">
                   {products.map((product, index) => (
-                    <div key={index} className="embla__slide flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_25%] px-4">
-                      <Card className={cn(
-                        "h-full overflow-hidden transition-all duration-300 hover:shadow-lg border-yellow-400", 
-                        "transform group"
+                    <div key={index} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_66.66%] lg:flex-[0_0_50%] px-2 sm:px-4">
+                      <div className={cn(
+                        "border border-yellow-400 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg bg-white",
+                        "h-full"
                       )}>
-                        <div className="aspect-square relative overflow-hidden">
+                        <div className="h-64 md:h-72 flex items-center justify-center p-6">
                           <img 
                             src={product.image} 
                             alt={product.name}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="w-full h-full object-contain transition-transform duration-500 hover:scale-105"
                           />
                         </div>
-                        <CardContent className="p-4">
-                          <h3 className="font-bold text-lg">{product.name}</h3>
-                          <p className="text-gray-600 mt-1">{product.description}</p>
-                        </CardContent>
-                      </Card>
+                        <div className="p-6 pt-0">
+                          <h3 className="font-bold text-xl md:text-2xl text-black mb-2">{product.name}</h3>
+                          <p className="text-gray-600">{product.description}</p>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -145,7 +138,7 @@ const BundleOffer = () => {
               
               <button 
                 onClick={() => emblaApi?.scrollPrev()} 
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hidden md:flex items-center justify-center z-10"
+                className="absolute -left-5 md:-left-10 top-1/2 transform -translate-y-1/2 bg-white text-black border border-gray-200 rounded-full p-3 shadow-md hidden md:flex items-center justify-center z-10 hover:bg-yellow-400 hover:text-black transition-all duration-300"
                 aria-label="Previous slide"
               >
                 <ArrowLeft className="h-6 w-6" />
@@ -153,35 +146,36 @@ const BundleOffer = () => {
               
               <button 
                 onClick={() => emblaApi?.scrollNext()} 
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hidden md:flex items-center justify-center z-10"
+                className="absolute -right-5 md:-right-10 top-1/2 transform -translate-y-1/2 bg-white text-black border border-gray-200 rounded-full p-3 shadow-md hidden md:flex items-center justify-center z-10 hover:bg-yellow-400 hover:text-black transition-all duration-300"
                 aria-label="Next slide"
               >
                 <ArrowRight className="h-6 w-6" />
               </button>
             </div>
             
-            <div className="mt-4 px-4">
-              <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+            <div className="flex justify-center gap-4 mt-4 md:hidden">
+              <button 
+                onClick={() => emblaApi?.scrollPrev()} 
+                className="bg-white border border-gray-200 hover:bg-yellow-400 hover:text-black rounded-full p-3 shadow-sm transition-all duration-300"
+                aria-label="Previous slide"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </button>
+              <button 
+                onClick={() => emblaApi?.scrollNext()} 
+                className="bg-white border border-gray-200 hover:bg-yellow-400 hover:text-black rounded-full p-3 shadow-sm transition-all duration-300"
+                aria-label="Next slide"
+              >
+                <ArrowRight className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <div className="mt-6 px-4">
+              <div className="max-w-md mx-auto h-2 bg-white border border-black rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-yellow-400 transition-all duration-300"
+                  className="h-full bg-yellow-400 transition-all duration-300 ease-out"
                   style={{ width: `${scrollProgress}%` }}
                 ></div>
-              </div>
-              <div className="flex justify-center gap-2 mt-3 md:hidden">
-                <button 
-                  onClick={() => emblaApi?.scrollPrev()} 
-                  className="bg-gray-200 hover:bg-gray-300 rounded-full p-2"
-                  aria-label="Previous slide"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </button>
-                <button 
-                  onClick={() => emblaApi?.scrollNext()} 
-                  className="bg-gray-200 hover:bg-gray-300 rounded-full p-2"
-                  aria-label="Next slide"
-                >
-                  <ArrowRight className="h-4 w-4" />
-                </button>
               </div>
             </div>
           </div>
@@ -190,25 +184,26 @@ const BundleOffer = () => {
             "mb-10 transition-all duration-1000 delay-300", 
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="text-center mb-6">
+              <h3 className="text-xl md:text-2xl font-bold text-black flex items-center justify-center gap-2">
+                <Gift className="h-5 w-5 text-green-600" />
+                INCLUDED GIFTS
+              </h3>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {giftItems.map((item, index) => (
-                <div key={index} className="relative group">
-                  <div className="absolute -top-3 right-4 bg-green-500 text-white px-3 py-1 rounded-full font-bold text-xs flex items-center gap-1.5 z-10">
-                    <Gift className="h-3.5 w-3.5" />
-                    GIFT
-                  </div>
-                  <Card className="overflow-hidden border-2 border-green-500 h-full transition-all duration-300 hover:shadow-lg">
-                    <div className="aspect-square p-6">
+                <div key={index} className="border border-green-600 rounded-lg bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md">
+                  <div className="flex items-center">
+                    <div className="w-20 h-20 flex-shrink-0 mr-4 overflow-hidden">
                       <img 
                         src={item.image} 
                         alt={item.name}
-                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-contain transition-all duration-300 hover:scale-110"
                       />
                     </div>
-                    <CardContent className="py-4 text-center bg-green-50">
-                      <h3 className="font-bold">{item.name}</h3>
-                    </CardContent>
-                  </Card>
+                    <h4 className="font-bold text-lg">{item.name}</h4>
+                  </div>
                 </div>
               ))}
             </div>
@@ -218,59 +213,50 @@ const BundleOffer = () => {
             "bg-white rounded-lg shadow-md p-6 mb-8 border border-gray-200 transition-all duration-1000 delay-500", 
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}>
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-              <div className="space-y-2 text-center sm:text-left">
-                <div className="flex items-center gap-2">
-                  <Euro className="h-5 w-5 text-gray-500" />
-                  <span className="text-gray-500 line-through text-xl">
-                    {isInView ? (
-                      <CountUp 
-                        start={0} 
-                        end={originalPrice} 
-                        duration={2} 
-                        separator="," 
-                      />
-                    ) : originalPrice}
-                  </span>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <Euro className="h-6 w-6 text-green-600" />
-                  <span className="text-3xl font-bold text-green-600">
-                    {isInView ? (
-                      <CountUp 
-                        start={0} 
-                        end={currentPrice} 
-                        duration={2.5} 
-                        separator="," 
-                      />
-                    ) : currentPrice}
-                    <span className="text-base font-normal ml-1">+ VAT</span>
-                  </span>
-                </div>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+              <div className="flex items-center gap-2">
+                <span className="text-xl md:text-2xl text-gray-700 line-through">
+                  €{isInView ? (
+                    <CountUp 
+                      start={0} 
+                      end={originalPrice} 
+                      duration={2} 
+                      separator="," 
+                    />
+                  ) : originalPrice}
+                </span>
               </div>
               
               <div className="flex items-center">
-                <div className="bg-green-500 text-white py-2 px-4 rounded-full flex items-center gap-2">
-                  <Percent className="h-5 w-5" />
-                  <span className="font-bold">
-                    {isInView ? (
-                      <CountUp 
-                        start={0} 
-                        end={discountPercentage} 
-                        duration={2.5} 
-                        decimals={1} 
-                        suffix="% OFF" 
-                      />
-                    ) : `${discountPercentage}% OFF`}
-                  </span>
-                </div>
+                <span className="text-2xl md:text-3xl font-bold">
+                  €{isInView ? (
+                    <CountUp 
+                      start={0} 
+                      end={currentPrice} 
+                      duration={2} 
+                      separator="," 
+                    />
+                  ) : currentPrice}
+                  <span className="text-base font-normal ml-1">+ VAT</span>
+                </span>
+              </div>
+              
+              <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
+                {isInView ? (
+                  <CountUp 
+                    start={0} 
+                    end={discountPercentage} 
+                    duration={2} 
+                    decimals={1} 
+                    suffix="% OFF" 
+                  />
+                ) : `${discountPercentage}% OFF`}
               </div>
               
               <Button 
                 size="lg" 
                 className={cn(
-                  "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", 
+                  "bg-yellow-400 hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", 
                   "transition-all duration-300 hover:shadow-md hover:scale-105",
                   "flex items-center gap-2"
                 )}
@@ -283,7 +269,7 @@ const BundleOffer = () => {
           </div>
           
           <div className={cn(
-            "text-center py-10 max-w-3xl mx-auto transition-all duration-300", 
+            "text-center py-6 max-w-3xl mx-auto transition-all duration-300", 
             isInView ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4"
           )}>
             <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4">
