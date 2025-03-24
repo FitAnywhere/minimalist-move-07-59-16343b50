@@ -57,7 +57,8 @@ const BundleOffer = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { threshold: 0.2 }, true);
+  // Fix for TS2554 error - passing an object as the second argument and false as third
+  const isInView = useInView(sectionRef, { threshold: 0.2 }, false);
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -209,8 +210,9 @@ const BundleOffer = () => {
             </div>
           </div>
           
+          {/* Updated pricing section - removed background box */}
           <div className={cn(
-            "bg-white rounded-lg shadow-md p-6 mb-8 border border-gray-200 transition-all duration-1000 delay-500", 
+            "mb-8 transition-all duration-1000 delay-500", 
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
@@ -237,7 +239,8 @@ const BundleOffer = () => {
                       separator="," 
                     />
                   ) : currentPrice}
-                  <span className="text-base font-normal ml-1">+ VAT</span>
+                  {/* Updated "+ VAT" styling to match */}
+                  <span className="font-bold ml-1">+ VAT</span>
                 </span>
               </div>
               
@@ -252,29 +255,32 @@ const BundleOffer = () => {
                   />
                 ) : `${discountPercentage}% OFF`}
               </div>
-              
-              <Button 
-                size="lg" 
-                className={cn(
-                  "bg-yellow-400 hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", 
-                  "transition-all duration-300 hover:shadow-md hover:scale-105",
-                  "flex items-center gap-2"
-                )}
-                onClick={handleCheckout}
-              >
-                <ShoppingBag className="h-5 w-5" />
-                BUY NOW
-              </Button>
             </div>
           </div>
           
           <div className={cn(
-            "text-center py-6 max-w-3xl mx-auto transition-all duration-300", 
+            "text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", 
             isInView ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4"
           )}>
             <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4">
               Would you rather pay for the gym…or <span className="font-bold">OWN it forever?</span>
             </p>
+          </div>
+          
+          {/* Moved CTA button below the motivational message with new text */}
+          <div className="flex justify-center mb-8">
+            <Button 
+              size="lg" 
+              className={cn(
+                "bg-yellow-400 hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", 
+                "transition-all duration-300 hover:shadow-md hover:scale-105",
+                "flex items-center gap-2"
+              )}
+              onClick={handleCheckout}
+            >
+              <ShoppingBag className="h-5 w-5" />
+              GET YOURS NOW
+            </Button>
           </div>
         </div>
       </div>
