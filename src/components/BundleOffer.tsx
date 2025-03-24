@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
-import { Gift, ArrowLeft, ArrowRight, ShoppingBag, Percent, Euro } from 'lucide-react';
+import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -194,7 +194,7 @@ const BundleOffer = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {giftItems.map((item, index) => (
-                <div key={index} className="border border-green-600 rounded-lg bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md">
+                <div key={index} className="border border-green-600 rounded-lg bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md shadow-[0_0_12px_rgba(22,163,74,0.5)]">
                   <div className="flex items-center">
                     <div className="w-20 h-20 flex-shrink-0 mr-4 overflow-hidden">
                       <img 
@@ -267,19 +267,19 @@ const BundleOffer = () => {
             </p>
           </div>
           
-          {/* Moved CTA button below the motivational message with new text */}
+          {/* Updated CTA button with new text, animated icon, and styling */}
           <div className="flex justify-center mb-8">
             <Button 
               size="lg" 
               className={cn(
                 "bg-yellow-400 hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", 
-                "transition-all duration-300 hover:shadow-md hover:scale-105",
+                "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow",
                 "flex items-center gap-2"
               )}
               onClick={handleCheckout}
             >
-              <ShoppingBag className="h-5 w-5" />
-              GET YOURS NOW
+              <Sparkles className="h-5 w-5 animate-pulse" />
+              SEIZE YOURS NOW
             </Button>
           </div>
         </div>
