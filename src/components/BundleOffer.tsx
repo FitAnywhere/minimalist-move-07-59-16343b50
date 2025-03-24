@@ -58,7 +58,8 @@ const BundleOffer = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  // Fix for TS2554 error - passing the correct arguments to useInView
+  
+  // Fix: Pass the correct arguments to useInView
   const isInView = useInView(sectionRef, { threshold: 0.2 });
   const isMobile = useIsMobile();
   
