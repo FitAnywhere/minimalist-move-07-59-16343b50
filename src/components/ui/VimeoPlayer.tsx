@@ -30,6 +30,12 @@ const VimeoPlayer = memo(({
   const [videoVisible, setVideoVisible] = useState(false);
   const wasInViewRef = useRef(isInView);
   const messageHandlerRef = useRef<(event: MessageEvent) => void>();
+  const audioOnRef = useRef(audioOn);
+  
+  // Update ref when prop changes
+  useEffect(() => {
+    audioOnRef.current = audioOn;
+  }, [audioOn]);
   
   // Memoize the iframe source URL
   const buildIframeSrc = useCallback(() => {
@@ -69,8 +75,8 @@ const VimeoPlayer = memo(({
             const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
             setPlayer(vimeoPlayer);
             
-            vimeoPlayer.setVolume(audioOn ? 1 : 0);
-            vimeoPlayer.setMuted(!audioOn);
+            vimeoPlayer.setVolume(audioOnRef.current ? 1 : 0);
+            vimeoPlayer.setMuted(!audioOnRef.current);
             
             vimeoPlayer.on('play', () => {
               setIsPlaying(true);
@@ -129,7 +135,7 @@ const VimeoPlayer = memo(({
         window.removeEventListener('message', messageHandlerRef.current);
       }
     };
-  }, [audioOn]);
+  }, []);
 
   // Memoized play handler
   const handlePlayClick = useCallback((e: React.MouseEvent) => {
@@ -141,17 +147,25 @@ const VimeoPlayer = memo(({
     if (isPlaying) {
       player.pause();
     } else {
-      player.setVolume(audioOn ? 1 : 0);
-      player.setMuted(!audioOn);
+      player.setVolume(audioOnRef.current ? 1 : 0);
+      player.setMuted(!audioOnRef.current);
       
       player.play().catch((error: any) => {
         console.log("Failed to play video:", error);
         setIsLoading(false);
       });
     }
-  }, [player, isPlaying, audioOn]);
+  }, [player, isPlaying]);
 
-  // Optimize audio and visibility handling based on view state
+  // Handle audio changes directly
+  useEffect(() => {
+    if (!player) return;
+    
+    player.setVolume(audioOn ? 1 : 0);
+    player.setMuted(!audioOn);
+  }, [player, audioOn]);
+
+  // Optimize visibility handling based on view state
   useEffect(() => {
     if (!player) return;
 
@@ -160,9 +174,6 @@ const VimeoPlayer = memo(({
 
     // Don't pause/play on every render, only when view state changes
     if (viewStateChanged) {
-      player.setVolume(audioOn ? 1 : 0);
-      player.setMuted(!audioOn);
-      
       if (!isInView && isPlaying) {
         player.pause();
       } else if (isInView && isPlayerReady && !isPlaying) {
@@ -171,7 +182,17 @@ const VimeoPlayer = memo(({
         });
       }
     }
-  }, [isInView, player, audioOn, isPlaying, isPlayerReady]);
+  }, [isInView, player, isPlaying, isPlayerReady]);
+
+  // Toggle audio needs to be directly connected to the button
+  const handleToggleAudio = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (toggleAudio) {
+      toggleAudio(e);
+    }
+  }, [toggleAudio]);
 
   return (
     <div className={`relative ${className}`}>
@@ -238,7 +259,7 @@ const VimeoPlayer = memo(({
       </div>
       
       <button 
-        onClick={toggleAudio}
+        onClick={handleToggleAudio}
         className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300 z-30"
         aria-label={audioOn ? "Mute audio" : "Unmute audio"}
       >
