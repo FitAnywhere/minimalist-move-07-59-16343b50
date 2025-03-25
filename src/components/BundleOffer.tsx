@@ -227,7 +227,7 @@ const BundleOffer = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {giftItems.map((item, index) => (
-                <div key={index} className="rounded-lg bg-white p-4 shadow-[0_8px_25px_rgba(0,200,0,0.4)]">
+                <div key={index} className="rounded-lg bg-white p-4 shadow-[0_8px_25px_rgba(0,200,0,0.1)]">
                   <div className="flex items-center">
                     <div className="w-20 h-20 flex-shrink-0 mr-4 overflow-hidden">
                       <img 
