@@ -50,7 +50,7 @@ const PersuasionSection = () => {
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/bIYg1o5tRg6149228g', '_blank');
+    window.open('https://buy.stripe.com/bIY5mKg8vcTP9tm14f', '_blank');
   };
   
   return (
@@ -115,7 +115,7 @@ const PersuasionSection = () => {
             className="font-bold text-xl shadow-lg hover:shadow-xl transition-all duration-300 button-glow group"
             onClick={handleCheckout}
           >
-            OWN IT NOW
+            GET BOXFUN NOW
             <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Button>
         </div>

@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -64,7 +63,7 @@ const BundleOffer = () => {
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/3cs00q7Fjg0I9rO6oq', '_blank');
+    window.open('https://buy.stripe.com/7sI00qcZD3dW7jG28e', '_blank');
   };
   
   useEffect(() => {
@@ -181,7 +180,6 @@ const BundleOffer = () => {
               </button>
             </div>
             
-            {/* Carousel progress indicator */}
             <div className="mt-4 max-w-xl mx-auto px-4">
               <Progress 
                 value={scrollProgress} 

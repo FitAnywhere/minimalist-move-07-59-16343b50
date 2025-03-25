@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Menu, X } from 'lucide-react';
@@ -20,7 +19,6 @@ const NavBar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Effect to prevent body scrolling when mobile menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -34,10 +32,9 @@ const NavBar = () => {
   }, [isOpen]);
 
   const handleNavLinkClick = (href: string) => {
-    setIsOpen(false); // Close mobile menu if open
-    
+    setIsOpen(false);
+
     if (isHomePage) {
-      // Already on home page, just scroll to the section
       const element = document.querySelector(href);
       if (element) {
         setTimeout(() => {
@@ -46,16 +43,14 @@ const NavBar = () => {
             behavior: 'smooth'
           });
           
-          // Update URL without scrolling
           history.pushState(null, '', href);
         }, 100);
       }
     } else {
-      // Navigate to home page with the hash and state that indicates we're coming from an external page
       navigate('/', { 
         state: { 
           fromExternalPage: true,
-          targetSection: href.substring(1) // Remove the # to get just the section name
+          targetSection: href.substring(1)
         }
       });
     }
@@ -71,7 +66,6 @@ const NavBar = () => {
   const navigateToHome = (e: React.MouseEvent) => {
     e.preventDefault();
     if (isHomePage) {
-      // Explicitly target the hero section for "ALL YOU NEED"
       const heroElement = document.querySelector('#hero');
       if (heroElement) {
         window.scrollTo({
@@ -80,7 +74,6 @@ const NavBar = () => {
         });
       }
     } else {
-      // Navigate to home page without hash to go to the top (ALL YOU NEED section)
       navigate('/', { state: { fromExternalPage: true }});
     }
     setIsOpen(false);
@@ -88,7 +81,7 @@ const NavBar = () => {
 
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/bIY6oO1gVaGo7jG144', '_blank');
+    window.open('https://buy.stripe.com/7sI00qcZD3dW7jG28e', '_blank');
   };
 
   return (
@@ -108,7 +101,6 @@ const NavBar = () => {
           <span className="text-yellow">Anywhere</span>
         </a>
 
-        {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-10">
           {navLinks.map((link) => (
             <a
@@ -127,7 +119,7 @@ const NavBar = () => {
 
         <div className="hidden md:block">
           <a
-            href="https://buy.stripe.com/bIY6oO1gVaGo7jG144"
+            href="https://buy.stripe.com/7sI00qcZD3dW7jG28e"
             className="bg-black text-white px-6 py-2.5 rounded-full font-medium text-sm hover:bg-black/90 transition-all hover-lift"
             onClick={handleCheckout}
           >
@@ -135,7 +127,6 @@ const NavBar = () => {
           </a>
         </div>
 
-        {/* Mobile Menu Button */}
         <button 
           className="md:hidden text-black relative z-50"
           onClick={() => setIsOpen(!isOpen)}
@@ -145,7 +136,6 @@ const NavBar = () => {
         </button>
       </div>
 
-      {/* Mobile Menu Panel */}
       {isOpen && (
         <div 
           className="fixed inset-0 pt-[73px] bg-white z-40 md:hidden"
@@ -176,7 +166,7 @@ const NavBar = () => {
             ))}
             <div className="pt-4">
               <a
-                href="https://buy.stripe.com/bIY6oO1gVaGo7jG144"
+                href="https://buy.stripe.com/7sI00qcZD3dW7jG28e"
                 className="block w-full bg-black text-white text-center px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-all"
                 onClick={handleCheckout}
               >
