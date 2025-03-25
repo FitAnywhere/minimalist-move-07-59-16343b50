@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -226,7 +227,7 @@ const BundleOffer = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {giftItems.map((item, index) => (
-                <div key={index} className="border border-green-600 rounded-lg bg-white p-4 shadow-sm transition-all duration-300 shadow-[0_0_12px_rgba(22,163,74,0.5)]">
+                <div key={index} className="border border-green-600 rounded-lg bg-white p-4 shadow-[0_0_12px_rgba(22,163,74,0.5)]">
                   <div className="flex items-center">
                     <div className="w-20 h-20 flex-shrink-0 mr-4 overflow-hidden">
                       <img 
