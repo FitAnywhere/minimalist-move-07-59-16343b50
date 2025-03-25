@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -70,12 +71,12 @@ const BundleOffer = () => {
     
     const onSelect = () => {
       setCurrentSlide(emblaApi.selectedScrollSnap());
-      setScrollProgress(emblaApi.scrollProgress() * 100);
+      setScrollProgress(emblaApi.scrollProgress());
     };
     
     emblaApi.on('select', onSelect);
     emblaApi.on('scroll', () => {
-      setScrollProgress(emblaApi.scrollProgress() * 100);
+      setScrollProgress(emblaApi.scrollProgress());
     });
     
     onSelect();
