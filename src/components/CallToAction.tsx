@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
@@ -64,7 +63,7 @@ const CallToAction = () => {
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/7sI00qcZD3dW7jG28e', '_blank');
+    window.open('https://buy.stripe.com/bIY5mKg8vcTP9tm14f', '_blank');
   };
   
   return (
@@ -128,7 +127,7 @@ const CallToAction = () => {
               )}
             >
               <a 
-                href="https://buy.stripe.com/7sI00qcZD3dW7jG28e" 
+                href="https://buy.stripe.com/bIY5mKg8vcTP9tm14f"
                 className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group"
                 onClick={handleCheckout}
               >
