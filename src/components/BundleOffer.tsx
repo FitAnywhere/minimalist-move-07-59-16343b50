@@ -186,7 +186,7 @@ const BundleOffer = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {giftItems.map((item, index) => (
-                <div key={index} className="border border-green-600 rounded-lg bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md shadow-[0_0_12px_rgba(22,163,74,0.5)]">
+                <div key={index} className="border border-green-600 rounded-lg bg-white p-4 shadow-sm transition-all duration-300 shadow-[0_0_12px_rgba(22,163,74,0.5)]">
                   <div className="flex items-center">
                     <div className="w-20 h-20 flex-shrink-0 mr-4 overflow-hidden">
                       <img 
@@ -207,43 +207,39 @@ const BundleOffer = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}>
             {isMobile ? (
-              <div className="flex items-center justify-center gap-4">
-                <div className="flex items-center">
-                  <div className="flex flex-col items-start">
-                    <span className="text-xl text-gray-700 line-through mb-1">
-                      €{isVisible ? (
-                        <CountUp 
-                          start={0} 
-                          end={originalPrice} 
-                          duration={2} 
-                          separator="," 
-                        />
-                      ) : originalPrice}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl font-bold">
-                        €{isVisible ? (
-                          <CountUp 
-                            start={0} 
-                            end={currentPrice} 
-                            duration={2} 
-                            separator="," 
-                          />
-                        ) : currentPrice}
-                        <span className="font-bold">+ VAT</span>
-                      </span>
-                      <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
-                        {isVisible ? (
-                          <CountUp 
-                            start={0} 
-                            end={discountPercentage} 
-                            duration={2} 
-                            decimals={1} 
-                            suffix="% OFF" 
-                          />
-                        ) : `${discountPercentage}% OFF`}
-                      </div>
-                    </div>
+              <div className="flex flex-col items-center justify-center">
+                <span className="text-xl text-gray-700 line-through mb-1">
+                  €{isVisible ? (
+                    <CountUp 
+                      start={0} 
+                      end={originalPrice} 
+                      duration={2} 
+                      separator="," 
+                    />
+                  ) : originalPrice}
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl font-bold">
+                    €{isVisible ? (
+                      <CountUp 
+                        start={0} 
+                        end={currentPrice} 
+                        duration={2} 
+                        separator="," 
+                      />
+                    ) : currentPrice}
+                    <span className="font-bold">+ VAT</span>
+                  </span>
+                  <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
+                    {isVisible ? (
+                      <CountUp 
+                        start={0} 
+                        end={discountPercentage} 
+                        duration={2} 
+                        decimals={1} 
+                        suffix="% OFF" 
+                      />
+                    ) : `${discountPercentage}% OFF`}
                   </div>
                 </div>
               </div>
