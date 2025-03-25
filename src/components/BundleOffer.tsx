@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -134,11 +135,12 @@ const BundleOffer = () => {
                     <div key={index} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_66.66%] lg:flex-[0_0_50%] px-2 sm:px-4">
                       <div className={cn(
                         "rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg",
-                        "h-full bg-gradient-to-br relative shadow-sm",
+                        "h-full bg-gradient-to-br relative",
                         "bg-gradient-to-br from-yellow-50/10 to-white/5",
                         "before:absolute before:inset-0 before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIiB6PjxwYXRoIGQ9Ik0wIDBhNyA3IDAgMDEwIDE0QTcgNyAwIDAxMCAwWiIgZmlsbD0iI2YxZjFmMSIgZmlsbC1vcGFjaXR5PSIwLjIiPjwvcGF0aD48L3N2Zz4=')] before:opacity-10",
                         "after:absolute after:inset-0 after:bg-yellow-50/10 after:backdrop-blur-[1px]",
-                        "hover:translate-y-[-5px] hover:shadow-xl"
+                        "hover:translate-y-[-5px] hover:shadow-xl",
+                        "shadow-[0_8px_30px_rgba(255,215,0,0.1)]" // Added light yellow shadow
                       )}>
                         <div className="relative z-10">
                           <div className="h-72 md:h-80 flex items-center justify-center p-4 group">
@@ -225,7 +227,7 @@ const BundleOffer = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {giftItems.map((item, index) => (
-                <div key={index} className="rounded-lg bg-white p-4 shadow-[0_4px_15px_rgba(22,163,74,0.25)]">
+                <div key={index} className="rounded-lg bg-white p-4 shadow-[0_4px_15px_rgba(134,239,172,0.35)]">
                   <div className="flex items-center">
                     <div className="w-20 h-20 flex-shrink-0 mr-4 overflow-hidden">
                       <img 
