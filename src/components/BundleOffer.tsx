@@ -71,12 +71,15 @@ const BundleOffer = () => {
     
     const onSelect = () => {
       setCurrentSlide(emblaApi.selectedScrollSnap());
-      setScrollProgress(emblaApi.scrollProgress());
+      // Fix the scrollProgress method call by passing the correct arguments
+      // The method now expects a boolean as the second argument
+      setScrollProgress(emblaApi.scrollProgress(true));
     };
     
     emblaApi.on('select', onSelect);
     emblaApi.on('scroll', () => {
-      setScrollProgress(emblaApi.scrollProgress());
+      // Fix here as well - pass the required boolean argument
+      setScrollProgress(emblaApi.scrollProgress(true));
     });
     
     onSelect();
