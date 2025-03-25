@@ -24,7 +24,7 @@ interface GiftItem {
 const products: Product[] = [
   {
     name: "PowerTower (PRO)",
-    image: "https://i.imgur.com/k0XIKUW.png",
+    image: "https://i.imgur.com/bJAsJkr.png",
     description: "With adjustable height",
     badge: "PREMIUM",
     gradient: "from-blue-50 to-white"
@@ -115,7 +115,7 @@ const BundleOffer = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
           )}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-              COMPLETE PORTABLE GYM
+              LAST GYM YOU WILL EVER NEED
               <span className={cn(
                 "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
                 isVisible ? "scale-x-100" : "scale-x-0"
