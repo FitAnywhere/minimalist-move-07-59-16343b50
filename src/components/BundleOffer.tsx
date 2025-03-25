@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -27,25 +28,25 @@ const products: Product[] = [
     image: "https://i.imgur.com/5FJtwsb.png",
     description: "With adjustable height",
     badge: "PREMIUM",
-    gradient: "from-blue-50 to-white"
+    gradient: "from-yellow-50/10 to-white/5"
   },
   {
     name: "TRAINING LIBRARY",
     image: "https://i.imgur.com/U7zShaF.png",
     description: "Your personal trainer, on-demand",
-    gradient: "from-blue-50 to-white"
+    gradient: "from-yellow-50/10 to-white/5"
   },
   {
     name: "TRX (PRO)",
     image: "https://i.imgur.com/ZgLzS1m.png",
     description: "Expand your training possibilities",
-    gradient: "from-blue-50 to-white"
+    gradient: "from-yellow-50/10 to-white/5"
   },
   {
     name: "BANDS (8x)",
     image: "https://i.imgur.com/s7xD4II.png",
     description: "Ideal for every beginner or expert",
-    gradient: "from-blue-50 to-white"
+    gradient: "from-yellow-50/10 to-white/5"
   }
 ];
 
@@ -134,11 +135,10 @@ const BundleOffer = () => {
                     <div key={index} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_66.66%] lg:flex-[0_0_50%] px-2 sm:px-4">
                       <div className={cn(
                         "rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg",
-                        "h-full bg-gradient-to-br relative",
-                        product.gradient || "from-gray-50 to-white",
-                        "border border-gray-100 shadow-sm",
+                        "h-full bg-gradient-to-br relative shadow-sm",
+                        "bg-gradient-to-br from-yellow-50/10 to-white/5",
                         "before:absolute before:inset-0 before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIiB6PjxwYXRoIGQ9Ik0wIDBhNyA3IDAgMDEwIDE0QTcgNyAwIDAxMCAwWiIgZmlsbD0iI2YxZjFmMSIgZmlsbC1vcGFjaXR5PSIwLjIiPjwvcGF0aD48L3N2Zz4=')] before:opacity-10",
-                        "after:absolute after:inset-0 after:bg-white/40 after:backdrop-blur-[1px]",
+                        "after:absolute after:inset-0 after:bg-yellow-50/10 after:backdrop-blur-[1px]",
                         "hover:translate-y-[-5px] hover:shadow-xl"
                       )}>
                         <div className="relative z-10">
@@ -226,7 +226,7 @@ const BundleOffer = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {giftItems.map((item, index) => (
-                <div key={index} className="border border-green-500/70 rounded-lg bg-white p-4 shadow-[0_0_8px_rgba(22,163,74,0.3)]">
+                <div key={index} className="rounded-lg bg-white p-4 shadow-[0_4px_12px_rgba(22,163,74,0.15)]">
                   <div className="flex items-center">
                     <div className="w-20 h-20 flex-shrink-0 mr-4 overflow-hidden">
                       <img 
