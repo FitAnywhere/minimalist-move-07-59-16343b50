@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -6,11 +7,13 @@ import { Button } from '@/components/ui/button';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
 
 interface Product {
   name: string;
   image: string;
   description: string;
+  badge?: string;
 }
 
 interface GiftItem {
@@ -20,9 +23,10 @@ interface GiftItem {
 
 const products: Product[] = [
   {
-    name: "PowerTower (PRO)",
+    name: "PowerTower",
     image: "https://i.imgur.com/etEReYn.png",
-    description: "With adjustable height"
+    description: "With adjustable height",
+    badge: "PREMIUM"
   },
   {
     name: "TRAINING LIBRARY",
@@ -137,7 +141,14 @@ const BundleOffer = () => {
                           />
                         </div>
                         <div className="p-6 pt-0">
-                          <h3 className="font-bold text-xl md:text-2xl text-black mb-2">{product.name}</h3>
+                          <div className="flex items-center gap-2 mb-2">
+                            <h3 className="font-bold text-xl md:text-2xl text-black">{product.name}</h3>
+                            {product.badge && (
+                              <Badge className="bg-yellow text-black text-xs font-bold py-1">
+                                {product.badge}
+                              </Badge>
+                            )}
+                          </div>
                           <p className="text-gray-600">{product.description}</p>
                         </div>
                       </div>
