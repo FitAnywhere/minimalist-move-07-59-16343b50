@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -58,7 +57,6 @@ const BundleOffer = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   
-  // Replace useInView with a simple useState - animations will still work with CSS
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   
@@ -88,7 +86,6 @@ const BundleOffer = () => {
     };
   }, [emblaApi]);
   
-  // Set isVisible to true on component mount
   useEffect(() => {
     setIsVisible(true);
   }, []);
