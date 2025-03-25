@@ -6,6 +6,7 @@ import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Progress } from '@/components/ui/progress';
 
 interface Product {
   name: string;
@@ -55,6 +56,7 @@ const giftItems: GiftItem[] = [
 const BundleOffer = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, startIndex: 0, align: 'start' });
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   
   const [isVisible, setIsVisible] = useState(true);
@@ -72,12 +74,21 @@ const BundleOffer = () => {
       setCurrentSlide(emblaApi.selectedScrollSnap());
     };
     
-    emblaApi.on('select', onSelect);
+    const onScroll = () => {
+      const progress = emblaApi.scrollProgress();
+      setScrollProgress(progress * 100);
+    };
     
+    emblaApi.on('select', onSelect);
+    emblaApi.on('scroll', onScroll);
+    
+    // Initial progress
+    onScroll();
     onSelect();
     
     return () => {
       emblaApi.off('select', onSelect);
+      emblaApi.off('scroll', onScroll);
     };
   }, [emblaApi]);
   
@@ -170,7 +181,17 @@ const BundleOffer = () => {
               </button>
             </div>
             
-            {/* Removing the carousel progress loader that was shown in the red rectangle */}
+            {/* Carousel progress indicator */}
+            <div className="mt-4 max-w-xl mx-auto px-4">
+              <Progress 
+                value={scrollProgress} 
+                className="h-1.5 bg-gray-200 rounded-full" 
+              />
+              <div className="flex justify-between mt-1 text-xs text-gray-500">
+                <span>{currentSlide + 1}</span>
+                <span>{products.length}</span>
+              </div>
+            </div>
           </div>
           
           <div className={cn(
