@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -25,26 +24,26 @@ interface GiftItem {
 const products: Product[] = [
   {
     name: "PowerTower (PRO)",
-    image: "https://i.imgur.com/etEReYn.png",
+    image: "https://i.imgur.com/k0XIKUW.png",
     description: "With adjustable height",
     badge: "PREMIUM",
     gradient: "from-gray-50 to-white"
   },
   {
     name: "TRAINING LIBRARY",
-    image: "https://i.imgur.com/Vb7DqjH.png",
+    image: "https://i.imgur.com/GgNDJaH.png",
     description: "Your personal trainer, on-demand",
     gradient: "from-blue-50 to-white"
   },
   {
     name: "TRX (PRO)",
-    image: "https://i.imgur.com/jGB2ElP.png",
+    image: "https://i.imgur.com/8Ztk6Eh.png",
     description: "Expand your training possibilities",
     gradient: "from-yellow-50 to-white"
   },
   {
     name: "BANDS (8x)",
-    image: "https://i.imgur.com/V459Nuh.png",
+    image: "https://i.imgur.com/XXbzvQJ.png",
     description: "Ideal for every beginner or expert",
     gradient: "from-red-50 to-white"
   }
@@ -53,11 +52,11 @@ const products: Product[] = [
 const giftItems: GiftItem[] = [
   {
     name: "BOXFUN",
-    image: "https://i.imgur.com/sRAffrC.png"
+    image: "https://i.imgur.com/VWPQbF1.png"
   },
   {
     name: "SHIPPING",
-    image: "https://i.imgur.com/zQU1L0L.png"
+    image: "https://i.imgur.com/L98u04B.png"
   }
 ];
 
