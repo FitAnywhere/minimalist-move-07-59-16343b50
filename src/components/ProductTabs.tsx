@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
@@ -8,17 +9,17 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 const bandsFeatures = [
   {
-    title: "SUPPORT WHEN NEEDED, CHALLENGE WHEN READY",
+    title: "10x MORE EXERCISES",
     description: "Push past plateaus, and keep progressing.",
     icon: Flame
   }, 
   {
-    title: "SAFE ON JOINTS, TOUGH ON MUSCLES",
+    title: "SUPPORT WHEN NEEDED",
     description: "Unfold, clip in, and train—whether at home or on the go.",
     icon: Backpack
   },
   {
-    title: "CUSTOMIZE EVERY WORKOUT",
+    title: "CHALLENGE WHEN READY",
     description: "From first reps to peak performance—bands move with you.",
     icon: Zap
   }
@@ -220,15 +221,15 @@ const ProductTabs = () => {
                 <div className="space-y-8 md:space-y-9 mt-8 relative z-10">
                   <div className="flex items-start gap-3">
                     <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>-</span>
-                    <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>NO MACHINES. NO RESTRICTIONS.</p>
+                    <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>PULL, PUSH, OR HOLD</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>-</span>
-                    <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>PULL, PUSH, OR HOLD.</p>
+                    <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>YOUR INTENSITY</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{ letterSpacing: "1px" }}>-</span>
-                    <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>YOUR INTENSITY. YOUR RULES.</p>
+                    <p className="text-gray-800 text-lg font-medium tracking-wide" style={{ letterSpacing: "1.2px", color: "#333333" }}>YOUR RULES</p>
                   </div>
                 </div>
               </div>
@@ -259,7 +260,7 @@ const ProductTabs = () => {
                       letterSpacing: "1.5px"
                     }}
                   >
-                    ADAPTIVE TRAINING FOR EVERY LEVEL
+                    ADAPTIVE FOR EVERY LEVEL
                   </h3>
                 </div>
                 
