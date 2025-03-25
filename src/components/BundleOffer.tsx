@@ -1,6 +1,5 @@
 
 import { useState, useRef, useEffect } from 'react';
-import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
 import CountUp from 'react-countup';
@@ -59,11 +58,8 @@ const BundleOffer = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   
-  const isInView = useInView(
-    sectionRef, 
-    { threshold: 0.1 }, 
-    true
-  );
+  // Replace useInView with a simple useState - animations will still work with CSS
+  const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   
   const handleCheckout = (e: React.MouseEvent) => {
@@ -92,6 +88,11 @@ const BundleOffer = () => {
     };
   }, [emblaApi]);
   
+  // Set isVisible to true on component mount
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+  
   const originalPrice = 1899;
   const currentPrice = 825;
   const discountPercentage = 56.5;
@@ -102,20 +103,20 @@ const BundleOffer = () => {
         <div className="max-w-5xl mx-auto">
           <div className={cn(
             "text-center transition-all duration-1000 transform mb-10", 
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
           )}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
               COMPLETE PORTABLE GYM
               <span className={cn(
                 "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
-                isInView ? "scale-x-100" : "scale-x-0"
+                isVisible ? "scale-x-100" : "scale-x-0"
               )}></span>
             </h2>
           </div>
           
           <div className={cn(
             "mb-10 transition-all duration-1000", 
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}>
             <div className="relative">
               <div className="overflow-hidden" ref={emblaRef}>
@@ -189,7 +190,7 @@ const BundleOffer = () => {
           
           <div className={cn(
             "mb-10 transition-all duration-1000 delay-300", 
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}>
             <div className="text-center mb-6">
               <h3 className="text-xl md:text-2xl font-bold text-black flex items-center justify-center gap-2">
@@ -218,14 +219,14 @@ const BundleOffer = () => {
           
           <div className={cn(
             "mb-8 transition-all duration-1000 delay-500", 
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}>
             {isMobile ? (
               <div className="flex items-center justify-center gap-4">
                 <div className="flex items-center">
                   <div className="flex flex-col items-start">
                     <span className="text-xl text-gray-700 line-through mb-1">
-                      €{isInView ? (
+                      €{isVisible ? (
                         <CountUp 
                           start={0} 
                           end={originalPrice} 
@@ -236,7 +237,7 @@ const BundleOffer = () => {
                     </span>
                     <div className="flex items-center gap-2">
                       <span className="text-2xl font-bold">
-                        €{isInView ? (
+                        €{isVisible ? (
                           <CountUp 
                             start={0} 
                             end={currentPrice} 
@@ -247,7 +248,7 @@ const BundleOffer = () => {
                         <span className="font-bold">+ VAT</span>
                       </span>
                       <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
-                        {isInView ? (
+                        {isVisible ? (
                           <CountUp 
                             start={0} 
                             end={discountPercentage} 
@@ -265,7 +266,7 @@ const BundleOffer = () => {
               <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
                 <div className="flex items-center gap-2">
                   <span className="text-xl md:text-2xl text-gray-700 line-through">
-                    €{isInView ? (
+                    €{isVisible ? (
                       <CountUp 
                         start={0} 
                         end={originalPrice} 
@@ -278,7 +279,7 @@ const BundleOffer = () => {
                 
                 <div className="flex items-center">
                   <span className="text-2xl md:text-3xl font-bold">
-                    €{isInView ? (
+                    €{isVisible ? (
                       <CountUp 
                         start={0} 
                         end={currentPrice} 
@@ -291,7 +292,7 @@ const BundleOffer = () => {
                 </div>
                 
                 <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
-                  {isInView ? (
+                  {isVisible ? (
                     <CountUp 
                       start={0} 
                       end={discountPercentage} 
@@ -307,7 +308,7 @@ const BundleOffer = () => {
           
           <div className={cn(
             "text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", 
-            isInView ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4"
+            isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4"
           )}>
             <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4">
               Would you rather pay for the gym…or <span className="font-bold">OWN it forever?</span>
