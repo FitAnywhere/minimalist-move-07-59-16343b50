@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Menu, X } from 'lucide-react';
@@ -81,7 +82,7 @@ const NavBar = () => {
 
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/dR6fZoe3H5m4cE028f', '_blank');
+    window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
   };
 
   return (
@@ -119,7 +120,7 @@ const NavBar = () => {
 
         <div className="hidden md:block">
           <a
-            href="https://buy.stripe.com/dR6fZoe3H5m4cE028f"
+            href="https://buy.stripe.com/4gw7sS8Jn5m4dI43ck"
             className="bg-black text-white px-6 py-2.5 rounded-full font-medium text-sm hover:bg-black/90 transition-all hover-lift"
             onClick={handleCheckout}
           >
@@ -166,7 +167,7 @@ const NavBar = () => {
             ))}
             <div className="pt-4">
               <a
-                href="https://buy.stripe.com/dR6fZoe3H5m4cE028f"
+                href="https://buy.stripe.com/4gw7sS8Jn5m4dI43ck"
                 className="block w-full bg-black text-white text-center px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-all"
                 onClick={handleCheckout}
               >
