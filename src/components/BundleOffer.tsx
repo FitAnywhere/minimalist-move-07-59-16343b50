@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -20,32 +19,33 @@ interface Product {
 interface GiftItem {
   name: string;
   image: string;
+  price: string;
 }
 
 const products: Product[] = [
   {
     name: "PowerTower (PRO)",
     image: "https://i.imgur.com/5FJtwsb.png",
-    description: "With adjustable height",
+    description: "1299,99€",
     badge: "PREMIUM",
     gradient: "from-yellow-50/10 to-white/5"
   },
   {
     name: "TRAINING LIBRARY",
     image: "https://i.imgur.com/U7zShaF.png",
-    description: "Your personal trainer, on-demand",
+    description: "190,99€",
     gradient: "from-yellow-50/10 to-white/5"
   },
   {
     name: "TRX (PRO)",
     image: "https://i.imgur.com/ZgLzS1m.png",
-    description: "Expand your training possibilities",
+    description: "129,99€",
     gradient: "from-yellow-50/10 to-white/5"
   },
   {
     name: "BANDS (8x)",
     image: "https://i.imgur.com/s7xD4II.png",
-    description: "Ideal for every beginner or expert",
+    description: "129,99€",
     gradient: "from-yellow-50/10 to-white/5"
   }
 ];
@@ -53,11 +53,13 @@ const products: Product[] = [
 const giftItems: GiftItem[] = [
   {
     name: "BOXFUN",
-    image: "https://i.imgur.com/q51dPwQ.png"
+    image: "https://i.imgur.com/q51dPwQ.png",
+    price: "69,99€"
   },
   {
     name: "SHIPPING",
-    image: "https://i.imgur.com/Qyrbb1H.png"
+    image: "https://i.imgur.com/Qyrbb1H.png",
+    price: "60€"
   }
 ];
 
@@ -103,8 +105,8 @@ const BundleOffer = () => {
     setIsVisible(true);
   }, []);
   
-  const originalPrice = 1899;
-  const currentPrice = 825;
+  const originalPrice = 1880.95;
+  const currentPrice = 818;
   const discountPercentage = 56.5;
   
   return (
@@ -163,7 +165,7 @@ const BundleOffer = () => {
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-gray-600">{product.description}</p>
+                            <p className="text-gray-600 line-through">{product.description}</p>
                           </div>
                         </div>
                       </div>
@@ -236,7 +238,10 @@ const BundleOffer = () => {
                         className="w-full h-full object-contain transition-all duration-300 hover:scale-110"
                       />
                     </div>
-                    <h4 className="font-bold text-lg">{item.name}</h4>
+                    <div>
+                      <h4 className="font-bold text-lg">{item.name}</h4>
+                      <p className="text-gray-600 line-through">{item.price}</p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -250,14 +255,18 @@ const BundleOffer = () => {
             {isMobile ? (
               <div className="flex flex-col items-center justify-center">
                 <span className="text-xl text-gray-700 line-through mb-1">
-                  €{isVisible ? (
-                    <CountUp 
-                      start={0} 
-                      end={originalPrice} 
-                      duration={2} 
-                      separator="," 
-                    />
-                  ) : originalPrice}
+                  {isVisible ? (
+                    <>
+                      €<CountUp 
+                        start={0} 
+                        end={originalPrice} 
+                        duration={2} 
+                        separator="," 
+                        decimals={2}
+                        decimal="," 
+                      />
+                    </>
+                  ) : `€${originalPrice}`}
                 </span>
                 <div className="flex items-center gap-2">
                   <span className="text-2xl font-bold">
@@ -277,10 +286,11 @@ const BundleOffer = () => {
                         start={0} 
                         end={discountPercentage} 
                         duration={2} 
-                        decimals={1} 
+                        decimals={1}
+                        decimal="," 
                         suffix="% OFF" 
                       />
-                    ) : `${discountPercentage}% OFF`}
+                    ) : `${discountPercentage.toString().replace('.', ',')}% OFF`}
                   </div>
                 </div>
               </div>
@@ -288,14 +298,18 @@ const BundleOffer = () => {
               <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
                 <div className="flex items-center gap-2">
                   <span className="text-xl md:text-2xl text-gray-700 line-through">
-                    €{isVisible ? (
-                      <CountUp 
-                        start={0} 
-                        end={originalPrice} 
-                        duration={2} 
-                        separator="," 
-                      />
-                    ) : originalPrice}
+                    {isVisible ? (
+                      <>
+                        €<CountUp 
+                          start={0} 
+                          end={originalPrice} 
+                          duration={2} 
+                          separator="," 
+                          decimals={2}
+                          decimal="," 
+                        />
+                      </>
+                    ) : `€${originalPrice}`}
                   </span>
                 </div>
                 
@@ -319,10 +333,11 @@ const BundleOffer = () => {
                       start={0} 
                       end={discountPercentage} 
                       duration={2} 
-                      decimals={1} 
+                      decimals={1}
+                      decimal="," 
                       suffix="% OFF" 
                     />
-                  ) : `${discountPercentage}% OFF`}
+                  ) : `${discountPercentage.toString().replace('.', ',')}% OFF`}
                 </div>
               </div>
             )}
