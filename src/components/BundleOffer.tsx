@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -332,7 +333,7 @@ const BundleOffer = () => {
             isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4"
           )}>
             <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4">
-              Would you rather pay for the gym…or <span className="font-bold">OWN it forever?</span>
+              Would you rather pay for the gym or... <span className="font-bold">OWN it forever?</span>
             </p>
           </div>
           
@@ -340,14 +341,14 @@ const BundleOffer = () => {
             <Button 
               size="lg" 
               className={cn(
-                "bg-yellow-400 hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", 
+                "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", 
                 "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow",
                 "flex items-center gap-2"
               )}
               onClick={handleCheckout}
             >
               <Sparkles className="h-5 w-5 animate-pulse" />
-              SEIZE YOURS NOW
+              OWN YOURS FOREVER
             </Button>
           </div>
         </div>
