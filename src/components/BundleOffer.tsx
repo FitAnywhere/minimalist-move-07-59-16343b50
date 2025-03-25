@@ -107,8 +107,8 @@ const BundleOffer = () => {
   }, []);
   
   const originalPrice = 1880.95;
-  const currentPrice = 818;
-  const discountPercentage = 56.5;
+  const currentPrice = 990;
+  const discountPercentage = 47.3;
   
   return (
     <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
@@ -279,7 +279,7 @@ const BundleOffer = () => {
                         separator="," 
                       />
                     ) : currentPrice}
-                    <span className="font-bold">+ VAT</span>
+                    <span className="font-bold"> VAT included</span>
                   </span>
                   <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
                     {isVisible ? (
@@ -324,7 +324,7 @@ const BundleOffer = () => {
                         separator="," 
                       />
                     ) : currentPrice}
-                    <span className="font-bold ml-1">+ VAT</span>
+                    <span className="font-bold ml-1">VAT included</span>
                   </span>
                 </div>
                 
