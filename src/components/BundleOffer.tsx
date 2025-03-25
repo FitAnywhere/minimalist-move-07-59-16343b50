@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -88,7 +89,7 @@ const BundleOffer = () => {
   }, []);
   const originalPrice = 1880.95;
   const currentPrice = 990;
-  const discountPercentage = 47.3;
+  const discountPercentage = 47;
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -184,10 +185,9 @@ const BundleOffer = () => {
                 <div className="flex items-center gap-2">
                   <span className="text-2xl font-bold">
                     €{isVisible ? <CountUp start={0} end={currentPrice} duration={2} separator="," /> : currentPrice}
-                    
                   </span>
                   <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
-                    {isVisible ? <CountUp start={0} end={discountPercentage} duration={2} decimals={1} decimal="," suffix="% OFF" /> : `${discountPercentage.toString().replace('.', ',')}% OFF`}
+                    {isVisible ? <CountUp start={0} end={discountPercentage} duration={2} suffix="% OFF" /> : `${discountPercentage}% OFF`}
                   </div>
                 </div>
               </div> : <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
@@ -202,24 +202,23 @@ const BundleOffer = () => {
                 <div className="flex items-center">
                   <span className="text-2xl md:text-3xl font-bold">
                     €{isVisible ? <CountUp start={0} end={currentPrice} duration={2} separator="," /> : currentPrice}
-                    <span className="font-bold ml-1">VAT included</span>
                   </span>
                 </div>
                 
                 <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
-                  {isVisible ? <CountUp start={0} end={discountPercentage} duration={2} decimals={1} decimal="," suffix="% OFF" /> : `${discountPercentage.toString().replace('.', ',')}% OFF`}
+                  {isVisible ? <CountUp start={0} end={discountPercentage} duration={2} suffix="% OFF" /> : `${discountPercentage}% OFF`}
                 </div>
               </div>}
           </div>
           
           <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
             <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4">
-              Would you rather pay for the gym or... <span className="font-bold">OWN it forever?</span>
+              Would you rather keep paying for the gym or...?
             </p>
           </div>
           
           <div className="flex justify-center mb-8">
-            <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-semibold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2")} onClick={handleCheckout}>
+            <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2")} onClick={handleCheckout}>
               <Sparkles className="h-5 w-5 animate-pulse" />
               OWN YOURS FOREVER
             </Button>
