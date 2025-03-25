@@ -27,7 +27,7 @@ const products: Product[] = [
     image: "https://i.imgur.com/k0XIKUW.png",
     description: "With adjustable height",
     badge: "PREMIUM",
-    gradient: "from-gray-50 to-white"
+    gradient: "from-blue-50 to-white"
   },
   {
     name: "TRAINING LIBRARY",
@@ -39,13 +39,13 @@ const products: Product[] = [
     name: "TRX (PRO)",
     image: "https://i.imgur.com/8Ztk6Eh.png",
     description: "Expand your training possibilities",
-    gradient: "from-yellow-50 to-white"
+    gradient: "from-blue-50 to-white"
   },
   {
     name: "BANDS (8x)",
     image: "https://i.imgur.com/XXbzvQJ.png",
     description: "Ideal for every beginner or expert",
-    gradient: "from-red-50 to-white"
+    gradient: "from-blue-50 to-white"
   }
 ];
 
