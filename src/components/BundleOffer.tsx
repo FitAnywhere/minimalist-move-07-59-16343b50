@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -24,7 +23,7 @@ interface GiftItem {
 
 const products: Product[] = [
   {
-    name: "PowerTower",
+    name: "PowerTower (PRO)",
     image: "https://i.imgur.com/etEReYn.png",
     description: "With adjustable height",
     badge: "PREMIUM",
@@ -64,7 +63,7 @@ const giftItems: GiftItem[] = [
 const BundleOffer = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, startIndex: 0, align: 'start' });
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(25);
   const sectionRef = useRef<HTMLElement>(null);
   
   const [isVisible, setIsVisible] = useState(true);
@@ -84,13 +83,12 @@ const BundleOffer = () => {
     
     const onScroll = () => {
       const progress = emblaApi.scrollProgress();
-      setScrollProgress(progress * 100);
+      setScrollProgress(25 + (progress * 75));
     };
     
     emblaApi.on('select', onSelect);
     emblaApi.on('scroll', onScroll);
     
-    // Initial progress
     onScroll();
     onSelect();
     
