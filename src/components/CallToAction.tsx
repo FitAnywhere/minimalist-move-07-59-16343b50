@@ -63,7 +63,7 @@ const CallToAction = () => {
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/bIY5mKg8vcTP9tm14f', '_blank');
+    window.open('https://buy.stripe.com/dR6fZoe3H5m4cE028f', '_blank');
   };
   
   return (
@@ -127,7 +127,7 @@ const CallToAction = () => {
               )}
             >
               <a 
-                href="https://buy.stripe.com/bIY5mKg8vcTP9tm14f"
+                href="https://buy.stripe.com/dR6fZoe3H5m4cE028f"
                 className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group"
                 onClick={handleCheckout}
               >
