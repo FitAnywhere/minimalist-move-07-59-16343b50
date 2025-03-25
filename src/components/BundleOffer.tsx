@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -71,15 +70,12 @@ const BundleOffer = () => {
     
     const onSelect = () => {
       setCurrentSlide(emblaApi.selectedScrollSnap());
-      // Fix the scrollProgress method call by passing the correct arguments
-      // The method now expects a boolean as the second argument
-      setScrollProgress(emblaApi.scrollProgress(true));
+      setScrollProgress(emblaApi.scrollProgress());
     };
     
     emblaApi.on('select', onSelect);
     emblaApi.on('scroll', () => {
-      // Fix here as well - pass the required boolean argument
-      setScrollProgress(emblaApi.scrollProgress(true));
+      setScrollProgress(emblaApi.scrollProgress());
     });
     
     onSelect();
