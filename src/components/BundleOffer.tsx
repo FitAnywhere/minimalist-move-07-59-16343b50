@@ -185,10 +185,6 @@ const BundleOffer = () => {
                 value={scrollProgress} 
                 className="h-1.5 bg-gray-200 rounded-full" 
               />
-              <div className="flex justify-between mt-1 text-xs text-gray-500">
-                <span>{currentSlide + 1}</span>
-                <span>{products.length}</span>
-              </div>
             </div>
           </div>
           
