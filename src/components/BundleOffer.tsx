@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -54,7 +55,6 @@ const giftItems: GiftItem[] = [
 const BundleOffer = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, startIndex: 0, align: 'start' });
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   
   const [isVisible, setIsVisible] = useState(true);
@@ -70,19 +70,14 @@ const BundleOffer = () => {
     
     const onSelect = () => {
       setCurrentSlide(emblaApi.selectedScrollSnap());
-      setScrollProgress(emblaApi.scrollProgress());
     };
     
     emblaApi.on('select', onSelect);
-    emblaApi.on('scroll', () => {
-      setScrollProgress(emblaApi.scrollProgress());
-    });
     
     onSelect();
     
     return () => {
       emblaApi.off('select', onSelect);
-      emblaApi.off('scroll');
     };
   }, [emblaApi]);
   
@@ -175,14 +170,7 @@ const BundleOffer = () => {
               </button>
             </div>
             
-            <div className="mt-6 px-4">
-              <div className="max-w-md mx-auto h-2 bg-white border border-black rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-yellow-400 will-change-transform"
-                  style={{ width: `${scrollProgress}%`, transition: 'width 50ms ease-out' }}
-                ></div>
-              </div>
-            </div>
+            {/* Removing the carousel progress loader that was shown in the red rectangle */}
           </div>
           
           <div className={cn(
