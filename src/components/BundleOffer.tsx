@@ -24,26 +24,26 @@ interface GiftItem {
 const products: Product[] = [
   {
     name: "PowerTower (PRO)",
-    image: "https://i.imgur.com/bJAsJkr.png",
+    image: "https://i.imgur.com/5FJtwsb.png",
     description: "With adjustable height",
     badge: "PREMIUM",
     gradient: "from-blue-50 to-white"
   },
   {
     name: "TRAINING LIBRARY",
-    image: "https://i.imgur.com/GgNDJaH.png",
+    image: "https://i.imgur.com/U7zShaF.png",
     description: "Your personal trainer, on-demand",
     gradient: "from-blue-50 to-white"
   },
   {
     name: "TRX (PRO)",
-    image: "https://i.imgur.com/8Ztk6Eh.png",
+    image: "https://i.imgur.com/ZgLzS1m.png",
     description: "Expand your training possibilities",
     gradient: "from-blue-50 to-white"
   },
   {
     name: "BANDS (8x)",
-    image: "https://i.imgur.com/XXbzvQJ.png",
+    image: "https://i.imgur.com/s7xD4II.png",
     description: "Ideal for every beginner or expert",
     gradient: "from-blue-50 to-white"
   }
@@ -52,11 +52,11 @@ const products: Product[] = [
 const giftItems: GiftItem[] = [
   {
     name: "BOXFUN",
-    image: "https://i.imgur.com/VWPQbF1.png"
+    image: "https://i.imgur.com/q51dPwQ.png"
   },
   {
     name: "SHIPPING",
-    image: "https://i.imgur.com/L98u04B.png"
+    image: "https://i.imgur.com/Qyrbb1H.png"
   }
 ];
 
