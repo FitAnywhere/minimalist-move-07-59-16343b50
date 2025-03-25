@@ -14,6 +14,7 @@ interface Product {
   image: string;
   description: string;
   badge?: string;
+  gradient?: string;
 }
 
 interface GiftItem {
@@ -26,22 +27,26 @@ const products: Product[] = [
     name: "PowerTower",
     image: "https://i.imgur.com/etEReYn.png",
     description: "With adjustable height",
-    badge: "PREMIUM"
+    badge: "PREMIUM",
+    gradient: "from-gray-50 to-white"
   },
   {
     name: "TRAINING LIBRARY",
     image: "https://i.imgur.com/Vb7DqjH.png",
-    description: "Your personal trainer, on-demand"
+    description: "Your personal trainer, on-demand",
+    gradient: "from-blue-50 to-white"
   },
   {
     name: "TRX (PRO)",
     image: "https://i.imgur.com/jGB2ElP.png",
-    description: "Expand your training possibilities"
+    description: "Expand your training possibilities",
+    gradient: "from-yellow-50 to-white"
   },
   {
     name: "BANDS (8x)",
     image: "https://i.imgur.com/V459Nuh.png",
-    description: "Ideal for every beginner or expert"
+    description: "Ideal for every beginner or expert",
+    gradient: "from-red-50 to-white"
   }
 ];
 
@@ -130,26 +135,37 @@ const BundleOffer = () => {
                   {products.map((product, index) => (
                     <div key={index} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_66.66%] lg:flex-[0_0_50%] px-2 sm:px-4">
                       <div className={cn(
-                        "rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg bg-white",
-                        "h-full"
+                        "rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg",
+                        "h-full bg-gradient-to-br relative",
+                        product.gradient || "from-gray-50 to-white",
+                        "border border-gray-100 shadow-sm",
+                        "before:absolute before:inset-0 before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIiB6PjxwYXRoIGQ9Ik0wIDBhNyA3IDAgMDEwIDE0QTcgNyAwIDAxMCAwWiIgZmlsbD0iI2YxZjFmMSIgZmlsbC1vcGFjaXR5PSIwLjIiPjwvcGF0aD48L3N2Zz4=')] before:opacity-10",
+                        "after:absolute after:inset-0 after:bg-white/40 after:backdrop-blur-[1px]",
+                        "hover:translate-y-[-5px] hover:shadow-xl"
                       )}>
-                        <div className="h-72 md:h-80 flex items-center justify-center p-4">
-                          <img 
-                            src={product.image} 
-                            alt={product.name}
-                            className="w-full h-full object-contain transition-transform duration-500 hover:scale-105"
-                          />
-                        </div>
-                        <div className="p-6 pt-0">
-                          <div className="flex items-center gap-2 mb-2">
-                            <h3 className="font-bold text-xl md:text-2xl text-black">{product.name}</h3>
-                            {product.badge && (
-                              <Badge className="bg-yellow text-black text-xs font-bold py-1">
-                                {product.badge}
-                              </Badge>
-                            )}
+                        <div className="relative z-10">
+                          <div className="h-72 md:h-80 flex items-center justify-center p-4 group">
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="relative w-full h-full flex items-center justify-center">
+                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow/5 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                              <img 
+                                src={product.image} 
+                                alt={product.name}
+                                className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10 drop-shadow-md"
+                              />
+                            </div>
                           </div>
-                          <p className="text-gray-600">{product.description}</p>
+                          <div className="p-6 pt-0 text-center relative z-10">
+                            <div className="flex items-center justify-center gap-2 mb-2">
+                              <h3 className="font-bold text-xl md:text-2xl text-black">{product.name}</h3>
+                              {product.badge && (
+                                <Badge className="bg-yellow text-black text-xs font-bold py-1">
+                                  {product.badge}
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-gray-600">{product.description}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
