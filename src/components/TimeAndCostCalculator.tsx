@@ -50,7 +50,7 @@ const TimeAndCostCalculator = () => {
   // Handle CTA button click - updated to open Stripe checkout
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/7sI00qcZD3dW7jG28e', '_blank');
+    window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
   };
 
   // Format cost input
