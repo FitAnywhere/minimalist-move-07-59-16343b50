@@ -26,7 +26,7 @@ const Slider = React.forwardRef<
       {...props}
     >
       <SliderPrimitive.Track className={cn(
-        "relative overflow-hidden rounded-full bg-white", // Changed from bg-gray-200 to bg-white
+        "relative overflow-hidden rounded-full bg-gray-200", // Changed back to bg-gray-200 from bg-white
         isVertical ? "h-full w-1.5" : "h-2 w-full grow" // Decreased width from w-2 to w-1.5
       )}>
         <SliderPrimitive.Range className={cn(
