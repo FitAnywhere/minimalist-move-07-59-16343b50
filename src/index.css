@@ -253,6 +253,14 @@
     text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
   }
+
+  .volume-slider-vertical {
+    @apply h-24 w-1.5;
+  }
+  
+  .volume-control-container {
+    @apply relative transition-all duration-300;
+  }
 }
 
 @keyframes animate-slide-in {

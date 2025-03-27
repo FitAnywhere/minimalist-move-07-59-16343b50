@@ -1,6 +1,8 @@
 
 import { useRef, useState, useEffect, memo, useCallback } from 'react';
-import { Volume2, VolumeX, Play, Loader } from 'lucide-react';
+import { Volume2, VolumeX, Volume1, Volume, Play, Loader } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import { cn } from '@/lib/utils';
 
 interface VimeoPlayerProps {
   videoId: string;
@@ -28,6 +30,9 @@ const VimeoPlayer = memo(({
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [videoVisible, setVideoVisible] = useState(false);
+  const [volume, setVolume] = useState(1); // 0 to 1
+  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+  const volumeControlRef = useRef<HTMLDivElement>(null);
   const wasInViewRef = useRef(isInView);
   const messageHandlerRef = useRef<(event: MessageEvent) => void>();
   const audioOnRef = useRef(audioOn);
@@ -36,6 +41,20 @@ const VimeoPlayer = memo(({
   useEffect(() => {
     audioOnRef.current = audioOn;
   }, [audioOn]);
+  
+  // Handle click outside volume control to hide slider
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (volumeControlRef.current && !volumeControlRef.current.contains(event.target as Node)) {
+        setShowVolumeSlider(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   
   // Memoize the iframe source URL
   const buildIframeSrc = useCallback(() => {
@@ -75,7 +94,7 @@ const VimeoPlayer = memo(({
             const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
             setPlayer(vimeoPlayer);
             
-            vimeoPlayer.setVolume(audioOnRef.current ? 1 : 0);
+            vimeoPlayer.setVolume(audioOnRef.current ? volume : 0);
             vimeoPlayer.setMuted(!audioOnRef.current);
             
             vimeoPlayer.on('play', () => {
@@ -147,7 +166,7 @@ const VimeoPlayer = memo(({
     if (isPlaying) {
       player.pause();
     } else {
-      player.setVolume(audioOnRef.current ? 1 : 0);
+      player.setVolume(audioOnRef.current ? volume : 0);
       player.setMuted(!audioOnRef.current);
       
       player.play().catch((error: any) => {
@@ -155,15 +174,15 @@ const VimeoPlayer = memo(({
         setIsLoading(false);
       });
     }
-  }, [player, isPlaying]);
+  }, [player, isPlaying, volume]);
 
   // Handle audio changes directly
   useEffect(() => {
     if (!player) return;
     
-    player.setVolume(audioOn ? 1 : 0);
+    player.setVolume(audioOn ? volume : 0);
     player.setMuted(!audioOn);
-  }, [player, audioOn]);
+  }, [player, audioOn, volume]);
 
   // Optimize visibility handling based on view state
   useEffect(() => {
@@ -184,6 +203,16 @@ const VimeoPlayer = memo(({
     }
   }, [isInView, player, isPlaying, isPlayerReady]);
 
+  // Handle volume change
+  const handleVolumeChange = useCallback((value: number[]) => {
+    const newVolume = value[0];
+    setVolume(newVolume);
+    
+    if (player && audioOn) {
+      player.setVolume(newVolume);
+    }
+  }, [player, audioOn]);
+
   // Toggle audio needs to be directly connected to the button
   const handleToggleAudio = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -193,6 +222,20 @@ const VimeoPlayer = memo(({
       toggleAudio(e);
     }
   }, [toggleAudio]);
+
+  // Toggle volume slider visibility
+  const handleVolumeIconHover = useCallback(() => {
+    setShowVolumeSlider(true);
+  }, []);
+
+  // Get volume icon based on current volume and mute state
+  const getVolumeIcon = useCallback(() => {
+    if (!audioOn) return <VolumeX size={20} className="text-white" />;
+    
+    if (volume >= 0.7) return <Volume2 size={20} className="text-white" />;
+    if (volume >= 0.3) return <Volume1 size={20} className="text-white" />;
+    return <Volume size={20} className="text-white" />;
+  }, [volume, audioOn]);
 
   return (
     <div className={`relative ${className}`}>
@@ -258,17 +301,38 @@ const VimeoPlayer = memo(({
         )}
       </div>
       
-      <button 
-        onClick={handleToggleAudio}
-        className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300 z-30"
-        aria-label={audioOn ? "Mute audio" : "Unmute audio"}
+      <div 
+        ref={volumeControlRef}
+        className="absolute bottom-3 right-3 z-30"
+        onMouseEnter={handleVolumeIconHover}
       >
-        {audioOn ? (
-          <Volume2 size={20} className="text-white" />
-        ) : (
-          <VolumeX size={20} className="text-white" />
-        )}
-      </button>
+        {/* Volume Slider Container */}
+        <div className={cn(
+          "absolute bottom-10 right-1 bg-black/60 rounded-lg px-3 py-3 transition-all duration-300",
+          showVolumeSlider && audioOn
+            ? "opacity-100 translate-y-0 pointer-events-auto"
+            : "opacity-0 translate-y-2 pointer-events-none"
+        )}>
+          <Slider
+            orientation="vertical"
+            value={[volume]}
+            min={0}
+            max={1}
+            step={0.01}
+            onValueChange={handleVolumeChange}
+            className="mx-auto"
+          />
+        </div>
+        
+        {/* Volume Button */}
+        <button 
+          onClick={handleToggleAudio}
+          className="bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300"
+          aria-label={audioOn ? "Mute audio" : "Unmute audio"}
+        >
+          {getVolumeIcon()}
+        </button>
+      </div>
     </div>
   );
 });
