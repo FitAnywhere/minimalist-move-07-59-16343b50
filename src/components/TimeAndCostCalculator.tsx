@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -140,7 +139,7 @@ const TimeAndCostCalculator = () => {
                 {gymMonthlyCost >= 5 && (
                   <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center">
                     <p className="text-xl font-bold text-black">
-                      Your FitAnywhere setup pays for itself in under {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'}.
+                      Your FitAnywhere pays for itself in under {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'}.
                     </p>
                   </div>
                 )}
@@ -195,7 +194,7 @@ const TimeAndCostCalculator = () => {
                 
                 <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
                   <Button onClick={handleCTAClick} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group">
-                    OWN YOUR FREEDOM NOW
+                    GET FitAnywhere NOW
                     <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Button>
                 </div>
