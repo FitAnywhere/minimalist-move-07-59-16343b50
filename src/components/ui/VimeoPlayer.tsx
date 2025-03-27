@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect, memo, useCallback } from 'react';
 import { Volume2, VolumeX, Volume1, Volume, Play, Loader } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
@@ -14,7 +13,6 @@ interface VimeoPlayerProps {
   priority?: boolean;
 }
 
-// Optimized Vimeo Player with better loading states and event handling
 const VimeoPlayer = memo(({
   videoId,
   playerId,
@@ -37,12 +35,10 @@ const VimeoPlayer = memo(({
   const messageHandlerRef = useRef<(event: MessageEvent) => void>();
   const audioOnRef = useRef(audioOn);
   
-  // Update ref when prop changes
   useEffect(() => {
     audioOnRef.current = audioOn;
   }, [audioOn]);
   
-  // Handle click outside volume control to hide slider
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (volumeControlRef.current && !volumeControlRef.current.contains(event.target as Node)) {
@@ -56,7 +52,6 @@ const VimeoPlayer = memo(({
     };
   }, []);
   
-  // Memoize the iframe source URL
   const buildIframeSrc = useCallback(() => {
     const params = new URLSearchParams({
       h: 'd77ee52644',
@@ -70,8 +65,8 @@ const VimeoPlayer = memo(({
       player_id: playerId,
       app_id: '58479',
       dnt: '1',
-      autoplay: '1', // Always try to autoplay
-      muted: '1'     // Start muted to ensure autoplay works
+      autoplay: '1',
+      muted: '1'
     });
     
     if (priority) {
@@ -81,7 +76,6 @@ const VimeoPlayer = memo(({
     return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
   }, [videoId, playerId, priority]);
 
-  // Optimized message handler with memoization
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
@@ -120,7 +114,6 @@ const VimeoPlayer = memo(({
               setIsPlayerReady(true);
               setIsLoading(false);
               
-              // Try to start playback immediately
               vimeoPlayer.play().catch(() => {
                 console.log("Auto-play prevented, waiting for user interaction");
               });
@@ -133,7 +126,6 @@ const VimeoPlayer = memo(({
               });
             });
             
-            // Pre-seek to 0.1 seconds to show the first frame
             vimeoPlayer.setCurrentTime(0.1).then(() => {
               setIsPlayerReady(true);
               setIsLoading(false);
@@ -156,7 +148,6 @@ const VimeoPlayer = memo(({
     };
   }, []);
 
-  // Memoized play handler
   const handlePlayClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -176,7 +167,6 @@ const VimeoPlayer = memo(({
     }
   }, [player, isPlaying, volume]);
 
-  // Handle audio changes directly
   useEffect(() => {
     if (!player) return;
     
@@ -184,26 +174,22 @@ const VimeoPlayer = memo(({
     player.setMuted(!audioOn);
   }, [player, audioOn, volume]);
 
-  // Optimize visibility handling based on view state
   useEffect(() => {
     if (!player) return;
 
     const viewStateChanged = wasInViewRef.current !== isInView;
     wasInViewRef.current = isInView;
 
-    // Don't pause/play on every render, only when view state changes
     if (viewStateChanged) {
       if (!isInView && isPlaying) {
         player.pause();
       } else if (isInView && isPlayerReady && !isPlaying) {
         player.play().catch(() => {
-          // Silent catch - some browsers prevent autoplay
         });
       }
     }
   }, [isInView, player, isPlaying, isPlayerReady]);
 
-  // Handle volume change
   const handleVolumeChange = useCallback((value: number[]) => {
     const newVolume = value[0];
     setVolume(newVolume);
@@ -213,7 +199,6 @@ const VimeoPlayer = memo(({
     }
   }, [player, audioOn]);
 
-  // Toggle audio needs to be directly connected to the button
   const handleToggleAudio = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -223,12 +208,10 @@ const VimeoPlayer = memo(({
     }
   }, [toggleAudio]);
 
-  // Toggle volume slider visibility
   const handleVolumeIconHover = useCallback(() => {
     setShowVolumeSlider(true);
   }, []);
 
-  // Get volume icon based on current volume and mute state
   const getVolumeIcon = useCallback(() => {
     if (!audioOn) return <VolumeX size={20} className="text-white" />;
     
@@ -244,15 +227,10 @@ const VimeoPlayer = memo(({
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
             <div className="flex flex-col items-center justify-center space-y-4">
               <div className="relative">
-                {/* Outer ring */}
                 <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
-                
-                {/* Middle ring */}
                 <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
                   <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
                 </div>
-                
-                {/* Inner spinner */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Loader className="w-8 h-8 text-yellow animate-spin" />
                 </div>
@@ -306,9 +284,8 @@ const VimeoPlayer = memo(({
         className="absolute bottom-3 right-3 z-30"
         onMouseEnter={handleVolumeIconHover}
       >
-        {/* Volume Slider Container */}
         <div className={cn(
-          "absolute bottom-10 right-1 bg-black/60 rounded-lg px-3 py-3 transition-all duration-300",
+          "absolute bottom-8 right-1 bg-black/60 rounded-lg px-2 py-2 transition-all duration-300",
           showVolumeSlider && audioOn
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-2 pointer-events-none"
@@ -324,7 +301,6 @@ const VimeoPlayer = memo(({
           />
         </div>
         
-        {/* Volume Button */}
         <button 
           onClick={handleToggleAudio}
           className="bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300"
