@@ -1,3 +1,4 @@
+
 import { memo, useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -11,7 +12,7 @@ const HeroContent = memo(({
   scrollToOwnBoth,
   isMobile = false
 }: HeroContentProps) => {
-  const words = ["CALISTHENICS", "FITNESS", "BOX", "COACHING"];
+  const words = ["CALISTHENICS", "FITNESS", "BOX"];
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
