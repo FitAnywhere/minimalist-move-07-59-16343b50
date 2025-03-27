@@ -2,7 +2,7 @@
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
-import { ChevronDown, Briefcase, Clock, Dumbbell } from 'lucide-react';
+import { ChevronDown, ChevronRight, Briefcase, Clock, Dumbbell } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -14,23 +14,23 @@ interface FAQItem {
 }
 
 interface TargetAudience {
-  icon: React.ElementType;
+  imageUrl: string;
   title: string;
   description: string;
 }
 
 const targetAudiences: TargetAudience[] = [{
-  icon: Briefcase,
+  imageUrl: "https://i.imgur.com/tscnNiG.jpeg",
   title: "DRIVEN ACHIEVERS",
-  description: "For tight schedules and high standards."
+  description: "For busy schedules and exceptional standards."
 }, {
-  icon: Clock,
+  imageUrl: "https://i.imgur.com/j9K9GFk.jpeg",
   title: "CITY HUSTLERS",
-  description: "For those who appreciate compact and quick setup."
+  description: "For those who cherish and honor their space."
 }, {
-  icon: Dumbbell,
+  imageUrl: "https://i.imgur.com/zEAA8nc.jpeg",
   title: "WELLNESS SEEKERS",
-  description: "For those who see fitness as a lifelong asset."
+  description: "For those who embrace a life of constant positive energy."
 }];
 
 const faqItems: FAQItem[] = [{
@@ -93,11 +93,23 @@ const TargetAndFAQ = () => {
                       minHeight: activeAudience === index ? 'auto' : '230px'
                     }}
                   >
-                    <div className="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:bg-yellow transition-all duration-500 transform group-hover:scale-110">
-                      <audience.icon className="w-10 h-10 text-black group-hover:text-black transition-all duration-500" />
+                    <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-all duration-500">
+                      <img 
+                        src={audience.imageUrl} 
+                        alt={audience.title} 
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     
-                    <h3 className="text-xl md:text-2xl font-bold mb-4 text-black">{audience.title}</h3>
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <h3 className="text-xl md:text-2xl font-bold text-black">{audience.title}</h3>
+                      <ChevronRight 
+                        className={cn(
+                          "w-5 h-5 text-yellow transition-transform duration-300",
+                          activeAudience === index ? "rotate-90" : ""
+                        )} 
+                      />
+                    </div>
                     
                     <div 
                       className={cn(
