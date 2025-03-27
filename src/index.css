@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -253,20 +252,6 @@
   .glow-effect:hover {
     text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-  }
-
-  /* Vertical slider styles */
-  [data-orientation="vertical"].relative.flex {
-    flex-direction: column;
-  }
-
-  [data-orientation="vertical"] [data-orientation="vertical"] {
-    height: 100%;
-  }
-
-  [data-orientation="vertical"] [role="slider"] {
-    left: 50%;
-    transform: translateX(-50%);
   }
 }
 
