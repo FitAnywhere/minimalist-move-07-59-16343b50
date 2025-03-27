@@ -6,10 +6,11 @@ import HeroSection from '@/components/HeroSection';
 
 // Import critical components eagerly instead of lazy loading
 import ProductIntro from '@/components/ProductIntro';
+// Import ChampionSection eagerly as well to avoid dynamic import errors
+import ChampionSection from '@/components/ChampionSection';
 
 // Continue lazy loading other components
 const ProductTabs = lazy(() => import('@/components/ProductTabs'));
-const ChampionSection = lazy(() => import('@/components/ChampionSection'));
 const LifestyleSection = lazy(() => import('@/components/LifestyleSection'));
 const BundleOffer = lazy(() => import('@/components/BundleOffer'));
 const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
@@ -141,8 +142,10 @@ const Index = () => {
         </Suspense>
       </div>
       
+      {/* ChampionSection is now eagerly loaded */}
+      <ChampionSection />
+      
       <Suspense fallback={<SectionLoader />}>
-        <ChampionSection />
         <div id="lifestyle">
           <LifestyleSection />
         </div>
