@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -7,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import CountUp from 'react-countup';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
+
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -22,12 +24,28 @@ const TimeAndCostCalculator = () => {
   const VISITS_PER_WEEK = 4;
   const WEEKS_PER_YEAR = 52;
   const YEARS_PROJECTION = 20;
+  const FITANYWHERE_COST = 990; // Cost of FitAnywhere in euros
 
   // Calculate time wasted in 20 years (in hours)
   const timeWastedInYears = Math.round(timeWastedPerVisit * VISITS_PER_WEEK * WEEKS_PER_YEAR * YEARS_PROJECTION / 60);
 
   // Calculate money spent in 20 years (in euros)
   const moneySpentInYears = gymMonthlyCost * 12 * YEARS_PROJECTION;
+
+  // Calculate payoff timeframe
+  const getPayoffTimeframe = (monthlyCost: number): number => {
+    if (monthlyCost >= 85) return 1;
+    if (monthlyCost >= 45) return 2;
+    if (monthlyCost >= 30) return 3;
+    if (monthlyCost >= 25) return 4;
+    if (monthlyCost >= 20) return 5;
+    if (monthlyCost >= 15) return 6;
+    if (monthlyCost >= 10) return 9;
+    if (monthlyCost >= 5) return 17;
+    return 0; // For values less than 5
+  };
+
+  const payoffTimeframe = getPayoffTimeframe(gymMonthlyCost);
 
   // Trigger animation when component comes into view
   useEffect(() => {
@@ -57,7 +75,9 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
-  return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
+
+  return (
+    <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
@@ -72,44 +92,7 @@ const TimeAndCostCalculator = () => {
             <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
               {/* Desktop & Mobile Layout */}
               <div className="flex flex-col gap-8">
-                {/* Time Cost Box - Full width on desktop with horizontal layout */}
-                <Card className="rounded-xl shadow-md border-2 border-black overflow-hidden w-full">
-                  <CardContent className="p-0">
-                    {/* For mobile: stack vertically, for desktop: horizontal layout */}
-                    <div className="flex flex-col md:flex-row">
-                      {/* Input section - Left side on desktop, top on mobile */}
-                      <div className="bg-white p-6 md:p-8 md:w-1/2">
-                        <p className="mb-3 text-left font-bold text-sm">How much time do you spend going to the gym and back?</p>
-                        
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-gray-600">0 min</span>
-                          <span className="text-lg font-bold bg-gray-100 px-3 py-1 rounded-md">
-                            {timeWastedPerVisit} min
-                          </span>
-                          <span className="text-gray-600">120 min</span>
-                        </div>
-                        
-                        <div className="py-4 md:py-6">
-                          <Slider value={[timeWastedPerVisit]} min={0} max={120} step={5} className="w-full" onValueChange={value => setTimeWastedPerVisit(value[0])} />
-                        </div>
-                      </div>
-                      
-                      {/* Time Result - Right side on desktop, bottom on mobile */}
-                      <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
-                        <div className="flex items-center justify-center mb-2">
-                          <Clock className="w-5 h-5 text-yellow mr-2" />
-                          <h3 className="text-lg font-bold"> TIME WASTED - 20 YEARS</h3>
-                        </div>
-                        <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
-                          {shouldAnimate ? <CountUp start={previousTimeWasted} end={timeWastedInYears} duration={1} separator="," suffix=" hours" useEasing /> : "0 hours"}
-                        </p>
-                        
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                {/* Money Cost Box - Full width on desktop with horizontal layout */}
+                {/* Money Cost Box - Moved to the top */}
                 <Card className="rounded-xl shadow-md border-2 border-black overflow-hidden w-full">
                   <CardContent className="p-0">
                     {/* For mobile: stack vertically, for desktop: horizontal layout */}
@@ -128,7 +111,14 @@ const TimeAndCostCalculator = () => {
                         </div>
                         
                         <div className="py-4 md:py-6">
-                          <Slider value={[gymMonthlyCost]} min={0} max={150} step={5} className="w-full" onValueChange={value => setGymMonthlyCost(value[0])} />
+                          <Slider 
+                            value={[gymMonthlyCost]} 
+                            min={0} 
+                            max={150} 
+                            step={5} 
+                            className="w-full"
+                            onValueChange={value => setGymMonthlyCost(value[0])}
+                          />
                         </div>
                       </div>
                       
@@ -141,7 +131,58 @@ const TimeAndCostCalculator = () => {
                         <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
                           {shouldAnimate ? <CountUp start={previousMoneyCost} end={moneySpentInYears} duration={1} separator="," prefix="€" suffix="+" useEasing /> : "€0+"}
                         </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                {/* Payoff Timeframe Display - Added between boxes */}
+                {gymMonthlyCost >= 5 && (
+                  <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center">
+                    <p className="text-xl font-bold text-black">
+                      Your FitAnywhere setup pays for itself in under {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'}.
+                    </p>
+                  </div>
+                )}
+                
+                {/* Time Cost Box - Moved below */}
+                <Card className="rounded-xl shadow-md border-2 border-black overflow-hidden w-full">
+                  <CardContent className="p-0">
+                    {/* For mobile: stack vertically, for desktop: horizontal layout */}
+                    <div className="flex flex-col md:flex-row">
+                      {/* Input section - Left side on desktop, top on mobile */}
+                      <div className="bg-white p-6 md:p-8 md:w-1/2">
+                        <p className="mb-3 text-left font-bold text-sm">How much time do you spend going to the gym and back?</p>
                         
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-gray-600">0 min</span>
+                          <span className="text-lg font-bold bg-gray-100 px-3 py-1 rounded-md">
+                            {timeWastedPerVisit} min
+                          </span>
+                          <span className="text-gray-600">120 min</span>
+                        </div>
+                        
+                        <div className="py-4 md:py-6">
+                          <Slider 
+                            value={[timeWastedPerVisit]} 
+                            min={0} 
+                            max={120} 
+                            step={5} 
+                            className="w-full" 
+                            onValueChange={value => setTimeWastedPerVisit(value[0])} 
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Time Result - Right side on desktop, bottom on mobile */}
+                      <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
+                        <div className="flex items-center justify-center mb-2">
+                          <Clock className="w-5 h-5 text-yellow mr-2" />
+                          <h3 className="text-lg font-bold"> TIME WASTED - 20 YEARS</h3>
+                        </div>
+                        <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
+                          {shouldAnimate ? <CountUp start={previousTimeWasted} end={timeWastedInYears} duration={1} separator="," suffix=" hours" useEasing /> : "0 hours"}
+                        </p>
                       </div>
                     </div>
                   </CardContent>
@@ -163,6 +204,8 @@ const TimeAndCostCalculator = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default TimeAndCostCalculator;
