@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowLeft, ArrowRight, Percent, Euro, Sparkles } from 'lucide-react';
@@ -8,6 +7,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+
 interface Product {
   name: string;
   image: string;
@@ -15,11 +15,13 @@ interface Product {
   badge?: string;
   gradient?: string;
 }
+
 interface GiftItem {
   name: string;
   image: string;
   price: string;
 }
+
 const products: Product[] = [{
   name: "PowerTower (PRO)",
   image: "https://i.imgur.com/5FJtwsb.png",
@@ -29,12 +31,12 @@ const products: Product[] = [{
 }, {
   name: "TRAINING LIBRARY",
   image: "https://i.imgur.com/U7zShaF.png",
-  description: "190,99€",
+  description: "149,99€",
   gradient: "from-yellow-50/10 to-white/5"
 }, {
   name: "TRX (PRO)",
   image: "https://i.imgur.com/ZgLzS1m.png",
-  description: "129,99€",
+  description: "89,99€",
   gradient: "from-yellow-50/10 to-white/5"
 }, {
   name: "BANDS (8x)",
@@ -42,6 +44,7 @@ const products: Product[] = [{
   description: "129,99€",
   gradient: "from-yellow-50/10 to-white/5"
 }];
+
 const giftItems: GiftItem[] = [{
   name: "BOXFUN",
   image: "https://i.imgur.com/q51dPwQ.png",
@@ -51,6 +54,7 @@ const giftItems: GiftItem[] = [{
   image: "https://i.imgur.com/Qyrbb1H.png",
   price: "60€"
 }];
+
 const BundleOffer = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
@@ -62,10 +66,12 @@ const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
+
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
   };
+
   useEffect(() => {
     if (!emblaApi) return;
     const onSelect = () => {
@@ -84,12 +90,15 @@ const BundleOffer = () => {
       emblaApi.off('scroll', onScroll);
     };
   }, [emblaApi]);
+
   useEffect(() => {
     setIsVisible(true);
   }, []);
-  const originalPrice = 1880.95;
+
+  const originalPrice = 1789.95;
   const currentPrice = 990;
-  const discountPercentage = 47;
+  const discountPercentage = 45;
+
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -121,7 +130,7 @@ const BundleOffer = () => {
                                   {product.badge}
                                 </Badge>}
                             </div>
-                            <p className="text-gray-600 line-through">{product.description}</p>
+                            <p className="text-gray-600">{product.description}</p>
                           </div>
                         </div>
                       </div>
@@ -227,4 +236,5 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
+
 export default BundleOffer;
