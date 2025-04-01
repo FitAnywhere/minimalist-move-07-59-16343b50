@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -30,6 +31,9 @@ const TimeAndCostCalculator = () => {
 
   // Calculate money spent in 20 years (in euros)
   const moneySpentInYears = gymMonthlyCost * 12 * YEARS_PROJECTION;
+  
+  // Calculate annual savings - new calculation for Y
+  const annualSavings = gymMonthlyCost * 12;
 
   // Calculate payoff timeframe
   const getPayoffTimeframe = (monthlyCost: number): number => {
@@ -135,11 +139,11 @@ const TimeAndCostCalculator = () => {
                   </CardContent>
                 </Card>
                 
-                {/* Payoff Timeframe Display - Added between boxes */}
+                {/* Payoff Timeframe Display - Updated message */}
                 {gymMonthlyCost >= 5 && (
                   <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center">
                     <p className="text-xl font-bold text-black">
-                      Your FitAnywhere pays for itself in under {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'}.
+                      Forget membership costs. Own free FitAnywhere gym in under {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'} and save €{annualSavings} each year.
                     </p>
                   </div>
                 )}

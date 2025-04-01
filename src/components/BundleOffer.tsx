@@ -7,10 +7,12 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
 interface GiftItem {
   name: string;
   image: string;
 }
+
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://i.imgur.com/dZZFMFQ.png"
@@ -18,25 +20,32 @@ const giftItems: GiftItem[] = [{
   name: "SHIPPING",
   image: "https://i.imgur.com/Qyrbb1H.png"
 }];
+
 const boxfunImages = ["https://i.imgur.com/r3NAyVd.png", "https://i.imgur.com/RS5vuW0.png"];
+
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
+
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
   };
+
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
+
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
+
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -48,9 +57,7 @@ const BundleOffer = () => {
           </div>
           
           {isMobile ?
-        // Mobile Layout
         <div className="space-y-8">
-              {/* Product Card - Mobile - Removed yellow light shadow/background */}
               <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="max-w-2xl mx-auto">
                   <div className={cn("rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", "h-full relative bg-white", "hover:translate-y-[-5px]", "shadow border border-gray-200")}>
@@ -74,7 +81,6 @@ const BundleOffer = () => {
                 </div>
               </div>
               
-              {/* Gift Section - Updated with "GIFTS" title and combined box */}
               <div className={cn("mb-6 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="text-center mb-6">
                   <h3 className="text-xl md:text-2xl font-bold text-black flex items-center justify-center gap-2">
@@ -83,7 +89,6 @@ const BundleOffer = () => {
                   </h3>
                 </div>
                 
-                {/* Combined Gift Box */}
                 <div className="max-w-2xl mx-auto">
                   <div className="rounded-lg bg-white p-6 border border-[#13613A] flex flex-col items-center">
                     <div className="flex items-center justify-center gap-4">
@@ -109,7 +114,6 @@ const BundleOffer = () => {
                 </div>
               </div>
               
-              {/* Price Section */}
               <div className={cn("mb-8 transition-all duration-1000 delay-500", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="flex flex-col items-center justify-center">
                   <span className="text-xl text-gray-700 line-through mb-1">
@@ -128,11 +132,9 @@ const BundleOffer = () => {
                 </div>
               </div>
             </div> :
-        // Desktop Layout - Redesigned with larger product images and box
         <div className="mb-10 transition-all duration-1000">
               <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
-                  {/* Left Side - Product Image - ENLARGED */}
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
                     <img src="https://i.imgur.com/coJB2up.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" />
                     <div className="flex items-center gap-2">
@@ -143,9 +145,7 @@ const BundleOffer = () => {
                     </div>
                   </div>
                   
-                  {/* Right Side - Product Info with restructured layout */}
                   <div className="w-full md:w-1/2 p-8 flex flex-col">
-                    {/* Gift Section moved up */}
                     <div className="mb-8">
                       <div className="flex flex-col items-center">
                         <h3 className="text-2xl font-bold text-black flex items-center gap-2 mb-4">
@@ -155,7 +155,6 @@ const BundleOffer = () => {
                         <ArrowDown className="h-6 w-6 text-gray-600 my-2 animate-bounce" />
                       </div>
                       
-                      {/* Combined Gift Box - ENLARGED */}
                       <div className="rounded-lg bg-white p-6 border border-[#13613A]">
                         <div className="flex items-center justify-center gap-6">
                           <div className="flex flex-col items-center">
@@ -179,11 +178,10 @@ const BundleOffer = () => {
                       </div>
                     </div>
                     
-                    {/* Price section moved below gifts */}
                     <div className="mb-6">
                       <div className="flex items-center gap-3 justify-center">
                         <span className="text-xl text-gray-700 line-through">
-                          €{originalPrice}
+                          ���{originalPrice}
                         </span>
                         <div className="bg-red-600 px-3 py-1 rounded-full text-white text-xs font-bold">
                           {discountPercentage}% OFF
@@ -204,14 +202,12 @@ const BundleOffer = () => {
               Would you rather keep paying for the gym or...?
             </p>
             
-            {/* CTA Button - Centered on both mobile and desktop */}
             <div className="flex justify-center">
               <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2")} onClick={handleCheckout}>
                 OWN YOURS FOREVER
               </Button>
             </div>
             
-            {/* LIMITED OFFER Section - Updated with carousel and better styling */}
             <div className="mt-12">
               <h2 className="text-3xl md:text-5xl font-extrabold text-black mb-4 relative inline-block">
                 LIMITED OFFER
@@ -219,27 +215,26 @@ const BundleOffer = () => {
               </h2>
               <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto">Order FitAnywhere now to get BoxFun package for free.</p>
               
-              {/* BoxFun Product Card - Side by side images on desktop, carousel on mobile */}
               <div className="max-w-md mx-auto mb-8">
                 <Card className="border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                   <CardContent className="p-6 flex flex-col items-center">
-                    {/* For mobile view - carousel with two images */}
-                    {isMobile ? <Carousel className="w-full max-w-xs mb-4">
-                        <CarouselContent>
-                          {boxfunImages.map((image, index) => <CarouselItem key={index}>
-                              <div className="flex items-center justify-center p-2">
-                                <img src={image} alt={`BoxFun Offer ${index + 1}`} className="h-52 object-contain" />
-                              </div>
-                            </CarouselItem>)}
-                        </CarouselContent>
-                        <CarouselPrevious className="left-1" />
-                        <CarouselNext className="right-1" />
-                      </Carousel> : (/* For desktop view - side by side images */
-                  <div className="flex items-center justify-center gap-4 mb-4">
-                        {boxfunImages.map((image, index) => <div key={index} className="flex items-center justify-center p-2">
-                            <img src={image} alt={`BoxFun Offer ${index + 1}`} className="h-52 object-contain" />
-                          </div>)}
-                      </div>)}
+                    <Carousel className="w-full max-w-xs mb-4">
+                      <CarouselContent>
+                        {boxfunImages.map((image, index) => (
+                          <CarouselItem key={index}>
+                            <div className="flex items-center justify-center p-2">
+                              <img 
+                                src={image} 
+                                alt={`BoxFun Offer ${index + 1}`} 
+                                className={isMobile ? "h-52 object-contain" : "h-64 object-contain"} 
+                              />
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <CarouselPrevious className="left-1" />
+                      <CarouselNext className="right-1" />
+                    </Carousel>
                     <h3 className="font-bold text-xl text-center mb-2">BOXFUN 50X</h3>
                   </CardContent>
                 </Card>
@@ -257,4 +252,5 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
+
 export default BundleOffer;
