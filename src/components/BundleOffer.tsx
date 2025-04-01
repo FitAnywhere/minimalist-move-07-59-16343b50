@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowDown, Plus } from 'lucide-react';
@@ -6,12 +5,10 @@ import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
-
 interface GiftItem {
   name: string;
   image: string;
 }
-
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://i.imgur.com/dZZFMFQ.png"
@@ -19,32 +16,25 @@ const giftItems: GiftItem[] = [{
   name: "SHIPPING",
   image: "https://i.imgur.com/Qyrbb1H.png"
 }];
-
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
-
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
   };
-  
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
-
   useEffect(() => {
     setIsVisible(true);
   }, []);
-
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
-
-  return (
-    <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
+  return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
@@ -54,26 +44,17 @@ const BundleOffer = () => {
             </h2>
           </div>
           
-          {isMobile ? (
-            // Mobile Layout
-            <div className="space-y-8">
+          {isMobile ?
+        // Mobile Layout
+        <div className="space-y-8">
               {/* Product Card - Mobile - Removed yellow light shadow/background */}
               <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="max-w-2xl mx-auto">
-                  <div className={cn(
-                    "rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", 
-                    "h-full relative bg-white", 
-                    "hover:translate-y-[-5px]", 
-                    "shadow-[0_15px_50px_rgba(255,215,0,0.4)] border border-gray-200"
-                  )}>
+                  <div className={cn("rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", "h-full relative bg-white", "hover:translate-y-[-5px]", "shadow-[0_15px_50px_rgba(255,215,0,0.4)] border border-gray-200")}>
                     <div className="relative z-10">
                       <div className="h-72 md:h-80 flex items-center justify-center p-4 group">
                         <div className="relative w-full h-full flex items-center justify-center">
-                          <img 
-                            src="https://i.imgur.com/coJB2up.png" 
-                            alt="FitAnywhere" 
-                            className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10" 
-                          />
+                          <img src="https://i.imgur.com/coJB2up.png" alt="FitAnywhere" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10" />
                         </div>
                       </div>
                       <div className="p-6 pt-0 text-center relative z-10">
@@ -105,11 +86,7 @@ const BundleOffer = () => {
                     <div className="flex items-center justify-center gap-4">
                       <div className="flex flex-col items-center">
                         <div className="w-20 h-20 mb-2 flex-shrink-0 overflow-hidden">
-                          <img 
-                            src={giftItems[0].image} 
-                            alt={giftItems[0].name} 
-                            className="w-full h-full object-contain transition-all duration-300 hover:scale-110" 
-                          />
+                          <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" />
                         </div>
                         <h4 className="font-bold text-sm text-center">{giftItems[0].name}</h4>
                       </div>
@@ -120,11 +97,7 @@ const BundleOffer = () => {
                       
                       <div className="flex flex-col items-center">
                         <div className="w-20 h-20 mb-2 flex-shrink-0 overflow-hidden">
-                          <img 
-                            src={giftItems[1].image} 
-                            alt={giftItems[1].name} 
-                            className="w-full h-full object-contain transition-all duration-300 hover:scale-110" 
-                          />
+                          <img src={giftItems[1].image} alt={giftItems[1].name} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" />
                         </div>
                         <h4 className="font-bold text-sm text-center">{giftItems[1].name}</h4>
                       </div>
@@ -137,11 +110,9 @@ const BundleOffer = () => {
               <div className={cn("mb-8 transition-all duration-1000 delay-500", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="flex flex-col items-center justify-center">
                   <span className="text-xl text-gray-700 line-through mb-1">
-                    {isVisible ? (
-                      <>
+                    {isVisible ? <>
                         €<CountUp start={0} end={originalPrice} duration={2} separator="," />
-                      </>
-                    ) : `€${originalPrice}`}
+                      </> : `€${originalPrice}`}
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-bold">
@@ -153,19 +124,14 @@ const BundleOffer = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            // Desktop Layout - Redesigned as per the image
-            <div className="mb-10 transition-all duration-1000">
+            </div> :
+        // Desktop Layout - Redesigned as per the image
+        <div className="mb-10 transition-all duration-1000">
               <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
                   {/* Left Side - Product Image */}
                   <div className="w-full md:w-1/2 p-6 flex flex-col items-center justify-center">
-                    <img 
-                      src="https://i.imgur.com/coJB2up.png" 
-                      alt="FitAnywhere" 
-                      className="max-h-80 object-contain mb-4" 
-                    />
+                    <img src="https://i.imgur.com/coJB2up.png" alt="FitAnywhere" className="max-h-80 object-contain mb-4" />
                     <div className="flex items-center gap-2">
                       <h3 className="font-bold text-2xl text-black">FitAnywhere</h3>
                       <Badge className="bg-yellow text-black text-xs font-bold py-1">
@@ -191,11 +157,7 @@ const BundleOffer = () => {
                         <div className="flex items-center justify-center gap-4">
                           <div className="flex flex-col items-center">
                             <div className="w-16 h-16 mb-2 flex-shrink-0 overflow-hidden">
-                              <img 
-                                src={giftItems[0].image} 
-                                alt={giftItems[0].name} 
-                                className="w-full h-full object-contain" 
-                              />
+                              <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain" />
                             </div>
                             <h4 className="font-bold text-sm text-center">{giftItems[0].name}</h4>
                           </div>
@@ -206,11 +168,7 @@ const BundleOffer = () => {
                           
                           <div className="flex flex-col items-center">
                             <div className="w-16 h-16 mb-2 flex-shrink-0 overflow-hidden">
-                              <img 
-                                src={giftItems[1].image} 
-                                alt={giftItems[1].name} 
-                                className="w-full h-full object-contain" 
-                              />
+                              <img src={giftItems[1].image} alt={giftItems[1].name} className="w-full h-full object-contain" />
                             </div>
                             <h4 className="font-bold text-sm text-center">{giftItems[1].name}</h4>
                           </div>
@@ -236,8 +194,7 @@ const BundleOffer = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
           
           <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
             <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4 mb-6">
@@ -246,15 +203,7 @@ const BundleOffer = () => {
             
             {/* CTA Button - Centered on both mobile and desktop */}
             <div className="flex justify-center">
-              <Button 
-                size="lg" 
-                className={cn(
-                  "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
-                  "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
-                  "flex items-center gap-2"
-                )} 
-                onClick={handleCheckout}
-              >
+              <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2")} onClick={handleCheckout}>
                 OWN YOURS FOREVER
               </Button>
             </div>
@@ -265,26 +214,12 @@ const BundleOffer = () => {
                 LIMITED OFFER
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
               </h3>
-              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto">
-                Order FitAnywhere now to secure one of 50 exclusive BoxFun packages.
-              </p>
+              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto">We're giving away BoxFun packages to everyone who orders FitAnywhere.</p>
               <div className="flex justify-center mb-6">
-                <img 
-                  src="https://i.imgur.com/r3NAyVd.png" 
-                  alt="BoxFun Offer" 
-                  className="max-h-48 object-contain" 
-                />
+                <img src="https://i.imgur.com/r3NAyVd.png" alt="BoxFun Offer" className="max-h-48 object-contain" />
               </div>
               <div className="flex justify-center">
-                <Button 
-                  size="lg" 
-                  className={cn(
-                    "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
-                    "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
-                    "flex items-center gap-2"
-                  )} 
-                  onClick={handleGetBoxFunFree}
-                >
+                <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2")} onClick={handleGetBoxFunFree}>
                   GET YOURS FREE
                 </Button>
               </div>
@@ -292,8 +227,6 @@ const BundleOffer = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default BundleOffer;
