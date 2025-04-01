@@ -127,10 +127,8 @@ const BundleOffer = () => {
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
                     <img src="https://i.imgur.com/coJB2up.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" />
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-2xl text-black">FitAnywhere</h3>
-                      <Badge className="bg-yellow text-black text-xs font-bold py-1">
-                        PREMIUM
-                      </Badge>
+                      
+                      
                     </div>
                   </div>
                   
