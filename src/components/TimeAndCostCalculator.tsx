@@ -70,7 +70,7 @@ const TimeAndCostCalculator = () => {
   // Handle CTA button click - updated to open Stripe checkout
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
+    window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
 
   // Format cost input
@@ -139,9 +139,9 @@ const TimeAndCostCalculator = () => {
                   </CardContent>
                 </Card>
                 
-                {/* Payoff Timeframe Display - Updated message */}
+                {/* Payoff Timeframe Display - Added more padding/margin */}
                 {gymMonthlyCost >= 5 && (
-                  <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center">
+                  <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-6 text-center my-10">
                     <p className="text-xl font-bold text-black">
                       In less than {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'} own FitAnywhere for free while saving €{annualSavings} every year.
                     </p>
@@ -212,4 +212,3 @@ const TimeAndCostCalculator = () => {
 };
 
 export default TimeAndCostCalculator;
-
