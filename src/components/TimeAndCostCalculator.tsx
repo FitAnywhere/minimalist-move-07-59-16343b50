@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -143,7 +142,7 @@ const TimeAndCostCalculator = () => {
                 {gymMonthlyCost >= 5 && (
                   <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center">
                     <p className="text-xl font-bold text-black">
-                      Forget membership costs. Own free FitAnywhere gym in under {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'} and save €{annualSavings} each year.
+                      Own free FitAnywhere gym in less than {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'} while saving €{annualSavings} every year.
                     </p>
                   </div>
                 )}

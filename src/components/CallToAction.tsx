@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
@@ -13,7 +12,7 @@ const CallToAction = () => {
   
   // All text converted to uppercase
   const firstLine = "WAS ALL THIS ENGINEERING WORTH IT?";
-  const secondLine = "OR WILL YOU KEEP WASTING TIME AND MONEY ON THE GYM?";
+  const secondLine = "OR WILL YOU KEEP WASTING TIME AND MONEY?";
   
   // Set up parallax effect
   useParallax(backgroundRef, 0.05);

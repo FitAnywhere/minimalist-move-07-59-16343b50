@@ -92,17 +92,17 @@ const PersuasionSection = () => {
           {typedText}<span className="animate-pulse">|</span>
         </p>
         
-        {/* Fourth line */}
+        {/* Fourth line - UPDATED TEXT */}
         <p 
           className={cn(
             "text-xl md:text-3xl font-bold text-white text-center max-w-2xl transition-all duration-1000 delay-[2000ms] parallax-bg pulse-glow",
             typedText === fullText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
-          Or will you keep wasting time and pouring money into gym fees?
+          Or will you keep wasting time and money?
         </p>
         
-        {/* CTA Button */}
+        {/* CTA Button - UPDATED TEXT */}
         <div 
           className={cn(
             "mt-12 transition-all duration-1000 delay-500",
@@ -115,7 +115,7 @@ const PersuasionSection = () => {
             className="font-bold text-xl shadow-lg hover:shadow-xl transition-all duration-300 button-glow group"
             onClick={handleCheckout}
           >
-            GET BOXFUN NOW
+            LAST CALL
             <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Button>
         </div>

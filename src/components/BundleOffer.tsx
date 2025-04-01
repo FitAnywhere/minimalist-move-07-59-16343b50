@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowDown, Plus } from 'lucide-react';
@@ -181,9 +182,9 @@ const BundleOffer = () => {
                     <div className="mb-6">
                       <div className="flex items-center gap-3 justify-center">
                         <span className="text-xl text-gray-700 line-through">
-                          ���{originalPrice}
+                          €{originalPrice}
                         </span>
-                        <div className="bg-red-600 px-3 py-1 rounded-full text-white text-xs font-bold">
+                        <div className="bg-green-600 px-3 py-1 rounded-full text-white text-xs font-bold">
                           {discountPercentage}% OFF
                         </div>
                       </div>
@@ -235,7 +236,7 @@ const BundleOffer = () => {
                       <CarouselPrevious className="left-1" />
                       <CarouselNext className="right-1" />
                     </Carousel>
-                    <h3 className="font-bold text-xl text-center mb-2">BOXFUN 50X</h3>
+                    <h3 className="font-bold text-xl text-center mb-2">BOXFUN - 50X GIVEAWAY</h3>
                   </CardContent>
                 </Card>
               </div>

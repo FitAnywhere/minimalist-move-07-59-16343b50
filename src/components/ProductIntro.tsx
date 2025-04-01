@@ -36,7 +36,8 @@ const ProductIntro = () => {
     features: [false, false, false],
     finalLine: false
   });
-  const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
+  // Default to the second feature (index 1) being open
+  const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(1);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [showSpecs, setShowSpecs] = useState(false);
 
