@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowDown, Plus } from 'lucide-react';
@@ -7,14 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 interface GiftItem {
   name: string;
   image: string;
@@ -26,35 +18,25 @@ const giftItems: GiftItem[] = [{
   name: "SHIPPING",
   image: "https://i.imgur.com/Qyrbb1H.png"
 }];
-
-const boxfunImages = [
-  "https://i.imgur.com/r3NAyVd.png",
-  "https://i.imgur.com/RS5vuW0.png"
-];
-
+const boxfunImages = ["https://i.imgur.com/r3NAyVd.png", "https://i.imgur.com/RS5vuW0.png"];
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
-  
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
   };
-  
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
-  
   useEffect(() => {
     setIsVisible(true);
   }, []);
-  
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
-  
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -235,45 +217,29 @@ const BundleOffer = () => {
                 LIMITED OFFER
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
-              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto">Order FitAnywhere now to secure one of 50 exclusive BoxFun packages.</p>
+              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto">Order FitAnywhere now to get BoxFun package for free.</p>
               
               {/* BoxFun Product Card - Side by side images on desktop, carousel on mobile */}
               <div className="max-w-md mx-auto mb-8">
                 <Card className="border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                   <CardContent className="p-6 flex flex-col items-center">
                     {/* For mobile view - carousel with two images */}
-                    {isMobile ? (
-                      <Carousel className="w-full max-w-xs mb-4">
+                    {isMobile ? <Carousel className="w-full max-w-xs mb-4">
                         <CarouselContent>
-                          {boxfunImages.map((image, index) => (
-                            <CarouselItem key={index}>
+                          {boxfunImages.map((image, index) => <CarouselItem key={index}>
                               <div className="flex items-center justify-center p-2">
-                                <img 
-                                  src={image} 
-                                  alt={`BoxFun Offer ${index + 1}`} 
-                                  className="h-52 object-contain" 
-                                />
+                                <img src={image} alt={`BoxFun Offer ${index + 1}`} className="h-52 object-contain" />
                               </div>
-                            </CarouselItem>
-                          ))}
+                            </CarouselItem>)}
                         </CarouselContent>
                         <CarouselPrevious className="left-1" />
                         <CarouselNext className="right-1" />
-                      </Carousel>
-                    ) : (
-                      /* For desktop view - side by side images */
-                      <div className="flex items-center justify-center gap-4 mb-4">
-                        {boxfunImages.map((image, index) => (
-                          <div key={index} className="flex items-center justify-center p-2">
-                            <img 
-                              src={image} 
-                              alt={`BoxFun Offer ${index + 1}`} 
-                              className="h-52 object-contain" 
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                      </Carousel> : (/* For desktop view - side by side images */
+                  <div className="flex items-center justify-center gap-4 mb-4">
+                        {boxfunImages.map((image, index) => <div key={index} className="flex items-center justify-center p-2">
+                            <img src={image} alt={`BoxFun Offer ${index + 1}`} className="h-52 object-contain" />
+                          </div>)}
+                      </div>)}
                     <h3 className="font-bold text-xl text-center mb-2">BOXFUN 50X</h3>
                   </CardContent>
                 </Card>
@@ -292,4 +258,3 @@ const BundleOffer = () => {
     </section>;
 };
 export default BundleOffer;
-
