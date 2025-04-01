@@ -8,59 +8,9 @@ const CallToAction = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { threshold: 0.3 });
-  const [animatedWords1, setAnimatedWords1] = useState<string[]>([]);
-  const [animatedWords2, setAnimatedWords2] = useState<string[]>([]);
-  
-  // All text converted to uppercase
-  const firstLine = "WAS ALL THIS ENGINEERING WORTH IT?";
-  const secondLine = "OR WILL YOU KEEP WASTING TIME AND MONEY?";
   
   // Set up parallax effect
   useParallax(backgroundRef, 0.05);
-  
-  // Word-by-word animation effect
-  useEffect(() => {
-    if (isInView) {
-      // Reset animations to prevent duplicates
-      setAnimatedWords1([]);
-      setAnimatedWords2([]);
-      
-      const words1 = firstLine.split(' ');
-      const words2 = secondLine.split(' ');
-      
-      const animateWords = (words: string[], setStateFunction: React.Dispatch<React.SetStateAction<string[]>>) => {
-        let currentIndex = 0;
-        const intervalId = setInterval(() => {
-          if (currentIndex < words.length) {
-            setStateFunction(prev => [...prev, words[currentIndex]]);
-            currentIndex++;
-          } else {
-            clearInterval(intervalId);
-          }
-        }, 200); // 200ms delay between each word
-        
-        return () => clearInterval(intervalId);
-      };
-      
-      // Start first line animation immediately
-      const cleanup1 = animateWords(words1, setAnimatedWords1);
-      
-      // Start second line animation after a delay
-      const timeout = setTimeout(() => {
-        const cleanup2 = animateWords(words2, setAnimatedWords2);
-        return cleanup2;
-      }, words1.length * 250); // Start second line after first line completes (with a little buffer)
-      
-      return () => {
-        cleanup1();
-        clearTimeout(timeout);
-      };
-    } else {
-      // Reset animations when section is out of view
-      setAnimatedWords1([]);
-      setAnimatedWords2([]);
-    }
-  }, [isInView]);
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -84,46 +34,10 @@ const CallToAction = () => {
       <div className="container relative z-20 mx-auto px-4 md:px-6">
         <div className="max-w-5xl mx-auto text-center">
           <div className="space-y-6 md:space-y-4">
-            {/* First animated line */}
-            <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight min-h-[3.5rem] md:min-h-[4rem] px-2 md:px-0">
-              {animatedWords1.map((word, index) => (
-                <span 
-                  key={`${word}-${index}`} 
-                  className={cn(
-                    "inline-block mx-1 transition-all duration-700 opacity-0 translate-y-4",
-                    isInView && "opacity-100 translate-y-0"
-                  )}
-                  style={{ 
-                    transitionDelay: `${index * 200}ms` 
-                  }}
-                >
-                  {word}
-                </span>
-              ))}
-            </h2>
-            
-            {/* Second animated line */}
-            <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight min-h-[3rem] md:min-h-[3.5rem] px-2 md:px-0">
-              {animatedWords2.map((word, index) => (
-                <span 
-                  key={`${word}-${index}`} 
-                  className={cn(
-                    "inline-block mx-1 transition-all duration-700 opacity-0 translate-y-4",
-                    isInView && "opacity-100 translate-y-0"
-                  )}
-                  style={{ 
-                    transitionDelay: `${(animatedWords1.length * 200) + (index * 200)}ms` 
-                  }}
-                >
-                  {word}
-                </span>
-              ))}
-            </h2>
-            
             {/* CTA Button - increased top margin for desktop to create more space */}
             <div 
               className={cn(
-                "transition-all duration-1000 delay-[1200ms] mt-8 md:mt-12", 
+                "transition-all duration-1000 mt-8 md:mt-12", 
                 isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
               )}
             >
@@ -146,4 +60,3 @@ const CallToAction = () => {
 };
 
 export default CallToAction;
-
