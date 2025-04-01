@@ -204,7 +204,7 @@ const BundleOffer = () => {
               </Button>
             </div>
             
-            <div className="mt-20">
+            <div className="mt-24">
               <h2 className="text-3xl md:text-5xl font-extrabold text-black mb-4 relative inline-block">
                 LIMITED OFFER
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>

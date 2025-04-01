@@ -68,7 +68,7 @@ const LifestyleSection = () => {
 
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/aEU5mK1dB1b7dJC14g', '_blank');
+    window.open('https://buy.stripe.com/6oE7uS5tR7zv4923cq', '_blank');
   };
 
   useEffect(() => {

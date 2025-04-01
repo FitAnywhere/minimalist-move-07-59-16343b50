@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -46,6 +45,9 @@ const faqItems: FAQItem[] = [{
 }, {
   question: "Can I use FitAnywhere inside the apartment with low ceilings?",
   answer: "The height is fully adjustable, making it ideal for apartments with lower ceilings. The exact dimensions are in the product specifications."
+}, {
+  question: "What's inside the FitAnywhere gym?",
+  answer: "Your entire workout system for calisthenics, strength, and cardio.\n- PowerTower\n- TRX\n- 4x Bands\n- Training Library\n- BoxFun"
 }, {
   question: "Can BoxFun elastic break?",
   answer: "It never happened. Every piece is handmade from the most premium materials to ensure it lasts a lifetime."
