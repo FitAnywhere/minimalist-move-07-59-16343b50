@@ -41,13 +41,24 @@ const Footer = () => {
     }, 2000);
   };
   
+  const openChatbot = () => {
+    // Check if voiceflow exists and has chat method
+    if (window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
+      window.voiceflow.chat.open();
+    } else {
+      // Fallback to dialog if chatbot is not available
+      setDialogOpen(true);
+      console.error("Voiceflow chatbot not available");
+    }
+  };
+  
   return (
     <footer className="bg-gray-50 py-4">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-4 md:gap-6 text-sm">
             <button 
-              onClick={() => setDialogOpen(true)}
+              onClick={openChatbot}
               className="flex items-center hover:text-yellow transition-colors"
             >
               <Mail className="w-4 h-4 mr-2" />
@@ -65,7 +76,7 @@ const Footer = () => {
         </div>
       </div>
       
-      {/* Contact Dialog */}
+      {/* Contact Dialog - only shown as fallback if chatbot fails */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
