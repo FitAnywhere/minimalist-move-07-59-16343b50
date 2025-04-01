@@ -29,6 +29,11 @@ const BundleOffer = () => {
     e.preventDefault();
     window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
   };
+  
+  const handleGetBoxFunFree = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
+  };
 
   useEffect(() => {
     setIsVisible(true);
@@ -52,13 +57,13 @@ const BundleOffer = () => {
           {isMobile ? (
             // Mobile Layout
             <div className="space-y-8">
-              {/* Product Card - Updated with white background only */}
+              {/* Product Card - Mobile - Removed yellow light shadow/background */}
               <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="max-w-2xl mx-auto">
                   <div className={cn(
                     "rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", 
                     "h-full relative bg-white", 
-                    "hover:translate-y-[-5px] hover:shadow-xl", 
+                    "hover:translate-y-[-5px]", 
                     "shadow-[0_15px_50px_rgba(255,215,0,0.4)] border border-gray-200"
                   )}>
                     <div className="relative z-10">
@@ -172,7 +177,7 @@ const BundleOffer = () => {
                   {/* Right Side - Product Info with restructured layout */}
                   <div className="w-full md:w-1/2 p-6 flex flex-col">
                     {/* Gift Section moved up */}
-                    <div className="mb-8">
+                    <div className="mb-6">
                       <div className="flex flex-col items-center">
                         <h3 className="text-xl font-bold text-black flex items-center gap-2 mb-3">
                           <Gift className="h-5 w-5 text-green-600" />
@@ -239,18 +244,45 @@ const BundleOffer = () => {
               Would you rather keep paying for the gym or...?
             </p>
             
-            {/* CTA Button moved below the text */}
-            <Button 
-              size="lg" 
-              className={cn(
-                "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
-                "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
-                "flex items-center gap-2"
-              )} 
-              onClick={handleCheckout}
-            >
-              OWN YOURS FOREVER
-            </Button>
+            {/* CTA Button - Centered on both mobile and desktop */}
+            <div className="flex justify-center">
+              <Button 
+                size="lg" 
+                className={cn(
+                  "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
+                  "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
+                  "flex items-center gap-2"
+                )} 
+                onClick={handleCheckout}
+              >
+                OWN YOURS FOREVER
+              </Button>
+            </div>
+            
+            {/* LIMITED OFFER Section */}
+            <div className="mt-12">
+              <h3 className="text-2xl font-bold text-black mb-6">LIMITED OFFER</h3>
+              <div className="flex justify-center mb-6">
+                <img 
+                  src="https://i.imgur.com/r3NAyVd.png" 
+                  alt="BoxFun Offer" 
+                  className="max-h-48 object-contain" 
+                />
+              </div>
+              <div className="flex justify-center">
+                <Button 
+                  size="lg" 
+                  className={cn(
+                    "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
+                    "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
+                    "flex items-center gap-2"
+                  )} 
+                  onClick={handleGetBoxFunFree}
+                >
+                  GET BOXFUN FREE
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
