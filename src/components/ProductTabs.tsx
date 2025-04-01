@@ -26,7 +26,8 @@ const bandsFeatures = [
 ];
 
 const ProductTabs = () => {
-  const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('trx');
+  // Change default activeTab from 'trx' to 'bands'
+  const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('bands');
   const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
   const [bulletPointsVisible, setBulletPointsVisible] = useState<boolean[]>([false, false, false]);
   
@@ -297,3 +298,4 @@ const ProductTabs = () => {
 };
 
 export default ProductTabs;
+

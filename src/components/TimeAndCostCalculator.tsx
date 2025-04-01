@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -85,7 +86,7 @@ const TimeAndCostCalculator = () => {
           <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
-                YOUR HIDDEN COSTS
+                YOUR LIFETIME INVESTMENT
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
             </div>
@@ -142,7 +143,7 @@ const TimeAndCostCalculator = () => {
                 {gymMonthlyCost >= 5 && (
                   <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center">
                     <p className="text-xl font-bold text-black">
-                      Own free FitAnywhere gym in less than {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'} while saving €{annualSavings} every year.
+                      In less than {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'} own FitAnywhere for free while saving €{annualSavings} every year.
                     </p>
                   </div>
                 )}
@@ -197,7 +198,7 @@ const TimeAndCostCalculator = () => {
                 
                 <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
                   <Button onClick={handleCTAClick} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group">
-                    GET FitAnywhere NOW
+                    LAST CALL
                     <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Button>
                 </div>
@@ -211,3 +212,4 @@ const TimeAndCostCalculator = () => {
 };
 
 export default TimeAndCostCalculator;
+

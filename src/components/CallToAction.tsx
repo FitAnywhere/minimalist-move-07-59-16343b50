@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
@@ -131,7 +132,7 @@ const CallToAction = () => {
                 className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group"
                 onClick={handleCheckout}
               >
-                GET FitAnywhere NOW
+                LAST CALL
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
               
@@ -145,3 +146,4 @@ const CallToAction = () => {
 };
 
 export default CallToAction;
+

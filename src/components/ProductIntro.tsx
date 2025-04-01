@@ -36,8 +36,8 @@ const ProductIntro = () => {
     features: [false, false, false],
     finalLine: false
   });
-  // Default to the second feature (index 1) being open
-  const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(1);
+  // Change default open feature to null so all features are closed by default
+  const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [showSpecs, setShowSpecs] = useState(false);
 
@@ -282,3 +282,4 @@ const ProductIntro = () => {
 };
 
 export default ProductIntro;
+
