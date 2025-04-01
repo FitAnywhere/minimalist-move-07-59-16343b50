@@ -235,19 +235,14 @@ const BundleOffer = () => {
                 LIMITED OFFER
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
-              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto">Order FitAnywhere and get exclusive BoxFun package for free.</p>
+              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto">Order FitAnywhere now to secure one of 50 exclusive BoxFun packages.</p>
               
-              {/* BoxFun Product Card with Shadow - Updated with carousel for desktop */}
+              {/* BoxFun Product Card - Side by side images on desktop, carousel on mobile */}
               <div className="max-w-md mx-auto mb-8">
                 <Card className="border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                   <CardContent className="p-6 flex flex-col items-center">
-                    {/* For mobile view - single image */}
+                    {/* For mobile view - carousel with two images */}
                     {isMobile ? (
-                      <div className="w-full h-auto mb-4">
-                        <img src="https://i.imgur.com/r3NAyVd.png" alt="BoxFun Offer" className="w-full h-full object-contain" />
-                      </div>
-                    ) : (
-                      /* For desktop view - carousel with two images */
                       <Carousel className="w-full max-w-xs mb-4">
                         <CarouselContent>
                           {boxfunImages.map((image, index) => (
@@ -265,6 +260,19 @@ const BundleOffer = () => {
                         <CarouselPrevious className="left-1" />
                         <CarouselNext className="right-1" />
                       </Carousel>
+                    ) : (
+                      /* For desktop view - side by side images */
+                      <div className="flex items-center justify-center gap-4 mb-4">
+                        {boxfunImages.map((image, index) => (
+                          <div key={index} className="flex items-center justify-center p-2">
+                            <img 
+                              src={image} 
+                              alt={`BoxFun Offer ${index + 1}`} 
+                              className="h-52 object-contain" 
+                            />
+                          </div>
+                        ))}
+                      </div>
                     )}
                     <h3 className="font-bold text-xl text-center mb-2">BOXFUN 50X</h3>
                   </CardContent>
@@ -284,3 +292,4 @@ const BundleOffer = () => {
     </section>;
 };
 export default BundleOffer;
+
