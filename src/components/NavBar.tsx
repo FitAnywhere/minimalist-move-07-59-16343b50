@@ -82,7 +82,7 @@ const NavBar = () => {
 
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
+    window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
 
   return (

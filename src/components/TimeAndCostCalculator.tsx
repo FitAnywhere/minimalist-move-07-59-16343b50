@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -198,7 +197,7 @@ const TimeAndCostCalculator = () => {
                 
                 <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
                   <Button onClick={handleCTAClick} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group">
-                    LAST CALL
+                    BREAK FREE
                     <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Button>
                 </div>

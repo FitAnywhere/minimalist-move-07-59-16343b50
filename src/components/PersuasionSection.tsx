@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -13,7 +12,6 @@ const PersuasionSection = () => {
   const fullText = "The real question is, are you ready?";
   const [showCta, setShowCta] = useState(false);
   
-  // Handle the typed text effect
   useEffect(() => {
     if (!isInView) {
       setTypedText('');
@@ -30,7 +28,6 @@ const PersuasionSection = () => {
     }
     
     if (typedText === fullText) {
-      // Set a timeout to show the CTA after the typing effect is complete
       const ctaTimeout = setTimeout(() => {
         setShowCta(true);
       }, 500);
@@ -39,7 +36,6 @@ const PersuasionSection = () => {
     }
   }, [isInView, typedText]);
   
-  // Set visibility flag based on inView - used for scroll-triggered animations
   useEffect(() => {
     if (isInView) {
       setIsVisible(true);
@@ -50,7 +46,7 @@ const PersuasionSection = () => {
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/aEU5mK1dB1b7dJC14g', '_blank');
+    window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
   
   return (
@@ -62,7 +58,6 @@ const PersuasionSection = () => {
       }}
     >
       <div className="container relative z-10 mx-auto px-6 flex flex-col items-center justify-center space-y-20">
-        {/* First line */}
         <p 
           className={cn(
             "text-xl md:text-2xl font-semibold text-black transition-all duration-1000 delay-500 text-center max-w-2xl parallax-bg",
@@ -72,7 +67,6 @@ const PersuasionSection = () => {
           It took years of engineering, relentless testing, and countless refinements.
         </p>
         
-        {/* Second line */}
         <p 
           className={cn(
             "text-2xl md:text-3xl font-bold text-gray-800 transition-all duration-1500 delay-1000 text-center max-w-xl parallax-bg",
@@ -82,7 +76,6 @@ const PersuasionSection = () => {
           Now, it's finally perfect.
         </p>
         
-        {/* Third line - typed effect */}
         <p 
           className={cn(
             "text-2xl md:text-4xl font-extrabold text-white text-center max-w-xl parallax-bg",
@@ -92,7 +85,6 @@ const PersuasionSection = () => {
           {typedText}<span className="animate-pulse">|</span>
         </p>
         
-        {/* Fourth line - UPDATED TEXT */}
         <p 
           className={cn(
             "text-xl md:text-3xl font-bold text-white text-center max-w-2xl transition-all duration-1000 delay-[2000ms] parallax-bg pulse-glow",
@@ -102,7 +94,6 @@ const PersuasionSection = () => {
           Or will you keep wasting time and money?
         </p>
         
-        {/* CTA Button - UPDATED TEXT */}
         <div 
           className={cn(
             "mt-12 transition-all duration-1000 delay-500",
