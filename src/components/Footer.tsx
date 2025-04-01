@@ -1,32 +1,15 @@
 
-import { useState, useEffect } from 'react';
-import { Mail, ArrowUp, Copy, Check } from 'lucide-react';
+import { useState } from 'react';
+import { Mail, Copy, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useToast } from "@/hooks/use-toast";
 
 const Footer = () => {
-  const [showScrollToTop, setShowScrollToTop] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollToTop(window.scrollY > 500);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-  
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
   
   const copyEmail = () => {
     navigator.clipboard.writeText('be@fitanywhere.today');
@@ -108,17 +91,6 @@ const Footer = () => {
           </div>
         </DialogContent>
       </Dialog>
-      
-      {/* Scroll to Top Button */}
-      <button 
-        onClick={scrollToTop} 
-        className={`fixed bottom-8 right-8 w-12 h-12 rounded-full bg-yellow shadow-lg flex items-center justify-center hover:bg-yellow-dark transition-all z-50 focus:outline-none ${
-          showScrollToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
-        }`} 
-        aria-label="Scroll to top"
-      >
-        <ArrowUp className="w-5 h-5 text-black" />
-      </button>
     </footer>
   );
 };

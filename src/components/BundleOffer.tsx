@@ -32,7 +32,7 @@ const BundleOffer = () => {
   
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
+    window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
 
   useEffect(() => {
@@ -259,9 +259,15 @@ const BundleOffer = () => {
               </Button>
             </div>
             
-            {/* LIMITED OFFER Section */}
+            {/* LIMITED OFFER Section - Updated styling and content */}
             <div className="mt-12">
-              <h3 className="text-2xl font-bold text-black mb-6">LIMITED OFFER</h3>
+              <h3 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
+                LIMITED OFFER
+                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
+              </h3>
+              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto">
+                Order FitAnywhere now to secure one of 50 exclusive BoxFun packages.
+              </p>
               <div className="flex justify-center mb-6">
                 <img 
                   src="https://i.imgur.com/r3NAyVd.png" 
@@ -279,7 +285,7 @@ const BundleOffer = () => {
                   )} 
                   onClick={handleGetBoxFunFree}
                 >
-                  GET BOXFUN FREE
+                  GET YOURS FREE
                 </Button>
               </div>
             </div>
