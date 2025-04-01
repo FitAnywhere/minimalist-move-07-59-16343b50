@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowDown, Plus } from 'lucide-react';
@@ -5,10 +6,13 @@ import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+
 interface GiftItem {
   name: string;
   image: string;
 }
+
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://i.imgur.com/dZZFMFQ.png"
@@ -16,24 +20,30 @@ const giftItems: GiftItem[] = [{
   name: "SHIPPING",
   image: "https://i.imgur.com/Qyrbb1H.png"
 }];
+
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
+  
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/4gw7sS8Jn5m4dI43ck', '_blank');
   };
+  
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
+  
   useEffect(() => {
     setIsVisible(true);
   }, []);
+  
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
+  
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -50,7 +60,7 @@ const BundleOffer = () => {
               {/* Product Card - Mobile - Removed yellow light shadow/background */}
               <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="max-w-2xl mx-auto">
-                  <div className={cn("rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", "h-full relative bg-white", "hover:translate-y-[-5px]", "shadow-[0_15px_50px_rgba(255,215,0,0.4)] border border-gray-200")}>
+                  <div className={cn("rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", "h-full relative bg-white", "hover:translate-y-[-5px]", "shadow border border-gray-200")}>
                     <div className="relative z-10">
                       <div className="h-72 md:h-80 flex items-center justify-center p-4 group">
                         <div className="relative w-full h-full flex items-center justify-center">
@@ -208,18 +218,44 @@ const BundleOffer = () => {
               </Button>
             </div>
             
-            {/* LIMITED OFFER Section - Updated styling and content */}
+            {/* LIMITED OFFER Section - Updated styling, content and design */}
             <div className="mt-12">
-              <h3 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
+              <h2 className="text-3xl md:text-5xl font-extrabold text-black mb-4 relative inline-block">
                 LIMITED OFFER
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
-              </h3>
-              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto">We're giving away BoxFun packages to everyone who orders FitAnywhere.</p>
-              <div className="flex justify-center mb-6">
-                <img src="https://i.imgur.com/r3NAyVd.png" alt="BoxFun Offer" className="max-h-48 object-contain" />
+              </h2>
+              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto">
+                Order FitAnywhere now to secure one of 50 exclusive BoxFun packages.
+              </p>
+              
+              {/* BoxFun Product Card with Shadow */}
+              <div className="max-w-md mx-auto mb-8">
+                <Card className="border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <CardContent className="p-6 flex flex-col items-center">
+                    <div className="w-full md:w-80 h-auto mb-4">
+                      <img 
+                        src="https://i.imgur.com/r3NAyVd.png" 
+                        alt="BoxFun Offer" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <h3 className="font-bold text-xl text-center mb-2">BOXFUN 50x</h3>
+                  </CardContent>
+                </Card>
               </div>
+              
               <div className="flex justify-center">
-                <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2")} onClick={handleGetBoxFunFree}>
+                <Button 
+                  size="lg" 
+                  variant="yellow"
+                  className={cn(
+                    "text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
+                    "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
+                    "flex items-center gap-2"
+                  )} 
+                  onClick={handleGetBoxFunFree}
+                >
+                  <Gift className="h-5 w-5" />
                   GET YOURS FREE
                 </Button>
               </div>
@@ -229,4 +265,5 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
+
 export default BundleOffer;
