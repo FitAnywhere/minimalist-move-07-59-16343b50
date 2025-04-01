@@ -52,23 +52,18 @@ const BundleOffer = () => {
           {isMobile ? (
             // Mobile Layout
             <div className="space-y-8">
-              {/* Product Card */}
+              {/* Product Card - Updated with white background only */}
               <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="max-w-2xl mx-auto">
                   <div className={cn(
                     "rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", 
-                    "h-full bg-gradient-to-br relative", 
-                    "bg-gradient-to-br from-yellow-50/10 to-white/5", 
-                    "before:absolute before:inset-0 before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIiB6PjxwYXRoIGQ9Ik0wIDBhNyA3IDAgMDEwIDE0QTcgNyAwIDAxMCAwWiIgZmlsbD0iI2YxZjFmMSIgZmlsbC1vcGFjaXR5PSIwLjIiPjwvcGF0aD48L3N2Zz4=')] before:opacity-10", 
-                    "after:absolute after:inset-0 after:bg-yellow-50/10 after:backdrop-blur-[1px]", 
+                    "h-full relative bg-white", 
                     "hover:translate-y-[-5px] hover:shadow-xl", 
-                    "shadow-[0_15px_50px_rgba(255,215,0,0.4)]"
+                    "shadow-[0_15px_50px_rgba(255,215,0,0.4)] border border-gray-200"
                   )}>
                     <div className="relative z-10">
                       <div className="h-72 md:h-80 flex items-center justify-center p-4 group">
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div className="relative w-full h-full flex items-center justify-center">
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow/5 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                           <img 
                             src="https://i.imgur.com/coJB2up.png" 
                             alt="FitAnywhere" 
@@ -90,7 +85,7 @@ const BundleOffer = () => {
                 </div>
               </div>
               
-              {/* Gift Section */}
+              {/* Gift Section - Updated with "GIFTS" title and combined box */}
               <div className={cn("mb-6 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="text-center mb-6">
                   <h3 className="text-xl md:text-2xl font-bold text-black flex items-center justify-center gap-2">
@@ -153,21 +148,6 @@ const BundleOffer = () => {
                   </div>
                 </div>
               </div>
-              
-              {/* CTA Button */}
-              <div className="flex justify-center mb-8">
-                <Button 
-                  size="lg" 
-                  className={cn(
-                    "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
-                    "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
-                    "flex items-center gap-2"
-                  )} 
-                  onClick={handleCheckout}
-                >
-                  OWN YOURS FOREVER
-                </Button>
-              </div>
             </div>
           ) : (
             // Desktop Layout - Redesigned as per the image
@@ -175,92 +155,78 @@ const BundleOffer = () => {
               <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
                   {/* Left Side - Product Image */}
-                  <div className="w-full md:w-1/2 p-6 flex items-center justify-center">
+                  <div className="w-full md:w-1/2 p-6 flex flex-col items-center justify-center">
                     <img 
                       src="https://i.imgur.com/coJB2up.png" 
                       alt="FitAnywhere" 
-                      className="max-h-80 object-contain" 
+                      className="max-h-80 object-contain mb-4" 
                     />
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-bold text-2xl text-black">FitAnywhere</h3>
+                      <Badge className="bg-yellow text-black text-xs font-bold py-1">
+                        PREMIUM
+                      </Badge>
+                    </div>
                   </div>
                   
-                  {/* Right Side - Product Info */}
-                  <div className="w-full md:w-1/2 p-6 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-2 mb-4">
-                        <h3 className="font-bold text-2xl text-black">FitAnywhere</h3>
-                        <Badge className="bg-yellow text-black text-xs font-bold py-1">
-                          PREMIUM
-                        </Badge>
+                  {/* Right Side - Product Info with restructured layout */}
+                  <div className="w-full md:w-1/2 p-6 flex flex-col">
+                    {/* Gift Section moved up */}
+                    <div className="mb-8">
+                      <div className="flex flex-col items-center">
+                        <h3 className="text-xl font-bold text-black flex items-center gap-2 mb-3">
+                          <Gift className="h-5 w-5 text-green-600" />
+                          GIFTS
+                        </h3>
+                        <ArrowDown className="h-6 w-6 text-gray-600 my-2 animate-bounce" />
                       </div>
                       
-                      <div className="mb-6 space-y-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg text-gray-700 line-through">
-                            €{originalPrice}
-                          </span>
-                          <div className="bg-red-600 px-3 py-1 rounded-full text-white text-xs font-bold">
-                            {discountPercentage}% OFF
+                      {/* Combined Gift Box */}
+                      <div className="rounded-lg bg-white p-4 border border-[#13613A]">
+                        <div className="flex items-center justify-center gap-4">
+                          <div className="flex flex-col items-center">
+                            <div className="w-16 h-16 mb-2 flex-shrink-0 overflow-hidden">
+                              <img 
+                                src={giftItems[0].image} 
+                                alt={giftItems[0].name} 
+                                className="w-full h-full object-contain" 
+                              />
+                            </div>
+                            <h4 className="font-bold text-sm text-center">{giftItems[0].name}</h4>
                           </div>
-                        </div>
-                        
-                        <div className="text-3xl font-bold text-green-600">
-                          €{currentPrice}
-                        </div>
-                      </div>
-                      
-                      {/* Gift Section with Arrow */}
-                      <div className="mb-4">
-                        <div className="flex flex-col items-center">
-                          <h3 className="text-xl font-bold text-black flex items-center gap-2">
-                            <Gift className="h-5 w-5 text-green-600" />
-                            GIFTS
-                          </h3>
-                          <ArrowDown className="h-6 w-6 text-gray-600 my-2 animate-bounce" />
-                        </div>
-                        
-                        {/* Combined Gift Box */}
-                        <div className="rounded-lg bg-white p-4 border border-[#13613A]">
-                          <div className="flex items-center justify-center gap-4">
-                            <div className="flex flex-col items-center">
-                              <div className="w-16 h-16 mb-2 flex-shrink-0 overflow-hidden">
-                                <img 
-                                  src={giftItems[0].image} 
-                                  alt={giftItems[0].name} 
-                                  className="w-full h-full object-contain" 
-                                />
-                              </div>
-                              <h4 className="font-bold text-sm text-center">{giftItems[0].name}</h4>
+                          
+                          <div className="flex items-center justify-center">
+                            <Plus className="h-5 w-5 text-gray-600" />
+                          </div>
+                          
+                          <div className="flex flex-col items-center">
+                            <div className="w-16 h-16 mb-2 flex-shrink-0 overflow-hidden">
+                              <img 
+                                src={giftItems[1].image} 
+                                alt={giftItems[1].name} 
+                                className="w-full h-full object-contain" 
+                              />
                             </div>
-                            
-                            <div className="flex items-center justify-center">
-                              <Plus className="h-5 w-5 text-gray-600" />
-                            </div>
-                            
-                            <div className="flex flex-col items-center">
-                              <div className="w-16 h-16 mb-2 flex-shrink-0 overflow-hidden">
-                                <img 
-                                  src={giftItems[1].image} 
-                                  alt={giftItems[1].name} 
-                                  className="w-full h-full object-contain" 
-                                />
-                              </div>
-                              <h4 className="font-bold text-sm text-center">{giftItems[1].name}</h4>
-                            </div>
+                            <h4 className="font-bold text-sm text-center">{giftItems[1].name}</h4>
                           </div>
                         </div>
                       </div>
+                    </div>
+                    
+                    {/* Price section moved below gifts */}
+                    <div className="mb-6">
+                      <div className="flex items-center gap-3 justify-center">
+                        <span className="text-xl text-gray-700 line-through">
+                          €{originalPrice}
+                        </span>
+                        <div className="bg-red-600 px-3 py-1 rounded-full text-white text-xs font-bold">
+                          {discountPercentage}% OFF
+                        </div>
+                      </div>
                       
-                      {/* CTA Button */}
-                      <Button 
-                        size="lg" 
-                        className={cn(
-                          "w-full bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
-                          "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow"
-                        )}
-                        onClick={handleCheckout}
-                      >
-                        OWN YOURS FOREVER
-                      </Button>
+                      <div className="text-3xl font-bold text-green-600 text-center mt-2">
+                        €{currentPrice}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -269,9 +235,22 @@ const BundleOffer = () => {
           )}
           
           <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
-            <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4">
+            <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4 mb-6">
               Would you rather keep paying for the gym or...?
             </p>
+            
+            {/* CTA Button moved below the text */}
+            <Button 
+              size="lg" 
+              className={cn(
+                "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
+                "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
+                "flex items-center gap-2"
+              )} 
+              onClick={handleCheckout}
+            >
+              OWN YOURS FOREVER
+            </Button>
           </div>
         </div>
       </div>
