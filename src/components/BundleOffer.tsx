@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowDown, Plus } from 'lucide-react';
@@ -8,10 +7,12 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
 interface GiftItem {
   name: string;
   image: string;
 }
+
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://i.imgur.com/dZZFMFQ.png"
@@ -20,7 +21,6 @@ const giftItems: GiftItem[] = [{
   image: "https://i.imgur.com/Qyrbb1H.png"
 }];
 
-// Reordered boxfun images to have image 4 and image 2 first as requested
 const boxfunImages = ["https://i.imgur.com/OrVS6HH.png", "https://i.imgur.com/4OsWHfq.png", "https://i.imgur.com/mTSCOf7.png", "https://i.imgur.com/eWOENUF.png"];
 
 const BundleOffer = () => {
@@ -28,7 +28,6 @@ const BundleOffer = () => {
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   
-  // Add animate state for product text
   const [animatedItem, setAnimatedItem] = useState(0);
   const productItems = ["1X PowerTower", "1X TRX", "4X Bands"];
   
@@ -45,7 +44,6 @@ const BundleOffer = () => {
   useEffect(() => {
     setIsVisible(true);
     
-    // Setup animation interval for product text
     const interval = setInterval(() => {
       setAnimatedItem(prev => (prev + 1) % productItems.length);
     }, 2000);
@@ -78,7 +76,6 @@ const BundleOffer = () => {
                         </div>
                       </div>
                       
-                      {/* Product text for mobile */}
                       <div className="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-white/90 to-white/20 py-3 px-2">
                         <div className="flex justify-center items-center gap-2">
                           {productItems.map((item, index) => (
@@ -164,7 +161,6 @@ const BundleOffer = () => {
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
                     <img src="https://i.imgur.com/coJB2up.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" />
-                    {/* Product text for desktop */}
                     <div className="w-full text-center mb-4">
                       <div className="flex justify-center items-center gap-3">
                         {productItems.map((item, index) => (
@@ -246,8 +242,17 @@ const BundleOffer = () => {
             </p>
             
             <div className="flex justify-center">
-              <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2")} onClick={handleCheckout}>
-                OWN FITANYWHERE NOW
+              <Button 
+                size="lg" 
+                className={cn(
+                  "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
+                  "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
+                  "flex items-center gap-2",
+                  "animate-[pulse_2s_ease-in-out_infinite]"
+                )} 
+                onClick={handleCheckout}
+              >
+                🛒 OWN FITANYWHERE Only €990!
               </Button>
             </div>
             
@@ -280,9 +285,19 @@ const BundleOffer = () => {
               <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">When your energy glows, everyone will feel it</p>
               
               <div className="flex justify-center">
-                <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2")} onClick={handleGetBoxFunFree}>
+                <Button 
+                  size="lg" 
+                  variant="yellow" 
+                  className={cn(
+                    "text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
+                    "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
+                    "flex items-center gap-2",
+                    "animate-[pulse_2s_ease-in-out_infinite]"
+                  )} 
+                  onClick={handleGetBoxFunFree}
+                >
                   <Gift className="h-5 w-5" />
-                  SECURE YOURS
+                  🛒 €990 + FREE BoxFun!
                 </Button>
               </div>
             </div>
@@ -291,4 +306,5 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
+
 export default BundleOffer;
