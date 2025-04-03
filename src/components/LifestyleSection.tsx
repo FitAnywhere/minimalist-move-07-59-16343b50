@@ -286,7 +286,7 @@ const LifestyleSection = () => {
                 <div className="flex flex-col items-center mt-8 flex-grow-0">
                   <Button onClick={handleStripeCheckout} className={cn("bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", "transition-all duration-300 transform hover:scale-105", "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", "w-auto max-w-fit text-center", "flex items-center justify-center space-x-2", "animate-[pulse_2s_ease-in-out_infinite]" // Added heartbeat animation
                 )}>
-                    <span className="my-0 py-0 mx-0 px-0 text-sm">🛒 BUY BOXFUN NOW Only €69,99!</span>
+                    <span className="my-0 mx-[6px] px-[14px] text-sm font-bold py-0">🛒 BUY BOXFUN NOW Only €69,99!</span>
                   </Button>
                   
                   <p className="text-sm text-gray-500 mt-2 text-center">50X BoxFun units being given away</p>
