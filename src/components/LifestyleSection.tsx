@@ -288,7 +288,7 @@ const LifestyleSection = () => {
                     <span>GET BOXFUN NOW</span> <Rocket className="ml-1 h-5 w-5 animate-float" />
                   </Button>
                   
-                  <p className="text-sm text-gray-500 mt-2 text-center">Only 50X BoxFun units being given away</p>
+                  <p className="text-sm text-gray-500 mt-2 text-center">50X BoxFun units being given away</p>
                 </div>
               </div>
               
