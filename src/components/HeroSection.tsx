@@ -94,6 +94,19 @@ const HeroSection = memo(() => {
                     EXPLORE
                     <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </button>
+                  
+                  <div className="mt-4 space-y-1">
+                    <p className="text-sm text-gray-700 font-medium">
+                      The real cost of staying fit?
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      €12,052 in wasted memberships. 883 hours in traffic.
+                    </p>
+                    <p className="text-sm text-gray-700 italic">
+                      Most never realize… until it's too late.
+                    </p>
+                  </div>
+                  
                   <p className="mt-4 text-sm text-gray-600">
                     Launching Spring 2025
                   </p>
@@ -115,6 +128,9 @@ const HeroSection = memo(() => {
                       toggleAudio={toggleAudio}
                       priority={true}
                     />
+                    <p className="mt-3 text-sm text-gray-600 ml-1">
+                      Launching Spring 2025
+                    </p>
                   </div>
                 </div>
               </div>
