@@ -329,7 +329,7 @@ const TestimonialsCarousel = () => {
           </div>
           
           <div className={cn("mt-16 text-center transition-all duration-700", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-            <p className="font-bold text-3xl text-yellow-400">+7939 completed workouts</p>
+            
           </div>
         </div>
       </div>
