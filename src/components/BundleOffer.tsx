@@ -217,12 +217,12 @@ const BundleOffer = () => {
               </Button>
             </div>
             
-            <div className="mt-24">
+            <div className="mt-24 py-0 my-[85px]">
               <h2 className="text-3xl md:text-5xl font-extrabold text-black mb-4 relative inline-block">
                 LIMITED OFFER
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
-              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">Enjoy a free BoxFun when you order FitAnywhere today!</p>
+              <p className="text-gray-700 mb-6 max-w-xl font-medium mx-[89px] py-[16px] my-[12px] text-xl">Enjoy a free BoxFun when you order FitAnywhere today!</p>
               
               <div className="max-w-md mx-auto mb-8">
                 <Card className="border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
