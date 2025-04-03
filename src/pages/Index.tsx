@@ -66,8 +66,28 @@ const Index = () => {
       });
     };
     
+    // Add scale keyframes for carousel arrows
+    const addScaleKeyframes = () => {
+      if (!document.querySelector('#scale-keyframes')) {
+        const styleSheet = document.createElement('style');
+        styleSheet.id = 'scale-keyframes';
+        styleSheet.textContent = `
+          @keyframes scale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+          }
+          
+          .scale-animation {
+            animation: scale 4s ease-in-out infinite;
+          }
+        `;
+        document.head.appendChild(styleSheet);
+      }
+    };
+    
     preloadVimeoAPI();
     addVideoPreloadHints();
+    addScaleKeyframes();
     
     // Improved scroll handling
     const handleNavigation = () => {

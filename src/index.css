@@ -296,6 +296,15 @@
   }
 }
 
+@keyframes scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
 @keyframes pulse-glow {
   0%, 100% {
     opacity: 1;

@@ -1,6 +1,7 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Gift, ArrowDown, Plus } from 'lucide-react';
+import { ArrowDown, Plus } from 'lucide-react';
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -11,12 +12,10 @@ interface GiftItem {
   name: string;
   image: string;
 }
+// Updated to just have the training library
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://i.imgur.com/dZZFMFQ.png"
-}, {
-  name: "SHIPPING",
-  image: "https://i.imgur.com/Qyrbb1H.png"
 }];
 
 // Updated to remove the first image
@@ -88,31 +87,21 @@ const BundleOffer = () => {
               
               <div className={cn("mb-6 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="text-center mb-6">
+                  {/* Replaced GIFTS text and Gift icon with just a "+" sign */}
                   <h3 className="text-xl md:text-2xl font-bold text-black flex items-center justify-center gap-2 my-[31px]">
-                    <Gift className="h-5 w-5 text-green-600" />
-                    GIFTS
+                    <Plus className="h-8 w-8 text-green-600" />
                   </h3>
                 </div>
                 
                 <div className="max-w-2xl mx-auto">
                   <div className="rounded-lg bg-white p-6 border border-[#13613A] flex flex-col items-center">
-                    <div className="flex items-center justify-center gap-4">
-                      <div className="flex flex-col items-center">
-                        <div className="w-20 h-20 mb-2 flex-shrink-0 overflow-hidden">
+                    {/* Only include the TRAINING LIBRARY item taking up full space */}
+                    <div className="flex items-center justify-center">
+                      <div className="flex flex-col items-center w-full">
+                        <div className="w-32 h-32 mb-2 flex-shrink-0 overflow-hidden">
                           <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" />
                         </div>
-                        <h4 className="font-bold text-sm text-center">{giftItems[0].name}</h4>
-                      </div>
-                      
-                      <div className="flex items-center justify-center">
-                        <Plus className="h-5 w-5 text-gray-600" />
-                      </div>
-                      
-                      <div className="flex flex-col items-center">
-                        <div className="w-20 h-20 mb-2 flex-shrink-0 overflow-hidden">
-                          <img src={giftItems[1].image} alt={giftItems[1].name} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" />
-                        </div>
-                        <h4 className="font-bold text-sm text-center">{giftItems[1].name}</h4>
+                        <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
                       </div>
                     </div>
                   </div>
@@ -157,31 +146,21 @@ const BundleOffer = () => {
                   <div className="w-full md:w-1/2 p-8 flex flex-col">
                     <div className="mb-8">
                       <div className="flex flex-col items-center">
-                        <h3 className="text-2xl font-bold text-black flex items-center gap-2 mb-4">
-                          <Gift className="h-6 w-6 text-green-600" />
-                          GIFTS
+                        {/* Replaced GIFTS text and Gift icon with just a "+" sign */}
+                        <h3 className="text-2xl font-bold text-black mb-4">
+                          <Plus className="h-10 w-10 text-green-600 mx-auto" />
                         </h3>
                         <ArrowDown className="h-6 w-6 text-gray-600 my-2 animate-bounce" />
                       </div>
                       
                       <div className="rounded-lg bg-white p-6 border border-[#13613A]">
-                        <div className="flex items-center justify-center gap-6">
+                        {/* Only include the TRAINING LIBRARY item taking up full space */}
+                        <div className="flex items-center justify-center">
                           <div className="flex flex-col items-center">
-                            <div className="w-24 h-24 mb-3 flex-shrink-0 overflow-hidden">
+                            <div className="w-36 h-36 mb-3 flex-shrink-0 overflow-hidden">
                               <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain" />
                             </div>
-                            <h4 className="font-bold text-sm text-center">{giftItems[0].name}</h4>
-                          </div>
-                          
-                          <div className="flex items-center justify-center">
-                            <Plus className="h-6 w-6 text-gray-600" />
-                          </div>
-                          
-                          <div className="flex flex-col items-center">
-                            <div className="w-24 h-24 mb-3 flex-shrink-0 overflow-hidden">
-                              <img src={giftItems[1].image} alt={giftItems[1].name} className="w-full h-full object-contain" />
-                            </div>
-                            <h4 className="font-bold text-sm text-center">{giftItems[1].name}</h4>
+                            <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
                           </div>
                         </div>
                       </div>
@@ -235,8 +214,8 @@ const BundleOffer = () => {
                             </div>
                           </CarouselItem>)}
                       </CarouselContent>
-                      <CarouselPrevious className="left-1 animate-[pulse_4s_ease-in-out_infinite]" />
-                      <CarouselNext className="right-1 animate-[pulse_4s_ease-in-out_infinite]" />
+                      <CarouselPrevious className="left-1 animate-[scale_4s_ease-in-out_infinite]" />
+                      <CarouselNext className="right-1 animate-[scale_4s_ease-in-out_infinite]" />
                     </Carousel>
                     <h3 className="font-bold text-xl text-center mb-2">BOXFUN - 50X GIVEAWAY</h3>
                   </CardContent>
@@ -247,7 +226,6 @@ const BundleOffer = () => {
               
               <div className="flex justify-center">
                 <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2", "animate-[pulse_4s_ease-in-out_infinite]")} onClick={handleGetBoxFunFree}>
-                  <Gift className="h-5 w-5" />
                   €990 + FREE BoxFun!
                 </Button>
               </div>

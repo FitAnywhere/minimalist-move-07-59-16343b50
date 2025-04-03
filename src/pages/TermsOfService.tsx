@@ -2,14 +2,35 @@
 import { Separator } from "@/components/ui/separator";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const TermsOfService = () => {
+  const navigate = useNavigate();
+  
+  const handleReturnToMain = () => {
+    navigate('/');
+  };
+  
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar />
       <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
         {/* Add extra padding at the top to create more space below the navbar */}
         <div className="pt-16 md:pt-20"></div>
+        
+        {/* Close button to return to main page */}
+        <div className="fixed top-24 right-6 z-40">
+          <Button 
+            onClick={handleReturnToMain}
+            size="sm"
+            variant="outline"
+            className="rounded-full shadow-md hover:shadow-lg bg-white/90 backdrop-blur-sm"
+          >
+            <X className="h-4 w-4 mr-1" /> Close
+          </Button>
+        </div>
         
         <h1 className="text-3xl font-bold mb-6 text-center">Terms of Service</h1>
         
@@ -81,7 +102,19 @@ const TermsOfService = () => {
             By using our website and purchasing our products, you confirm that you have read, understood, and agree to these Terms of Service.
           </p>
           
-          {/* Removed the copyright notice that was here */}
+          {/* Fixed Position "Return to Main Page" Button for mobile */}
+          <div className="md:hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40">
+            <Button 
+              onClick={handleReturnToMain}
+              size="lg"
+              className="rounded-full shadow-lg bg-yellow text-black font-bold"
+            >
+              Return to Main Page
+            </Button>
+          </div>
+          
+          {/* Added spacing at bottom for mobile */}
+          <div className="h-24 md:hidden"></div>
         </div>
       </main>
       <Footer />
