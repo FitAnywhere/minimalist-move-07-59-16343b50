@@ -94,7 +94,7 @@ const TargetAndFAQ = () => {
                   </div>)}
               </div>
               
-              <p className={cn("mt-12 text-xl md:text-2xl font-semibold text-gray-700 transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-8")}>FitAnywhere movement is growing fast.</p>
+              <p className={cn("mt-12 text-xl md:text-2xl font-semibold text-gray-700 transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-8")}>FitAnywhere movement is growing fast</p>
             </div>
           </div>
         </div>
