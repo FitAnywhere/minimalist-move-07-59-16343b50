@@ -90,9 +90,7 @@ const HeroSection = memo(() => {
                     
                   </div>
                   
-                  <p className="mt-4 text-sm text-gray-600">
-                    Launching Spring 2025
-                  </p>
+                  
                 </div>
               </div>
             </> : <>
