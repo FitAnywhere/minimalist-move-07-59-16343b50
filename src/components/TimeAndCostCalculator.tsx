@@ -91,9 +91,7 @@ const TimeAndCostCalculator = () => {
                   
                 </div>
               </div>
-              <p className={cn("mt-1 text-xl font-medium text-yellow-400 tracking-wider", isInView ? "opacity-100" : "opacity-0")}>
-                APPROVED PERFORMANCE
-              </p>
+              
             </div>
             
             {/* Main content area */}
