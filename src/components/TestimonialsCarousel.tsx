@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -93,7 +92,6 @@ const testimonials: Testimonial[] = [
   }
 ];
 
-// Memoized video component for better performance
 const TestimonialVideo = memo(({ 
   vimeoId, 
   hash, 
@@ -139,7 +137,6 @@ const TestimonialVideo = memo(({
 
 TestimonialVideo.displayName = 'TestimonialVideo';
 
-// Loading indicator component
 const VideoLoader = memo(() => (
   <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
     <div className="flex flex-col items-center justify-center space-y-4">
@@ -179,7 +176,6 @@ const TestimonialsCarousel = () => {
   const [preloadedVideos, setPreloadedVideos] = useState<string[]>([]);
   const vimeoScriptLoadedRef = useRef(false);
 
-  // Optimized Vimeo script loading
   useEffect(() => {
     if (vimeoScriptLoadedRef.current) return;
     
@@ -196,7 +192,6 @@ const TestimonialsCarousel = () => {
       vimeoScriptLoadedRef.current = true;
     }
     
-    // Preload the first 3 testimonial videos for better UX
     const preloadTestimonials = () => {
       testimonials.slice(0, 3).forEach((testimonial) => {
         const preloadLink = document.createElement('link');
@@ -209,7 +204,6 @@ const TestimonialsCarousel = () => {
         setPreloadedVideos(prev => [...prev, testimonial.vimeoId]);
       });
       
-      // Lazily preload the rest
       testimonials.slice(3).forEach((testimonial, index) => {
         setTimeout(() => {
           const preloadLink = document.createElement('link');
@@ -229,7 +223,6 @@ const TestimonialsCarousel = () => {
     }
   }, [isInView]);
 
-  // Memoized navigation handlers
   const nextTestimonial = useCallback(() => {
     setVideoVisible(prev => ({
       ...prev,
@@ -268,7 +261,6 @@ const TestimonialsCarousel = () => {
     });
   }, [activeIndex, currentTestimonial.vimeoId]);
 
-  // Handle video loaded event
   const handleVideoLoaded = useCallback((vimeoId: string) => {
     setVideosLoaded(prev => ({
       ...prev,
@@ -283,7 +275,6 @@ const TestimonialsCarousel = () => {
     });
   }, []);
 
-  // Preload next video when current is loaded
   useEffect(() => {
     if (videosLoaded[currentTestimonial.vimeoId]) {
       const nextIndex = (activeIndex + 1) % testimonials.length;
@@ -302,7 +293,6 @@ const TestimonialsCarousel = () => {
     }
   }, [videosLoaded, activeIndex, currentTestimonial.vimeoId, preloadedVideos]);
 
-  // Update video visibility when active index changes
   useEffect(() => {
     setVideoVisible(prev => ({
       ...prev,
@@ -401,6 +391,15 @@ const TestimonialsCarousel = () => {
             >
               <ChevronRight className="w-4 h-4 text-gray-800" />
             </button>
+          </div>
+          
+          <div className={cn(
+            "mt-16 text-center transition-all duration-700",
+            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}>
+            <p className="text-2xl md:text-3xl font-bold text-black">
+              6K+ workouts completed
+            </p>
           </div>
         </div>
       </div>
