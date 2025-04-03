@@ -22,7 +22,8 @@ const giftItems: GiftItem[] = [{
   image: "https://i.imgur.com/Qyrbb1H.png"
 }];
 
-const boxfunImages = ["https://i.imgur.com/OrVS6HH.png", "https://i.imgur.com/4OsWHfq.png", "https://i.imgur.com/mTSCOf7.png", "https://i.imgur.com/eWOENUF.png"];
+// Updated to remove the first image
+const boxfunImages = ["https://i.imgur.com/4OsWHfq.png", "https://i.imgur.com/mTSCOf7.png", "https://i.imgur.com/eWOENUF.png"];
 
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -275,8 +276,8 @@ const BundleOffer = () => {
                             </div>
                           </CarouselItem>)}
                       </CarouselContent>
-                      <CarouselPrevious className="left-1" />
-                      <CarouselNext className="right-1" />
+                      <CarouselPrevious className="left-1 animate-[pulse_4s_ease-in-out_infinite]" />
+                      <CarouselNext className="right-1 animate-[pulse_4s_ease-in-out_infinite]" />
                     </Carousel>
                     <h3 className="font-bold text-xl text-center mb-2">BOXFUN - 50X GIVEAWAY</h3>
                   </CardContent>
