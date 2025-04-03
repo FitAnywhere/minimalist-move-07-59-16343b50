@@ -88,7 +88,7 @@ const TimeAndCostCalculator = () => {
               <div className={cn("mt-4 flex justify-center items-center", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5")}>
                 <div className="flex items-center gap-3 text-yellow-400">
                   
-                  <span className="text-4xl font-bold">7,939 workouts</span>
+                  
                 </div>
               </div>
               <p className={cn("mt-1 text-xl font-medium text-yellow-400 tracking-wider", isInView ? "opacity-100" : "opacity-0")}>
