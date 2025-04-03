@@ -7,12 +7,10 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-
 interface GiftItem {
   name: string;
   image: string;
 }
-
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://i.imgur.com/dZZFMFQ.png"
@@ -20,32 +18,25 @@ const giftItems: GiftItem[] = [{
   name: "SHIPPING",
   image: "https://i.imgur.com/Qyrbb1H.png"
 }];
-
 const boxfunImages = ["https://i.imgur.com/mTSCOf7.png", "https://i.imgur.com/4OsWHfq.png", "https://i.imgur.com/eWOENUF.png", "https://i.imgur.com/OrVS6HH.png"];
-
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
-
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
-
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
-
   useEffect(() => {
     setIsVisible(true);
   }, []);
-
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
-
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -228,7 +219,7 @@ const BundleOffer = () => {
                 </Card>
               </div>
               
-              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">When your energy glows, everyone will feel it.</p>
+              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">Secure yours before we sell out</p>
               
               <div className="flex justify-center">
                 <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2")} onClick={handleGetBoxFunFree}>
@@ -242,5 +233,4 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
-
 export default BundleOffer;
