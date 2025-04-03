@@ -104,7 +104,7 @@ const HeroSection = memo(() => {
                 <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
                   <div className="w-full max-w-[95%] mx-auto">
                     <VimeoPlayer videoId="1067255623" playerId="hero_video_desktop" isInView={isInView} audioOn={audioOn} toggleAudio={toggleAudio} priority={true} />
-                    <p className="mt-3 text-sm text-gray-600 ml-1 mx-[156px]">Launching Spring 2025. Reserve before we sell out.</p>
+                    <p className="mt-3 text-sm text-gray-600 ml-1 my-0 mx-[107px]">Launching Spring 2025. Reserve before we sell out.</p>
                   </div>
                 </div>
               </div>
