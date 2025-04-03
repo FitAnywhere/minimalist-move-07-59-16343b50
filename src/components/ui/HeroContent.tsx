@@ -69,7 +69,7 @@ const HeroContent = memo(({
             <p className="text-gray-700 text-lg px-0 py-[4px]">
               €12,052 in wasted memberships. 883 hours in traffic.
             </p>
-            <p className="text-gray-700 italic text-lg">
+            <p className="text-gray-700 italic text-lg my-[29px]">
               Most never realize… until it's too late.
             </p>
           </div>
