@@ -15,23 +15,58 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
-    name: "Alex G.",
-    role: "Busy Professional",
-    quote: "I can't believe how much time it saves me!",
-    vimeoId: "1067256239",
-    hash: "d5e32d0eef"
-  },
-  {
     name: "Emily T.",
     role: "Fitness Beginner",
-    quote: "I never imagined how many exercises I can do using TRX and BANDS.",
+    quote: "Bands seemed basic until I tried this. My whole body's sore in the best way.",
     vimeoId: "1067256372",
     hash: "70ab6c252c"
   },
   {
+    name: "Jordan P.",
+    role: "Calisthenics Enthusiast",
+    quote: "Didn't expect this to replace my entire workout routine…",
+    vimeoId: "1072106681",
+    hash: "ccbb523a7c"
+  },
+  {
+    name: "Jordan P.",
+    role: "Calisthenics Enthusiast",
+    quote: "I've never had so much fun while getting in shape",
+    vimeoId: "1067259441",
+    hash: "6ed11d11d8"
+  },
+  {
+    name: "James W.",
+    role: "Outdoor Lover",
+    quote: "BoxFun is the first thing that truly got me moving and loving every second of it!",
+    vimeoId: "1072106631",
+    hash: "962bdbefe6"
+  },
+  {
+    name: "Sarah M.",
+    role: "Remote Worker",
+    quote: "Being remote used to mean no workouts. Now it means random 15 minute gains between Zooms.",
+    vimeoId: "1067256419",
+    hash: "9896ed5d93"
+  },
+  {
+    name: "Chris L.",
+    role: "Fitness Advocate",
+    quote: "Our clients love it, and it looks clean and modern.",
+    vimeoId: "1067256325",
+    hash: "d9d4133cc1"
+  },
+  {
+    name: "Alex G.",
+    role: "Busy Professional",
+    quote: "Time saving is underrated. Now I work out and still have time for my girl.",
+    vimeoId: "1067256239",
+    hash: "d5e32d0eef"
+  },
+  {
     name: "John D.",
     role: "Fitness Enthusiast",
-    quote: "Finally, got an efficient training solution!",
+    quote: "It's like minimalism for fitness. Simple yet everything you need.",
     vimeoId: "1067256399",
     hash: "317d8d1581"
   },
@@ -43,13 +78,6 @@ const testimonials: Testimonial[] = [
     hash: "2f52dd8383"
   },
   {
-    name: "Jordan P.",
-    role: "Calisthenics Enthusiast",
-    quote: "Didn't expect this to replace my entire workout routine…",
-    vimeoId: "1072106681",
-    hash: "ccbb523a7c"
-  },
-  {
     name: "Tom S.",
     role: "Strength Seeker",
     quote: "I'm just obsessed with this setup.",
@@ -57,32 +85,11 @@ const testimonials: Testimonial[] = [
     hash: "462fcda05e"
   },
   {
-    name: "James W.",
-    role: "Outdoor Lover",
-    quote: "BoxFun is the first thing that truly got me moving and loving every second of it!",
-    vimeoId: "1072106631",
-    hash: "962bdbefe6"
-  },
-  {
     name: "Ryan P.",
     role: "Leader with a Fitness Goal",
     quote: "Perfect for a quick and effective workout, no matter where I am!",
     vimeoId: "1072106699",
     hash: "6075a29b52"
-  },
-  {
-    name: "Chris L.",
-    role: "Fitness Advocate",
-    quote: "Ordered multiple for our studio and got an extra discount. Thank you!",
-    vimeoId: "1067256325",
-    hash: "d9d4133cc1"
-  },
-  {
-    name: "Sarah M.",
-    role: "Remote Worker",
-    quote: "I work from home, and this is exactly what I needed!",
-    vimeoId: "1067256419",
-    hash: "9896ed5d93"
   }
 ];
 
