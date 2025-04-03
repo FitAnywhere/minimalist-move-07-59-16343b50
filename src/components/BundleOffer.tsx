@@ -21,7 +21,12 @@ const giftItems: GiftItem[] = [{
   image: "https://i.imgur.com/Qyrbb1H.png"
 }];
 
-const boxfunImages = ["https://i.imgur.com/r3NAyVd.png", "https://i.imgur.com/RS5vuW0.png"];
+const boxfunImages = [
+  "https://i.imgur.com/eWOENUF.png",
+  "https://i.imgur.com/4OsWHfq.png",
+  "https://i.imgur.com/OrVS6HH.png",
+  "https://i.imgur.com/mTSCOf7.png"
+];
 
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -216,11 +221,13 @@ const BundleOffer = () => {
                   <CardContent className="p-6 flex flex-col items-center">
                     <Carousel className="w-full max-w-xs mb-4">
                       <CarouselContent>
-                        {boxfunImages.map((image, index) => <CarouselItem key={index}>
+                        {boxfunImages.map((image, index) => (
+                          <CarouselItem key={index}>
                             <div className="flex items-center justify-center p-2">
                               <img src={image} alt={`BoxFun Offer ${index + 1}`} className={isMobile ? "h-52 object-contain" : "h-64 object-contain"} />
                             </div>
-                          </CarouselItem>)}
+                          </CarouselItem>
+                        ))}
                       </CarouselContent>
                       <CarouselPrevious className="left-1" />
                       <CarouselNext className="right-1" />
