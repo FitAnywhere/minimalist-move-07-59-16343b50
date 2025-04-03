@@ -3,7 +3,6 @@ import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Quote, Star, Loader } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 interface Testimonial {
   name: string;
   role: string;
@@ -11,7 +10,6 @@ interface Testimonial {
   vimeoId: string;
   hash: string;
 }
-
 const testimonials: Testimonial[] = [{
   name: "Emily T.",
   role: "Fitness Beginner",
@@ -79,7 +77,6 @@ const testimonials: Testimonial[] = [{
   vimeoId: "1072106699",
   hash: "6075a29b52"
 }];
-
 const TestimonialVideo = memo(({
   vimeoId,
   hash,
@@ -117,7 +114,6 @@ const TestimonialVideo = memo(({
     </div>;
 });
 TestimonialVideo.displayName = 'TestimonialVideo';
-
 const VideoLoader = memo(() => <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
     <div className="flex flex-col items-center justify-center space-y-4">
       <div className="relative">
@@ -141,7 +137,6 @@ const VideoLoader = memo(() => <div className="absolute inset-0 flex flex-col it
     </div>
   </div>);
 VideoLoader.displayName = 'VideoLoader';
-
 const TestimonialsCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
@@ -157,7 +152,6 @@ const TestimonialsCarousel = () => {
   const [key, setKey] = useState(0);
   const [preloadedVideos, setPreloadedVideos] = useState<string[]>([]);
   const vimeoScriptLoadedRef = useRef(false);
-
   useEffect(() => {
     if (vimeoScriptLoadedRef.current) return;
     if (!document.getElementById('vimeo-player-api')) {
@@ -198,7 +192,6 @@ const TestimonialsCarousel = () => {
       preloadTestimonials();
     }
   }, [isInView]);
-
   const nextTestimonial = useCallback(() => {
     setVideoVisible(prev => ({
       ...prev,
@@ -209,7 +202,6 @@ const TestimonialsCarousel = () => {
       setKey(prev => prev + 1);
     });
   }, [currentTestimonial.vimeoId]);
-
   const prevTestimonial = useCallback(() => {
     setVideoVisible(prev => ({
       ...prev,
@@ -220,7 +212,6 @@ const TestimonialsCarousel = () => {
       setKey(prev => prev + 1);
     });
   }, [currentTestimonial.vimeoId]);
-
   const goToTestimonial = useCallback((index: number) => {
     if (index === activeIndex) return;
     setVideoVisible(prev => ({
@@ -232,7 +223,6 @@ const TestimonialsCarousel = () => {
       setKey(prev => prev + 1);
     });
   }, [activeIndex, currentTestimonial.vimeoId]);
-
   const handleVideoLoaded = useCallback((vimeoId: string) => {
     setVideosLoaded(prev => ({
       ...prev,
@@ -245,7 +235,6 @@ const TestimonialsCarousel = () => {
       }));
     });
   }, []);
-
   useEffect(() => {
     if (videosLoaded[currentTestimonial.vimeoId]) {
       const nextIndex = (activeIndex + 1) % testimonials.length;
@@ -261,14 +250,12 @@ const TestimonialsCarousel = () => {
       }
     }
   }, [videosLoaded, activeIndex, currentTestimonial.vimeoId, preloadedVideos]);
-
   useEffect(() => {
     setVideoVisible(prev => ({
       ...prev,
       [currentTestimonial.vimeoId]: videosLoaded[currentTestimonial.vimeoId] || false
     }));
   }, [activeIndex, currentTestimonial.vimeoId, videosLoaded]);
-
   return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
         <div className="max-w-6xl mx-auto">
@@ -342,11 +329,10 @@ const TestimonialsCarousel = () => {
           </div>
           
           <div className={cn("mt-16 text-center transition-all duration-700", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-            <p className="text-2xl md:text-3xl font-bold text-black">+7939 completed workouts</p>
+            <p className="font-bold text-3xl text-yellow-400">+7939 completed workouts</p>
           </div>
         </div>
       </div>
     </section>;
 };
-
 export default TestimonialsCarousel;
