@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import CountUp from 'react-countup';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -30,7 +29,7 @@ const TimeAndCostCalculator = () => {
 
   // Calculate money spent in 20 years (in euros)
   const moneySpentInYears = gymMonthlyCost * 12 * YEARS_PROJECTION;
-  
+
   // Calculate annual savings - new calculation for Y
   const annualSavings = gymMonthlyCost * 12;
 
@@ -46,7 +45,6 @@ const TimeAndCostCalculator = () => {
     if (monthlyCost >= 5) return 17;
     return 0; // For values less than 5
   };
-
   const payoffTimeframe = getPayoffTimeframe(gymMonthlyCost);
 
   // Trigger animation when component comes into view
@@ -77,9 +75,7 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
-
-  return (
-    <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
+  return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
@@ -123,14 +119,7 @@ const TimeAndCostCalculator = () => {
                         </div>
                         
                         <div className="py-4 md:py-6">
-                          <Slider 
-                            value={[gymMonthlyCost]} 
-                            min={0} 
-                            max={150} 
-                            step={5} 
-                            className="w-full"
-                            onValueChange={value => setGymMonthlyCost(value[0])}
-                          />
+                          <Slider value={[gymMonthlyCost]} min={0} max={150} step={5} className="w-full" onValueChange={value => setGymMonthlyCost(value[0])} />
                         </div>
                       </div>
                       
@@ -149,13 +138,11 @@ const TimeAndCostCalculator = () => {
                 </Card>
                 
                 {/* Payoff Timeframe Display - Added more padding/margin */}
-                {gymMonthlyCost >= 5 && (
-                  <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-6 text-center my-10">
+                {gymMonthlyCost >= 5 && <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-6 text-center my-10">
                     <p className="text-xl font-bold text-black">
                       In less than {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'} own FitAnywhere for free while saving €{annualSavings} every year.
                     </p>
-                  </div>
-                )}
+                  </div>}
                 
                 {/* Time Cost Box - Moved below */}
                 <Card className="rounded-xl shadow-md border-2 border-black overflow-hidden w-full">
@@ -175,14 +162,7 @@ const TimeAndCostCalculator = () => {
                         </div>
                         
                         <div className="py-4 md:py-6">
-                          <Slider 
-                            value={[timeWastedPerVisit]} 
-                            min={0} 
-                            max={120} 
-                            step={5} 
-                            className="w-full" 
-                            onValueChange={value => setTimeWastedPerVisit(value[0])} 
-                          />
+                          <Slider value={[timeWastedPerVisit]} min={0} max={120} step={5} className="w-full" onValueChange={value => setTimeWastedPerVisit(value[0])} />
                         </div>
                       </div>
                       
@@ -203,13 +183,10 @@ const TimeAndCostCalculator = () => {
               
               {/* "What could you do" text and CTA - centered for both mobile and desktop */}
               <div className="mt-12 text-center">
-                <p className="text-lg font-medium mb-8">What could you do with that extra time and money?</p>
+                <p className="text-lg font-medium mb-8">What can you do with that extra time and money?</p>
                 
                 <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-                  <Button 
-                    onClick={handleCTAClick} 
-                    className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group animate-[pulse_4s_ease-in-out_infinite]"
-                  >
+                  <Button onClick={handleCTAClick} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group animate-[pulse_4s_ease-in-out_infinite]">
                     🛒 BREAK FREE HERE
                     <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Button>
@@ -219,8 +196,6 @@ const TimeAndCostCalculator = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default TimeAndCostCalculator;
