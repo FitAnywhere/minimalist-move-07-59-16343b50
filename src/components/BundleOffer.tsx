@@ -59,12 +59,10 @@ const BundleOffer = () => {
                       </div>
                       <div className="p-6 pt-0 text-center relative z-10">
                         <div className="flex items-center justify-center gap-2 mb-2">
-                          <h3 className="font-bold text-xl md:text-2xl text-black">FitAnywhere</h3>
-                          <Badge className="bg-yellow text-black text-xs font-bold py-1">
-                            PREMIUM
-                          </Badge>
+                          
+                          
                         </div>
-                        <p className="text-gray-600">€1650</p>
+                        
                       </div>
                     </div>
                   </div>
@@ -73,7 +71,7 @@ const BundleOffer = () => {
               
               <div className={cn("mb-6 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="text-center mb-6">
-                  <h3 className="text-xl md:text-2xl font-bold text-black flex items-center justify-center gap-2">
+                  <h3 className="text-xl md:text-2xl font-bold text-black flex items-center justify-center gap-2 my-[31px]">
                     <Gift className="h-5 w-5 text-green-600" />
                     GIFTS
                   </h3>
@@ -105,7 +103,7 @@ const BundleOffer = () => {
               </div>
               
               <div className={cn("mb-8 transition-all duration-1000 delay-500", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center my-0">
                   <span className="text-xl text-gray-700 line-through mb-1">
                     {isVisible ? <>
                         €<CountUp start={0} end={originalPrice} duration={2} separator="," />
@@ -185,7 +183,7 @@ const BundleOffer = () => {
             </div>}
           
           <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
-            <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4 mb-6">
+            <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4 mb-6 mx-[16px] my-[34px]">
               Would you rather keep paying for the gym or...?
             </p>
             
