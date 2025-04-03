@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowDown, Plus } from 'lucide-react';
@@ -18,18 +19,18 @@ const giftItems: GiftItem[] = [{
   name: "SHIPPING",
   image: "https://i.imgur.com/Qyrbb1H.png"
 }];
-const boxfunImages = ["https://i.imgur.com/eWOENUF.png", "https://i.imgur.com/4OsWHfq.png", "https://i.imgur.com/OrVS6HH.png", "https://i.imgur.com/mTSCOf7.png"];
+const boxfunImages = ["https://i.imgur.com/mTSCOf7.png", "https://i.imgur.com/4OsWHfq.png", "https://i.imgur.com/eWOENUF.png", "https://i.imgur.com/OrVS6HH.png"];
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
+    window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
+    window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
   useEffect(() => {
     setIsVisible(true);
@@ -219,10 +220,14 @@ const BundleOffer = () => {
                 </Card>
               </div>
               
+              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">
+                When your energy glows, everyone will feel it
+              </p>
+              
               <div className="flex justify-center">
                 <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2")} onClick={handleGetBoxFunFree}>
                   <Gift className="h-5 w-5" />
-                  GET YOURS FREE
+                  SECURE YOURS
                 </Button>
               </div>
             </div>

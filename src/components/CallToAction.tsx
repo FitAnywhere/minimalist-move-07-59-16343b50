@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
@@ -13,7 +14,7 @@ const CallToAction = () => {
   useParallax(backgroundRef, 0.05);
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
+    window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
   return <section id="order" ref={sectionRef} className="relative py-8 md:py-12 overflow-hidden min-h-[auto] md:min-h-[40vh] flex items-center" style={{
     background: 'linear-gradient(to bottom, #8A898C 0%, #555555 40%, #333333 70%, #222222 85%, black 100%)'
@@ -31,7 +32,7 @@ const CallToAction = () => {
             
             {/* CTA Button - reduced spacing */}
             <div className={cn("transition-all duration-1000 mt-4 md:mt-6", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
-              <a href="https://buy.stripe.com/dR600qaRv29ScE05kt" className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group" onClick={handleCheckout}>
+              <a href="https://buy.stripe.com/00g8wWgbP7uc5by7sC" className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group" onClick={handleCheckout}>
                 LAST CALL
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
