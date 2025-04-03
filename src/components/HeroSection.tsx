@@ -81,13 +81,13 @@ const HeroSection = memo(() => {
                   </button>
                   
                   <div className="mt-4 space-y-1">
-                    <p className="text-sm text-gray-700 font-medium">
+                    <p className="text-gray-700 text-base font-bold">
                       The real cost of staying fit?
                     </p>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-gray-700 font-extralight">
                       €12,052 in wasted memberships. 883 hours in traffic.
                     </p>
-                    <p className="text-sm text-gray-700 italic">
+                    <p className="text-sm text-gray-700 italic my-[25px]">
                       Most never realize… until it's too late.
                     </p>
                   </div>
