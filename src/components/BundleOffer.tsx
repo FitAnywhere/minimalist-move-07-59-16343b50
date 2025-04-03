@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowDown, Plus } from 'lucide-react';
@@ -18,25 +19,44 @@ const giftItems: GiftItem[] = [{
   name: "SHIPPING",
   image: "https://i.imgur.com/Qyrbb1H.png"
 }];
-const boxfunImages = ["https://i.imgur.com/mTSCOf7.png", "https://i.imgur.com/4OsWHfq.png", "https://i.imgur.com/eWOENUF.png", "https://i.imgur.com/OrVS6HH.png"];
+
+// Reordered boxfun images to have image 4 and image 2 first as requested
+const boxfunImages = ["https://i.imgur.com/OrVS6HH.png", "https://i.imgur.com/4OsWHfq.png", "https://i.imgur.com/mTSCOf7.png", "https://i.imgur.com/eWOENUF.png"];
+
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
+  
+  // Add animate state for product text
+  const [animatedItem, setAnimatedItem] = useState(0);
+  const productItems = ["1X PowerTower", "1X TRX", "4X Bands"];
+  
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
+  
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
+  
   useEffect(() => {
     setIsVisible(true);
+    
+    // Setup animation interval for product text
+    const interval = setInterval(() => {
+      setAnimatedItem(prev => (prev + 1) % productItems.length);
+    }, 2000);
+    
+    return () => clearInterval(interval);
   }, []);
+
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
+  
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -57,6 +77,26 @@ const BundleOffer = () => {
                           <img src="https://i.imgur.com/coJB2up.png" alt="FitAnywhere" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10" />
                         </div>
                       </div>
+                      
+                      {/* Product text for mobile */}
+                      <div className="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-white/90 to-white/20 py-3 px-2">
+                        <div className="flex justify-center items-center gap-2">
+                          {productItems.map((item, index) => (
+                            <span 
+                              key={item} 
+                              className={cn(
+                                "font-bold transition-all duration-500", 
+                                animatedItem === index 
+                                  ? "text-black scale-110" 
+                                  : "text-gray-500 scale-90"
+                              )}
+                            >
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      
                       <div className="p-6 pt-0 text-center relative z-10">
                         <div className="flex items-center justify-center gap-2 mb-2">
                           
@@ -124,6 +164,24 @@ const BundleOffer = () => {
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
                     <img src="https://i.imgur.com/coJB2up.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" />
+                    {/* Product text for desktop */}
+                    <div className="w-full text-center mb-4">
+                      <div className="flex justify-center items-center gap-3">
+                        {productItems.map((item, index) => (
+                          <span 
+                            key={item} 
+                            className={cn(
+                              "font-bold transition-all duration-500", 
+                              animatedItem === index 
+                                ? "text-black scale-110 text-xl" 
+                                : "text-gray-500 scale-95"
+                            )}
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                     <div className="flex items-center gap-2">
                       
                       
@@ -219,7 +277,7 @@ const BundleOffer = () => {
                 </Card>
               </div>
               
-              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">Secure yours before we sell out</p>
+              <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">When your energy glows, everyone will feel it</p>
               
               <div className="flex justify-center">
                 <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2")} onClick={handleGetBoxFunFree}>

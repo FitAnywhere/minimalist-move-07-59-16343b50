@@ -3,6 +3,7 @@ import { useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
+import ChatbotHelper from '@/components/ChatbotHelper';
 
 // Import critical components eagerly instead of lazy loading
 import ProductIntro from '@/components/ProductIntro';
@@ -160,6 +161,9 @@ const Index = () => {
         <CallToAction />
         <Footer />
       </Suspense>
+      
+      {/* Add ChatbotHelper component */}
+      <ChatbotHelper />
     </div>
   );
 };
