@@ -63,7 +63,7 @@ const HeroContent = memo(({
           </button>
           
           <div className="mt-4 space-y-1">
-            <p className="text-gray-700 text-base font-bold">On average, gym users lose:</p>
+            <p className="text-gray-700 font-bold text-lg">On average, gym users lose:</p>
             <p className="text-gray-700 px-0 py-[4px] font-bold text-base">€12,052 in fees + 883 hours in traffic</p>
             
           </div>
