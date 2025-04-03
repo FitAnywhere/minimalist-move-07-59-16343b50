@@ -75,13 +75,13 @@ const HeroSection = memo(() => {
                 
                 {/* CTA Button placed after video */}
                 <div className={cn("mt-4 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[14px] my-[17px]">
+                  <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-4 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow">
                     STOP SUBSCRIBING
                     <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </button>
                   
                   <div className="mt-4 space-y-1">
-                    <p className="text-gray-700 font-bold text-base py-0">On average, gym users lose:</p>
+                    <p className="text-gray-700 text-base font-semibold">On average, gym users lose:</p>
                     <p className="text-gray-700 font-bold my-[9px] text-base">€12,052 in fees + 883 hours in traffic
                 </p>
                     
