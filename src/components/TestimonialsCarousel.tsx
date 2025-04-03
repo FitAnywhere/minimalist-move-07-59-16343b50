@@ -36,6 +36,41 @@ const testimonials: Testimonial[] = [
     hash: "317d8d1581"
   },
   {
+    name: "Tom S.",
+    role: "Strength Seeker",
+    quote: "No more gym anxiety.. just good vibes, and loud music.",
+    vimeoId: "1072106714",
+    hash: "2f52dd8383"
+  },
+  {
+    name: "Jordan P.",
+    role: "Calisthenics Enthusiast",
+    quote: "Didn't expect this to replace my entire workout routine…",
+    vimeoId: "1072106681",
+    hash: "ccbb523a7c"
+  },
+  {
+    name: "Tom S.",
+    role: "Strength Seeker",
+    quote: "I'm just obsessed with this setup.",
+    vimeoId: "1072106738",
+    hash: "462fcda05e"
+  },
+  {
+    name: "James W.",
+    role: "Outdoor Lover",
+    quote: "BoxFun is the first thing that truly got me moving and loving every second of it!",
+    vimeoId: "1072106631",
+    hash: "962bdbefe6"
+  },
+  {
+    name: "Ryan P.",
+    role: "Leader with a Fitness Goal",
+    quote: "Perfect for a quick and effective workout, no matter where I am!",
+    vimeoId: "1072106699",
+    hash: "6075a29b52"
+  },
+  {
     name: "Chris L.",
     role: "Fitness Advocate",
     quote: "Ordered multiple for our studio and got an extra discount. Thank you!",
@@ -48,13 +83,6 @@ const testimonials: Testimonial[] = [
     quote: "I work from home, and this is exactly what I needed!",
     vimeoId: "1067256419",
     hash: "9896ed5d93"
-  },
-  {
-    name: "Jordan P.",
-    role: "Calisthenics Enthusiast",
-    quote: "Never had so much fun training!",
-    vimeoId: "1067259441",
-    hash: "6ed11d11d8"
   }
 ];
 
