@@ -82,7 +82,7 @@ const HeroSection = memo(() => {
                   
                   <div className="mt-4 space-y-1">
                     <p className="text-gray-700 text-base font-semibold">On average, gym users lose:</p>
-                    <p className="text-gray-700 font-bold my-[9px] text-base">€12,052 in fees + 883 hours in traffic
+                    <p className="text-gray-700 my-[9px] text-base font-semibold">€12,052 in fees + 883 hours in traffic
                 </p>
                     
                   </div>
