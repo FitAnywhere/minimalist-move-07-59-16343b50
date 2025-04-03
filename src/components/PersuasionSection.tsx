@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -103,10 +104,10 @@ const PersuasionSection = () => {
           <Button
             variant="yellow"
             size="xl"
-            className="font-bold text-xl shadow-lg hover:shadow-xl transition-all duration-300 button-glow group"
+            className="font-bold text-xl shadow-lg hover:shadow-xl transition-all duration-300 button-glow group animate-[pulse_4s_ease-in-out_infinite]"
             onClick={handleCheckout}
           >
-            LAST CALL
+            🛒 LAST CALL for €990!
             <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Button>
         </div>

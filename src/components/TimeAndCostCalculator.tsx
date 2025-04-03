@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
-import { ArrowRight, Clock, Banknote } from 'lucide-react';
+import { ArrowRight, Clock, Banknote, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -89,6 +89,16 @@ const TimeAndCostCalculator = () => {
                 YOUR LIFETIME INVESTMENT
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
+              
+              <div className={cn("mt-4 flex justify-center items-center", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5")}>
+                <div className="flex items-center gap-3 text-yellow-400">
+                  <CheckCircle className="w-12 h-12 text-yellow" />
+                  <span className="text-4xl font-bold">7,939 workouts</span>
+                </div>
+              </div>
+              <p className={cn("mt-1 text-xl font-medium text-yellow-400 tracking-wider", isInView ? "opacity-100" : "opacity-0")}>
+                APPROVED PERFORMANCE
+              </p>
             </div>
             
             {/* Main content area */}
@@ -199,9 +209,9 @@ const TimeAndCostCalculator = () => {
                 <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
                   <Button 
                     onClick={handleCTAClick} 
-                    className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group animate-[pulse_2s_ease-in-out_infinite]"
+                    className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-5 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group animate-[pulse_4s_ease-in-out_infinite]"
                   >
-                    🛒 BREAK FREE Only €990!
+                    🛒 BREAK FREE HERE
                     <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Button>
                 </div>

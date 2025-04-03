@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Gift, ArrowDown, Plus } from 'lucide-react';
@@ -248,11 +249,11 @@ const BundleOffer = () => {
                   "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
                   "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
                   "flex items-center gap-2",
-                  "animate-[pulse_2s_ease-in-out_infinite]"
+                  "animate-[pulse_4s_ease-in-out_infinite]"
                 )} 
                 onClick={handleCheckout}
               >
-                🛒 OWN FITANYWHERE Only €990!
+                🛒 BUY FITANYWHERE
               </Button>
             </div>
             
@@ -292,12 +293,12 @@ const BundleOffer = () => {
                     "text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
                     "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
                     "flex items-center gap-2",
-                    "animate-[pulse_2s_ease-in-out_infinite]"
+                    "animate-[pulse_4s_ease-in-out_infinite]"
                   )} 
                   onClick={handleGetBoxFunFree}
                 >
                   <Gift className="h-5 w-5" />
-                  🛒 €990 + FREE BoxFun!
+                  €990 + FREE BoxFun!
                 </Button>
               </div>
             </div>
