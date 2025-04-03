@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -6,14 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronDown, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
-} from '@/components/ui/dialog';
-
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 const features = [{
   title: "UNFOLD & GO",
   description: "No tools, no installation"
@@ -24,7 +16,6 @@ const features = [{
   title: "INFINITE POSSIBILITIES",
   description: "One station without limits"
 }];
-
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -40,7 +31,6 @@ const ProductIntro = () => {
   const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [showSpecs, setShowSpecs] = useState(false);
-
   useEffect(() => {
     if (isInView) {
       // Reduced delay for title animation from 300ms to 100ms
@@ -48,13 +38,13 @@ const ProductIntro = () => {
         ...prev,
         title: true
       })), 100);
-      
+
       // Reduced delay for subtitle animation from 800ms to 300ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         subtitle: true
       })), 300);
-      
+
       // Reduced delay for paragraph animation from 1300ms to 500ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
@@ -82,124 +72,68 @@ const ProductIntro = () => {
       })), 1200);
     }
   }, [isInView]);
-
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
-
-  return (
-    <section id="product" ref={containerRef} className="py-16 bg-white">
+  return <section id="product" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6 items-center">
             <div className="space-y-8 order-last md:order-first">
               <div className="space-y-4">
-                <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block", 
-                  animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   OWN BOTH
-                  <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
-                    animationState.title ? "scale-x-100" : "scale-x-0")}></span>
+                  <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
                 
-                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", 
-                  animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   Space is luxury & time is freedom
                 </p>
               </div>
               
-              {isMobile && (
-                <div className={cn(
-                  "flex justify-center items-center transition-all duration-700 h-full md:hidden", 
-                  isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
-                )}>
+              {isMobile && <div className={cn("flex justify-center items-center transition-all duration-700 h-full md:hidden", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
                   <div className="w-full max-w-[64%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
                     <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
                       <source src="/home-360-tb.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
-                </div>
-              )}
+                </div>}
               
               <div className="space-y-5">
-                {features.map((feature, index) => (
-                  <div 
-                    key={index}
-                    className={cn(
-                      "px-6 py-3 rounded-full cursor-pointer", 
-                      "transition-all duration-300 ease-in-out", 
-                      "shadow-md", 
-                      "transform",
-                      openFeatureIndex === index ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
-                      animationState.features[index] ? "opacity-100" : "opacity-0",
-                    )}
-                    style={{
-                      transitionDelay: `${(index + 1) * 100}ms`
-                    }} 
-                    onClick={() => handleFeatureClick(index)}
-                    onMouseEnter={() => setHoverIndex(index)} 
-                    onMouseLeave={() => setHoverIndex(null)}
-                  >
+                {features.map((feature, index) => <div key={index} className={cn("px-6 py-3 rounded-full cursor-pointer", "transition-all duration-300 ease-in-out", "shadow-md", "transform", openFeatureIndex === index ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white", animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
+                transitionDelay: `${(index + 1) * 100}ms`
+              }} onClick={() => handleFeatureClick(index)} onMouseEnter={() => setHoverIndex(index)} onMouseLeave={() => setHoverIndex(null)}>
                     <div className="flex justify-between items-center">
                       <h4 className="text-lg font-semibold">
                         {feature.title}
                       </h4>
                       
-                      <div 
-                        className={cn(
-                          "transition-all duration-200", 
-                          hoverIndex === index ? "transform translate-x-1" : ""
-                        )}
-                      >
-                        {openFeatureIndex === index ? 
-                          <ChevronDown className="w-5 h-5" /> : 
-                          <ChevronRight className="w-5 h-5" />
-                        }
+                      <div className={cn("transition-all duration-200", hoverIndex === index ? "transform translate-x-1" : "")}>
+                        {openFeatureIndex === index ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
                       </div>
                     </div>
                     
-                    <div 
-                      className={cn(
-                        "overflow-hidden transition-all duration-300 ease-in-out",
-                        openFeatureIndex === index ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
-                      )}
-                    >
+                    <div className={cn("overflow-hidden transition-all duration-300 ease-in-out", openFeatureIndex === index ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0")}>
                       <p className="text-gray-600">
                         {feature.description}
                       </p>
                     </div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
               
               <div className="space-y-4">
-                <p className={cn(
-                  "font-medium text-lg italic text-gray-800 transition-all duration-700 transform", 
-                  animationState.finalLine ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                )}>
-                  Train when you want. Where you want. Without compromise.
-                </p>
+                <p className={cn("font-medium text-lg italic text-gray-800 transition-all duration-700 transform", animationState.finalLine ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>Train when you want. Where you want. </p>
                 
-                <div className={cn(
-                  "transition-all duration-700 transform", 
-                  animationState.finalLine ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                )}>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1"
-                    onClick={() => setShowSpecs(true)}
-                  >
+                <div className={cn("transition-all duration-700 transform", animationState.finalLine ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
+                  <Button variant="outline" size="sm" className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1" onClick={() => setShowSpecs(true)}>
                     Specifications
                   </Button>
                 </div>
               </div>
             </div>
             
-            <div className={cn(
-              "flex justify-center items-center transition-all duration-700 h-full order-first md:order-last hidden md:flex", 
-              isInView ? "opacity-100 scale-100" : "opacity-0 scale-95"
-            )}>
+            <div className={cn("flex justify-center items-center transition-all duration-700 h-full order-first md:order-last hidden md:flex", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
               <div className="w-full max-w-[70%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
                 <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
                   <source src="/home-360-tb.mp4" type="video/mp4" />
@@ -277,9 +211,6 @@ const ProductIntro = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </section>
-  );
+    </section>;
 };
-
 export default ProductIntro;
-
