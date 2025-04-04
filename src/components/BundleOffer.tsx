@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowDown, Plus } from 'lucide-react';
@@ -98,7 +97,6 @@ const BundleOffer = () => {
               
               <div className={cn("mb-6 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="text-center mb-6">
-                  {/* Replaced GIFTS text and Gift icon with just a "+" sign */}
                   <h3 className="text-xl md:text-2xl font-bold text-black flex items-center justify-center gap-2 my-[31px]">
                     <Plus className="h-8 w-8 text-green-600" />
                   </h3>
@@ -106,7 +104,6 @@ const BundleOffer = () => {
                 
                 <div className="max-w-2xl mx-auto">
                   <div className="rounded-lg bg-white p-6 border border-[#13613A] flex flex-col items-center">
-                    {/* Only include the TRAINING LIBRARY item taking up full space and make image bigger */}
                     <div className="flex items-center justify-center">
                       <div className="flex flex-col items-center w-full">
                         <div className="w-64 h-64 mb-2 flex-shrink-0 overflow-hidden">
@@ -161,21 +158,18 @@ const BundleOffer = () => {
                   
                   <div className="w-full md:w-1/2 p-8 flex flex-col">
                     <div className="mb-8 flex flex-col items-center">
-                      {/* Move Plus sign to the middle between images */}
-                      <div className="flex items-center w-full justify-center mb-4">
-                        <div className="w-16 flex items-center justify-center">
-                          <Plus className="h-12 w-12 text-green-600" />
-                        </div>
-                      </div>
-                      
-                      <div className="rounded-lg bg-white p-6 border border-[#13613A] w-full">
-                        {/* Make the TRAINING LIBRARY image larger to fill empty space */}
-                        <div className="flex items-center justify-center">
-                          <div className="flex flex-col items-center">
-                            <div className="w-80 h-80 mb-3 flex-shrink-0 overflow-hidden">
-                              <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain" />
+                      <div className="flex items-center w-full justify-start mb-4">
+                        <div className="flex items-center">
+                          <Plus className="h-12 w-12 text-green-600 mr-4" />
+                          <div className="rounded-lg bg-white p-6 border border-[#13613A] w-full">
+                            <div className="flex items-center justify-center">
+                              <div className="flex flex-col items-center">
+                                <div className="w-80 h-80 mb-3 flex-shrink-0 overflow-hidden">
+                                  <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain" />
+                                </div>
+                                <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
+                              </div>
                             </div>
-                            <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
                           </div>
                         </div>
                       </div>

@@ -8,6 +8,7 @@ import CountUp from 'react-countup';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -77,6 +78,7 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
+
   return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
@@ -185,8 +187,16 @@ const TimeAndCostCalculator = () => {
               <div className="mt-12 text-center">
                 <p className="text-lg font-medium mb-8">What can you do with that extra time and money?</p>
                 
-                <div className="w-full flex justify-center mb-8">
-                  
+                {/* New CTA button */}
+                <div className="flex justify-center mb-8">
+                  <Button 
+                    variant="yellow" 
+                    size="lg" 
+                    className="bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-md hover:scale-105 button-glow animate-[pulse_6s_ease-in-out_infinite]"
+                    onClick={handleCTAClick}
+                  >
+                    🛒 BREAK FREE NOW!
+                  </Button>
                 </div>
                 
                 <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
@@ -199,4 +209,5 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
+
 export default TimeAndCostCalculator;
