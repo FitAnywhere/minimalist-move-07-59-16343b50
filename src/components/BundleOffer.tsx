@@ -8,10 +8,12 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
 interface GiftItem {
   name: string;
   image: string;
 }
+
 // Updated to just have the training library
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
@@ -20,20 +22,24 @@ const giftItems: GiftItem[] = [{
 
 // Updated to remove the first image
 const boxfunImages = ["https://i.imgur.com/4OsWHfq.png", "https://i.imgur.com/mTSCOf7.png", "https://i.imgur.com/eWOENUF.png"];
+
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [animatedItem, setAnimatedItem] = useState(0);
   const productItems = ["1X PowerTower", "1X TRX", "4X Bands"];
+
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
+
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
+
   useEffect(() => {
     setIsVisible(true);
     const interval = setInterval(() => {
@@ -41,10 +47,13 @@ const BundleOffer = () => {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
+
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
-  return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
+
+  return (
+    <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
@@ -54,7 +63,8 @@ const BundleOffer = () => {
             </h2>
           </div>
           
-          {isMobile ? <div className="space-y-8">
+          {isMobile ? (
+            <div className="space-y-8">
               <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="max-w-2xl mx-auto">
                   <div className={cn("rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", "h-full relative bg-white", "hover:translate-y-[-5px]", "shadow border border-gray-200")}>
@@ -67,9 +77,11 @@ const BundleOffer = () => {
                       
                       <div className="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-white/90 to-white/20 py-3 px-2">
                         <div className="flex justify-center items-center gap-2">
-                          {productItems.map((item, index) => <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110" : "text-gray-500 scale-90")}>
+                          {productItems.map((item, index) => (
+                            <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110" : "text-gray-500 scale-90")}>
                               {item}
-                            </span>)}
+                            </span>
+                          ))}
                         </div>
                       </div>
                       
@@ -98,7 +110,7 @@ const BundleOffer = () => {
                     {/* Only include the TRAINING LIBRARY item taking up full space */}
                     <div className="flex items-center justify-center">
                       <div className="flex flex-col items-center w-full">
-                        <div className="w-32 h-32 mb-2 flex-shrink-0 overflow-hidden">
+                        <div className="w-40 h-40 mb-2 flex-shrink-0 overflow-hidden">
                           <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" />
                         </div>
                         <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
@@ -111,9 +123,11 @@ const BundleOffer = () => {
               <div className={cn("mb-8 transition-all duration-1000 delay-500", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="flex flex-col items-center justify-center my-0">
                   <span className="text-xl text-gray-700 line-through mb-1">
-                    {isVisible ? <>
+                    {isVisible ? (
+                      <>
                         €<CountUp start={0} end={originalPrice} duration={2} separator="," />
-                      </> : `€${originalPrice}`}
+                      </>
+                    ) : `€${originalPrice}`}
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-bold">
@@ -125,16 +139,20 @@ const BundleOffer = () => {
                   </div>
                 </div>
               </div>
-            </div> : <div className="mb-10 transition-all duration-1000">
+            </div>
+          ) : (
+            <div className="mb-10 transition-all duration-1000">
               <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
                     <img src="https://i.imgur.com/coJB2up.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" />
                     <div className="w-full text-center mb-4">
                       <div className="flex justify-center items-center gap-3">
-                        {productItems.map((item, index) => <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110 text-xl" : "text-gray-500 scale-95")}>
+                        {productItems.map((item, index) => (
+                          <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110 text-xl" : "text-gray-500 scale-95")}>
                             {item}
-                          </span>)}
+                          </span>
+                        ))}
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -144,20 +162,15 @@ const BundleOffer = () => {
                   </div>
                   
                   <div className="w-full md:w-1/2 p-8 flex flex-col">
-                    <div className="mb-8">
-                      <div className="flex flex-col items-center">
-                        {/* Replaced GIFTS text and Gift icon with just a "+" sign */}
-                        <h3 className="text-2xl font-bold text-black mb-4">
-                          <Plus className="h-10 w-10 text-green-600 mx-auto" />
-                        </h3>
-                        <ArrowDown className="h-6 w-6 text-gray-600 my-2 animate-bounce" />
-                      </div>
+                    <div className="mb-8 flex flex-col items-center">
+                      {/* Move Plus sign between product image and Training Library */}
+                      <Plus className="h-12 w-12 text-green-600 mb-4" />
                       
-                      <div className="rounded-lg bg-white p-6 border border-[#13613A]">
-                        {/* Only include the TRAINING LIBRARY item taking up full space */}
+                      <div className="rounded-lg bg-white p-6 border border-[#13613A] w-full">
+                        {/* Make the TRAINING LIBRARY image larger to fill empty space */}
                         <div className="flex items-center justify-center">
                           <div className="flex flex-col items-center">
-                            <div className="w-36 h-36 mb-3 flex-shrink-0 overflow-hidden">
+                            <div className="w-48 h-48 mb-3 flex-shrink-0 overflow-hidden">
                               <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain" />
                             </div>
                             <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
@@ -183,7 +196,8 @@ const BundleOffer = () => {
                   </div>
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
           
           <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
             <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4 mb-6 mx-[16px] my-[34px]">
@@ -191,7 +205,7 @@ const BundleOffer = () => {
             </p>
             
             <div className="flex justify-center">
-              <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2", "animate-[pulse_4s_ease-in-out_infinite]")} onClick={handleCheckout}>
+              <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2", "animate-[pulse_12s_ease-in-out_infinite]")} onClick={handleCheckout}>
                 🛒 BUY FITANYWHERE
               </Button>
             </div>
@@ -201,18 +215,22 @@ const BundleOffer = () => {
                 LIMITED OFFER
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
-              <p className="text-gray-700 mb-6 max-w-xl font-medium py-[16px] my-[12px] text-xl mx-0">Enjoy a free BoxFun when you order FitAnywhere today!</p>
+              <p className="text-gray-700 mb-6 max-w-xl mx-auto font-medium py-[16px] my-[12px] text-xl">
+                Enjoy a free BoxFun when you order FitAnywhere today!
+              </p>
               
               <div className="max-w-md mx-auto mb-8">
                 <Card className="border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                   <CardContent className="p-6 flex flex-col items-center">
                     <Carousel className="w-full max-w-xs mb-4">
                       <CarouselContent>
-                        {boxfunImages.map((image, index) => <CarouselItem key={index}>
+                        {boxfunImages.map((image, index) => (
+                          <CarouselItem key={index}>
                             <div className="flex items-center justify-center p-2">
                               <img src={image} alt={`BoxFun Offer ${index + 1}`} className={isMobile ? "h-52 object-contain" : "h-64 object-contain"} />
                             </div>
-                          </CarouselItem>)}
+                          </CarouselItem>
+                        ))}
                       </CarouselContent>
                       <CarouselPrevious className="left-1 animate-[scale_4s_ease-in-out_infinite]" />
                       <CarouselNext className="right-1 animate-[scale_4s_ease-in-out_infinite]" />
@@ -225,7 +243,7 @@ const BundleOffer = () => {
               <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">Secure yours, before we sell out</p>
               
               <div className="flex justify-center">
-                <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2", "animate-[pulse_4s_ease-in-out_infinite]")} onClick={handleGetBoxFunFree}>
+                <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2", "animate-[pulse_12s_ease-in-out_infinite]")} onClick={handleGetBoxFunFree}>
                   €990 + FREE BoxFun!
                 </Button>
               </div>
@@ -233,6 +251,8 @@ const BundleOffer = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default BundleOffer;
