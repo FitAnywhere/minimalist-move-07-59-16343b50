@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote, CheckCircle } from 'lucide-react';
@@ -9,7 +8,6 @@ import CountUp from 'react-countup';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -79,9 +77,7 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
-
-  return (
-    <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
+  return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
@@ -142,13 +138,11 @@ const TimeAndCostCalculator = () => {
                 </Card>
                 
                 {/* Payoff Timeframe Display - Added more padding/margin */}
-                {gymMonthlyCost >= 5 && (
-                  <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-6 text-center my-10">
+                {gymMonthlyCost >= 5 && <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-6 text-center my-10">
                     <p className="text-xl font-bold text-black">
                       In less than {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'} own FitAnywhere for free while saving €{annualSavings} every year.
                     </p>
-                  </div>
-                )}
+                  </div>}
                 
                 {/* Time Cost Box - Moved below */}
                 <Card className="rounded-xl shadow-md border-2 border-black overflow-hidden w-full">
@@ -192,22 +186,17 @@ const TimeAndCostCalculator = () => {
                 <p className="text-lg font-medium mb-8">What can you do with that extra time and money?</p>
                 
                 <div className="w-full flex justify-center mb-8">
-                  <img src="https://i.imgur.com/OZcOmIp.png" alt="BoxFun" className="max-w-full md:max-w-xs mx-auto" />
+                  
                 </div>
                 
                 <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-                  <Button onClick={handleCTAClick} className={cn("bg-yellow hover:bg-yellow-dark text-black px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 button-glow group animate-[pulse_12s_ease-in-out_infinite] py-[32px]")}>
-                    🛒 BUY BOXFUN NOW Only €69,99!
-                    <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Button>
+                  
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default TimeAndCostCalculator;
