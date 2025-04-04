@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -7,10 +6,12 @@ import { Rocket, ChevronRight, ChevronDown, X, Loader } from 'lucide-react';
 import { Toggle } from '@/components/ui/toggle';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
+
 interface LifestyleFeature {
   title: string;
   description: string;
 }
+
 interface VimeoPlayerAPI {
   play: () => Promise<void>;
   pause: () => Promise<void>;
@@ -22,6 +23,7 @@ interface VimeoPlayerAPI {
   ready: () => Promise<void>;
   destroy: () => void;
 }
+
 const lifestyleFeatures: LifestyleFeature[] = [{
   title: "FEEL UNSTOPPABLE",
   description: "Tap into boundless energy to train like never before."
@@ -32,6 +34,7 @@ const lifestyleFeatures: LifestyleFeature[] = [{
   title: "WORKOUT YOU'LL ACTUALLY LOVE",
   description: "It's addictive in the best way possible."
 }];
+
 const LifestyleSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -58,13 +61,16 @@ const LifestyleSection = () => {
       vimeoPlayerRef.current.setMuted(true);
     }
   });
+
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
+
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/7sI3eC1dB7zvcFy3cr', '_blank');
   };
+
   useEffect(() => {
     if (vimeoIframeRef.current && !vimeoPlayerRef.current && typeof window !== 'undefined') {
       if (!window.Vimeo) {
@@ -77,6 +83,7 @@ const LifestyleSection = () => {
         initializePlayer();
       }
     }
+
     function initializePlayer() {
       if (!window.Vimeo || !vimeoIframeRef.current) return;
       try {
@@ -110,6 +117,7 @@ const LifestyleSection = () => {
         setVideoError(true);
       }
     }
+
     return () => {
       if (vimeoPlayerRef.current) {
         vimeoPlayerRef.current.destroy();
@@ -117,6 +125,7 @@ const LifestyleSection = () => {
       }
     };
   }, []);
+
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
@@ -135,6 +144,7 @@ const LifestyleSection = () => {
       window.removeEventListener('message', handleMessage);
     };
   }, []);
+
   const renderVimeoVideo = () => {
     const mobileVideoWidth = "80%"; // 20% smaller on mobile
 
@@ -178,6 +188,7 @@ const LifestyleSection = () => {
         </div>
       </div>;
   };
+
   return <section ref={sectionRef} className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         {Array.from({
@@ -203,8 +214,6 @@ const LifestyleSection = () => {
                     BECOME WORKOUT ADDICT
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                   </h2>
-                  
-                  
                 </div>
                 
                 {isMobile && <div className="w-full flex flex-col items-center my-6">
@@ -284,12 +293,11 @@ const LifestyleSection = () => {
                   </div>
                 </div>
                 
-                {/* Add the BoxFun image above the CTA button */}
                 <div className="w-full flex justify-center mt-4 mb-4">
                   <img 
                     src="https://i.imgur.com/OZcOmIp.png" 
                     alt="BoxFun Product" 
-                    className="max-w-[220px] w-full transition-all duration-500 hover:scale-105"
+                    className="max-w-[280px] w-full transition-all duration-500 hover:scale-105" 
                   />
                 </div>
                 
@@ -378,4 +386,5 @@ const LifestyleSection = () => {
       </Dialog>
     </section>;
 };
+
 export default LifestyleSection;

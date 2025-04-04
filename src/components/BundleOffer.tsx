@@ -88,7 +88,6 @@ const BundleOffer = () => {
                       <div className="p-6 pt-0 text-center relative z-10">
                         <div className="flex items-center justify-center gap-2 mb-2">
                           
-                          
                         </div>
                         
                       </div>
@@ -107,10 +106,10 @@ const BundleOffer = () => {
                 
                 <div className="max-w-2xl mx-auto">
                   <div className="rounded-lg bg-white p-6 border border-[#13613A] flex flex-col items-center">
-                    {/* Only include the TRAINING LIBRARY item taking up full space */}
+                    {/* Only include the TRAINING LIBRARY item taking up full space and make image bigger */}
                     <div className="flex items-center justify-center">
                       <div className="flex flex-col items-center w-full">
-                        <div className="w-48 h-48 mb-2 flex-shrink-0 overflow-hidden">
+                        <div className="w-64 h-64 mb-2 flex-shrink-0 overflow-hidden">
                           <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" />
                         </div>
                         <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
@@ -157,20 +156,23 @@ const BundleOffer = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       
-                      
                     </div>
                   </div>
                   
                   <div className="w-full md:w-1/2 p-8 flex flex-col">
                     <div className="mb-8 flex flex-col items-center">
-                      {/* Move Plus sign between product image and Training Library */}
-                      <Plus className="h-12 w-12 text-green-600 mb-4" />
+                      {/* Move Plus sign to the middle between images */}
+                      <div className="flex items-center w-full justify-center mb-4">
+                        <div className="w-16 flex items-center justify-center">
+                          <Plus className="h-12 w-12 text-green-600" />
+                        </div>
+                      </div>
                       
                       <div className="rounded-lg bg-white p-6 border border-[#13613A] w-full">
                         {/* Make the TRAINING LIBRARY image larger to fill empty space */}
                         <div className="flex items-center justify-center">
                           <div className="flex flex-col items-center">
-                            <div className="w-64 h-64 mb-3 flex-shrink-0 overflow-hidden">
+                            <div className="w-80 h-80 mb-3 flex-shrink-0 overflow-hidden">
                               <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain" />
                             </div>
                             <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
