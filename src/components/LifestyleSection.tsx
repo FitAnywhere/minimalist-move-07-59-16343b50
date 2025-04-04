@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -283,8 +284,17 @@ const LifestyleSection = () => {
                   </div>
                 </div>
                 
-                <div className="flex flex-col items-center mt-8 flex-grow-0">
-                  <Button onClick={handleStripeCheckout} className={cn("bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", "transition-all duration-300 transform hover:scale-105", "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", "w-auto max-w-fit text-center", "flex items-center justify-center space-x-2", "animate-[pulse_2s_ease-in-out_infinite]" // Added heartbeat animation
+                {/* Add the BoxFun image above the CTA button */}
+                <div className="w-full flex justify-center mt-4 mb-4">
+                  <img 
+                    src="https://i.imgur.com/OZcOmIp.png" 
+                    alt="BoxFun Product" 
+                    className="max-w-[220px] w-full transition-all duration-500 hover:scale-105"
+                  />
+                </div>
+                
+                <div className="flex flex-col items-center mt-2 flex-grow-0">
+                  <Button onClick={handleStripeCheckout} className={cn("bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", "transition-all duration-300 transform hover:scale-105", "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", "w-auto max-w-fit text-center", "flex items-center justify-center space-x-2", "animate-[pulse_6s_ease-in-out_infinite]" // Changed to 6s for slower pulsation
                 )}>
                     <span className="my-0 mx-[6px] px-[14px] text-sm font-bold py-0">🛒 BUY BOXFUN NOW Only €69,99!</span>
                   </Button>

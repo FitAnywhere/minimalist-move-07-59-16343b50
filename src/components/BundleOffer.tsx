@@ -110,7 +110,7 @@ const BundleOffer = () => {
                     {/* Only include the TRAINING LIBRARY item taking up full space */}
                     <div className="flex items-center justify-center">
                       <div className="flex flex-col items-center w-full">
-                        <div className="w-40 h-40 mb-2 flex-shrink-0 overflow-hidden">
+                        <div className="w-48 h-48 mb-2 flex-shrink-0 overflow-hidden">
                           <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" />
                         </div>
                         <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
@@ -170,7 +170,7 @@ const BundleOffer = () => {
                         {/* Make the TRAINING LIBRARY image larger to fill empty space */}
                         <div className="flex items-center justify-center">
                           <div className="flex flex-col items-center">
-                            <div className="w-48 h-48 mb-3 flex-shrink-0 overflow-hidden">
+                            <div className="w-64 h-64 mb-3 flex-shrink-0 overflow-hidden">
                               <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain" />
                             </div>
                             <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
@@ -205,7 +205,7 @@ const BundleOffer = () => {
             </p>
             
             <div className="flex justify-center">
-              <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2", "animate-[pulse_12s_ease-in-out_infinite]")} onClick={handleCheckout}>
+              <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2", "animate-[pulse_6s_ease-in-out_infinite]")} onClick={handleCheckout}>
                 🛒 BUY FITANYWHERE
               </Button>
             </div>
@@ -232,8 +232,8 @@ const BundleOffer = () => {
                           </CarouselItem>
                         ))}
                       </CarouselContent>
-                      <CarouselPrevious className="left-1 animate-[scale_4s_ease-in-out_infinite]" />
-                      <CarouselNext className="right-1 animate-[scale_4s_ease-in-out_infinite]" />
+                      <CarouselPrevious className="left-1" />
+                      <CarouselNext className="right-1" />
                     </Carousel>
                     <h3 className="font-bold text-xl text-center mb-2">BOXFUN - 50X GIVEAWAY</h3>
                   </CardContent>
@@ -243,7 +243,7 @@ const BundleOffer = () => {
               <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">Secure yours, before we sell out</p>
               
               <div className="flex justify-center">
-                <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2", "animate-[pulse_12s_ease-in-out_infinite]")} onClick={handleGetBoxFunFree}>
+                <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2", "animate-[pulse_6s_ease-in-out_infinite]")} onClick={handleGetBoxFunFree}>
                   €990 + FREE BoxFun!
                 </Button>
               </div>

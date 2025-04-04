@@ -205,7 +205,8 @@ const CarouselPrevious = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-8 w-8 rounded-full animate-[scale_4s_ease-in-out_infinite] border-yellow border-opacity-0 hover:border-opacity-100 transition-all duration-700",
+        "absolute h-8 w-8 rounded-full animate-[scale_8s_ease-in-out_infinite]", // Slower animation (8s)
+        "border-yellow border-2 hover:border-opacity-100 transition-all duration-700",
         orientation === "horizontal"
           ? "-left-12 top-1/2 -translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -234,7 +235,8 @@ const CarouselNext = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-8 w-8 rounded-full animate-[scale_4s_ease-in-out_infinite] border-yellow border-opacity-0 hover:border-opacity-100 transition-all duration-700",
+        "absolute h-8 w-8 rounded-full animate-[scale_8s_ease-in-out_infinite]", // Slower animation (8s)
+        "border-yellow border-2 hover:border-opacity-100 transition-all duration-700",
         orientation === "horizontal"
           ? "-right-12 top-1/2 -translate-y-1/2"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",

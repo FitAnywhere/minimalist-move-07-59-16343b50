@@ -78,7 +78,7 @@ const Index = () => {
           }
           
           .scale-animation {
-            animation: scale 4s ease-in-out infinite;
+            animation: scale 8s ease-in-out infinite;
           }
         `;
         document.head.appendChild(styleSheet);
