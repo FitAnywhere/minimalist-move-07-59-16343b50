@@ -53,13 +53,11 @@ const HeroSection = memo(() => {
       });
     }
   }, []);
-  
   const toggleAudio = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
     setAudioOn(prev => !prev);
   }, []);
-  
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
       
@@ -126,6 +124,5 @@ const HeroSection = memo(() => {
       <ScrollIndicator />
     </section>;
 });
-
 HeroSection.displayName = 'HeroSection';
 export default HeroSection;

@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -14,41 +13,7 @@ interface Testimonial {
 }
 
 const testimonials: Testimonial[] = [
-  {
-    name: "Emily Johnson",
-    role: "Busy Professional",
-    quote: "I've tried many home workout programs, but FitAnywhere is different. It's so intuitive and effective!",
-    vimeoId: "915433067",
-    hash: "9b6bcde9e4"
-  },
-  {
-    name: "Alex Martinez",
-    role: "Parent & Entrepreneur",
-    quote: "Just 20 minutes 3 times a week and I'm in the best shape of my life. The convenience is unbeatable.",
-    vimeoId: "915432714",
-    hash: "b4c6ca6e61"
-  },
-  {
-    name: "Sarah Wilson",
-    role: "Remote Worker",
-    quote: "During lockdown I gained 15kg. FitAnywhere helped me lose it all without ever leaving my apartment.",
-    vimeoId: "915432544",
-    hash: "5ae0a7b3d3"
-  },
-  {
-    name: "Chris Taylor",
-    role: "Tech Professional",
-    quote: "Finally, a fitness solution that actually fits into my unpredictable schedule!",
-    vimeoId: "915431886",
-    hash: "5c5ca1b414"
-  },
-  {
-    name: "Jessica Lee",
-    role: "Graduate Student",
-    quote: "I was skeptical about home workouts but FitAnywhere changed my mind completely.",
-    vimeoId: "915433210",
-    hash: "ecef19fb25"
-  }
+  // ... keep existing code (testimonial data array)
 ];
 
 const TestimonialVideo = memo(({
@@ -218,6 +183,8 @@ const TestimonialsCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { threshold: 0.1 }, false);
+  const currentTestimonial = testimonials[activeIndex];
+  const isMobile = useIsMobile();
   const [videosLoaded, setVideosLoaded] = useState<{
     [key: string]: boolean;
   }>({});
@@ -231,12 +198,6 @@ const TestimonialsCarousel = () => {
   const [preloadedVideos, setPreloadedVideos] = useState<string[]>([]);
   const vimeoScriptLoadedRef = useRef(false);
   const hasInitializedRef = useRef(false);
-  const isMobile = useIsMobile();
-  
-  // Safety check to ensure activeIndex is within valid range
-  const safeActiveIndex = Math.min(activeIndex, testimonials.length - 1);
-  // Get current testimonial safely
-  const currentTestimonial = testimonials[safeActiveIndex];
 
   useEffect(() => {
     if (hasInitializedRef.current) return;
@@ -257,7 +218,6 @@ const TestimonialsCarousel = () => {
       vimeoScriptLoadedRef.current = true;
     }
     
-    // Preload first three testimonial videos
     testimonials.slice(0, 3).forEach(testimonial => {
       const preloadLink = document.createElement('link');
       preloadLink.rel = 'preload';
@@ -268,7 +228,6 @@ const TestimonialsCarousel = () => {
       setPreloadedVideos(prev => [...prev, testimonial.vimeoId]);
     });
     
-    // Preload remaining testimonial videos with delay
     testimonials.slice(3).forEach((testimonial, index) => {
       setTimeout(() => {
         const preloadLink = document.createElement('link');
@@ -283,14 +242,12 @@ const TestimonialsCarousel = () => {
   }, []);
 
   const nextTestimonial = useCallback(() => {
-    if (!currentTestimonial) return;
-    
     setVideoVisible(prev => ({
       ...prev,
       [currentTestimonial.vimeoId]: false
     }));
     
-    let nextIndex = (safeActiveIndex + 1) % testimonials.length;
+    let nextIndex = (activeIndex + 1) % testimonials.length;
     let attempts = 0;
     
     while (videoErrors[testimonials[nextIndex].vimeoId] && attempts < testimonials.length - 1) {
@@ -302,17 +259,15 @@ const TestimonialsCarousel = () => {
       setActiveIndex(nextIndex);
       setKey(prev => prev + 1);
     });
-  }, [currentTestimonial, safeActiveIndex, videoErrors]);
+  }, [currentTestimonial.vimeoId, activeIndex, videoErrors]);
 
   const prevTestimonial = useCallback(() => {
-    if (!currentTestimonial) return;
-    
     setVideoVisible(prev => ({
       ...prev,
       [currentTestimonial.vimeoId]: false
     }));
     
-    let prevIndex = safeActiveIndex === 0 ? testimonials.length - 1 : safeActiveIndex - 1;
+    let prevIndex = activeIndex === 0 ? testimonials.length - 1 : activeIndex - 1;
     let attempts = 0;
     
     while (videoErrors[testimonials[prevIndex].vimeoId] && attempts < testimonials.length - 1) {
@@ -324,10 +279,10 @@ const TestimonialsCarousel = () => {
       setActiveIndex(prevIndex);
       setKey(prev => prev + 1);
     });
-  }, [currentTestimonial, safeActiveIndex, videoErrors]);
+  }, [activeIndex, currentTestimonial.vimeoId, videoErrors]);
 
   const goToTestimonial = useCallback((index: number) => {
-    if (index === safeActiveIndex || !currentTestimonial) return;
+    if (index === activeIndex) return;
     
     setVideoVisible(prev => ({
       ...prev,
@@ -338,7 +293,7 @@ const TestimonialsCarousel = () => {
       setActiveIndex(index);
       setKey(prev => prev + 1);
     });
-  }, [safeActiveIndex, currentTestimonial]);
+  }, [activeIndex, currentTestimonial.vimeoId]);
 
   const handleVideoLoaded = useCallback((vimeoId: string, success: boolean) => {
     if (success) {
@@ -372,11 +327,9 @@ const TestimonialsCarousel = () => {
   }, []);
 
   useEffect(() => {
-    if (!currentTestimonial) return;
-    
     if (videosLoaded[currentTestimonial.vimeoId]) {
       for (let i = 1; i <= 3; i++) {
-        const nextIndex = (safeActiveIndex + i) % testimonials.length;
+        const nextIndex = (activeIndex + i) % testimonials.length;
         const nextTestimonial = testimonials[nextIndex];
         
         if (!preloadedVideos.includes(nextTestimonial.vimeoId)) {
@@ -390,39 +343,14 @@ const TestimonialsCarousel = () => {
         }
       }
     }
-  }, [videosLoaded, safeActiveIndex, currentTestimonial, preloadedVideos]);
+  }, [videosLoaded, activeIndex, currentTestimonial.vimeoId, preloadedVideos]);
 
   useEffect(() => {
-    if (!currentTestimonial) return;
-    
     setVideoVisible(prev => ({
       ...prev,
       [currentTestimonial.vimeoId]: videosLoaded[currentTestimonial.vimeoId] || false
     }));
-  }, [safeActiveIndex, currentTestimonial, videosLoaded]);
-
-  // If somehow we don't have testimonials or currentTestimonial is undefined,
-  // show a loading state instead of crashing
-  if (!testimonials.length || !currentTestimonial) {
-    return (
-      <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
-        <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-                WHY THEY LOVE IT?
-                <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform scale-x-100"></span>
-              </h2>
-            </div>
-            <div className="flex items-center justify-center p-12">
-              <Loader className="w-8 h-8 text-yellow animate-spin" />
-              <span className="ml-3">Loading testimonials...</span>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  }, [activeIndex, currentTestimonial.vimeoId, videosLoaded]);
 
   return (
     <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
@@ -464,8 +392,8 @@ const TestimonialsCarousel = () => {
                 </div>
                 
                 <div className="flex space-x-2 mt-3 justify-center md:justify-start">
-                  {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === safeActiveIndex ? "w-3 h-3 bg-gray-800 rounded-full" : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} style={{
-                  backgroundColor: index === safeActiveIndex ? '#444444' : ''
+                  {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-3 h-3 bg-gray-800 rounded-full" : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} style={{
+                  backgroundColor: index === activeIndex ? '#444444' : ''
                 }} />)}
                 </div>
               </div>
