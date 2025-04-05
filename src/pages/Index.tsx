@@ -125,11 +125,14 @@ const Index = () => {
           if (index === 0) {
             link.rel = 'preload';
             link.as = 'fetch';
-            link.importance = 'high';
+            // Fix: Remove the importance attribute which isn't supported in TypeScript's HTMLLinkElement
+            // Use dataset instead for custom attributes
+            link.dataset.importance = 'high';
           } else {
             link.rel = 'prefetch';
             link.as = 'fetch';
-            link.importance = 'low';
+            // Fix: Remove the importance attribute which isn't supported in TypeScript's HTMLLinkElement
+            link.dataset.importance = 'low';
           }
           
           link.href = `https://player.vimeo.com/video/${id}`;
