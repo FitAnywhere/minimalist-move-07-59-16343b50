@@ -4,19 +4,22 @@ import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from '@/components/ui/dialog';
+
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const isInView = useInView(sectionRef);
+  const isInView = useInView(sectionRef, { threshold: 0.1 });
   const isMobile = useIsMobile();
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [showLibraryAccess, setShowLibraryAccess] = useState(false);
+  const [videoAttempts, setVideoAttempts] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     email: ''
   });
+
   useEffect(() => {
     if (isInView && titleRef.current) {
       setTimeout(() => {
@@ -24,23 +27,43 @@ const ChampionSection = () => {
       }, 300);
     }
   }, [isInView]);
+
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current;
-      video.src = '';
+      
+      video.removeAttribute('src');
       video.load();
-      video.src = '/COACH.mp4';
+      
+      const videoPath = '/COACH.mp4';
+      video.src = videoPath;
+      
+      video.preload = "auto";
+      
       const handleCanPlay = () => {
         setIsVideoLoaded(true);
         setVideoError(false);
         console.log("Video can play now");
       };
+      
       const handleError = (e: Event) => {
         console.error("Video error:", e);
-        setVideoError(true);
+        
+        if (videoAttempts < 3) {
+          setVideoAttempts(prev => prev + 1);
+          
+          setTimeout(() => {
+            video.src = videoPath;
+            video.load();
+          }, 1000);
+        } else {
+          setVideoError(true);
+        }
       };
+      
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
+      
       if (isInView && !videoError) {
         const playAttempt = setTimeout(() => {
           if (video.readyState >= 2) {
@@ -49,21 +72,26 @@ const ChampionSection = () => {
               playPromise.catch(error => {
                 console.error("Video play error:", error);
                 if (error.name !== 'NotAllowedError') {
-                  setVideoError(true);
+                  if (error.name !== 'AbortError' && error.name !== 'NotAllowedError') {
+                    setVideoError(true);
+                  }
                 }
               });
             }
           }
         }, 100);
+        
         return () => clearTimeout(playAttempt);
       }
+      
       return () => {
         video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('error', handleError);
         video.pause();
       };
     }
-  }, [isInView, videoError]);
+  }, [isInView, videoError, videoAttempts]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       name,
@@ -74,12 +102,23 @@ const ChampionSection = () => {
       [name]: value
     }));
   };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     setShowLibraryAccess(false);
     alert("Thank you! Access to the video library will be sent to your email.");
   };
+
+  const handleRetryVideo = () => {
+    setVideoError(false);
+    setVideoAttempts(0);
+    if (videoRef.current) {
+      videoRef.current.src = '/COACH.mp4';
+      videoRef.current.load();
+    }
+  };
+
   return <section id="video-library" ref={sectionRef} className="py-16">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
@@ -93,7 +132,6 @@ const ChampionSection = () => {
               </div>
               
               <div className="space-y-5">
-                
                 <div className={cn("flex items-start gap-3 transform transition-all duration-500", isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10")} style={{
                 transitionDelay: "200ms"
               }}>
@@ -141,9 +179,27 @@ const ChampionSection = () => {
             
             <div className="relative perspective">
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-xl hover:scale-[1.02] group">
-                {videoError ? <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                {videoError ? 
+                  <div className="w-full h-64 bg-gray-200 flex flex-col items-center justify-center gap-3">
                     <p className="text-gray-500">Video unavailable</p>
-                  </div> : <video ref={videoRef} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" playsInline muted autoPlay loop preload="auto" />}
+                    <button 
+                      onClick={handleRetryVideo}
+                      className="px-4 py-2 bg-yellow text-black rounded hover:bg-yellow-600 transition-colors text-sm font-medium"
+                    >
+                      Retry Loading
+                    </button>
+                  </div> 
+                : 
+                  <video 
+                    ref={videoRef} 
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
+                    playsInline 
+                    muted 
+                    autoPlay 
+                    loop 
+                    preload="auto" 
+                  />
+                }
                 
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
@@ -204,4 +260,5 @@ const ChampionSection = () => {
       </Dialog>
     </section>;
 };
+
 export default ChampionSection;
