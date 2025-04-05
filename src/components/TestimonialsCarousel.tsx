@@ -1,7 +1,8 @@
+
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight, Quote, Star, Loader } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote, Star, Loader, RefreshCw } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Testimonial {
@@ -86,7 +87,8 @@ const TestimonialVideo = memo(({
   onLoaded,
   isVisible,
   isMobile,
-  uniqueKey
+  uniqueKey,
+  onRetry
 }: {
   vimeoId: string;
   hash: string;
@@ -94,27 +96,92 @@ const TestimonialVideo = memo(({
   isVisible: boolean;
   isMobile: boolean;
   uniqueKey: string;
+  onRetry: () => void;
 }) => {
-  return <div style={{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    opacity: isVisible ? 1 : 0,
-    transition: 'opacity 0.3s ease-in',
-    backgroundColor: 'black',
-    zIndex: 5
-  }}>
-      <iframe key={uniqueKey} src={`https://player.vimeo.com/video/${vimeoId}?h=${hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0&preload=auto`} frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" style={{
+  const [loadAttempts, setLoadAttempts] = useState(0);
+  const [showError, setShowError] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    // Reset error state when key changes (when switching testimonials)
+    setShowError(false);
+    setLoadAttempts(0);
+  }, [uniqueKey]);
+
+  const handleLoad = () => {
+    setShowError(false);
+    onLoaded(vimeoId);
+  };
+
+  const handleError = () => {
+    if (loadAttempts < 3) {
+      // Auto-retry up to 3 times with increasing delay
+      const retryDelay = (loadAttempts + 1) * 1000;
+      setLoadAttempts(prev => prev + 1);
+      
+      setTimeout(() => {
+        if (iframeRef.current) {
+          // Force iframe reload
+          const src = iframeRef.current.src;
+          iframeRef.current.src = '';
+          setTimeout(() => {
+            if (iframeRef.current) iframeRef.current.src = src;
+          }, 50);
+        }
+      }, retryDelay);
+    } else {
+      setShowError(true);
+    }
+  };
+
+  return (
+    <div style={{
       position: 'absolute',
       top: 0,
       left: 0,
       width: '100%',
       height: '100%',
-      backgroundColor: 'black'
-    }} title={`Testimonial video ${vimeoId}`} onLoad={() => onLoaded(vimeoId)} loading="eager"></iframe>
-    </div>;
+      opacity: isVisible ? 1 : 0,
+      transition: 'opacity 0.3s ease-in',
+      backgroundColor: 'black',
+      zIndex: 5
+    }}>
+      {showError ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-black">
+          <div className="text-center">
+            <p className="text-white mb-4">Video could not be loaded</p>
+            <button 
+              onClick={onRetry} 
+              className="flex items-center gap-2 bg-yellow text-black px-3 py-2 rounded-full text-sm"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Retry Video
+            </button>
+          </div>
+        </div>
+      ) : (
+        <iframe 
+          ref={iframeRef}
+          key={uniqueKey} 
+          src={`https://player.vimeo.com/video/${vimeoId}?h=${hash}&autoplay=1&background=1&loop=1&muted=1&title=0&byline=0&portrait=0&preload=auto`} 
+          frameBorder="0" 
+          allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'black'
+          }} 
+          title={`Testimonial video ${vimeoId}`} 
+          onLoad={handleLoad}
+          onError={handleError}
+          loading="eager"
+        ></iframe>
+      )}
+    </div>
+  );
 });
 TestimonialVideo.displayName = 'TestimonialVideo';
 
@@ -145,8 +212,7 @@ VideoLoader.displayName = 'VideoLoader';
 const TestimonialsCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, {}, false);
-  const currentTestimonial = testimonials[activeIndex];
+  const isInView = useInView(sectionRef, { threshold: 0.1 }, false);
   const isMobile = useIsMobile();
   const [videosLoaded, setVideosLoaded] = useState<{
     [key: string]: boolean;
@@ -157,8 +223,13 @@ const TestimonialsCarousel = () => {
   const [key, setKey] = useState(0);
   const [preloadedVideos, setPreloadedVideos] = useState<string[]>([]);
   const vimeoScriptLoadedRef = useRef(false);
+  const [videoError, setVideoError] = useState(false);
+  
+  // Safely get current testimonial with fallback
+  const currentTestimonial = testimonials[activeIndex] || testimonials[0];
 
   useEffect(() => {
+    // Load Vimeo API once
     if (vimeoScriptLoadedRef.current) return;
     if (!document.getElementById('vimeo-player-api')) {
       const script = document.createElement('script');
@@ -172,8 +243,13 @@ const TestimonialsCarousel = () => {
     } else {
       vimeoScriptLoadedRef.current = true;
     }
+    
+    // Preload initial testimonial videos
     const preloadTestimonials = () => {
+      // Preload the first 3 testimonials immediately
       testimonials.slice(0, 3).forEach(testimonial => {
+        if (!testimonial) return;
+        
         const preloadLink = document.createElement('link');
         preloadLink.rel = 'preload';
         preloadLink.as = 'fetch';
@@ -182,8 +258,12 @@ const TestimonialsCarousel = () => {
         document.head.appendChild(preloadLink);
         setPreloadedVideos(prev => [...prev, testimonial.vimeoId]);
       });
+      
+      // Load the rest with a slight delay
       testimonials.slice(3).forEach((testimonial, index) => {
         setTimeout(() => {
+          if (!testimonial) return;
+          
           const preloadLink = document.createElement('link');
           preloadLink.rel = 'preload';
           preloadLink.as = 'fetch';
@@ -194,50 +274,71 @@ const TestimonialsCarousel = () => {
         }, (index + 1) * 500);
       });
     };
+    
     if (isInView) {
       preloadTestimonials();
     }
   }, [isInView]);
 
   const nextTestimonial = useCallback(() => {
+    if (!currentTestimonial) return;
+    
     setVideoVisible(prev => ({
       ...prev,
       [currentTestimonial.vimeoId]: false
     }));
+    
     requestAnimationFrame(() => {
-      setActiveIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
+      setActiveIndex(prevIndex => {
+        // Ensure we don't exceed array bounds
+        const nextIndex = prevIndex + 1;
+        return nextIndex >= testimonials.length ? 0 : nextIndex;
+      });
       setKey(prev => prev + 1);
+      setVideoError(false);
     });
-  }, [currentTestimonial.vimeoId]);
+  }, [currentTestimonial]);
 
   const prevTestimonial = useCallback(() => {
+    if (!currentTestimonial) return;
+    
     setVideoVisible(prev => ({
       ...prev,
       [currentTestimonial.vimeoId]: false
     }));
+    
     requestAnimationFrame(() => {
-      setActiveIndex(prevIndex => prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1);
+      setActiveIndex(prevIndex => {
+        // Ensure we don't go below 0
+        const nextIndex = prevIndex - 1;
+        return nextIndex < 0 ? testimonials.length - 1 : nextIndex;
+      });
       setKey(prev => prev + 1);
+      setVideoError(false);
     });
-  }, [currentTestimonial.vimeoId]);
+  }, [currentTestimonial]);
 
   const goToTestimonial = useCallback((index: number) => {
-    if (index === activeIndex) return;
+    if (index === activeIndex || !currentTestimonial || index >= testimonials.length) return;
+    
     setVideoVisible(prev => ({
       ...prev,
       [currentTestimonial.vimeoId]: false
     }));
+    
     requestAnimationFrame(() => {
       setActiveIndex(index);
       setKey(prev => prev + 1);
+      setVideoError(false);
     });
-  }, [activeIndex, currentTestimonial.vimeoId]);
+  }, [activeIndex, currentTestimonial]);
 
   const handleVideoLoaded = useCallback((vimeoId: string) => {
     setVideosLoaded(prev => ({
       ...prev,
       [vimeoId]: true
     }));
+    
     requestAnimationFrame(() => {
       setVideoVisible(prev => ({
         ...prev,
@@ -246,11 +347,20 @@ const TestimonialsCarousel = () => {
     });
   }, []);
 
+  const handleRetry = useCallback(() => {
+    setKey(prev => prev + 1);
+    setVideoError(false);
+  }, []);
+
+  // Preload next video when current is loaded
   useEffect(() => {
+    if (!currentTestimonial) return;
+    
     if (videosLoaded[currentTestimonial.vimeoId]) {
       const nextIndex = (activeIndex + 1) % testimonials.length;
       const nextTestimonial = testimonials[nextIndex];
-      if (!preloadedVideos.includes(nextTestimonial.vimeoId)) {
+      
+      if (nextTestimonial && !preloadedVideos.includes(nextTestimonial.vimeoId)) {
         const preloadLink = document.createElement('link');
         preloadLink.rel = 'preload';
         preloadLink.as = 'fetch';
@@ -260,14 +370,22 @@ const TestimonialsCarousel = () => {
         setPreloadedVideos(prev => [...prev, nextTestimonial.vimeoId]);
       }
     }
-  }, [videosLoaded, activeIndex, currentTestimonial.vimeoId, preloadedVideos]);
+  }, [videosLoaded, activeIndex, currentTestimonial, preloadedVideos]);
 
+  // Update visibility when active index changes
   useEffect(() => {
+    if (!currentTestimonial) return;
+    
     setVideoVisible(prev => ({
       ...prev,
       [currentTestimonial.vimeoId]: videosLoaded[currentTestimonial.vimeoId] || false
     }));
-  }, [activeIndex, currentTestimonial.vimeoId, videosLoaded]);
+  }, [activeIndex, currentTestimonial, videosLoaded]);
+
+  // Early exit if testimonials aren't loaded yet
+  if (!currentTestimonial) {
+    return <div className="py-16 md:py-20 bg-gray-50">Loading testimonials...</div>;
+  }
 
   return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
@@ -308,19 +426,40 @@ const TestimonialsCarousel = () => {
                 </div>
                 
                 <div className="flex space-x-2 mt-3 justify-center md:justify-start">
-                  {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-3 h-3 bg-gray-800 rounded-full" : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} style={{
-                  backgroundColor: index === activeIndex ? '#444444' : ''
-                }} />)}
+                  {testimonials.map((_, index) => (
+                    <button 
+                      key={index} 
+                      onClick={() => goToTestimonial(index)} 
+                      className={cn(
+                        "transition-all duration-300", 
+                        index === activeIndex 
+                          ? "w-3 h-3 bg-gray-800 rounded-full" 
+                          : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400"
+                      )} 
+                      aria-label={`Go to testimonial ${index + 1}`} 
+                      style={{
+                        backgroundColor: index === activeIndex ? '#444444' : ''
+                      }} 
+                    />
+                  ))}
                 </div>
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500 w-full flex justify-center">
                 <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black">
                   <div style={{
-                  padding: '177.78% 0 0 0',
-                  position: 'relative'
-                }} className="bg-black">
-                    <TestimonialVideo vimeoId={currentTestimonial.vimeoId} hash={currentTestimonial.hash} onLoaded={handleVideoLoaded} isVisible={videoVisible[currentTestimonial.vimeoId] || false} isMobile={isMobile} uniqueKey={`${currentTestimonial.vimeoId}-${key}`} />
+                    padding: '177.78% 0 0 0',
+                    position: 'relative'
+                  }} className="bg-black">
+                    <TestimonialVideo 
+                      vimeoId={currentTestimonial.vimeoId} 
+                      hash={currentTestimonial.hash} 
+                      onLoaded={handleVideoLoaded} 
+                      isVisible={videoVisible[currentTestimonial.vimeoId] || false} 
+                      isMobile={isMobile} 
+                      uniqueKey={`${currentTestimonial.vimeoId}-${key}`}
+                      onRetry={handleRetry}
+                    />
                     
                     {!videoVisible[currentTestimonial.vimeoId] && <VideoLoader />}
                   </div>
@@ -328,11 +467,19 @@ const TestimonialsCarousel = () => {
               </div>
             </div>
             
-            <button onClick={prevTestimonial} className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow pulse-glow" aria-label="Previous testimonial">
+            <button 
+              onClick={prevTestimonial} 
+              className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow pulse-glow" 
+              aria-label="Previous testimonial"
+            >
               <ChevronLeft className="w-4 h-4 text-gray-800" />
             </button>
             
-            <button onClick={nextTestimonial} className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow pulse-glow" aria-label="Next testimonial">
+            <button 
+              onClick={nextTestimonial} 
+              className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow pulse-glow" 
+              aria-label="Next testimonial"
+            >
               <ChevronRight className="w-4 h-4 text-gray-800" />
             </button>
           </div>

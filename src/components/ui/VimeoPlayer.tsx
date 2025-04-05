@@ -1,5 +1,6 @@
+
 import { useRef, useState, useEffect, memo, useCallback } from 'react';
-import { Volume2, VolumeX, Volume1, Volume, Play, Loader } from 'lucide-react';
+import { Volume2, VolumeX, Volume1, Volume, Play, Loader, RefreshCw } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 
@@ -11,6 +12,19 @@ interface VimeoPlayerProps {
   audioOn: boolean;
   toggleAudio: (e: React.MouseEvent) => void;
   priority?: boolean;
+  onVideoLoadError?: () => void;
+  enableRetries?: boolean;
+}
+
+interface VimeoPlayerAPI {
+  play: () => Promise<void>;
+  pause: () => Promise<void>;
+  setVolume: (volume: number) => Promise<void>;
+  setMuted: (muted: boolean) => Promise<void>;
+  setCurrentTime: (time: number) => Promise<void>;
+  on: (event: string, callback: any) => void;
+  off: (event: string, callback: any) => void;
+  destroy: () => void;
 }
 
 const VimeoPlayer = memo(({
@@ -20,16 +34,20 @@ const VimeoPlayer = memo(({
   isInView,
   audioOn,
   toggleAudio,
-  priority = false
+  priority = false,
+  onVideoLoadError,
+  enableRetries = false
 }: VimeoPlayerProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [player, setPlayer] = useState<any>(null);
+  const [player, setPlayer] = useState<VimeoPlayerAPI | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [videoVisible, setVideoVisible] = useState(false);
   const [volume, setVolume] = useState(1); // 0 to 1
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const [retryAttempts, setRetryAttempts] = useState(0);
   const volumeControlRef = useRef<HTMLDivElement>(null);
   const wasInViewRef = useRef(isInView);
   const messageHandlerRef = useRef<(event: MessageEvent) => void>();
@@ -76,6 +94,146 @@ const VimeoPlayer = memo(({
     return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
   }, [videoId, playerId, priority]);
 
+  const retryVideoLoad = useCallback(() => {
+    if (retryAttempts >= 3 && !enableRetries) {
+      return;
+    }
+    
+    setIsLoading(true);
+    setLoadError(false);
+    setRetryAttempts(prev => prev + 1);
+    
+    // Destroy existing player
+    if (player) {
+      player.pause().catch(() => {});
+      player.destroy();
+      setPlayer(null);
+    }
+    
+    // Reset iframe
+    if (iframeRef.current) {
+      // Create a new iframe with a fresh src to force reload
+      const parentElement = iframeRef.current.parentElement;
+      if (parentElement) {
+        iframeRef.current.remove();
+        
+        const newIframe = document.createElement('iframe');
+        newIframe.src = buildIframeSrc();
+        newIframe.style.position = 'absolute';
+        newIframe.style.top = '0';
+        newIframe.style.left = '0';
+        newIframe.style.width = '100%';
+        newIframe.style.height = '100%';
+        newIframe.style.border = 'none';
+        newIframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media';
+        newIframe.title = `Vimeo Player ${videoId}`;
+        newIframe.loading = priority ? 'eager' : 'lazy';
+        
+        // Recreate the ref
+        iframeRef.current = newIframe;
+        
+        // Append back to the parent
+        parentElement.appendChild(newIframe);
+        
+        // Re-initialize player
+        setTimeout(() => {
+          initializePlayer();
+        }, 300);
+      }
+    }
+  }, [player, buildIframeSrc, priority, retryAttempts, enableRetries, videoId]);
+
+  const initializePlayer = useCallback(() => {
+    if (!window.Vimeo || !iframeRef.current) {
+      if (retryAttempts < 3) {
+        setTimeout(() => {
+          // Retry initialization after a delay
+          initializePlayer();
+        }, 1000);
+      } else {
+        setLoadError(true);
+        setIsLoading(false);
+        if (onVideoLoadError) onVideoLoadError();
+      }
+      return;
+    }
+    
+    try {
+      const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
+      setPlayer(vimeoPlayer);
+      
+      vimeoPlayer.setVolume(audioOnRef.current ? volume : 0)
+        .catch((err: any) => console.warn("Could not set volume:", err));
+      
+      vimeoPlayer.setMuted(!audioOnRef.current)
+        .catch((err: any) => console.warn("Could not set muted:", err));
+      
+      vimeoPlayer.on('play', () => {
+        setIsPlaying(true);
+        setVideoVisible(true);
+        setIsLoading(false);
+      });
+      
+      vimeoPlayer.on('pause', () => {
+        setIsPlaying(false);
+      });
+      
+      vimeoPlayer.on('bufferstart', () => {
+        setIsLoading(true);
+      });
+      
+      vimeoPlayer.on('bufferend', () => {
+        setIsLoading(false);
+      });
+      
+      vimeoPlayer.on('loaded', () => {
+        setVideoVisible(true);
+        setIsPlayerReady(true);
+        setIsLoading(false);
+        setLoadError(false);
+        
+        vimeoPlayer.play().catch((error: any) => {
+          console.log("Auto-play prevented, waiting for user interaction:", error);
+        });
+      });
+      
+      vimeoPlayer.on('error', (error: any) => {
+        console.error("Vimeo player error:", error);
+        
+        if (retryAttempts < 3) {
+          // Auto-retry on error up to 3 times
+          setTimeout(() => {
+            retryVideoLoad();
+          }, 1000 * (retryAttempts + 1));
+        } else {
+          setLoadError(true);
+          setIsLoading(false);
+          if (onVideoLoadError) onVideoLoadError();
+        }
+      });
+      
+      vimeoPlayer.on('ended', () => {
+        setIsPlaying(false);
+        vimeoPlayer.setCurrentTime(0.1).then(() => {
+          vimeoPlayer.pause();
+        }).catch(() => {});
+      });
+      
+      vimeoPlayer.setCurrentTime(0.1).then(() => {
+        setIsPlayerReady(true);
+        setIsLoading(false);
+        setVideoVisible(true);
+      }).catch((error: any) => {
+        console.error("Could not set current time:", error);
+      });
+    } catch (error) {
+      console.error("Error initializing Vimeo player:", error);
+      setLoadError(true);
+      setIsLoading(false);
+      if (onVideoLoadError) onVideoLoadError();
+    }
+  }, [volume, retryAttempts, onVideoLoadError, retryVideoLoad]);
+
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
@@ -84,54 +242,7 @@ const VimeoPlayer = memo(({
         const data = typeof event.data === 'object' ? event.data : JSON.parse(event.data);
         
         if (data.event === "ready" && iframeRef.current) {
-          if (window.Vimeo && window.Vimeo.Player) {
-            const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
-            setPlayer(vimeoPlayer);
-            
-            vimeoPlayer.setVolume(audioOnRef.current ? volume : 0);
-            vimeoPlayer.setMuted(!audioOnRef.current);
-            
-            vimeoPlayer.on('play', () => {
-              setIsPlaying(true);
-              setVideoVisible(true);
-              setIsLoading(false);
-            });
-            
-            vimeoPlayer.on('pause', () => {
-              setIsPlaying(false);
-            });
-            
-            vimeoPlayer.on('bufferstart', () => {
-              setIsLoading(true);
-            });
-            
-            vimeoPlayer.on('bufferend', () => {
-              setIsLoading(false);
-            });
-            
-            vimeoPlayer.on('loaded', () => {
-              setVideoVisible(true);
-              setIsPlayerReady(true);
-              setIsLoading(false);
-              
-              vimeoPlayer.play().catch(() => {
-                console.log("Auto-play prevented, waiting for user interaction");
-              });
-            });
-            
-            vimeoPlayer.on('ended', () => {
-              setIsPlaying(false);
-              vimeoPlayer.setCurrentTime(0.1).then(() => {
-                vimeoPlayer.pause();
-              });
-            });
-            
-            vimeoPlayer.setCurrentTime(0.1).then(() => {
-              setIsPlayerReady(true);
-              setIsLoading(false);
-              setVideoVisible(true);
-            });
-          }
+          initializePlayer();
         }
       } catch (e) {
         console.error("Error handling Vimeo message:", e);
@@ -146,7 +257,7 @@ const VimeoPlayer = memo(({
         window.removeEventListener('message', messageHandlerRef.current);
       }
     };
-  }, []);
+  }, [initializePlayer]);
 
   const handlePlayClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -155,13 +266,15 @@ const VimeoPlayer = memo(({
     if (!player) return;
     
     if (isPlaying) {
-      player.pause();
+      player.pause().catch((error: any) => {
+        console.error("Failed to pause video:", error);
+      });
     } else {
-      player.setVolume(audioOnRef.current ? volume : 0);
-      player.setMuted(!audioOnRef.current);
+      player.setVolume(audioOnRef.current ? volume : 0).catch(() => {});
+      player.setMuted(!audioOnRef.current).catch(() => {});
       
       player.play().catch((error: any) => {
-        console.log("Failed to play video:", error);
+        console.error("Failed to play video:", error);
         setIsLoading(false);
       });
     }
@@ -170,8 +283,8 @@ const VimeoPlayer = memo(({
   useEffect(() => {
     if (!player) return;
     
-    player.setVolume(audioOn ? volume : 0);
-    player.setMuted(!audioOn);
+    player.setVolume(audioOn ? volume : 0).catch(() => {});
+    player.setMuted(!audioOn).catch(() => {});
   }, [player, audioOn, volume]);
 
   useEffect(() => {
@@ -182,10 +295,9 @@ const VimeoPlayer = memo(({
 
     if (viewStateChanged) {
       if (!isInView && isPlaying) {
-        player.pause();
+        player.pause().catch(() => {});
       } else if (isInView && isPlayerReady && !isPlaying) {
-        player.play().catch(() => {
-        });
+        player.play().catch(() => {});
       }
     }
   }, [isInView, player, isPlaying, isPlayerReady]);
@@ -195,7 +307,7 @@ const VimeoPlayer = memo(({
     setVolume(newVolume);
     
     if (player && audioOn) {
-      player.setVolume(newVolume);
+      player.setVolume(newVolume).catch(() => {});
     }
   }, [player, audioOn]);
 
@@ -246,10 +358,23 @@ const VimeoPlayer = memo(({
           </div>
         )}
         
+        {loadError && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-20 rounded-lg">
+            <p className="text-white mb-4">Video could not be loaded</p>
+            <button 
+              onClick={retryVideoLoad}
+              className="flex items-center gap-2 bg-yellow text-black px-3 py-2 rounded-full text-sm"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Retry Video
+            </button>
+          </div>
+        )}
+        
         <div 
           className="absolute inset-0 w-full h-full"
           style={{ 
-            opacity: videoVisible ? 1 : 0,
+            opacity: videoVisible && !loadError ? 1 : 0,
             transition: 'opacity 0.3s ease-in',
             zIndex: 5
           }}
@@ -266,7 +391,7 @@ const VimeoPlayer = memo(({
           ></iframe>
         </div>
         
-        {isPlayerReady && !isPlaying && (
+        {isPlayerReady && !isPlaying && !loadError && !isLoading && (
           <button 
             onClick={handlePlayClick}
             className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-200 z-20"
