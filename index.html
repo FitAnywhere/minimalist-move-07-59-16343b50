@@ -12,7 +12,15 @@
     <meta property="og:image" content="https://i.imgur.com/MhpVrki.png" />
     <link rel="icon" href="https://i.imgur.com/MhpVrki.png" />
     
-    <!-- Mouseflow Tracking Code -->
+    <!-- Preconnect to critical domains -->
+    <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
+    <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
+    <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.mouseflow.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.voiceflow.com" crossorigin />
+    <link rel="preload" as="fetch" href="https://player.vimeo.com/video/1067255623" crossorigin importance="high" />
+    
+    <!-- Mouseflow Tracking Code - Loading with defer for better performance -->
     <script type="text/javascript">
       window._mfq = window._mfq || [];
       (function() {
@@ -30,22 +38,24 @@
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Voiceflow Chatbot Widget -->
+    <!-- Voiceflow Chatbot Widget - Moving to end of body for better performance -->
     <script type="text/javascript">
-      (function(d, t) {
-          var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-          v.onload = function() {
-            window.voiceflow.chat.load({
-              verify: { projectID: '67eb8f96dd5fb1db6bcdae42' },
-              url: 'https://general-runtime.voiceflow.com',
-              versionID: 'production',
-              voice: {
-                url: "https://runtime-api.voiceflow.com"
-              }
-            });
-          }
-          v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
-      })(document, 'script');
+      document.addEventListener('DOMContentLoaded', function() {
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+              window.voiceflow.chat.load({
+                verify: { projectID: '67eb8f96dd5fb1db6bcdae42' },
+                url: 'https://general-runtime.voiceflow.com',
+                versionID: 'production',
+                voice: {
+                  url: "https://runtime-api.voiceflow.com"
+                }
+              });
+            }
+            v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+        })(document, 'script');
+      });
     </script>
   </body>
 </html>

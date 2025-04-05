@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, lazy, Suspense } from 'react';
+import { useEffect, useRef, lazy, Suspense, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
@@ -10,28 +10,63 @@ import ProductIntro from '@/components/ProductIntro';
 // Import ChampionSection eagerly as well to avoid dynamic import errors
 import ChampionSection from '@/components/ChampionSection';
 
-// Continue lazy loading other components
+// Continue lazy loading other components with better error boundaries and loading fallbacks
 const ProductTabs = lazy(() => import('@/components/ProductTabs'));
-const LifestyleSection = lazy(() => import('@/components/LifestyleSection'));
-const BundleOffer = lazy(() => import('@/components/BundleOffer'));
-const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
-const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalculator'));
-const TargetAndFAQ = lazy(() => import('@/components/TargetAndFAQ'));
-const CallToAction = lazy(() => import('@/components/CallToAction'));
-const Footer = lazy(() => import('@/components/Footer'));
+const LifestyleSection = lazy(() => 
+  import('@/components/LifestyleSection').catch(err => {
+    console.error('Failed to load LifestyleSection:', err);
+    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+  })
+);
+const BundleOffer = lazy(() => 
+  import('@/components/BundleOffer').catch(err => {
+    console.error('Failed to load BundleOffer:', err);
+    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+  })
+);
+const TestimonialsCarousel = lazy(() => 
+  import('@/components/TestimonialsCarousel').catch(err => {
+    console.error('Failed to load TestimonialsCarousel:', err);
+    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+  })
+);
+const TimeAndCostCalculator = lazy(() => 
+  import('@/components/TimeAndCostCalculator').catch(err => {
+    console.error('Failed to load TimeAndCostCalculator:', err);
+    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+  })
+);
+const TargetAndFAQ = lazy(() => 
+  import('@/components/TargetAndFAQ').catch(err => {
+    console.error('Failed to load TargetAndFAQ:', err);
+    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+  })
+);
+const CallToAction = lazy(() => 
+  import('@/components/CallToAction').catch(err => {
+    console.error('Failed to load CallToAction:', err);
+    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+  })
+);
+const Footer = lazy(() => 
+  import('@/components/Footer').catch(err => {
+    console.error('Failed to load Footer:', err);
+    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+  })
+);
 
-// Loading fallback
+// Better loading fallback with reduced CLS (Cumulative Layout Shift)
 const SectionLoader = () => (
-  <div className="min-h-[400px] w-full flex items-center justify-center">
+  <div className="min-h-[400px] w-full flex items-center justify-center" aria-hidden="true">
     <div className="w-8 h-8 border-4 border-yellow border-t-transparent rounded-full animate-spin"></div>
   </div>
 );
 
-// Critical videos to preload
+// Critical videos to preload with proper timing
 const CRITICAL_VIDEOS = [
   '1067255623', // Hero video - highest priority
   '1067257145', // TRX video
-  '1067257124', // Bands video
+  '1067257124', // Bands video 
   '1067256372', // Testimonial videos (first few)
   '1067256325',
   '1067256399'
@@ -41,6 +76,7 @@ const Index = () => {
   const location = useLocation();
   const initialLoadRef = useRef(true);
   const vimeoAPILoadedRef = useRef(false);
+  const [sectionsInView, setSectionsInView] = useState({});
   
   // Add preload for Vimeo API and key videos immediately on page load
   useEffect(() => {
@@ -84,12 +120,20 @@ const Index = () => {
         const existingLink = document.querySelector(`link[href*="${id}"]`);
         if (!existingLink) {
           const link = document.createElement('link');
-          link.rel = 'preload';
-          link.as = 'fetch';
+          
+          // Use appropriate preload strategy based on importance
+          if (index === 0) {
+            link.rel = 'preload';
+            link.as = 'fetch';
+            link.importance = 'high';
+          } else {
+            link.rel = 'prefetch';
+            link.as = 'fetch';
+            link.importance = 'low';
+          }
+          
           link.href = `https://player.vimeo.com/video/${id}`;
           link.crossOrigin = 'anonymous';
-          // Set highest priority for hero video
-          link.setAttribute('importance', index === 0 ? 'high' : 'auto');
           document.head.appendChild(link);
           
           console.log(`Preloaded video: ${id}`);
@@ -126,9 +170,51 @@ const Index = () => {
       }
     };
     
-    // Execute preloads
-    preloadVimeoAPI();
-    addScaleKeyframes();
+    // Execute preloads with requestIdleCallback for better performance
+    if (window.requestIdleCallback) {
+      requestIdleCallback(() => {
+        preloadVimeoAPI();
+        addScaleKeyframes();
+      }, { timeout: 2000 });
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      setTimeout(() => {
+        preloadVimeoAPI();
+        addScaleKeyframes();
+      }, 100);
+    }
+    
+    // Set up intersection observer for section loading
+    const observeSections = () => {
+      const options = {
+        root: null,
+        rootMargin: '200px 0px', // Load 200px before section comes into view
+        threshold: 0.1
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            setSectionsInView(prev => ({ ...prev, [id]: true }));
+            
+            // Once loaded, stop observing
+            observer.unobserve(entry.target);
+          }
+        });
+      }, options);
+      
+      // Observe all main sections
+      ['product', 'lifestyle', 'bundle', 'reviews'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) observer.observe(element);
+      });
+      
+      return () => observer.disconnect();
+    };
+    
+    // Start observing after a short delay to allow initial render
+    const observerTimer = setTimeout(observeSections, 500);
     
     // Improved scroll handling
     const handleNavigation = () => {
@@ -186,6 +272,7 @@ const Index = () => {
     
     return () => {
       document.removeEventListener('click', handleAnchorClick);
+      clearTimeout(observerTimer);
     };
   }, [location]);
   

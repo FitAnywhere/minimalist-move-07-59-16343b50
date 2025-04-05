@@ -1,26 +1,41 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const ChatbotHelper = () => {
   const [isVisible, setIsVisible] = useState(false);
-
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  
   useEffect(() => {
-    // Show popup after 20 seconds (changed from 3 seconds)
-    const showTimer = setTimeout(() => {
-      setIsVisible(true);
-    }, 20000);
-
-    // Hide popup after 26 seconds (20s delay + 6s visibility, changed from 13s total)
-    const hideTimer = setTimeout(() => {
-      setIsVisible(false);
-    }, 26000);
-
+    // Use requestIdleCallback to schedule non-critical initialization
+    const schedulePopup = () => {
+      // Show popup after 20 seconds (when user has had time to engage with the page)
+      timerRef.current = setTimeout(() => {
+        // Only show if the user hasn't scrolled to the bottom yet
+        if (window.scrollY < document.body.scrollHeight - window.innerHeight * 1.5) {
+          setIsVisible(true);
+        }
+        
+        // Hide popup after 6 seconds
+        timerRef.current = setTimeout(() => {
+          setIsVisible(false);
+        }, 6000);
+      }, 20000);
+    };
+    
+    if (window.requestIdleCallback) {
+      requestIdleCallback(() => schedulePopup(), { timeout: 5000 });
+    } else {
+      // Fallback for browsers that don't support requestIdleCallback
+      setTimeout(schedulePopup, 2000);
+    }
+    
     return () => {
-      clearTimeout(showTimer);
-      clearTimeout(hideTimer);
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
     };
   }, []);
 
@@ -29,10 +44,20 @@ const ChatbotHelper = () => {
       window.voiceflow.chat.open();
     }
     setIsVisible(false);
+    
+    // Clear any pending timers
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
   };
 
   const handleClose = () => {
     setIsVisible(false);
+    
+    // Clear any pending timers
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
   };
 
   if (!isVisible) return null;
