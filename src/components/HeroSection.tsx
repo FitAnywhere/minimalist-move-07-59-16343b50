@@ -14,33 +14,31 @@ const HeroSection = memo(() => {
   const [audioOn, setAudioOn] = useState(true);
   const [vimeoApiLoaded, setVimeoApiLoaded] = useState(false);
 
-  // Force isInView to be true for hero section to ensure it always loads
-  const isInView = true;
+  // Use a higher threshold to ensure better video control
+  const isInView = useInView(heroRef, {
+    threshold: 0.4
+  });
 
-  // Ensure Vimeo API is loaded immediately
+  // Use a more optimized approach for loading the Vimeo API
   useEffect(() => {
-    // Check if global variable exists
-    if (window.vimeoApiLoaded) {
-      setVimeoApiLoaded(true);
-      return;
-    }
-    
-    // Backup loading mechanism in case the preloaded script fails
-    const existingScript = document.getElementById('vimeo-api');
-    if (!existingScript) {
+    // Check if the script is already in the DOM before adding it
+    if (!window.Vimeo && !document.getElementById('vimeo-api')) {
       const script = document.createElement('script');
       script.src = 'https://player.vimeo.com/api/player.js';
       script.id = 'vimeo-api';
-      script.async = false; // Load synchronously for hero section
-      script.onload = () => {
-        console.log('Vimeo API loaded from component');
-        window.vimeoApiLoaded = true;
-        setVimeoApiLoaded(true);
-      };
+      script.async = true;
+      script.onload = () => setVimeoApiLoaded(true);
       document.head.appendChild(script);
     } else {
       setVimeoApiLoaded(true);
     }
+    return () => {
+      // Only remove if we added it
+      const script = document.getElementById('vimeo-api');
+      if (script && script.dataset.added === 'true') {
+        script.remove();
+      }
+    };
   }, []);
 
   // Memoize event handlers
@@ -68,18 +66,10 @@ const HeroSection = memo(() => {
                 {/* Mobile layout with specific order */}
                 <HeroContent isInView={isInView} scrollToOwnBoth={scrollToOwnBoth} isMobile={true} />
                 
-                {/* Video placed between text and button - Force opacity to 1 initially */}
-                <div className="w-full opacity-100 translate-y-0">
+                {/* Video placed between text and button */}
+                <div className={`w-full transition-all duration-1000 delay-300 ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
                   <div className="relative rounded-xl overflow-hidden shadow-lg">
-                    <VimeoPlayer 
-                      videoId="1067255623" 
-                      playerId="hero_video_mobile" 
-                      isInView={isInView} 
-                      audioOn={audioOn} 
-                      toggleAudio={toggleAudio} 
-                      priority={true} 
-                      forcedLoad={true}
-                    />
+                    <VimeoPlayer videoId="1067255623" playerId="hero_video_mobile" isInView={isInView} audioOn={audioOn} toggleAudio={toggleAudio} priority={true} />
                   </div>
                 </div>
                 
@@ -96,23 +86,17 @@ const HeroSection = memo(() => {
                 </p>
                     
                   </div>
+                  
+                  
                 </div>
               </div>
             </> : <>
               <HeroContent isInView={isInView} scrollToOwnBoth={scrollToOwnBoth} />
               
-              <div className="order-1 md:order-2 opacity-100 translate-y-0 w-full">
+              <div className={`order-1 md:order-2 transition-all duration-1000 delay-300 w-full ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
                 <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
                   <div className="w-full max-w-[95%] mx-auto">
-                    <VimeoPlayer 
-                      videoId="1067255623" 
-                      playerId="hero_video_desktop" 
-                      isInView={isInView} 
-                      audioOn={audioOn} 
-                      toggleAudio={toggleAudio} 
-                      priority={true} 
-                      forcedLoad={true}
-                    />
+                    <VimeoPlayer videoId="1067255623" playerId="hero_video_desktop" isInView={isInView} audioOn={audioOn} toggleAudio={toggleAudio} priority={true} />
                     <p className="mt-3 text-sm text-gray-600 ml-1 text-center my-[6px] mx-[30px]">Launching Spring 2025. Reserve before we sell out.</p>
                   </div>
                 </div>

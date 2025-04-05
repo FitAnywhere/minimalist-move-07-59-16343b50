@@ -1,6 +1,7 @@
+
 import { useEffect, useState, useRef, RefObject, useCallback } from 'react';
 
-// Enhanced useInView hook with better video support
+// Modify useInView hook to have better TypeScript support with default parameters
 export const useInView = (
   ref: RefObject<HTMLElement>, 
   options: IntersectionObserverInit = {}, 
@@ -16,17 +17,7 @@ export const useInView = (
     if (!ref.current) return;
     
     const element = ref.current;
-    
-    // Use more aggressive defaults for video elements
-    const hasVideoElement = element.querySelector('video') || 
-                           element.querySelector('iframe[src*="vimeo"]') ||
-                           element.querySelector('iframe[src*="youtube"]');
-    
-    const defaultOptions = { 
-      threshold: hasVideoElement ? 0.05 : 0.1, // Lower threshold for videos
-      rootMargin: hasVideoElement ? "100px 0px" : "0px", // Preload videos sooner
-      ...options 
-    };
+    const defaultOptions = { threshold: 0.1, ...options };
     
     // Cleanup previous observer if it exists
     if (observerRef.current) {
@@ -137,19 +128,15 @@ export const useScrollPosition = () => {
   return scrollPosition;
 };
 
-// Enhanced useLazyLoad hook with better video support
-export const useLazyLoad = (ref: RefObject<HTMLImageElement | HTMLVideoElement | HTMLIFrameElement>) => {
+// Optimized useLazyLoad hook with better memory management
+export const useLazyLoad = (ref: RefObject<HTMLImageElement>) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const loadAttemptsRef = useRef(0);
-  const maxLoadAttempts = 3;
   
   useEffect(() => {
     if (!ref.current) return;
     
-    const element = ref.current;
-    const isVideo = element.tagName === 'VIDEO';
-    const isIframe = element.tagName === 'IFRAME';
+    const img = ref.current;
     
     // Cleanup previous observer if it exists
     if (observerRef.current) {
@@ -157,73 +144,21 @@ export const useLazyLoad = (ref: RefObject<HTMLImageElement | HTMLVideoElement |
     }
     
     observerRef.current = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        // Handle image element
-        if (element.tagName === 'IMG' && 'dataset' in element && element.dataset.src) {
-          const src = element.dataset.src;
-          
-          // Create a new image to preload
-          const newImage = new Image();
-          newImage.onload = () => {
-            (element as HTMLImageElement).src = src;
-            setIsLoaded(true);
-            observerRef.current?.unobserve(element);
-          };
-          newImage.onerror = () => {
-            // Retry loading on error
-            if (loadAttemptsRef.current < maxLoadAttempts) {
-              loadAttemptsRef.current++;
-              setTimeout(() => {
-                newImage.src = src;
-              }, 1000);
-            }
-          };
-          newImage.src = src;
-        }
-        // Handle video element
-        else if (isVideo) {
-          const videoElement = element as HTMLVideoElement;
-          
-          if (videoElement.paused) {
-            const playPromise = videoElement.play();
-            if (playPromise !== undefined) {
-              playPromise.then(() => {
-                setIsLoaded(true);
-                observerRef.current?.unobserve(element);
-              }).catch(error => {
-                console.error("Video play error:", error);
-                // Retry on error
-                if (loadAttemptsRef.current < maxLoadAttempts && error.name !== 'NotAllowedError') {
-                  loadAttemptsRef.current++;
-                  setTimeout(() => {
-                    videoElement.load();
-                    videoElement.play().catch(() => {});
-                  }, 1000);
-                } else {
-                  // Mark as loaded even if autoplay fails due to browser restrictions
-                  setIsLoaded(true);
-                  observerRef.current?.unobserve(element);
-                }
-              });
-            }
-          } else {
-            setIsLoaded(true);
-            observerRef.current?.unobserve(element);
-          }
-        }
-        // Handle iframe element
-        else if (isIframe) {
-          // For iframe, mark as loaded when it appears in view
+      if (entry.isIntersecting && img.dataset.src) {
+        const src = img.dataset.src;
+        
+        // Create a new image to preload
+        const newImage = new Image();
+        newImage.onload = () => {
+          img.src = src;
           setIsLoaded(true);
-          observerRef.current?.unobserve(element);
-        }
+          observerRef.current?.unobserve(img);
+        };
+        newImage.src = src;
       }
-    }, { 
-      threshold: 0.1,
-      rootMargin: "200px 0px" // Load earlier for better UX
     });
     
-    observerRef.current.observe(element);
+    observerRef.current.observe(img);
     
     return () => {
       observerRef.current?.disconnect();

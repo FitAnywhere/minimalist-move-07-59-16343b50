@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -6,26 +7,18 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronDown, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
-
-const features = [
-  {
-    title: "UNFOLD & GO",
-    description: "No tools, no installation"
-  },
-  {
-    title: "MODERN DESIGN",
-    description: "Foldable for easy storage, with adjustable height for low ceilings"
-  },
-  {
-    title: "INFINITE POSSIBILITIES",
-    description: "One station without limits"
-  }
-];
-
+const features = [{
+  title: "UNFOLD & GO",
+  description: "No tools, no installation"
+}, {
+  title: "MODERN DESIGN",
+  description: "Foldable for easy storage, with adjustable height for low ceilings"
+}, {
+  title: "INFINITE POSSIBILITIES",
+  description: "One station without limits"
+}];
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
   const [animationState, setAnimationState] = useState({
@@ -35,28 +28,31 @@ const ProductIntro = () => {
     features: [false, false, false],
     finalLine: false
   });
+  // Change default open feature to null so all features are closed by default
   const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [showSpecs, setShowSpecs] = useState(false);
-  const [videoError, setVideoError] = useState(false);
-  const [mobileVideoError, setMobileVideoError] = useState(false);
-  const [videoRetryCount, setVideoRetryCount] = useState(0);
-  const [mobileVideoRetryCount, setMobileVideoRetryCount] = useState(0);
-
   useEffect(() => {
     if (isInView) {
+      // Reduced delay for title animation from 300ms to 100ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         title: true
       })), 100);
+
+      // Reduced delay for subtitle animation from 800ms to 300ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         subtitle: true
       })), 300);
+
+      // Reduced delay for paragraph animation from 1300ms to 500ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         paragraph: true
       })), 500);
+
+      // Reduced initial delay for features from 1800ms to 700ms and time between features from 250ms to 150ms
       features.forEach((_, index) => {
         setTimeout(() => {
           setAnimationState(prev => {
@@ -69,113 +65,17 @@ const ProductIntro = () => {
           });
         }, 700 + index * 150);
       });
+
+      // Reduced delay for final line from 3000ms to 1200ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         finalLine: true
       })), 1200);
     }
   }, [isInView]);
-
-  useEffect(() => {
-    if (videoRef.current && isInView) {
-      const video = videoRef.current;
-      
-      video.currentTime = 0;
-      video.playbackRate = 1;
-      video.preload = "auto";
-      
-      const handleCanPlay = () => {
-        setVideoError(false);
-        video.play().catch(error => {
-          console.error("Play error for product video:", error);
-          if (error.name !== 'NotAllowedError') {
-            setVideoError(true);
-          }
-        });
-      };
-      
-      const handleError = () => {
-        console.error("Error loading product video");
-        setVideoError(true);
-        
-        if (videoRetryCount < 3) {
-          setTimeout(() => {
-            setVideoRetryCount(prev => prev + 1);
-            video.load();
-          }, 1000);
-        }
-      };
-      
-      video.addEventListener('canplay', handleCanPlay);
-      video.addEventListener('error', handleError);
-      
-      return () => {
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('error', handleError);
-      };
-    }
-  }, [isInView, videoRetryCount]);
-
-  useEffect(() => {
-    if (mobileVideoRef.current && isInView && isMobile) {
-      const video = mobileVideoRef.current;
-      
-      video.currentTime = 0;
-      video.playbackRate = 1;
-      video.preload = "auto";
-      
-      const handleCanPlay = () => {
-        setMobileVideoError(false);
-        video.play().catch(error => {
-          console.error("Play error for mobile product video:", error);
-          if (error.name !== 'NotAllowedError') {
-            setMobileVideoError(true);
-          }
-        });
-      };
-      
-      const handleError = () => {
-        console.error("Error loading mobile product video");
-        setMobileVideoError(true);
-        
-        if (mobileVideoRetryCount < 3) {
-          setTimeout(() => {
-            setMobileVideoRetryCount(prev => prev + 1);
-            video.load();
-          }, 1000);
-        }
-      };
-      
-      video.addEventListener('canplay', handleCanPlay);
-      video.addEventListener('error', handleError);
-      
-      return () => {
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('error', handleError);
-      };
-    }
-  }, [isInView, isMobile, mobileVideoRetryCount]);
-
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
-
-  const handleRetryVideo = () => {
-    setVideoError(false);
-    setVideoRetryCount(0);
-    if (videoRef.current) {
-      videoRef.current.load();
-    }
-  };
-
-  const handleRetryMobileVideo = () => {
-    setMobileVideoError(false);
-    setMobileVideoRetryCount(0);
-    if (mobileVideoRef.current) {
-      mobileVideoRef.current.load();
-    }
-  };
-
   return <section id="product" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
@@ -193,38 +93,18 @@ const ProductIntro = () => {
               </div>
               
               {isMobile && <div className={cn("flex justify-center items-center transition-all duration-700 h-full md:hidden", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
-                  <div className="w-full max-w-[80%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
-                    {mobileVideoError ? (
-                      <div className="w-full aspect-video bg-gray-100 flex flex-col items-center justify-center rounded-xl">
-                        <p className="text-gray-500 mb-3">Video unavailable</p>
-                        <button 
-                          onClick={handleRetryMobileVideo}
-                          className="px-4 py-2 bg-yellow text-black rounded hover:bg-yellow-600 transition-colors text-sm font-medium"
-                        >
-                          Retry Loading
-                        </button>
-                      </div>
-                    ) : (
-                      <video 
-                        ref={mobileVideoRef} 
-                        className="w-full h-auto object-contain" 
-                        autoPlay 
-                        muted 
-                        loop 
-                        playsInline
-                        preload="auto"
-                      >
-                        <source src="/home-360-tb.mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                    )}
+                  <div className="w-full max-w-[64%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
+                    <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
+                      <source src="/home-360-tb.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
                   </div>
                 </div>}
               
               <div className="space-y-5">
                 {features.map((feature, index) => <div key={index} className={cn("px-6 py-3 rounded-full cursor-pointer", "transition-all duration-300 ease-in-out", "shadow-md", "transform", openFeatureIndex === index ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white", animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
-                  transitionDelay: `${(index + 1) * 100}ms`
-                }} onClick={() => handleFeatureClick(index)} onMouseEnter={() => setHoverIndex(index)} onMouseLeave={() => setHoverIndex(null)}>
+                transitionDelay: `${(index + 1) * 100}ms`
+              }} onClick={() => handleFeatureClick(index)} onMouseEnter={() => setHoverIndex(index)} onMouseLeave={() => setHoverIndex(null)}>
                     <div className="flex justify-between items-center">
                       <h4 className="text-lg font-semibold">
                         {feature.title}
@@ -255,31 +135,11 @@ const ProductIntro = () => {
             </div>
             
             <div className={cn("flex justify-center items-center transition-all duration-700 h-full order-first md:order-last hidden md:flex", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
-              <div className="w-full max-w-[80%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
-                {videoError ? (
-                  <div className="w-full aspect-video bg-gray-100 flex flex-col items-center justify-center rounded-xl">
-                    <p className="text-gray-500 mb-3">Video unavailable</p>
-                    <button 
-                      onClick={handleRetryVideo}
-                      className="px-4 py-2 bg-yellow text-black rounded hover:bg-yellow-600 transition-colors text-sm font-medium"
-                    >
-                      Retry Loading
-                    </button>
-                  </div>
-                ) : (
-                  <video 
-                    ref={videoRef} 
-                    className="w-full h-auto object-contain" 
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline
-                    preload="auto"
-                  >
-                    <source src="/home-360-tb.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                )}
+              <div className="w-full max-w-[70%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
+                <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
+                  <source src="/home-360-tb.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
             </div>
           </div>
@@ -354,5 +214,4 @@ const ProductIntro = () => {
       </Dialog>
     </section>;
 };
-
 export default ProductIntro;

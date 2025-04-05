@@ -12,12 +12,6 @@
     <meta property="og:image" content="https://i.imgur.com/MhpVrki.png" />
     <link rel="icon" href="https://i.imgur.com/MhpVrki.png" />
     
-    <!-- Preload critical Vimeo API -->
-    <link rel="preload" href="https://player.vimeo.com/api/player.js" as="script">
-    
-    <!-- Preload critical hero video -->
-    <link rel="preload" href="https://player.vimeo.com/video/1067255623" as="fetch" crossorigin="anonymous">
-    
     <!-- Mouseflow Tracking Code -->
     <script type="text/javascript">
       window._mfq = window._mfq || [];
@@ -35,21 +29,6 @@
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Preload Vimeo API on page load -->
-    <script>
-      // Preload Vimeo API as soon as possible
-      (function() {
-        if (!window.vimeoApiLoaded) {
-          window.vimeoApiLoaded = true;
-          var script = document.createElement('script');
-          script.src = 'https://player.vimeo.com/api/player.js';
-          script.async = false; // Load synchronously for critical videos
-          script.id = 'vimeo-api';
-          document.head.appendChild(script);
-        }
-      })();
-    </script>
     
     <!-- Voiceflow Chatbot Widget -->
     <script type="text/javascript">
