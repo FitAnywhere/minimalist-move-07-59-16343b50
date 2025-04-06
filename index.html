@@ -12,23 +12,24 @@
     <meta property="og:image" content="https://i.imgur.com/MhpVrki.png" />
     <link rel="icon" href="https://i.imgur.com/MhpVrki.png" />
     
-    <!-- Race loading strategy - preload both sources -->
-    <!-- High priority preconnects -->
+    <!-- Preconnect to critical domains -->
     <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
     <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
     <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
-    
-    <!-- Preload critical resources - parallel race -->
-    <link rel="preload" as="script" href="https://player.vimeo.com/api/player.js" />
-    <link rel="preload" as="fetch" href="https://player.vimeo.com/video/1067255623" crossorigin />
-    <link rel="preload" as="video" href="/fitanywhere intro.mp4" type="video/mp4" />
-    
-    <!-- Defer non-critical resources -->
     <link rel="preconnect" href="https://cdn.mouseflow.com" crossorigin />
     <link rel="preconnect" href="https://cdn.voiceflow.com" crossorigin />
+    <link rel="preload" as="fetch" href="https://player.vimeo.com/video/1067255623" crossorigin importance="high" />
     
-    <!-- Vimeo Player API - Load synchronously for immediate availability -->
-    <script src="https://player.vimeo.com/api/player.js"></script>
+    <!-- Mouseflow Tracking Code - Loading with defer for better performance -->
+    <script type="text/javascript">
+      window._mfq = window._mfq || [];
+      (function() {
+        var mf = document.createElement("script");
+        mf.type = "text/javascript"; mf.defer = true;
+        mf.src = "//cdn.mouseflow.com/projects/a1997416-33e6-483b-a3da-fff3c11f54e6.js";
+        document.getElementsByTagName("head")[0].appendChild(mf);
+      })();
+    </script>
   </head>
 
   <body>
@@ -37,58 +38,23 @@
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Mouseflow Tracking Code - Deferred -->
+    <!-- Voiceflow Chatbot Widget - Moving to end of body for better performance -->
     <script type="text/javascript">
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          window._mfq = window._mfq || [];
-          var mf = document.createElement("script");
-          mf.type = "text/javascript"; mf.defer = true;
-          mf.src = "//cdn.mouseflow.com/projects/a1997416-33e6-483b-a3da-fff3c11f54e6.js";
-          document.getElementsByTagName("head")[0].appendChild(mf);
-        }, 3000); // Delay load by 3 seconds after page is ready
-      });
-    </script>
-    
-    <!-- Voiceflow Chatbot Widget - Deferred until after critical content loads -->
-    <script type="text/javascript">
-      // Wait for the page to be fully loaded and video to be initialized
-      window.addEventListener('load', function() {
-        // Use a custom event to track when the hero video is ready
-        let heroVideoReady = false;
-        
-        // Create a custom event that the React component can dispatch
-        window.addEventListener('heroVideoReady', function() {
-          heroVideoReady = true;
-          initializeChatbot();
-        });
-        
-        // Fallback - if after 5 seconds the video hasn't fired its ready event, load the chatbot anyway
-        setTimeout(function() {
-          if (!heroVideoReady) {
-            initializeChatbot();
-          }
-        }, 5000);
-        
-        function initializeChatbot() {
-          console.log("Initializing Voiceflow chatbot");
-          (function(d, t) {
-              var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-              v.onload = function() {
-                window.voiceflow.chat.load({
-                  verify: { projectID: '67eb8f96dd5fb1db6bcdae42' },
-                  url: 'https://general-runtime.voiceflow.com',
-                  versionID: 'production',
-                  voice: {
-                    url: "https://runtime-api.voiceflow.com"
-                  }
-                });
-              }
-              v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; 
-              v.type = "text/javascript"; 
-              s.parentNode.insertBefore(v, s);
-          })(document, 'script');
-        }
+      document.addEventListener('DOMContentLoaded', function() {
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+              window.voiceflow.chat.load({
+                verify: { projectID: '67eb8f96dd5fb1db6bcdae42' },
+                url: 'https://general-runtime.voiceflow.com',
+                versionID: 'production',
+                voice: {
+                  url: "https://runtime-api.voiceflow.com"
+                }
+              });
+            }
+            v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+        })(document, 'script');
       });
     </script>
   </body>

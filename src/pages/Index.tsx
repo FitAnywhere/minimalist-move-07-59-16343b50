@@ -3,7 +3,7 @@ import { useEffect, useRef, lazy, Suspense, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
-import ChatbotHelper, { notifyHeroVideoReady } from '@/components/ChatbotHelper';
+import ChatbotHelper from '@/components/ChatbotHelper';
 
 // Import critical components eagerly instead of lazy loading
 import ProductIntro from '@/components/ProductIntro';
@@ -77,19 +77,9 @@ const Index = () => {
   const initialLoadRef = useRef(true);
   const vimeoAPILoadedRef = useRef(false);
   const [sectionsInView, setSectionsInView] = useState({});
-  const [heroVideoReady, setHeroVideoReady] = useState(false);
   
   // Add preload for Vimeo API and key videos immediately on page load
   useEffect(() => {
-    // Create a way to notify that hero video is ready
-    const handleHeroReady = () => {
-      setHeroVideoReady(true);
-      // Notify that hero video is ready for other components
-      notifyHeroVideoReady();
-    };
-    
-    window.addEventListener('heroVideoReady', handleHeroReady);
-    
     // Preload Vimeo player API
     const preloadVimeoAPI = () => {
       if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]') && !vimeoAPILoadedRef.current) {
@@ -284,7 +274,6 @@ const Index = () => {
     document.addEventListener('click', handleAnchorClick, { passive: false });
     
     return () => {
-      window.removeEventListener('heroVideoReady', handleHeroReady);
       document.removeEventListener('click', handleAnchorClick);
       clearTimeout(observerTimer);
     };
