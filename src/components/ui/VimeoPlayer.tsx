@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect, memo, useCallback } from 'react';
 import { Volume2, VolumeX, Volume1, Volume, Play, Loader, RefreshCw } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
@@ -51,6 +52,7 @@ const VimeoPlayer = memo(({
   const [loadError, setLoadError] = useState(false);
   const [retryAttempts, setRetryAttempts] = useState(0);
   const [usingFallback, setUsingFallback] = useState(false);
+  const [videoEnded, setVideoEnded] = useState(false);
   const volumeControlRef = useRef<HTMLDivElement>(null);
   const wasInViewRef = useRef(isInView);
   const messageHandlerRef = useRef<(event: MessageEvent) => void>();
@@ -87,7 +89,7 @@ const VimeoPlayer = memo(({
       player_id: playerId,
       app_id: '58479',
       dnt: '1',
-      autoplay: '1',
+      autoplay: '0', // Changed from '1' to '0' to prevent autoplay
       muted: '1'
     });
     
@@ -122,14 +124,12 @@ const VimeoPlayer = memo(({
         setVideoVisible(true);
         setIsPlayerReady(true);
         
-        if (isInView) {
-          const playPromise = video.play();
-          if (playPromise !== undefined) {
-            playPromise.catch((error) => {
-              console.warn("Fallback video autoplay prevented:", error);
-            });
-          }
-        }
+        // Explicitly set current time to 0.1s when ready
+        video.currentTime = 0.1;
+        setIsPlaying(false); // Ensure we show paused state
+        
+        // Don't autoplay - wait for user interaction
+        video.pause();
       };
       
       const handleError = (e: Event) => {
@@ -139,15 +139,26 @@ const VimeoPlayer = memo(({
         if (onVideoLoadError) onVideoLoadError();
       };
       
+      const handleEnded = () => {
+        // Reset to beginning when video ends
+        video.currentTime = 0.1;
+        video.pause();
+        setIsPlaying(false);
+        setVideoEnded(true);
+        console.log("Fallback video ended, reset to beginning");
+      };
+      
       video.removeEventListener('canplay', handleCanPlay);
       video.removeEventListener('error', handleError);
+      video.removeEventListener('ended', handleEnded);
       
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
+      video.addEventListener('ended', handleEnded);
       
       video.load();
     }
-  }, [fallbackVideoUrl, player, audioOnRef, volume, isInView, onVideoLoadError]);
+  }, [fallbackVideoUrl, player, audioOnRef, volume, onVideoLoadError]);
 
   const retryVideoLoad = useCallback(() => {
     if (retryAttempts >= 3 && !enableRetries) {
@@ -192,6 +203,7 @@ const VimeoPlayer = memo(({
   }, [player, buildIframeSrc, priority, retryAttempts, enableRetries, videoId, fallbackVideoUrl, loadFallbackVideo]);
 
   const initializePlayer = useCallback(() => {
+    // Reduce fallback timeout to make sure we don't wait too long
     if (fallbackTimeoutRef.current) {
       clearTimeout(fallbackTimeoutRef.current);
       fallbackTimeoutRef.current = null;
@@ -203,7 +215,7 @@ const VimeoPlayer = memo(({
           console.log("Vimeo loading timeout, switching to fallback");
           loadFallbackVideo();
         }
-      }, 800);
+      }, 800); // Reduced from longer timeouts to ensure fast fallback
     }
     
     if (!window.Vimeo || !iframeRef.current) {
@@ -237,6 +249,7 @@ const VimeoPlayer = memo(({
         setIsPlaying(true);
         setVideoVisible(true);
         setIsLoading(false);
+        setVideoEnded(false);
       });
       
       vimeoPlayer.on('pause', () => {
@@ -262,8 +275,13 @@ const VimeoPlayer = memo(({
           fallbackTimeoutRef.current = null;
         }
         
-        vimeoPlayer.play().catch((error: any) => {
-          console.log("Auto-play prevented, waiting for user interaction:", error);
+        // Set to first frame and pause - don't autoplay
+        vimeoPlayer.setCurrentTime(0.1).then(() => {
+          vimeoPlayer.pause().catch((error: any) => {
+            console.log("Could not pause at initial frame:", error);
+          });
+        }).catch((error: any) => {
+          console.error("Could not set initial time:", error);
         });
       });
       
@@ -285,8 +303,10 @@ const VimeoPlayer = memo(({
       
       vimeoPlayer.on('ended', () => {
         setIsPlaying(false);
+        setVideoEnded(true);
+        // Reset to first frame on end
         vimeoPlayer.setCurrentTime(0.1).then(() => {
-          vimeoPlayer.pause();
+          vimeoPlayer.pause().catch(() => {});
         }).catch(() => {});
       });
       
@@ -294,6 +314,7 @@ const VimeoPlayer = memo(({
         setIsPlayerReady(true);
         setIsLoading(false);
         setVideoVisible(true);
+        vimeoPlayer.pause().catch(() => {}); // Always start paused
       }).catch((error: any) => {
         console.error("Could not set current time:", error);
       });
@@ -352,6 +373,12 @@ const VimeoPlayer = memo(({
         fallbackVideoRef.current.volume = audioOnRef.current ? volume : 0;
         fallbackVideoRef.current.muted = !audioOnRef.current;
         
+        // If video ended, reset to beginning before playing
+        if (videoEnded) {
+          fallbackVideoRef.current.currentTime = 0.1;
+          setVideoEnded(false);
+        }
+        
         const playPromise = fallbackVideoRef.current.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -375,12 +402,20 @@ const VimeoPlayer = memo(({
       player.setVolume(audioOnRef.current ? volume : 0).catch(() => {});
       player.setMuted(!audioOnRef.current).catch(() => {});
       
-      player.play().catch((error: any) => {
-        console.error("Failed to play video:", error);
-        setIsLoading(false);
-      });
+      // If video ended, reset to beginning before playing
+      if (videoEnded) {
+        player.setCurrentTime(0.1).then(() => {
+          player.play().catch(() => {});
+          setVideoEnded(false);
+        }).catch(() => {});
+      } else {
+        player.play().catch((error: any) => {
+          console.error("Failed to play video:", error);
+          setIsLoading(false);
+        });
+      }
     }
-  }, [player, isPlaying, volume, usingFallback]);
+  }, [player, isPlaying, volume, usingFallback, videoEnded]);
 
   useEffect(() => {
     if (usingFallback && fallbackVideoRef.current) {
@@ -404,14 +439,8 @@ const VimeoPlayer = memo(({
         if (!isInView && isPlaying) {
           fallbackVideoRef.current.pause();
           setIsPlaying(false);
-        } else if (isInView && isPlayerReady && !isPlaying) {
-          const playPromise = fallbackVideoRef.current.play();
-          if (playPromise !== undefined) {
-            playPromise.then(() => {
-              setIsPlaying(true);
-            }).catch(() => {});
-          }
         }
+        // Don't auto-play when coming into view - require manual play
       }
       return;
     }
@@ -424,9 +453,8 @@ const VimeoPlayer = memo(({
     if (viewStateChanged) {
       if (!isInView && isPlaying) {
         player.pause().catch(() => {});
-      } else if (isInView && isPlayerReady && !isPlaying) {
-        player.play().catch(() => {});
       }
+      // Don't auto-play when coming into view - require manual play
     }
   }, [isInView, player, isPlaying, isPlayerReady, usingFallback]);
 
@@ -479,6 +507,9 @@ const VimeoPlayer = memo(({
     }
   }, [priority, videoVisible, isPlayerReady, isLoading]);
 
+  // Get the overlay play/pause button visibility 
+  const showPlayButton = !isPlaying && isPlayerReady && !loadError && !isLoading;
+
   return (
     <div className={`relative ${className}`}>
       <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
@@ -525,7 +556,6 @@ const VimeoPlayer = memo(({
             className={`absolute inset-0 w-full h-full object-cover ${usingFallback && videoVisible && !isLoading ? 'opacity-100' : 'opacity-0'}`}
             playsInline
             muted={!audioOn}
-            loop
             style={{
               opacity: usingFallback && videoVisible && !isLoading ? 1 : 0,
               transition: 'opacity 0.3s ease-in',
@@ -553,11 +583,12 @@ const VimeoPlayer = memo(({
           ></iframe>
         </div>
         
-        {isPlayerReady && !isPlaying && !loadError && !isLoading && (
+        {/* Play/Pause button overlay - only shown when video is paused or ready to play */}
+        {showPlayButton && (
           <button 
             onClick={handlePlayClick}
             className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-200 z-20"
-            aria-label="Play video"
+            aria-label={isPlaying ? "Pause video" : "Play video"}
           >
             <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center hover:bg-yellow/90 transition-colors duration-300 group">
               <Play size={28} className="text-black ml-1 group-hover:scale-110 transition-transform duration-300" />
