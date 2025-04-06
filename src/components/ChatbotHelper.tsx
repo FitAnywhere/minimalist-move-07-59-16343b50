@@ -4,69 +4,40 @@ import { ChevronDown, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-// Create a custom window event to notify when hero video is ready
-export const notifyHeroVideoReady = () => {
-  const event = new Event('heroVideoReady');
-  window.dispatchEvent(event);
-};
-
 const ChatbotHelper = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isWidgetAvailable, setIsWidgetAvailable] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   
   useEffect(() => {
-    // Check if Voiceflow is loaded (with polling)
-    const checkWidgetLoaded = () => {
-      if (window.voiceflow && window.voiceflow.chat) {
-        setIsWidgetAvailable(true);
-        return true;
-      }
-      return false;
-    };
-    
-    // Start checking when chatbot is available
-    const widgetCheck = setInterval(() => {
-      if (checkWidgetLoaded()) {
-        clearInterval(widgetCheck);
-      }
-    }, 1000);
-    
     // Use requestIdleCallback to schedule non-critical initialization
     const schedulePopup = () => {
-      // Only show popup if the widget is available and after 20 seconds
-      if (isWidgetAvailable) {
-        // Show popup after 20 seconds (when user has had time to engage with the page)
+      // Show popup after 20 seconds (when user has had time to engage with the page)
+      timerRef.current = setTimeout(() => {
+        // Only show if the user hasn't scrolled to the bottom yet
+        if (window.scrollY < document.body.scrollHeight - window.innerHeight * 1.5) {
+          setIsVisible(true);
+        }
+        
+        // Hide popup after 6 seconds
         timerRef.current = setTimeout(() => {
-          // Only show if the user hasn't scrolled to the bottom yet
-          if (window.scrollY < document.body.scrollHeight - window.innerHeight * 1.5) {
-            setIsVisible(true);
-          }
-          
-          // Hide popup after 6 seconds
-          timerRef.current = setTimeout(() => {
-            setIsVisible(false);
-          }, 6000);
-        }, 20000);
-      }
+          setIsVisible(false);
+        }, 6000);
+      }, 20000);
     };
     
-    if (isWidgetAvailable) {
-      if (window.requestIdleCallback) {
-        requestIdleCallback(() => schedulePopup(), { timeout: 5000 });
-      } else {
-        // Fallback for browsers that don't support requestIdleCallback
-        setTimeout(schedulePopup, 5000);
-      }
+    if (window.requestIdleCallback) {
+      requestIdleCallback(() => schedulePopup(), { timeout: 5000 });
+    } else {
+      // Fallback for browsers that don't support requestIdleCallback
+      setTimeout(schedulePopup, 2000);
     }
     
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
-      clearInterval(widgetCheck);
     };
-  }, [isWidgetAvailable]);
+  }, []);
 
   const handleAskClick = () => {
     if (window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
