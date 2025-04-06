@@ -18,10 +18,10 @@
     <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
     <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
     
-    <!-- Preload critical resources -->
+    <!-- Preload critical resources - parallel race -->
     <link rel="preload" as="script" href="https://player.vimeo.com/api/player.js" />
-    <link rel="preload" as="fetch" href="https://player.vimeo.com/video/1067255623" crossorigin importance="high" />
-    <link rel="preload" as="video" href="/fitanywhere intro.mp4" type="video/mp4" importance="high" />
+    <link rel="preload" as="fetch" href="https://player.vimeo.com/video/1067255623" crossorigin />
+    <link rel="preload" as="video" href="/fitanywhere intro.mp4" type="video/mp4" />
     
     <!-- Defer non-critical resources -->
     <link rel="preconnect" href="https://cdn.mouseflow.com" crossorigin />

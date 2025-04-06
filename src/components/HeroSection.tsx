@@ -1,5 +1,5 @@
 
-import { useRef, useState, useCallback, useEffect, memo } from 'react';
+import { useRef, useState, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import VimeoPlayer from './ui/VimeoPlayer';
@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 const HeroSection = memo(() => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  const [audioOn, setAudioOn] = useState(true);
+  const [audioOn, setAudioOn] = useState(false); // Start muted by default
 
   // Use a higher threshold to ensure better video control
   const isInView = useInView(heroRef, {
@@ -36,12 +36,14 @@ const HeroSection = memo(() => {
     setAudioOn(prev => !prev);
   }, []);
 
-  return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white">
+  return (
+    <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
       
       <div className="container relative z-20 px-6 py-10 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          {isMobile ? <>
+          {isMobile ? (
+            <>
               <div className="text-center order-1 w-full space-y-6">
                 {/* Mobile layout with specific order */}
                 <HeroContent isInView={isInView} scrollToOwnBoth={scrollToOwnBoth} isMobile={true} />
@@ -56,7 +58,6 @@ const HeroSection = memo(() => {
                       audioOn={audioOn} 
                       toggleAudio={toggleAudio} 
                       priority={true}
-                      enableRetries={true}
                       fallbackVideoUrl="/fitanywhere intro.mp4"
                     />
                   </div>
@@ -71,12 +72,13 @@ const HeroSection = memo(() => {
                   
                   <div className="mt-4 space-y-1">
                     <p className="text-gray-700 text-base font-semibold">On average, gym users lose:</p>
-                    <p className="text-gray-700 my-[9px] text-base font-semibold">€12,052 in fees + 883 hours in traffic
-                </p>
+                    <p className="text-gray-700 my-[9px] text-base font-semibold">€12,052 in fees + 883 hours in traffic</p>
                   </div>
                 </div>
               </div>
-            </> : <>
+            </>
+          ) : (
+            <>
               <HeroContent isInView={isInView} scrollToOwnBoth={scrollToOwnBoth} />
               
               <div className={`order-1 md:order-2 transition-all duration-1000 delay-300 w-full ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
@@ -89,19 +91,21 @@ const HeroSection = memo(() => {
                       audioOn={audioOn} 
                       toggleAudio={toggleAudio} 
                       priority={true}
-                      enableRetries={true}
                       fallbackVideoUrl="/fitanywhere intro.mp4"
                     />
                     <p className="mt-3 text-sm text-gray-600 ml-1 text-center my-[6px] mx-[30px]">Launching Spring 2025. Reserve before we sell out.</p>
                   </div>
                 </div>
               </div>
-            </>}
+            </>
+          )}
         </div>
       </div>
       
       <ScrollIndicator />
-    </section>;
+    </section>
+  );
 });
+
 HeroSection.displayName = 'HeroSection';
 export default HeroSection;

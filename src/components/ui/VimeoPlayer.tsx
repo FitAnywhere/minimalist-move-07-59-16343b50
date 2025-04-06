@@ -12,20 +12,7 @@ interface VimeoPlayerProps {
   audioOn: boolean;
   toggleAudio: (e: React.MouseEvent) => void;
   priority?: boolean;
-  onVideoLoadError?: () => void;
-  enableRetries?: boolean;
   fallbackVideoUrl?: string;
-}
-
-interface VimeoPlayerAPI {
-  play: () => Promise<void>;
-  pause: () => Promise<void>;
-  setVolume: (volume: number) => Promise<void>;
-  setMuted: (muted: boolean) => Promise<void>;
-  setCurrentTime: (time: number) => Promise<void>;
-  on: (event: string, callback: any) => void;
-  off: (event: string, callback: any) => void;
-  destroy: () => void;
 }
 
 const VimeoPlayer = memo(({
@@ -36,49 +23,28 @@ const VimeoPlayer = memo(({
   audioOn,
   toggleAudio,
   priority = false,
-  onVideoLoadError,
-  enableRetries = false,
   fallbackVideoUrl
 }: VimeoPlayerProps) => {
+  // Element refs
+  const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const fallbackVideoRef = useRef<HTMLVideoElement>(null);
-  const [player, setPlayer] = useState<VimeoPlayerAPI | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isPlayerReady, setIsPlayerReady] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [videoVisible, setVideoVisible] = useState(false);
-  const [volume, setVolume] = useState(1); // 0 to 1
-  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
-  const [usingFallback, setUsingFallback] = useState(false);
-  const [videoEnded, setVideoEnded] = useState(false);
   const volumeControlRef = useRef<HTMLDivElement>(null);
-  const wasInViewRef = useRef(isInView);
-  const audioOnRef = useRef(audioOn);
-  const raceWinnerDeclaredRef = useRef(false);
-  const vimeoLoadStartTimeRef = useRef(0);
-  const fallbackLoadStartTimeRef = useRef(0);
   
-  // Race strategy tracking refs
-  const vimeoReadyRef = useRef(false);
-  const fallbackReadyRef = useRef(false);
+  // Player states
+  const [isLoading, setIsLoading] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [player, setPlayer] = useState<any>(null);
+  const [usingFallback, setUsingFallback] = useState(false);
+  const [volume, setVolume] = useState(1);
+  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   
-  useEffect(() => {
-    audioOnRef.current = audioOn;
-  }, [audioOn]);
+  // Race strategy - track which player wins
+  const raceWinnerDeclared = useRef(false);
+  const vimeoLoadStartTime = useRef(0);
+  const fallbackLoadStartTime = useRef(0);
   
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (volumeControlRef.current && !volumeControlRef.current.contains(event.target as Node)) {
-        setShowVolumeSlider(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-  
+  // Build the Vimeo iframe source URL
   const buildIframeSrc = useCallback(() => {
     const params = new URLSearchParams({
       h: 'd77ee52644',
@@ -92,98 +58,81 @@ const VimeoPlayer = memo(({
       player_id: playerId,
       app_id: '58479',
       dnt: '1',
-      autoplay: '0',
+      autoplay: '0', // Never autoplay
       muted: '1',
-      controls: '0'
+      controls: '0',
+      preload: priority ? 'auto' : 'metadata'
     });
-    
-    if (priority) {
-      params.append('preload', 'auto');
-    }
     
     return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
   }, [videoId, playerId, priority]);
-
-  // Select video source based on race strategy
+  
+  // Declare the race winner - which video source to use
   const declareRaceWinner = useCallback((winner: 'vimeo' | 'fallback') => {
-    if (raceWinnerDeclaredRef.current) return; // Only declare winner once
+    if (raceWinnerDeclared.current) return;
+    raceWinnerDeclared.current = true;
     
     console.log(`Race winner declared: ${winner}`);
-    raceWinnerDeclaredRef.current = true;
     
     if (winner === 'vimeo') {
       setUsingFallback(false);
-      vimeoReadyRef.current = true;
       
-      // Clean up fallback if it was loading
+      // Clean up fallback if it exists
       if (fallbackVideoRef.current) {
         fallbackVideoRef.current.pause();
         fallbackVideoRef.current.removeAttribute('src');
         fallbackVideoRef.current.load();
       }
       
-      setIsLoading(false);
-      setVideoVisible(true);
-      setIsPlayerReady(true);
-      
-      // Report video ready
-      const loadTime = performance.now() - vimeoLoadStartTimeRef.current;
+      // Report video ready timing
+      const loadTime = performance.now() - vimeoLoadStartTime.current;
       console.log(`Vimeo video ready in ${loadTime.toFixed(0)}ms`);
       
       // Dispatch ready event for other parts of the app
       if (priority) {
-        const event = new Event('heroVideoReady');
-        window.dispatchEvent(event);
+        window.dispatchEvent(new Event('heroVideoReady'));
       }
     } else {
       setUsingFallback(true);
-      fallbackReadyRef.current = true;
       
-      // Clean up Vimeo if it was loading
+      // Clean up Vimeo if it exists
       if (player) {
         player.pause().catch(() => {});
         player.destroy();
         setPlayer(null);
       }
       
-      setIsLoading(false);
-      setVideoVisible(true);
-      setIsPlayerReady(true);
-      
-      // Report video ready
-      const loadTime = performance.now() - fallbackLoadStartTimeRef.current;
+      // Report video ready timing
+      const loadTime = performance.now() - fallbackLoadStartTime.current;
       console.log(`Fallback video ready in ${loadTime.toFixed(0)}ms`);
       
       // Dispatch ready event for other parts of the app
       if (priority) {
-        const event = new Event('heroVideoReady');
-        window.dispatchEvent(event);
+        window.dispatchEvent(new Event('heroVideoReady'));
       }
     }
+    
+    // Always hide loading spinner once we have a winner
+    setIsLoading(false);
   }, [player, priority]);
-
-  // Initialize both video sources in parallel (race strategy)
+  
+  // Initialize both Vimeo and fallback players in parallel
   useEffect(() => {
-    if (!priority) return; // Only auto-start if priority
-    
     // Start race timer
-    vimeoLoadStartTimeRef.current = performance.now();
-    fallbackLoadStartTimeRef.current = performance.now();
+    vimeoLoadStartTime.current = performance.now();
+    fallbackLoadStartTime.current = performance.now();
     
-    // Start loading both sources immediately
+    // Reset state for clean initialization
+    setIsLoading(true);
+    setIsPlaying(false);
+    raceWinnerDeclared.current = false;
+    
+    // Initialize both sources immediately
     initializeVimeoPlayer();
     initializeFallbackVideo();
     
-    // We're starting with clean loading state
-    setIsLoading(true);
-    setVideoVisible(false);
-    setIsPlayerReady(false);
-    raceWinnerDeclaredRef.current = false;
-    vimeoReadyRef.current = false;
-    fallbackReadyRef.current = false;
-    
     return () => {
-      // Clean up
+      // Proper cleanup
       if (player) {
         player.pause().catch(() => {});
         player.destroy();
@@ -195,43 +144,69 @@ const VimeoPlayer = memo(({
         fallbackVideoRef.current.load();
       }
     };
-  }, [priority]);
+  }, []);
+  
+  // Volume control click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (volumeControlRef.current && !volumeControlRef.current.contains(event.target as Node)) {
+        setShowVolumeSlider(false);
+      }
+    };
 
-  const initializeVimeoPlayer = useCallback(() => {
-    // Skip if no Vimeo API or iframe
-    if (!window.Vimeo || !iframeRef.current) {
-      return;
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
+  // Visibility effect - pause when out of view
+  useEffect(() => {
+    if (!isInView && isPlaying) {
+      if (usingFallback && fallbackVideoRef.current) {
+        fallbackVideoRef.current.pause();
+        setIsPlaying(false);
+      } else if (player) {
+        player.pause().catch(() => {});
+        setIsPlaying(false);
+      }
     }
+  }, [isInView, isPlaying, player, usingFallback]);
+  
+  // Update audio when audioOn changes
+  useEffect(() => {
+    if (usingFallback && fallbackVideoRef.current) {
+      fallbackVideoRef.current.volume = audioOn ? volume : 0;
+      fallbackVideoRef.current.muted = !audioOn;
+    } else if (player) {
+      player.setVolume(audioOn ? volume : 0).catch(() => {});
+      player.setMuted(!audioOn).catch(() => {});
+    }
+  }, [player, audioOn, volume, usingFallback]);
+  
+  // Initialize Vimeo player with clean event handlers
+  const initializeVimeoPlayer = useCallback(() => {
+    if (!window.Vimeo || !iframeRef.current) return;
     
     try {
       console.log("Initializing Vimeo player...");
       const vimeoPlayer = new window.Vimeo.Player(iframeRef.current);
       setPlayer(vimeoPlayer);
       
-      vimeoPlayer.setVolume(audioOnRef.current ? volume : 0)
-        .catch((err: any) => console.warn("Could not set volume:", err));
+      // Set initial audio state
+      vimeoPlayer.setVolume(audioOn ? volume : 0).catch(() => {});
+      vimeoPlayer.setMuted(!audioOn).catch(() => {});
       
-      vimeoPlayer.setMuted(!audioOnRef.current)
-        .catch((err: any) => console.warn("Could not set muted:", err));
-      
-      vimeoPlayer.on('play', () => {
-        setIsPlaying(true);
-        setVideoEnded(false);
-      });
-      
-      vimeoPlayer.on('pause', () => {
-        setIsPlaying(false);
-      });
-      
+      // Listen for player events
       vimeoPlayer.on('loaded', () => {
         console.log("Vimeo player loaded");
         
-        // Set to first frame and pause - don't autoplay
+        // Position at first frame and pause
         vimeoPlayer.setCurrentTime(0.1).then(() => {
           vimeoPlayer.pause().catch(() => {});
           
-          // Declare as race winner if fallback isn't ready yet
-          if (!fallbackReadyRef.current && !raceWinnerDeclaredRef.current) {
+          // If race not decided yet, declare Vimeo as winner
+          if (!raceWinnerDeclared.current) {
             declareRaceWinner('vimeo');
           }
         }).catch(() => {
@@ -239,52 +214,69 @@ const VimeoPlayer = memo(({
         });
       });
       
-      vimeoPlayer.on('error', (error: any) => {
-        console.error("Vimeo player error:", error);
-        
-        // If fallback is ready or we haven't declared a winner yet, use fallback
-        if ((fallbackReadyRef.current || !raceWinnerDeclaredRef.current) && fallbackVideoUrl) {
-          declareRaceWinner('fallback');
-        }
+      vimeoPlayer.on('play', () => {
+        setIsPlaying(true);
+      });
+      
+      vimeoPlayer.on('pause', () => {
+        setIsPlaying(false);
       });
       
       vimeoPlayer.on('ended', () => {
-        setIsPlaying(false);
-        setVideoEnded(true);
-        
         // Reset to first frame on end
         vimeoPlayer.setCurrentTime(0.1).then(() => {
           vimeoPlayer.pause().catch(() => {});
+          setIsPlaying(false);
         }).catch(() => {});
+      });
+      
+      vimeoPlayer.on('error', (error: any) => {
+        console.error("Vimeo player error:", error);
+        
+        // If race not decided yet, use fallback
+        if (!raceWinnerDeclared.current && fallbackVideoUrl) {
+          declareRaceWinner('fallback');
+        }
       });
     } catch (error) {
       console.error("Error initializing Vimeo player:", error);
       
-      // If initialization fails, try fallback
-      if (fallbackVideoUrl && !raceWinnerDeclaredRef.current) {
+      // If initialization fails and race not decided, use fallback
+      if (fallbackVideoUrl && !raceWinnerDeclared.current) {
         declareRaceWinner('fallback');
       }
     }
-  }, [volume, fallbackVideoUrl, declareRaceWinner]);
-
+  }, [audioOn, volume, declareRaceWinner, fallbackVideoUrl]);
+  
+  // Initialize fallback video with clean event handlers
   const initializeFallbackVideo = useCallback(() => {
     if (!fallbackVideoUrl || !fallbackVideoRef.current) return;
     
     console.log("Initializing fallback video...");
     const video = fallbackVideoRef.current;
     
-    video.muted = !audioOnRef.current;
-    video.volume = audioOnRef.current ? volume : 0;
+    // Set initial audio state
+    video.muted = !audioOn;
+    video.volume = audioOn ? volume : 0;
     
+    // Clean up any existing event listeners
+    const cloneVideo = video.cloneNode() as HTMLVideoElement;
+    if (video.parentNode) {
+      video.parentNode.replaceChild(cloneVideo, video);
+    }
+    fallbackVideoRef.current = cloneVideo;
+    video = cloneVideo;
+    
+    // Add event listeners
     const handleCanPlay = () => {
       console.log("Fallback video can play");
       
-      // Set to first frame
+      // Set to first frame and pause
       video.currentTime = 0.1;
       video.pause();
       
-      // Declare as race winner if Vimeo isn't ready yet
-      if (!vimeoReadyRef.current && !raceWinnerDeclaredRef.current) {
+      // If race not decided yet, declare fallback as winner
+      if (!raceWinnerDeclared.current) {
         declareRaceWinner('fallback');
       }
     };
@@ -292,13 +284,9 @@ const VimeoPlayer = memo(({
     const handleError = (e: Event) => {
       console.error("Fallback video error:", e);
       
-      // If Vimeo is ready or we haven't declared a winner yet, use Vimeo
-      if ((vimeoReadyRef.current || !raceWinnerDeclaredRef.current) && player) {
+      // If race not decided yet and Vimeo available, use Vimeo
+      if (!raceWinnerDeclared.current && player) {
         declareRaceWinner('vimeo');
-      } else if (!raceWinnerDeclaredRef.current) {
-        // Both failed
-        setIsLoading(false);
-        if (onVideoLoadError) onVideoLoadError();
       }
     };
     
@@ -307,151 +295,84 @@ const VimeoPlayer = memo(({
       video.currentTime = 0.1;
       video.pause();
       setIsPlaying(false);
-      setVideoEnded(true);
-      console.log("Fallback video ended, reset to beginning");
     };
     
+    const handlePlay = () => {
+      setIsPlaying(true);
+    };
+    
+    const handlePause = () => {
+      setIsPlaying(false);
+    };
+    
+    // Add event listeners
     video.addEventListener('canplay', handleCanPlay);
     video.addEventListener('error', handleError);
     video.addEventListener('ended', handleEnded);
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
     
     // Start loading fallback
     video.src = fallbackVideoUrl;
     video.load();
     
     return () => {
+      // Clean up event listeners
       video.removeEventListener('canplay', handleCanPlay);
       video.removeEventListener('error', handleError);
       video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
     };
-  }, [fallbackVideoUrl, volume, declareRaceWinner, player, onVideoLoadError]);
-
+  }, [fallbackVideoUrl, audioOn, volume, declareRaceWinner, player]);
+  
   // Play/Pause handler
-  const handlePlayClick = useCallback((e: React.MouseEvent) => {
+  const handlePlayPause = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
-    if (usingFallback && fallbackVideoRef.current) {
-      if (isPlaying) {
-        fallbackVideoRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        fallbackVideoRef.current.volume = audioOnRef.current ? volume : 0;
-        fallbackVideoRef.current.muted = !audioOnRef.current;
-        
-        // If video ended, reset to beginning before playing
-        if (videoEnded) {
-          fallbackVideoRef.current.currentTime = 0.1;
-          setVideoEnded(false);
-        }
-        
-        const playPromise = fallbackVideoRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            setIsPlaying(true);
-          }).catch((error) => {
-            console.error("Failed to play fallback video:", error);
-          });
-        }
-      }
-      return;
-    }
-    
-    if (!player) return;
-    
     if (isPlaying) {
-      player.pause().catch((error: any) => {
-        console.error("Failed to pause video:", error);
-      });
+      // PAUSE logic
+      if (usingFallback && fallbackVideoRef.current) {
+        fallbackVideoRef.current.pause();
+      } else if (player) {
+        player.pause().catch(() => {});
+      }
     } else {
-      player.setVolume(audioOnRef.current ? volume : 0).catch(() => {});
-      player.setMuted(!audioOnRef.current).catch(() => {});
-      
-      // If video ended, reset to beginning before playing
-      if (videoEnded) {
-        player.setCurrentTime(0.1).then(() => {
-          player.play().catch(() => {});
-          setVideoEnded(false);
-        }).catch(() => {});
-      } else {
-        player.play().catch((error: any) => {
-          console.error("Failed to play video:", error);
+      // PLAY logic
+      if (usingFallback && fallbackVideoRef.current) {
+        fallbackVideoRef.current.volume = audioOn ? volume : 0;
+        fallbackVideoRef.current.muted = !audioOn;
+        fallbackVideoRef.current.play().catch(error => {
+          console.error("Failed to play fallback video:", error);
+        });
+      } else if (player) {
+        player.setVolume(audioOn ? volume : 0).catch(() => {});
+        player.setMuted(!audioOn).catch(() => {});
+        player.play().catch(error => {
+          console.error("Failed to play Vimeo video:", error);
         });
       }
     }
-  }, [player, isPlaying, volume, usingFallback, videoEnded]);
-
-  // Update audio when audioOn changes
-  useEffect(() => {
-    if (usingFallback && fallbackVideoRef.current) {
-      fallbackVideoRef.current.volume = audioOn ? volume : 0;
-      fallbackVideoRef.current.muted = !audioOn;
-      return;
-    }
-    
-    if (!player) return;
-    
-    player.setVolume(audioOn ? volume : 0).catch(() => {});
-    player.setMuted(!audioOn).catch(() => {});
-  }, [player, audioOn, volume, usingFallback]);
-
-  // Handle visibility changes
-  useEffect(() => {
-    if (usingFallback && fallbackVideoRef.current) {
-      const viewStateChanged = wasInViewRef.current !== isInView;
-      wasInViewRef.current = isInView;
-      
-      if (viewStateChanged) {
-        if (!isInView && isPlaying) {
-          fallbackVideoRef.current.pause();
-          setIsPlaying(false);
-        }
-      }
-      return;
-    }
-    
-    if (!player) return;
-
-    const viewStateChanged = wasInViewRef.current !== isInView;
-    wasInViewRef.current = isInView;
-
-    if (viewStateChanged) {
-      if (!isInView && isPlaying) {
-        player.pause().catch(() => {});
-      }
-    }
-  }, [isInView, player, isPlaying, usingFallback]);
-
-  // Handle volume slider changes
+  }, [player, isPlaying, volume, audioOn, usingFallback]);
+  
+  // Volume slider handler
   const handleVolumeChange = useCallback((value: number[]) => {
     const newVolume = value[0];
     setVolume(newVolume);
     
     if (usingFallback && fallbackVideoRef.current && audioOn) {
       fallbackVideoRef.current.volume = newVolume;
-      return;
-    }
-    
-    if (player && audioOn) {
+    } else if (player && audioOn) {
       player.setVolume(newVolume).catch(() => {});
     }
   }, [player, audioOn, usingFallback]);
-
-  // Audio toggle handler
-  const handleToggleAudio = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (toggleAudio) {
-      toggleAudio(e);
-    }
-  }, [toggleAudio]);
-
+  
   // Volume slider visibility
   const handleVolumeIconHover = useCallback(() => {
     setShowVolumeSlider(true);
   }, []);
-
+  
   // Choose volume icon based on volume level
   const getVolumeIcon = useCallback(() => {
     if (!audioOn) return <VolumeX size={20} className="text-white" />;
@@ -460,43 +381,13 @@ const VimeoPlayer = memo(({
     if (volume >= 0.3) return <Volume1 size={20} className="text-white" />;
     return <Volume size={20} className="text-white" />;
   }, [volume, audioOn]);
-
-  // Determine play/pause button visibility
-  const getPlayPauseButton = useCallback(() => {
-    if (isLoading) return null;
-    
-    if (isPlaying) {
-      return (
-        <button 
-          onClick={handlePlayClick}
-          className="absolute inset-0 flex items-center justify-center bg-black/5 hover:bg-black/20 transition-all duration-200 z-20 opacity-0 hover:opacity-100"
-          aria-label="Pause video"
-        >
-          <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center hover:bg-yellow/90 transition-colors duration-300 group">
-            <Pause size={28} className="text-black group-hover:scale-110 transition-transform duration-300" />
-          </div>
-        </button>
-      );
-    }
-    
-    return (
-      <button 
-        onClick={handlePlayClick}
-        className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-200 z-20"
-        aria-label="Play video"
-      >
-        <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center hover:bg-yellow/90 transition-colors duration-300 group">
-          <Play size={28} className="text-black ml-1 group-hover:scale-110 transition-transform duration-300" />
-        </div>
-      </button>
-    );
-  }, [isLoading, isPlaying, handlePlayClick]);
-
+  
   return (
-    <div className={`relative ${className}`}>
-      <div style={{padding: '56.25% 0 0 0', position: 'relative'}}>
+    <div className={`relative ${className}`} ref={containerRef}>
+      <div style={{ padding: '56.25% 0 0 0', position: 'relative' }}>
+        {/* Loading Spinner - Only shown during initial load */}
         {isLoading && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-30 rounded-lg">
             <div className="flex flex-col items-center justify-center space-y-4">
               <div className="relative">
                 <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
@@ -523,67 +414,81 @@ const VimeoPlayer = memo(({
           ref={fallbackVideoRef}
           className={cn(
             "absolute inset-0 w-full h-full object-cover transition-opacity duration-300", 
-            usingFallback && videoVisible && !isLoading ? "opacity-100" : "opacity-0"
+            usingFallback ? "opacity-100" : "opacity-0"
           )}
           playsInline
           muted={!audioOn}
           preload="auto"
-          style={{ zIndex: usingFallback ? 5 : 0 }}
+          style={{ zIndex: usingFallback ? 10 : 0 }}
         />
         
         {/* Vimeo Video */}
         <div 
           className={cn(
             "absolute inset-0 w-full h-full transition-opacity duration-300",
-            !usingFallback && videoVisible && !isLoading ? "opacity-100" : "opacity-0"
+            !usingFallback ? "opacity-100" : "opacity-0"
           )}
-          style={{ zIndex: !usingFallback ? 5 : 0 }}
+          style={{ zIndex: !usingFallback ? 10 : 0 }}
         >
           <iframe 
             ref={iframeRef}
             src={buildIframeSrc()}
-            style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}} 
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }} 
             allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
             title="FitAnywhere"
             loading={priority ? "eager" : "lazy"}
-            fetchpriority={priority ? "high" : "auto"}
           ></iframe>
         </div>
         
-        {/* Play/Pause button overlay */}
-        {isPlayerReady && getPlayPauseButton()}
-      </div>
-      
-      {/* Volume control */}
-      <div 
-        ref={volumeControlRef}
-        className="absolute bottom-3 right-3 z-30"
-        onMouseEnter={handleVolumeIconHover}
-      >
-        <div className={cn(
-          "absolute bottom-8 right-1 bg-black/60 rounded-lg px-2 py-2 transition-all duration-300",
-          showVolumeSlider && audioOn
-            ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 translate-y-2 pointer-events-none"
-        )}>
-          <Slider
-            orientation="vertical"
-            value={[volume]}
-            min={0}
-            max={1}
-            step={0.01}
-            onValueChange={handleVolumeChange}
-            className="mx-auto"
-          />
-        </div>
-        
+        {/* Play/Pause Overlay Button */}
         <button 
-          onClick={handleToggleAudio}
-          className="bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300"
-          aria-label={audioOn ? "Mute audio" : "Unmute audio"}
+          onClick={handlePlayPause}
+          className={cn(
+            "absolute inset-0 flex items-center justify-center transition-all duration-200 z-20",
+            isPlaying ? "opacity-0 pointer-events-none hover:opacity-100 hover:pointer-events-auto bg-black/5 hover:bg-black/20" : "opacity-100 bg-black/20 hover:bg-black/30"
+          )}
+          aria-label={isPlaying ? "Pause video" : "Play video"}
         >
-          {getVolumeIcon()}
+          <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center hover:bg-yellow/90 transition-colors duration-300 group">
+            {isPlaying ? (
+              <Pause size={28} className="text-black group-hover:scale-110 transition-transform duration-300" />
+            ) : (
+              <Play size={28} className="text-black ml-1 group-hover:scale-110 transition-transform duration-300" />
+            )}
+          </div>
         </button>
+        
+        {/* Volume control */}
+        <div 
+          ref={volumeControlRef}
+          className="absolute bottom-3 right-3 z-30"
+          onMouseEnter={handleVolumeIconHover}
+        >
+          <div className={cn(
+            "absolute bottom-8 right-1 bg-black/60 rounded-lg px-2 py-2 transition-all duration-300",
+            showVolumeSlider && audioOn
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 translate-y-2 pointer-events-none"
+          )}>
+            <Slider
+              orientation="vertical"
+              value={[volume]}
+              min={0}
+              max={1}
+              step={0.01}
+              onValueChange={handleVolumeChange}
+              className="mx-auto"
+            />
+          </div>
+          
+          <button 
+            onClick={toggleAudio}
+            className="bg-black/60 hover:bg-black/80 p-2 rounded-full transition-all duration-300"
+            aria-label={audioOn ? "Mute audio" : "Unmute audio"}
+          >
+            {getVolumeIcon()}
+          </button>
+        </div>
       </div>
     </div>
   );
