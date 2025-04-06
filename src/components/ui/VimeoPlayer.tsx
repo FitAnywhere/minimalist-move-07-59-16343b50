@@ -253,19 +253,26 @@ const VimeoPlayer = memo(({
     if (!fallbackVideoUrl || !fallbackVideoRef.current) return;
     
     console.log("Initializing fallback video...");
-    const video = fallbackVideoRef.current;
+    // Fixed: We can't reassign the video const, so we'll work with it directly
+    const originalVideo = fallbackVideoRef.current;
     
     // Set initial audio state
-    video.muted = !audioOn;
-    video.volume = audioOn ? volume : 0;
+    originalVideo.muted = !audioOn;
+    originalVideo.volume = audioOn ? volume : 0;
     
-    // Clean up any existing event listeners
-    const cloneVideo = video.cloneNode() as HTMLVideoElement;
-    if (video.parentNode) {
-      video.parentNode.replaceChild(cloneVideo, video);
+    // Create a clone of the video element
+    const cloneVideo = originalVideo.cloneNode() as HTMLVideoElement;
+    
+    // Update the ref with the clone before changing parent
+    if (originalVideo.parentNode) {
+      originalVideo.parentNode.replaceChild(cloneVideo, originalVideo);
     }
+    
+    // Update the ref to point to our new video element
     fallbackVideoRef.current = cloneVideo;
-    video = cloneVideo;
+    
+    // Now we work with the cloned video element
+    const video = fallbackVideoRef.current;
     
     // Add event listeners
     const handleCanPlay = () => {
