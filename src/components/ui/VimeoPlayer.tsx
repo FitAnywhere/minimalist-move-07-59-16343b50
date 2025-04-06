@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect, memo, useCallback } from 'react';
 import { Volume2, VolumeX, Volume1, Volume, Play, Loader, RefreshCw } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
@@ -14,6 +13,7 @@ interface VimeoPlayerProps {
   priority?: boolean;
   onVideoLoadError?: () => void;
   enableRetries?: boolean;
+  fallbackVideoUrl?: string;
 }
 
 interface VimeoPlayerAPI {
@@ -36,9 +36,11 @@ const VimeoPlayer = memo(({
   toggleAudio,
   priority = false,
   onVideoLoadError,
-  enableRetries = false
+  enableRetries = false,
+  fallbackVideoUrl
 }: VimeoPlayerProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const fallbackVideoRef = useRef<HTMLVideoElement>(null);
   const [player, setPlayer] = useState<VimeoPlayerAPI | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
@@ -48,10 +50,12 @@ const VimeoPlayer = memo(({
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const [retryAttempts, setRetryAttempts] = useState(0);
+  const [usingFallback, setUsingFallback] = useState(false);
   const volumeControlRef = useRef<HTMLDivElement>(null);
   const wasInViewRef = useRef(isInView);
   const messageHandlerRef = useRef<(event: MessageEvent) => void>();
   const audioOnRef = useRef(audioOn);
+  const fallbackTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   useEffect(() => {
     audioOnRef.current = audioOn;
@@ -94,8 +98,63 @@ const VimeoPlayer = memo(({
     return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
   }, [videoId, playerId, priority]);
 
+  const loadFallbackVideo = useCallback(() => {
+    if (!fallbackVideoUrl) return;
+    
+    console.log(`Loading fallback video: ${fallbackVideoUrl}`);
+    setIsLoading(true);
+    setUsingFallback(true);
+    
+    if (player) {
+      player.pause().catch(() => {});
+      player.destroy();
+      setPlayer(null);
+    }
+    
+    if (fallbackVideoRef.current) {
+      const video = fallbackVideoRef.current;
+      
+      video.muted = !audioOnRef.current;
+      video.volume = audioOnRef.current ? volume : 0;
+      
+      const handleCanPlay = () => {
+        setIsLoading(false);
+        setVideoVisible(true);
+        setIsPlayerReady(true);
+        
+        if (isInView) {
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch((error) => {
+              console.warn("Fallback video autoplay prevented:", error);
+            });
+          }
+        }
+      };
+      
+      const handleError = (e: Event) => {
+        console.error("Fallback video error:", e);
+        setLoadError(true);
+        setIsLoading(false);
+        if (onVideoLoadError) onVideoLoadError();
+      };
+      
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('error', handleError);
+      
+      video.addEventListener('canplay', handleCanPlay);
+      video.addEventListener('error', handleError);
+      
+      video.load();
+    }
+  }, [fallbackVideoUrl, player, audioOnRef, volume, isInView, onVideoLoadError]);
+
   const retryVideoLoad = useCallback(() => {
     if (retryAttempts >= 3 && !enableRetries) {
+      if (fallbackVideoUrl) {
+        loadFallbackVideo();
+        return;
+      }
       return;
     }
     
@@ -103,57 +162,63 @@ const VimeoPlayer = memo(({
     setLoadError(false);
     setRetryAttempts(prev => prev + 1);
     
-    // Destroy existing player
     if (player) {
       player.pause().catch(() => {});
       player.destroy();
       setPlayer(null);
     }
     
-    // Reset iframe
     if (iframeRef.current) {
-      // Create a new iframe with a fresh src to force reload
-      const parentElement = iframeRef.current.parentElement;
-      if (parentElement) {
-        iframeRef.current.remove();
-        
-        const newIframe = document.createElement('iframe');
-        newIframe.src = buildIframeSrc();
-        newIframe.style.position = 'absolute';
-        newIframe.style.top = '0';
-        newIframe.style.left = '0';
-        newIframe.style.width = '100%';
-        newIframe.style.height = '100%';
-        newIframe.style.border = 'none';
-        newIframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media';
-        newIframe.title = `Vimeo Player ${videoId}`;
-        newIframe.loading = priority ? 'eager' : 'lazy';
-        
-        // Recreate the ref
-        iframeRef.current = newIframe;
-        
-        // Append back to the parent
-        parentElement.appendChild(newIframe);
-        
-        // Re-initialize player
-        setTimeout(() => {
-          initializePlayer();
-        }, 300);
-      }
+      iframeRef.current.remove();
+      
+      const newIframe = document.createElement('iframe');
+      newIframe.src = buildIframeSrc();
+      newIframe.style.position = 'absolute';
+      newIframe.style.top = '0';
+      newIframe.style.left = '0';
+      newIframe.style.width = '100%';
+      newIframe.style.height = '100%';
+      newIframe.style.border = 'none';
+      newIframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media';
+      newIframe.title = `Vimeo Player ${videoId}`;
+      newIframe.loading = priority ? 'eager' : 'lazy';
+      
+      iframeRef.current = newIframe;
+      
+      setTimeout(() => {
+        initializePlayer();
+      }, 300);
     }
-  }, [player, buildIframeSrc, priority, retryAttempts, enableRetries, videoId]);
+  }, [player, buildIframeSrc, priority, retryAttempts, enableRetries, videoId, fallbackVideoUrl, loadFallbackVideo]);
 
   const initializePlayer = useCallback(() => {
+    if (fallbackTimeoutRef.current) {
+      clearTimeout(fallbackTimeoutRef.current);
+      fallbackTimeoutRef.current = null;
+    }
+    
+    if (fallbackVideoUrl && priority) {
+      fallbackTimeoutRef.current = setTimeout(() => {
+        if (isLoading && !isPlayerReady && !usingFallback) {
+          console.log("Vimeo loading timeout, switching to fallback");
+          loadFallbackVideo();
+        }
+      }, 800);
+    }
+    
     if (!window.Vimeo || !iframeRef.current) {
       if (retryAttempts < 3) {
         setTimeout(() => {
-          // Retry initialization after a delay
           initializePlayer();
         }, 1000);
       } else {
-        setLoadError(true);
-        setIsLoading(false);
-        if (onVideoLoadError) onVideoLoadError();
+        if (fallbackVideoUrl) {
+          loadFallbackVideo();
+        } else {
+          setLoadError(true);
+          setIsLoading(false);
+          if (onVideoLoadError) onVideoLoadError();
+        }
       }
       return;
     }
@@ -192,6 +257,11 @@ const VimeoPlayer = memo(({
         setIsLoading(false);
         setLoadError(false);
         
+        if (fallbackTimeoutRef.current) {
+          clearTimeout(fallbackTimeoutRef.current);
+          fallbackTimeoutRef.current = null;
+        }
+        
         vimeoPlayer.play().catch((error: any) => {
           console.log("Auto-play prevented, waiting for user interaction:", error);
         });
@@ -200,8 +270,9 @@ const VimeoPlayer = memo(({
       vimeoPlayer.on('error', (error: any) => {
         console.error("Vimeo player error:", error);
         
-        if (retryAttempts < 3) {
-          // Auto-retry on error up to 3 times
+        if (fallbackVideoUrl) {
+          loadFallbackVideo();
+        } else if (retryAttempts < 3) {
           setTimeout(() => {
             retryVideoLoad();
           }, 1000 * (retryAttempts + 1));
@@ -228,11 +299,16 @@ const VimeoPlayer = memo(({
       });
     } catch (error) {
       console.error("Error initializing Vimeo player:", error);
-      setLoadError(true);
-      setIsLoading(false);
-      if (onVideoLoadError) onVideoLoadError();
+      
+      if (fallbackVideoUrl) {
+        loadFallbackVideo();
+      } else {
+        setLoadError(true);
+        setIsLoading(false);
+        if (onVideoLoadError) onVideoLoadError();
+      }
     }
-  }, [volume, retryAttempts, onVideoLoadError, retryVideoLoad]);
+  }, [volume, retryAttempts, onVideoLoadError, retryVideoLoad, fallbackVideoUrl, loadFallbackVideo, isLoading, isPlayerReady, usingFallback, priority]);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -256,12 +332,38 @@ const VimeoPlayer = memo(({
       if (messageHandlerRef.current) {
         window.removeEventListener('message', messageHandlerRef.current);
       }
+      
+      if (fallbackTimeoutRef.current) {
+        clearTimeout(fallbackTimeoutRef.current);
+        fallbackTimeoutRef.current = null;
+      }
     };
   }, [initializePlayer]);
 
   const handlePlayClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    if (usingFallback && fallbackVideoRef.current) {
+      if (isPlaying) {
+        fallbackVideoRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        fallbackVideoRef.current.volume = audioOnRef.current ? volume : 0;
+        fallbackVideoRef.current.muted = !audioOnRef.current;
+        
+        const playPromise = fallbackVideoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            setIsPlaying(true);
+          }).catch((error) => {
+            console.error("Failed to play fallback video:", error);
+            setIsLoading(false);
+          });
+        }
+      }
+      return;
+    }
     
     if (!player) return;
     
@@ -278,16 +380,42 @@ const VimeoPlayer = memo(({
         setIsLoading(false);
       });
     }
-  }, [player, isPlaying, volume]);
+  }, [player, isPlaying, volume, usingFallback]);
 
   useEffect(() => {
+    if (usingFallback && fallbackVideoRef.current) {
+      fallbackVideoRef.current.volume = audioOn ? volume : 0;
+      fallbackVideoRef.current.muted = !audioOn;
+      return;
+    }
+    
     if (!player) return;
     
     player.setVolume(audioOn ? volume : 0).catch(() => {});
     player.setMuted(!audioOn).catch(() => {});
-  }, [player, audioOn, volume]);
+  }, [player, audioOn, volume, usingFallback]);
 
   useEffect(() => {
+    if (usingFallback && fallbackVideoRef.current) {
+      const viewStateChanged = wasInViewRef.current !== isInView;
+      wasInViewRef.current = isInView;
+      
+      if (viewStateChanged) {
+        if (!isInView && isPlaying) {
+          fallbackVideoRef.current.pause();
+          setIsPlaying(false);
+        } else if (isInView && isPlayerReady && !isPlaying) {
+          const playPromise = fallbackVideoRef.current.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              setIsPlaying(true);
+            }).catch(() => {});
+          }
+        }
+      }
+      return;
+    }
+    
     if (!player) return;
 
     const viewStateChanged = wasInViewRef.current !== isInView;
@@ -300,16 +428,27 @@ const VimeoPlayer = memo(({
         player.play().catch(() => {});
       }
     }
-  }, [isInView, player, isPlaying, isPlayerReady]);
+  }, [isInView, player, isPlaying, isPlayerReady, usingFallback]);
+
+  useEffect(() => {
+    if (priority && !usingFallback && !player && !isPlayerReady) {
+      initializePlayer();
+    }
+  }, [priority, usingFallback, player, isPlayerReady, initializePlayer]);
 
   const handleVolumeChange = useCallback((value: number[]) => {
     const newVolume = value[0];
     setVolume(newVolume);
     
+    if (usingFallback && fallbackVideoRef.current && audioOn) {
+      fallbackVideoRef.current.volume = newVolume;
+      return;
+    }
+    
     if (player && audioOn) {
       player.setVolume(newVolume).catch(() => {});
     }
-  }, [player, audioOn]);
+  }, [player, audioOn, usingFallback]);
 
   const handleToggleAudio = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -331,6 +470,14 @@ const VimeoPlayer = memo(({
     if (volume >= 0.3) return <Volume1 size={20} className="text-white" />;
     return <Volume size={20} className="text-white" />;
   }, [volume, audioOn]);
+
+  useEffect(() => {
+    if (priority && videoVisible && isPlayerReady && !isLoading) {
+      const event = new Event('heroVideoReady');
+      window.dispatchEvent(event);
+      console.log("Hero video ready event dispatched");
+    }
+  }, [priority, videoVisible, isPlayerReady, isLoading]);
 
   return (
     <div className={`relative ${className}`}>
@@ -358,7 +505,7 @@ const VimeoPlayer = memo(({
           </div>
         )}
         
-        {loadError && (
+        {loadError && !usingFallback && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-20 rounded-lg">
             <p className="text-white mb-4">Video could not be loaded</p>
             <button 
@@ -371,12 +518,28 @@ const VimeoPlayer = memo(({
           </div>
         )}
         
+        {fallbackVideoUrl && (
+          <video 
+            ref={fallbackVideoRef}
+            src={fallbackVideoUrl}
+            className={`absolute inset-0 w-full h-full object-cover ${usingFallback && videoVisible && !isLoading ? 'opacity-100' : 'opacity-0'}`}
+            playsInline
+            muted={!audioOn}
+            loop
+            style={{
+              opacity: usingFallback && videoVisible && !isLoading ? 1 : 0,
+              transition: 'opacity 0.3s ease-in',
+              zIndex: usingFallback ? 5 : 0
+            }}
+          />
+        )}
+        
         <div 
           className="absolute inset-0 w-full h-full"
           style={{ 
-            opacity: videoVisible && !loadError ? 1 : 0,
+            opacity: videoVisible && !loadError && !usingFallback ? 1 : 0,
             transition: 'opacity 0.3s ease-in',
-            zIndex: 5
+            zIndex: !usingFallback ? 5 : 0
           }}
         >
           <iframe 
@@ -387,7 +550,6 @@ const VimeoPlayer = memo(({
             title="FitAnywhere"
             loading={priority ? "eager" : "lazy"}
             fetchpriority={priority ? "high" : "auto"}
-            importance={priority ? "high" : "auto"}
           ></iframe>
         </div>
         

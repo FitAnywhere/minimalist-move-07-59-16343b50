@@ -24,17 +24,26 @@ const HeroSection = memo(() => {
 
   // Preload hero video as soon as page loads (not waiting for intersection)
   useEffect(() => {
-    // Preload hero video
-    const preloadHeroVideo = () => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'fetch';
-      link.href = 'https://player.vimeo.com/video/1067255623?h=d77ee52644';
-      link.crossOrigin = 'anonymous';
-      document.head.appendChild(link);
+    // Preload hero video and fallback
+    const preloadHeroResources = () => {
+      // Preload Vimeo video (primary source)
+      const vimeoLink = document.createElement('link');
+      vimeoLink.rel = 'preload';
+      vimeoLink.as = 'fetch';
+      vimeoLink.href = 'https://player.vimeo.com/video/1067255623?h=d77ee52644';
+      vimeoLink.crossOrigin = 'anonymous';
+      document.head.appendChild(vimeoLink);
+      
+      // Preload fallback MP4 video
+      const fallbackLink = document.createElement('link');
+      fallbackLink.rel = 'preload';
+      fallbackLink.as = 'video';
+      fallbackLink.href = '/fitanywhere intro.mp4';
+      fallbackLink.type = 'video/mp4';
+      document.head.appendChild(fallbackLink);
     };
     
-    preloadHeroVideo();
+    preloadHeroResources();
   }, []);
 
   // Use a more optimized approach for loading the Vimeo API
@@ -151,6 +160,7 @@ const HeroSection = memo(() => {
                         priority={true}
                         onVideoLoadError={() => setVideoLoadFailed(true)}
                         enableRetries={true}
+                        fallbackVideoUrl="/fitanywhere intro.mp4"
                       />
                     )}
                   </div>
@@ -200,6 +210,7 @@ const HeroSection = memo(() => {
                         priority={true}
                         onVideoLoadError={() => setVideoLoadFailed(true)}
                         enableRetries={true}
+                        fallbackVideoUrl="/fitanywhere intro.mp4"
                       />
                     )}
                     <p className="mt-3 text-sm text-gray-600 ml-1 text-center my-[6px] mx-[30px]">Launching Spring 2025. Reserve before we sell out.</p>
