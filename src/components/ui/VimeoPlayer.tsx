@@ -15,17 +15,6 @@ interface VimeoPlayerProps {
   fallbackVideoUrl?: string;
 }
 
-interface VimeoPlayerAPI {
-  play: () => Promise<void>;
-  pause: () => Promise<void>;
-  setVolume: (volume: number) => Promise<void>;
-  setMuted: (muted: boolean) => Promise<void>;
-  setCurrentTime: (time: number) => Promise<void>;
-  on: (event: string, callback: any) => void;
-  off: (event: string, callback: any) => void;
-  destroy: () => void;
-}
-
 const VimeoPlayer = memo(({
   videoId,
   playerId,
@@ -45,7 +34,7 @@ const VimeoPlayer = memo(({
   // Player states
   const [isLoading, setIsLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [player, setPlayer] = useState<VimeoPlayerAPI | null>(null);
+  const [player, setPlayer] = useState<any>(null);
   const [usingFallback, setUsingFallback] = useState(false);
   const [volume, setVolume] = useState(1);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
@@ -71,12 +60,9 @@ const VimeoPlayer = memo(({
       dnt: '1',
       autoplay: '0', // Never autoplay
       muted: '1',
-      controls: '0'
+      controls: '0',
+      preload: priority ? 'auto' : 'metadata'
     });
-    
-    if (priority) {
-      params.append('preload', 'auto');
-    }
     
     return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
   }, [videoId, playerId, priority]);
@@ -94,13 +80,18 @@ const VimeoPlayer = memo(({
       // Clean up fallback if it exists
       if (fallbackVideoRef.current) {
         fallbackVideoRef.current.pause();
-        fallbackVideoRef.current.src = '';
+        fallbackVideoRef.current.removeAttribute('src');
         fallbackVideoRef.current.load();
       }
       
       // Report video ready timing
       const loadTime = performance.now() - vimeoLoadStartTime.current;
       console.log(`Vimeo video ready in ${loadTime.toFixed(0)}ms`);
+      
+      // Dispatch ready event for other parts of the app
+      if (priority) {
+        window.dispatchEvent(new Event('heroVideoReady'));
+      }
     } else {
       setUsingFallback(true);
       
@@ -114,11 +105,16 @@ const VimeoPlayer = memo(({
       // Report video ready timing
       const loadTime = performance.now() - fallbackLoadStartTime.current;
       console.log(`Fallback video ready in ${loadTime.toFixed(0)}ms`);
+      
+      // Dispatch ready event for other parts of the app
+      if (priority) {
+        window.dispatchEvent(new Event('heroVideoReady'));
+      }
     }
     
     // Always hide loading spinner once we have a winner
     setIsLoading(false);
-  }, [player]);
+  }, [player, priority]);
   
   // Initialize both Vimeo and fallback players in parallel
   useEffect(() => {
@@ -131,44 +127,21 @@ const VimeoPlayer = memo(({
     setIsPlaying(false);
     raceWinnerDeclared.current = false;
     
-    // Set a timeout to ensure we show something after a reasonable amount of time
-    const raceTimeout = setTimeout(() => {
-      if (!raceWinnerDeclared.current && fallbackVideoUrl) {
-        console.log("Race timeout - falling back to local video");
-        declareRaceWinner('fallback');
-      }
-    }, 5000); // 5 second timeout for race
-    
     // Initialize both sources immediately
     initializeVimeoPlayer();
-    if (fallbackVideoUrl) {
-      initializeFallbackVideo();
-    }
+    initializeFallbackVideo();
     
     return () => {
       // Proper cleanup
-      clearTimeout(raceTimeout);
-      
       if (player) {
         player.pause().catch(() => {});
-        player.off('play', handleVimeoPlay);
-        player.off('pause', handleVimeoPause);
-        player.off('ended', handleVimeoEnded);
-        player.off('loaded', handleVimeoLoaded);
-        player.off('error', handleVimeoError);
         player.destroy();
       }
       
       if (fallbackVideoRef.current) {
-        const video = fallbackVideoRef.current;
-        video.pause();
-        video.removeEventListener('canplaythrough', handleFallbackCanPlay);
-        video.removeEventListener('error', handleFallbackError);
-        video.removeEventListener('ended', handleFallbackEnded);
-        video.removeEventListener('play', handleFallbackPlay);
-        video.removeEventListener('pause', handleFallbackPause);
-        video.src = '';
-        video.load();
+        fallbackVideoRef.current.pause();
+        fallbackVideoRef.current.removeAttribute('src');
+        fallbackVideoRef.current.load();
       }
     };
   }, []);
@@ -192,8 +165,10 @@ const VimeoPlayer = memo(({
     if (!isInView && isPlaying) {
       if (usingFallback && fallbackVideoRef.current) {
         fallbackVideoRef.current.pause();
+        setIsPlaying(false);
       } else if (player) {
         player.pause().catch(() => {});
+        setIsPlaying(false);
       }
     }
   }, [isInView, isPlaying, player, usingFallback]);
@@ -209,82 +184,6 @@ const VimeoPlayer = memo(({
     }
   }, [player, audioOn, volume, usingFallback]);
   
-  // Vimeo event handlers (defined here to allow cleanup)
-  const handleVimeoPlay = useCallback(() => setIsPlaying(true), []);
-  const handleVimeoPause = useCallback(() => setIsPlaying(false), []);
-  const handleVimeoEnded = useCallback(() => {
-    if (player) {
-      player.setCurrentTime(0.1).then(() => {
-        player.pause().catch(() => {});
-        setIsPlaying(false);
-      }).catch(() => {});
-    }
-  }, [player]);
-  
-  const handleVimeoLoaded = useCallback(() => {
-    console.log("Vimeo player loaded");
-    
-    if (player) {
-      // Position at first frame and pause
-      player.setCurrentTime(0.1).then(() => {
-        player.pause().catch(() => {});
-        
-        // If race not decided yet, declare Vimeo as winner
-        if (!raceWinnerDeclared.current) {
-          declareRaceWinner('vimeo');
-        }
-      }).catch(() => {
-        console.error("Could not set initial Vimeo time");
-      });
-    }
-  }, [player, declareRaceWinner]);
-  
-  const handleVimeoError = useCallback((error: any) => {
-    console.error("Vimeo player error:", error);
-    
-    // If race not decided yet, use fallback
-    if (!raceWinnerDeclared.current && fallbackVideoUrl) {
-      declareRaceWinner('fallback');
-    }
-  }, [declareRaceWinner, fallbackVideoUrl]);
-  
-  // Fallback video event handlers
-  const handleFallbackCanPlay = useCallback(() => {
-    console.log("Fallback video can play");
-    
-    if (fallbackVideoRef.current) {
-      // Set to first frame and pause
-      fallbackVideoRef.current.currentTime = 0.1;
-      fallbackVideoRef.current.pause();
-      
-      // If race not decided yet, declare fallback as winner
-      if (!raceWinnerDeclared.current) {
-        declareRaceWinner('fallback');
-      }
-    }
-  }, [declareRaceWinner]);
-  
-  const handleFallbackError = useCallback((e: Event) => {
-    console.error("Fallback video error:", e);
-    
-    // If race not decided yet and Vimeo available, use Vimeo
-    if (!raceWinnerDeclared.current && player) {
-      declareRaceWinner('vimeo');
-    }
-  }, [declareRaceWinner, player]);
-  
-  const handleFallbackEnded = useCallback(() => {
-    if (fallbackVideoRef.current) {
-      // Reset to beginning when video ends
-      fallbackVideoRef.current.currentTime = 0.1;
-      fallbackVideoRef.current.pause();
-      setIsPlaying(false);
-    }
-  }, []);
-  
-  const handleFallbackPlay = useCallback(() => setIsPlaying(true), []);
-  const handleFallbackPause = useCallback(() => setIsPlaying(false), []);
-  
   // Initialize Vimeo player with clean event handlers
   const initializeVimeoPlayer = useCallback(() => {
     if (!window.Vimeo || !iframeRef.current) return;
@@ -299,11 +198,46 @@ const VimeoPlayer = memo(({
       vimeoPlayer.setMuted(!audioOn).catch(() => {});
       
       // Listen for player events
-      vimeoPlayer.on('loaded', handleVimeoLoaded);
-      vimeoPlayer.on('play', handleVimeoPlay);
-      vimeoPlayer.on('pause', handleVimeoPause);
-      vimeoPlayer.on('ended', handleVimeoEnded);
-      vimeoPlayer.on('error', handleVimeoError);
+      vimeoPlayer.on('loaded', () => {
+        console.log("Vimeo player loaded");
+        
+        // Position at first frame and pause
+        vimeoPlayer.setCurrentTime(0.1).then(() => {
+          vimeoPlayer.pause().catch(() => {});
+          
+          // If race not decided yet, declare Vimeo as winner
+          if (!raceWinnerDeclared.current) {
+            declareRaceWinner('vimeo');
+          }
+        }).catch(() => {
+          console.error("Could not set initial Vimeo time");
+        });
+      });
+      
+      vimeoPlayer.on('play', () => {
+        setIsPlaying(true);
+      });
+      
+      vimeoPlayer.on('pause', () => {
+        setIsPlaying(false);
+      });
+      
+      vimeoPlayer.on('ended', () => {
+        // Reset to first frame on end
+        vimeoPlayer.setCurrentTime(0.1).then(() => {
+          vimeoPlayer.pause().catch(() => {});
+          setIsPlaying(false);
+        }).catch(() => {});
+      });
+      
+      vimeoPlayer.on('error', (error: any) => {
+        console.error("Vimeo player error:", error);
+        
+        // If race not decided yet, use fallback
+        if (!raceWinnerDeclared.current && fallbackVideoUrl) {
+          declareRaceWinner('fallback');
+        }
+      });
     } catch (error) {
       console.error("Error initializing Vimeo player:", error);
       
@@ -312,56 +246,92 @@ const VimeoPlayer = memo(({
         declareRaceWinner('fallback');
       }
     }
-  }, [
-    audioOn, 
-    volume, 
-    declareRaceWinner, 
-    fallbackVideoUrl, 
-    handleVimeoLoaded,
-    handleVimeoPlay,
-    handleVimeoPause,
-    handleVimeoEnded,
-    handleVimeoError
-  ]);
+  }, [audioOn, volume, declareRaceWinner, fallbackVideoUrl]);
   
   // Initialize fallback video with clean event handlers
   const initializeFallbackVideo = useCallback(() => {
     if (!fallbackVideoUrl || !fallbackVideoRef.current) return;
     
     console.log("Initializing fallback video...");
-    const video = fallbackVideoRef.current;
+    // Fixed: We can't reassign the video const, so we'll work with it directly
+    const originalVideo = fallbackVideoRef.current;
     
     // Set initial audio state
-    video.muted = !audioOn;
-    video.volume = audioOn ? volume : 0;
+    originalVideo.muted = !audioOn;
+    originalVideo.volume = audioOn ? volume : 0;
     
-    // Clean up any existing event listeners before adding new ones
-    video.removeEventListener('canplaythrough', handleFallbackCanPlay);
-    video.removeEventListener('error', handleFallbackError);
-    video.removeEventListener('ended', handleFallbackEnded);
-    video.removeEventListener('play', handleFallbackPlay);
-    video.removeEventListener('pause', handleFallbackPause);
+    // Create a clone of the video element
+    const cloneVideo = originalVideo.cloneNode() as HTMLVideoElement;
+    
+    // Update the ref with the clone before changing parent
+    if (originalVideo.parentNode) {
+      originalVideo.parentNode.replaceChild(cloneVideo, originalVideo);
+    }
+    
+    // Update the ref to point to our new video element
+    fallbackVideoRef.current = cloneVideo;
+    
+    // Now we work with the cloned video element
+    const video = fallbackVideoRef.current;
     
     // Add event listeners
-    video.addEventListener('canplaythrough', handleFallbackCanPlay);
-    video.addEventListener('error', handleFallbackError);
-    video.addEventListener('ended', handleFallbackEnded);
-    video.addEventListener('play', handleFallbackPlay);
-    video.addEventListener('pause', handleFallbackPause);
+    const handleCanPlay = () => {
+      console.log("Fallback video can play");
+      
+      // Set to first frame and pause
+      video.currentTime = 0.1;
+      video.pause();
+      
+      // If race not decided yet, declare fallback as winner
+      if (!raceWinnerDeclared.current) {
+        declareRaceWinner('fallback');
+      }
+    };
+    
+    const handleError = (e: Event) => {
+      console.error("Fallback video error:", e);
+      
+      // If race not decided yet and Vimeo available, use Vimeo
+      if (!raceWinnerDeclared.current && player) {
+        declareRaceWinner('vimeo');
+      }
+    };
+    
+    const handleEnded = () => {
+      // Reset to beginning when video ends
+      video.currentTime = 0.1;
+      video.pause();
+      setIsPlaying(false);
+    };
+    
+    const handlePlay = () => {
+      setIsPlaying(true);
+    };
+    
+    const handlePause = () => {
+      setIsPlaying(false);
+    };
+    
+    // Add event listeners
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('error', handleError);
+    video.addEventListener('ended', handleEnded);
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
     
     // Start loading fallback
     video.src = fallbackVideoUrl;
     video.load();
-  }, [
-    fallbackVideoUrl, 
-    audioOn, 
-    volume, 
-    handleFallbackCanPlay,
-    handleFallbackError,
-    handleFallbackEnded,
-    handleFallbackPlay,
-    handleFallbackPause
-  ]);
+    
+    return () => {
+      // Clean up event listeners
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('error', handleError);
+      video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+    };
+  }, [fallbackVideoUrl, audioOn, volume, declareRaceWinner, player]);
   
   // Play/Pause handler
   const handlePlayPause = useCallback((e: React.MouseEvent) => {
