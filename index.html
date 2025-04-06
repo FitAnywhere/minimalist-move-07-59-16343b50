@@ -12,19 +12,16 @@
     <meta property="og:image" content="https://i.imgur.com/MhpVrki.png" />
     <link rel="icon" href="https://i.imgur.com/MhpVrki.png" />
     
-    <!-- Critical resources preloading -->
+    <!-- Race loading strategy - preload both sources -->
+    <!-- High priority preconnects -->
     <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
     <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
     <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
     
-    <!-- Preload Vimeo API script - critical for video loading -->
+    <!-- Preload critical resources -->
     <link rel="preload" as="script" href="https://player.vimeo.com/api/player.js" />
-    
-    <!-- Preload hero video content -->
     <link rel="preload" as="fetch" href="https://player.vimeo.com/video/1067255623" crossorigin importance="high" />
-    
-    <!-- Preload fallback video for hero section -->
-    <link rel="preload" as="video" href="/fitanywhere intro.mp4" type="video/mp4" />
+    <link rel="preload" as="video" href="/fitanywhere intro.mp4" type="video/mp4" importance="high" />
     
     <!-- Defer non-critical resources -->
     <link rel="preconnect" href="https://cdn.mouseflow.com" crossorigin />
