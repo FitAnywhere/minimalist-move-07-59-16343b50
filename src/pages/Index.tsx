@@ -9,6 +9,8 @@ import ProductIntro from '@/components/ProductIntro';
 // Import ChampionSection eagerly as well to avoid dynamic import errors
 import ChampionSection from '@/components/ChampionSection';
 import TrainingVault from '@/components/TrainingVault';
+import PersuasionSection from '@/components/PersuasionSection';
+import LimitedOfferSection from '@/components/LimitedOfferSection';
 
 // Continue lazy loading other components with better error boundaries and loading fallbacks
 const ProductTabs = lazy(() => import('@/components/ProductTabs'));
@@ -208,7 +210,7 @@ const Index = () => {
       }, options);
       
       // Observe all main sections
-      ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault'].forEach(id => {
+      ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault', 'persuasion', 'limited-offer'].forEach(id => {
         const element = document.getElementById(id);
         if (element) observer.observe(element);
       });
@@ -301,7 +303,7 @@ const Index = () => {
       <div id="training-vault">
         <TrainingVault />
       </div>
-      
+
       <Suspense fallback={<SectionLoader />}>
         <div id="lifestyle">
           <LifestyleSection />
@@ -309,9 +311,25 @@ const Index = () => {
         <div id="bundle">
           <BundleOffer />
         </div>
+      </Suspense>
+      
+      {/* Add Limited Offer as a separate section */}
+      <div id="limited-offer">
+        <LimitedOfferSection />
+      </div>
+      
+      <Suspense fallback={<SectionLoader />}>
         <div id="reviews">
           <TestimonialsCarousel />
         </div>
+      </Suspense>
+      
+      {/* Add Persuasion section after testimonials */}
+      <div id="persuasion">
+        <PersuasionSection />
+      </div>
+      
+      <Suspense fallback={<SectionLoader />}>
         <TimeAndCostCalculator />
         <TargetAndFAQ />
         <CallToAction />
