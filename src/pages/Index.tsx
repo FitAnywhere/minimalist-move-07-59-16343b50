@@ -1,171 +1,67 @@
 
-import { useEffect, useRef, lazy, Suspense, useState } from 'react';
+import { useEffect, useRef, lazy, Suspense, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
 import ChatbotHelper from '@/components/ChatbotHelper';
+import { preloadVimeoVideo } from '@/utils/videoLoader';
+import { addResourceHints } from '@/utils/resourceLoader';
 
-// Import critical components eagerly instead of lazy loading
+// Import critical components eagerly
 import ProductIntro from '@/components/ProductIntro';
-// Import ChampionSection eagerly as well to avoid dynamic import errors
 import ChampionSection from '@/components/ChampionSection';
-import TrainingVault from '@/components/TrainingVault';
-import WorkoutAddictSection from '@/components/WorkoutAddictSection';
 
-// Continue lazy loading other components with better error boundaries and loading fallbacks
-const ProductTabs = lazy(() => import('@/components/ProductTabs'));
-const LifestyleSection = lazy(() => 
-  import('@/components/LifestyleSection').catch(err => {
-    console.error('Failed to load LifestyleSection:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
-const BundleOffer = lazy(() => 
-  import('@/components/BundleOffer').catch(err => {
-    console.error('Failed to load BundleOffer:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
-const TestimonialsCarousel = lazy(() => 
-  import('@/components/TestimonialsCarousel').catch(err => {
-    console.error('Failed to load TestimonialsCarousel:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
-const TestimonialsCarouselSecond = lazy(() => 
-  import('@/components/TestimonialsCarouselSecond').catch(err => {
-    console.error('Failed to load TestimonialsCarouselSecond:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
-const TestimonialsCarouselThird = lazy(() => 
-  import('@/components/TestimonialsCarouselThird').catch(err => {
-    console.error('Failed to load TestimonialsCarouselThird:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
-const LimitedOfferSection = lazy(() => 
-  import('@/components/LimitedOfferSection').catch(err => {
-    console.error('Failed to load LimitedOfferSection:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
-const TimeAndCostCalculator = lazy(() => 
-  import('@/components/TimeAndCostCalculator').catch(err => {
-    console.error('Failed to load TimeAndCostCalculator:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
-const TargetAndFAQ = lazy(() => 
-  import('@/components/TargetAndFAQ').catch(err => {
-    console.error('Failed to load TargetAndFAQ:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
-const CallToAction = lazy(() => 
-  import('@/components/CallToAction').catch(err => {
-    console.error('Failed to load CallToAction:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
-const Footer = lazy(() => 
-  import('@/components/Footer').catch(err => {
-    console.error('Failed to load Footer:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
-
-// Better loading fallback with reduced CLS (Cumulative Layout Shift)
+// Better loading fallback with reduced CLS
 const SectionLoader = () => (
   <div className="min-h-[400px] w-full flex items-center justify-center" aria-hidden="true">
     <div className="w-8 h-8 border-4 border-yellow border-t-transparent rounded-full animate-spin"></div>
   </div>
 );
 
-// Critical videos to preload with proper timing
+// Lazy load non-critical components
+const ProductTabs = lazy(() => import('@/components/ProductTabs'));
+const TrainingVault = lazy(() => import('@/components/TrainingVault'));
+const WorkoutAddictSection = lazy(() => import('@/components/WorkoutAddictSection'));
+const LifestyleSection = lazy(() => import('@/components/LifestyleSection'));
+const BundleOffer = lazy(() => import('@/components/BundleOffer'));
+const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
+const TestimonialsCarouselSecond = lazy(() => import('@/components/TestimonialsCarouselSecond'));
+const TestimonialsCarouselThird = lazy(() => import('@/components/TestimonialsCarouselThird'));
+const LimitedOfferSection = lazy(() => import('@/components/LimitedOfferSection'));
+const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalculator'));
+const TargetAndFAQ = lazy(() => import('@/components/TargetAndFAQ'));
+const CallToAction = lazy(() => import('@/components/CallToAction'));
+const Footer = lazy(() => import('@/components/Footer'));
+
+// Critical videos to preload
 const CRITICAL_VIDEOS = [
-  '1067255623', // Hero video
-  '1067257145', // TRX video
-  '1067257124', // Bands video 
-  '1067256372', // Testimonial videos
-  '1067256325',
-  '1067256399',
-  '1073152410', // TrainingVault video
+  { id: '1067255623', hash: '45e88fd96b', priority: 'high' }, // Hero video
+  { id: '1067257145', hash: '45e88fd96b', priority: 'low' }, // TRX video  
+  { id: '1067257124', hash: '1c3b52f7d4', priority: 'low' }, // Bands video
+  { id: '1067256372', hash: '70ab6c252c', priority: 'low' }, // Testimonial videos
 ];
 
 const Index = () => {
   const location = useLocation();
   const initialLoadRef = useRef(true);
-  const vimeoAPILoadedRef = useRef(false);
-  const [sectionsInView, setSectionsInView] = useState({});
+  const [sectionsInView, setSectionsInView] = useState<Record<string, boolean>>({});
   
+  // Initialize resource preloading
   useEffect(() => {
-    // Preload Vimeo player API
-    const preloadVimeoAPI = () => {
-      if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]') && !vimeoAPILoadedRef.current) {
-        const script = document.createElement('script');
-        script.src = 'https://player.vimeo.com/api/player.js';
-        script.async = true;
-        script.id = 'vimeo-player-api';
-        
-        script.onload = () => {
-          console.log("Vimeo Player API loaded");
-          vimeoAPILoadedRef.current = true;
-          
-          // Once API is loaded, preload critical videos
-          preloadCriticalVideos();
-        };
-        
-        script.onerror = () => {
-          console.error("Failed to load Vimeo Player API");
-          
-          // Retry loading after a delay
-          setTimeout(() => {
-            const failedScript = document.getElementById('vimeo-player-api');
-            if (failedScript) failedScript.remove();
-            preloadVimeoAPI();
-          }, 2000);
-        };
-        
-        document.head.appendChild(script);
-      } else if (vimeoAPILoadedRef.current) {
-        // If API is already loaded, preload videos
-        preloadCriticalVideos();
-      }
-    };
+    // Add resource hints for key domains
+    addResourceHints([
+      { url: 'https://player.vimeo.com', type: 'preconnect' },
+      { url: 'https://i.vimeocdn.com', type: 'preconnect' },
+      { url: 'https://f.vimeocdn.com', type: 'preconnect' }
+    ]);
     
-    // Add preload hints for critical videos
-    const preloadCriticalVideos = () => {
-      CRITICAL_VIDEOS.forEach((id, index) => {
-        const existingLink = document.querySelector(`link[href*="${id}"]`);
-        if (!existingLink) {
-          const link = document.createElement('link');
-          
-          // Use appropriate preload strategy based on importance
-          if (index === 0) {
-            link.rel = 'preload';
-            link.as = 'fetch';
-            // Fix: Remove the importance attribute which isn't supported in TypeScript's HTMLLinkElement
-            // Use dataset instead for custom attributes
-            link.dataset.importance = 'high';
-          } else {
-            link.rel = 'prefetch';
-            link.as = 'fetch';
-            // Fix: Remove the importance attribute which isn't supported in TypeScript's HTMLLinkElement
-            link.dataset.importance = 'low';
-          }
-          
-          link.href = `https://player.vimeo.com/video/${id}`;
-          link.crossOrigin = 'anonymous';
-          document.head.appendChild(link);
-          
-          console.log(`Preloaded video: ${id}`);
-        }
-      });
-    };
+    // Preload critical videos with appropriate priorities
+    CRITICAL_VIDEOS.forEach(({ id, hash, priority }) => {
+      preloadVimeoVideo(id, hash, priority as 'high' | 'low');
+    });
     
-    // Add scale keyframes for carousel arrows
-    const addScaleKeyframes = () => {
+    // Add animation keyframes if needed
+    const addKeyframes = () => {
       if (!document.querySelector('#scale-keyframes')) {
         const styleSheet = document.createElement('style');
         styleSheet.id = 'scale-keyframes';
@@ -193,21 +89,16 @@ const Index = () => {
       }
     };
     
-    // Execute preloads with requestIdleCallback for better performance
+    // Execute with requestIdleCallback if available
     if (window.requestIdleCallback) {
-      requestIdleCallback(() => {
-        preloadVimeoAPI();
-        addScaleKeyframes();
-      }, { timeout: 2000 });
+      requestIdleCallback(addKeyframes, { timeout: 2000 });
     } else {
-      // Fallback for browsers without requestIdleCallback
-      setTimeout(() => {
-        preloadVimeoAPI();
-        addScaleKeyframes();
-      }, 100);
+      setTimeout(addKeyframes, 100);
     }
-    
-    // Set up intersection observer for section loading
+  }, []);
+  
+  // Set up intersection observer for section loading
+  useEffect(() => {
     const observeSections = () => {
       const options = {
         root: null,
@@ -239,7 +130,11 @@ const Index = () => {
     // Start observing after a short delay to allow initial render
     const observerTimer = setTimeout(observeSections, 500);
     
-    // Improved scroll handling
+    return () => clearTimeout(observerTimer);
+  }, []);
+  
+  // Handle navigation and scrolling
+  useEffect(() => {
     const handleNavigation = () => {
       const handleTargetSection = (targetId: string) => {
         setTimeout(() => {
@@ -295,9 +190,25 @@ const Index = () => {
     
     return () => {
       document.removeEventListener('click', handleAnchorClick);
-      clearTimeout(observerTimer);
     };
   }, [location]);
+  
+  // Memoized component loader for better performance
+  const LazyComponent = useCallback(({ component: Component, id }: { component: React.ComponentType, id: string }) => {
+    const shouldRender = sectionsInView[id] || initialLoadRef.current;
+    
+    return (
+      <div id={id}>
+        {shouldRender ? (
+          <Suspense fallback={<SectionLoader />}>
+            <Component />
+          </Suspense>
+        ) : (
+          <SectionLoader />
+        )}
+      </div>
+    );
+  }, [sectionsInView]);
   
   return (
     <div className="overflow-x-hidden">
@@ -315,35 +226,21 @@ const Index = () => {
       
       <ChampionSection />
       
-      <div id="training-vault">
-        <TrainingVault />
-      </div>
+      <LazyComponent component={TrainingVault} id="training-vault" />
+      
+      <LazyComponent component={TestimonialsCarousel} id="reviews" />
+      
+      <LazyComponent component={BundleOffer} id="bundle" />
+      
+      <LazyComponent component={WorkoutAddictSection} id="workout-addict" />
+      
+      <LazyComponent component={TestimonialsCarouselSecond} id="reviews-second" />
+      
+      <LazyComponent component={TestimonialsCarouselThird} id="reviews-third" />
+      
+      <LazyComponent component={LimitedOfferSection} id="limited-offer" />
       
       <Suspense fallback={<SectionLoader />}>
-        <div id="reviews">
-          <TestimonialsCarousel />
-        </div>
-        
-        <div id="bundle">
-          <BundleOffer />
-        </div>
-        
-        <div id="workout-addict">
-          <WorkoutAddictSection />
-        </div>
-        
-        <div id="reviews-second">
-          <TestimonialsCarouselSecond />
-        </div>
-        
-        <div id="reviews-third">
-          <TestimonialsCarouselThird />
-        </div>
-        
-        <div id="limited-offer">
-          <LimitedOfferSection />
-        </div>
-        
         <TimeAndCostCalculator />
         <TargetAndFAQ />
         <CallToAction />
