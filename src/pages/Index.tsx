@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, lazy, Suspense, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -34,6 +35,12 @@ const TestimonialsCarousel = lazy(() =>
 const TestimonialsCarouselSecond = lazy(() => 
   import('@/components/TestimonialsCarouselSecond').catch(err => {
     console.error('Failed to load TestimonialsCarouselSecond:', err);
+    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+  })
+);
+const LimitedOfferSection = lazy(() => 
+  import('@/components/LimitedOfferSection').catch(err => {
+    console.error('Failed to load LimitedOfferSection:', err);
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
@@ -321,6 +328,10 @@ const Index = () => {
         
         <div id="reviews-second">
           <TestimonialsCarouselSecond />
+        </div>
+        
+        <div id="limited-offer">
+          <LimitedOfferSection />
         </div>
         
         <TimeAndCostCalculator />

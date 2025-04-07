@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -7,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronDown, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
+
 const features = [{
   title: "UNFOLD & GO",
   description: "No tools, no installation"
@@ -17,6 +17,7 @@ const features = [{
   title: "INFINITE POSSIBILITIES",
   description: "One station without limits"
 }];
+
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -28,31 +29,27 @@ const ProductIntro = () => {
     features: [false, false, false],
     finalLine: false
   });
-  // Change default open feature to null so all features are closed by default
   const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [showSpecs, setShowSpecs] = useState(false);
+
   useEffect(() => {
     if (isInView) {
-      // Reduced delay for title animation from 300ms to 100ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         title: true
       })), 100);
 
-      // Reduced delay for subtitle animation from 800ms to 300ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         subtitle: true
       })), 300);
 
-      // Reduced delay for paragraph animation from 1300ms to 500ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         paragraph: true
       })), 500);
 
-      // Reduced initial delay for features from 1800ms to 700ms and time between features from 250ms to 150ms
       features.forEach((_, index) => {
         setTimeout(() => {
           setAnimationState(prev => {
@@ -66,29 +63,31 @@ const ProductIntro = () => {
         }, 700 + index * 150);
       });
 
-      // Reduced delay for final line from 3000ms to 1200ms
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         finalLine: true
       })), 1200);
     }
   }, [isInView]);
+
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
-  return <section id="product" ref={containerRef} className="py-16 bg-white">
+
+  return (
+    <section id="product" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6 items-center">
             <div className="space-y-8 order-last md:order-first">
               <div className="space-y-4">
                 <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", isMobile ? "text-center mx-auto block w-full" : "")}>
-                  OWN BOTH
+                  RARE LUXURIES
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
                 
                 <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", isMobile ? "text-center mx-auto" : "")}>
-                  Space is luxury & time is freedom
+                  Space. Time. Yours with FitAnywhere.
                 </p>
               </div>
               
@@ -212,6 +211,8 @@ const ProductIntro = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </section>;
+    </section>
+  );
 };
+
 export default ProductIntro;

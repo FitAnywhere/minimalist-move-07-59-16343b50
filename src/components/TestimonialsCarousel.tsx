@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -103,7 +102,6 @@ const TestimonialVideo = memo(({
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    // Reset error state when key changes (when switching testimonials)
     setShowError(false);
     setLoadAttempts(0);
   }, [uniqueKey]);
@@ -115,13 +113,11 @@ const TestimonialVideo = memo(({
 
   const handleError = () => {
     if (loadAttempts < 3) {
-      // Auto-retry up to 3 times with increasing delay
       const retryDelay = (loadAttempts + 1) * 1000;
       setLoadAttempts(prev => prev + 1);
       
       setTimeout(() => {
         if (iframeRef.current) {
-          // Force iframe reload
           const src = iframeRef.current.src;
           iframeRef.current.src = '';
           setTimeout(() => {
@@ -210,10 +206,10 @@ const VideoLoader = memo(() => <div className="absolute inset-0 flex flex-col it
 VideoLoader.displayName = 'VideoLoader';
 
 const TestimonialsCarousel = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { threshold: 0.1 }, false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
+  const [activeIndex, setActiveIndex] = useState(0);
   const [videosLoaded, setVideosLoaded] = useState<{
     [key: string]: boolean;
   }>({});
@@ -225,11 +221,9 @@ const TestimonialsCarousel = () => {
   const vimeoScriptLoadedRef = useRef(false);
   const [videoError, setVideoError] = useState(false);
   
-  // Safely get current testimonial with fallback
   const currentTestimonial = testimonials[activeIndex] || testimonials[0];
 
   useEffect(() => {
-    // Load Vimeo API once
     if (vimeoScriptLoadedRef.current) return;
     if (!document.getElementById('vimeo-player-api')) {
       const script = document.createElement('script');
@@ -244,9 +238,7 @@ const TestimonialsCarousel = () => {
       vimeoScriptLoadedRef.current = true;
     }
     
-    // Preload initial testimonial videos
     const preloadTestimonials = () => {
-      // Preload the first 3 testimonials immediately
       testimonials.slice(0, 3).forEach(testimonial => {
         if (!testimonial) return;
         
@@ -259,7 +251,6 @@ const TestimonialsCarousel = () => {
         setPreloadedVideos(prev => [...prev, testimonial.vimeoId]);
       });
       
-      // Load the rest with a slight delay
       testimonials.slice(3).forEach((testimonial, index) => {
         setTimeout(() => {
           if (!testimonial) return;
@@ -290,7 +281,6 @@ const TestimonialsCarousel = () => {
     
     requestAnimationFrame(() => {
       setActiveIndex(prevIndex => {
-        // Ensure we don't exceed array bounds
         const nextIndex = prevIndex + 1;
         return nextIndex >= testimonials.length ? 0 : nextIndex;
       });
@@ -309,7 +299,6 @@ const TestimonialsCarousel = () => {
     
     requestAnimationFrame(() => {
       setActiveIndex(prevIndex => {
-        // Ensure we don't go below 0
         const nextIndex = prevIndex - 1;
         return nextIndex < 0 ? testimonials.length - 1 : nextIndex;
       });
@@ -352,7 +341,6 @@ const TestimonialsCarousel = () => {
     setVideoError(false);
   }, []);
 
-  // Preload next video when current is loaded
   useEffect(() => {
     if (!currentTestimonial) return;
     
@@ -372,7 +360,6 @@ const TestimonialsCarousel = () => {
     }
   }, [videosLoaded, activeIndex, currentTestimonial, preloadedVideos]);
 
-  // Update visibility when active index changes
   useEffect(() => {
     if (!currentTestimonial) return;
     
@@ -382,18 +369,17 @@ const TestimonialsCarousel = () => {
     }));
   }, [activeIndex, currentTestimonial, videosLoaded]);
 
-  // Early exit if testimonials aren't loaded yet
   if (!currentTestimonial) {
     return <div className="py-16 md:py-20 bg-gray-50">Loading testimonials...</div>;
   }
 
-  return <section id="reviews" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
-      <div className="container mx-auto px-6 md:px-12 lg:px-20 bg-inherit">
-        <div className="max-w-6xl mx-auto">
-          <div className={cn("text-center mb-12 transition-all duration-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
+  return <section ref={containerRef} id="testimonials" className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className={cn("text-center transition-all duration-1000 transform mb-10", isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-              WHY THEY LOVE IT?
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform scale-x-100"></span>
+              WHY THEY LOVE FitAnywhere?
+              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
           </div>
           
