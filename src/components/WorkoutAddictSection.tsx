@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -6,12 +5,10 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronDown, X, Loader } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
-
 interface LifestyleFeature {
   title: string;
   description: string;
 }
-
 interface VimeoPlayerAPI {
   play: () => Promise<void>;
   pause: () => Promise<void>;
@@ -23,7 +20,6 @@ interface VimeoPlayerAPI {
   ready: () => Promise<void>;
   destroy: () => void;
 }
-
 const lifestyleFeatures: LifestyleFeature[] = [{
   title: "FEEL UNSTOPPABLE",
   description: "Tap into boundless energy to train like never before."
@@ -34,7 +30,6 @@ const lifestyleFeatures: LifestyleFeature[] = [{
   title: "WORKOUT YOU'LL ACTUALLY LOVE",
   description: "It's addictive in the best way possible."
 }];
-
 const WorkoutAddictSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -61,16 +56,13 @@ const WorkoutAddictSection = () => {
       vimeoPlayerRef.current.setMuted(true);
     }
   });
-
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
-
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/7sI3eC1dB7zvcFy3cr', '_blank');
   };
-
   useEffect(() => {
     if (vimeoIframeRef.current && !vimeoPlayerRef.current && typeof window !== 'undefined') {
       if (!window.Vimeo) {
@@ -83,7 +75,6 @@ const WorkoutAddictSection = () => {
         initializePlayer();
       }
     }
-
     function initializePlayer() {
       if (!window.Vimeo || !vimeoIframeRef.current) return;
       try {
@@ -117,7 +108,6 @@ const WorkoutAddictSection = () => {
         setVideoError(true);
       }
     }
-
     return () => {
       if (vimeoPlayerRef.current) {
         vimeoPlayerRef.current.destroy();
@@ -125,7 +115,6 @@ const WorkoutAddictSection = () => {
       }
     };
   }, []);
-
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
@@ -144,7 +133,6 @@ const WorkoutAddictSection = () => {
       window.removeEventListener('message', handleMessage);
     };
   }, []);
-
   const renderVimeoVideo = () => {
     const mobileVideoWidth = "80%"; // 20% smaller on mobile
 
@@ -188,21 +176,8 @@ const WorkoutAddictSection = () => {
         </div>
       </div>;
   };
-
-  return <section ref={sectionRef} className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
-        {Array.from({
-        length: 20
-      }).map((_, i) => <div key={i} className="absolute rounded-full bg-yellow/10 blur-md parallax-bg" style={{
-        width: `${Math.random() * 30 + 10}px`,
-        height: `${Math.random() * 30 + 10}px`,
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        animation: `float ${Math.random() * 10 + 15}s linear infinite`,
-        transform: `translateY(${Math.random() * 100}px)`,
-        opacity: Math.random() * 0.5 + 0.1
-      }} />)}
-      </div>
+  return <section ref={sectionRef} className="py-20 relative overflow-hidden mx-0">
+      
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -294,11 +269,7 @@ const WorkoutAddictSection = () => {
                 </div>
                 
                 <div className="w-full flex justify-center mt-4 mb-4">
-                  <img 
-                    src="https://i.imgur.com/OZcOmIp.png" 
-                    alt="BoxFun Product" 
-                    className="max-w-[280px] w-full transition-all duration-500 hover:scale-105" 
-                  />
+                  <img src="https://i.imgur.com/OZcOmIp.png" alt="BoxFun Product" className="max-w-[280px] w-full transition-all duration-500 hover:scale-105" />
                 </div>
                 
                 <div className="flex flex-col items-center mt-2 flex-grow-0">
@@ -386,5 +357,4 @@ const WorkoutAddictSection = () => {
       </Dialog>
     </section>;
 };
-
 export default WorkoutAddictSection;
