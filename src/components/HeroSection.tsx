@@ -4,6 +4,7 @@ import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ScrollIndicator from './ui/ScrollIndicator';
 import HeroContent from './ui/HeroContent';
+import HeroVideo from './ui/HeroVideo';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -38,6 +39,13 @@ const HeroSection = memo(() => {
                 {/* Mobile layout with specific order */}
                 <HeroContent isInView={isInView} scrollToOwnBoth={scrollToOwnBoth} isMobile={true} />
                 
+                {/* Video container for mobile */}
+                <div className={cn("mt-4 transition-all duration-1000 delay-300", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                  <div className="relative rounded-xl overflow-hidden shadow-lg aspect-video">
+                    <HeroVideo />
+                  </div>
+                </div>
+                
                 {/* CTA Button placed after content */}
                 <div className={cn("mt-4 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 py-4 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow">
@@ -57,13 +65,9 @@ const HeroSection = memo(() => {
               <div className={`order-1 md:order-2 transition-all duration-1000 delay-300 w-full ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
                 <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
                   <div className="w-full max-w-[95%] mx-auto">
-                    {/* Hero image or placeholder instead of video */}
-                    <div className="aspect-video bg-gradient-to-r from-gray-100 to-gray-200 rounded-xl flex items-center justify-center">
-                      <img 
-                        src="https://i.imgur.com/MhpVrki.png" 
-                        alt="FitAnywhere" 
-                        className="w-32 h-32 object-contain"
-                      />
+                    {/* Hero video component */}
+                    <div className="aspect-video rounded-xl overflow-hidden">
+                      <HeroVideo />
                     </div>
                     <p className="mt-3 text-sm text-gray-600 ml-1 text-center my-[6px] mx-[30px]">Launching Spring 2025. Reserve before we sell out.</p>
                   </div>
