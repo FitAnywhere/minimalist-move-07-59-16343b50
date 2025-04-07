@@ -38,6 +38,12 @@ const TestimonialsCarouselSecond = lazy(() =>
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
+const TestimonialsCarouselThird = lazy(() => 
+  import('@/components/TestimonialsCarouselThird').catch(err => {
+    console.error('Failed to load TestimonialsCarouselThird:', err);
+    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+  })
+);
 const LimitedOfferSection = lazy(() => 
   import('@/components/LimitedOfferSection').catch(err => {
     console.error('Failed to load LimitedOfferSection:', err);
@@ -328,6 +334,10 @@ const Index = () => {
         
         <div id="reviews-second">
           <TestimonialsCarouselSecond />
+        </div>
+        
+        <div id="reviews-third">
+          <TestimonialsCarouselThird />
         </div>
         
         <div id="limited-offer">
