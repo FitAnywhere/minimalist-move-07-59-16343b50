@@ -71,7 +71,9 @@ const HeroVideo = memo(() => {
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const LOCAL_VIDEO_URL = '/fitanywhere intro.mp4';
-  const VIMEO_VIDEO_ID = '1067255623';
+  // Fix error: Type 'string' is not assignable to type 'number'
+  // Converting from string to number
+  const VIMEO_VIDEO_ID = 1067255623; 
   const MP4_TIMEOUT = 2500; // 2.5 seconds timeout for MP4 loading
 
   // Load Vimeo script
@@ -224,7 +226,9 @@ const HeroVideo = memo(() => {
       
       // Set a timeout for MP4 loading - if it takes too long, switch to Vimeo
       timeoutRef.current = setTimeout(() => {
-        if (!video.readyState >= 4) {
+        // Fix error: Operator '>=' cannot be applied to types 'boolean' and 'number'
+        // Checking readyState properly
+        if (video.readyState < 4) {
           console.log('MP4 video taking too long to load, switching to Vimeo fallback');
           setUseVimeoFallback(true);
         }
@@ -247,14 +251,12 @@ const HeroVideo = memo(() => {
   // Initialize Vimeo player when needed
   useEffect(() => {
     if (useVimeoFallback && !vimeoLoaded) {
-      const cleanupFn = initVimeoPlayer();
+      // Fix error: This expression is not callable. Type 'never' has no call signatures.
+      // Instead of expecting a cleanup function, we'll just call the method
+      initVimeoPlayer();
       
       return () => {
         // Clean up Vimeo player
-        if (cleanupFn && typeof cleanupFn === 'function') {
-          cleanupFn();
-        }
-        
         if (vimeoPlayerRef.current) {
           vimeoPlayerRef.current.destroy();
           vimeoPlayerRef.current = null;
@@ -348,7 +350,9 @@ const HeroVideo = memo(() => {
       
       // Set timeout to switch to Vimeo if MP4 fails again
       timeoutRef.current = setTimeout(() => {
-        if (!video.readyState >= 4) {
+        // Fix error: Operator '>=' cannot be applied to types 'boolean' and 'number'
+        // Checking readyState properly
+        if (video.readyState < 4) {
           setUseVimeoFallback(true);
         }
       }, MP4_TIMEOUT);
