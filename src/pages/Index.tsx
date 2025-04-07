@@ -32,12 +32,7 @@ const TestimonialsCarousel = lazy(() =>
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
-const TestimonialsCarouselSecond = lazy(() => 
-  import('@/components/TestimonialsCarouselSecond').catch(err => {
-    console.error('Failed to load TestimonialsCarouselSecond:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
+// Remove TestimonialsCarouselSecond import
 const TestimonialsCarouselThird = lazy(() => 
   import('@/components/TestimonialsCarouselThird').catch(err => {
     console.error('Failed to load TestimonialsCarouselThird:', err);
@@ -332,9 +327,7 @@ const Index = () => {
           <WorkoutAddictSection />
         </div>
         
-        <div id="reviews-second">
-          <TestimonialsCarouselSecond />
-        </div>
+        {/* Removed TestimonialsCarouselSecond component */}
         
         <div id="reviews-third">
           <TestimonialsCarouselThird />

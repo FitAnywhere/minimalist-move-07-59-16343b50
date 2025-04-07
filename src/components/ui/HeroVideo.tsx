@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { Play, Pause, Volume2, VolumeX, Loader, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import videoLoadManager from '@/utils/videoOptimization';
 
 // Safe Vimeo type handling
 type SafeVimeo = {
@@ -62,6 +63,7 @@ const HeroVideo = memo(() => {
   const [isHovering, setIsHovering] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [vimeoLoaded, setVimeoLoaded] = useState(false);
+  const [loadRetries, setLoadRetries] = useState(0);
 
   // Refs
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -75,27 +77,76 @@ const HeroVideo = memo(() => {
   // Converting from string to number
   const VIMEO_VIDEO_ID = 1067255623; 
   const MP4_TIMEOUT = 2500; // 2.5 seconds timeout for MP4 loading
+  const MAX_RETRIES = 5;
+  const RETRY_DELAYS = [1000, 2000, 4000, 8000, 16000]; // Exponential backoff
 
-  // Load Vimeo script
-  const loadVimeoScript = useCallback(() => {
-    if (document.getElementById('vimeo-player-script')) return Promise.resolve();
+  // Load Vimeo script with enhanced reliability
+  const loadVimeoScript = useCallback((): Promise<void> => {
+    if (document.getElementById('vimeo-player-script')) {
+      return new Promise<void>((resolve) => {
+        // Check if Vimeo is already defined
+        if (window.Vimeo && window.Vimeo.Player) {
+          resolve();
+        } else {
+          // Wait for the script to finish loading
+          const checkVimeo = setInterval(() => {
+            if (window.Vimeo && window.Vimeo.Player) {
+              clearInterval(checkVimeo);
+              resolve();
+            }
+          }, 100);
+          
+          // Timeout after 10 seconds
+          setTimeout(() => {
+            clearInterval(checkVimeo);
+            if (!window.Vimeo || !window.Vimeo.Player) {
+              console.error('Vimeo Player API loading timed out');
+              // Continue anyway, might still work
+              resolve();
+            }
+          }, 10000);
+        }
+      });
+    }
     
     return new Promise<void>((resolve, reject) => {
       const script = document.createElement('script');
       script.id = 'vimeo-player-script';
       script.src = 'https://player.vimeo.com/api/player.js';
       script.async = true;
-      script.onload = () => resolve();
-      script.onerror = (err) => reject(err);
+      script.defer = true; // Add defer for better performance
+      
+      script.onload = () => {
+        console.log('Vimeo Player API loaded');
+        resolve();
+      };
+      
+      script.onerror = (err) => {
+        console.error('Failed to load Vimeo Player API:', err);
+        reject(err);
+      };
+      
       document.head.appendChild(script);
+    }).catch(error => {
+      console.error('Vimeo script loading error:', error);
+      // Return a resolved promise so the chain continues
+      return Promise.resolve();
     });
   }, []);
 
-  // Initialize Vimeo player
+  // Initialize Vimeo player with enhanced reliability
   const initVimeoPlayer = useCallback(async () => {
     if (!vimeoContainerRef.current) return;
     
     try {
+      // Register with video load manager
+      if (vimeoContainerRef.current) {
+        videoLoadManager.registerVideo(
+          VIMEO_VIDEO_ID.toString(),
+          vimeoContainerRef.current
+        );
+      }
+      
       await loadVimeoScript();
       const VimeoPlayer = getVimeoPlayer();
       
@@ -160,8 +211,29 @@ const HeroVideo = memo(() => {
       
       const handleError = (error: any) => {
         console.error('Vimeo player error:', error);
-        setHasError(true);
-        setIsLoading(false);
+        
+        if (loadRetries < MAX_RETRIES) {
+          console.log(`Retrying Vimeo player load (${loadRetries + 1}/${MAX_RETRIES})...`);
+          
+          setTimeout(() => {
+            setLoadRetries(prev => prev + 1);
+            
+            // Clean up before retrying
+            if (player) {
+              try {
+                player.destroy();
+              } catch (e) {
+                console.error('Error destroying player for retry:', e);
+              }
+            }
+            
+            // Try again
+            initVimeoPlayer();
+          }, RETRY_DELAYS[loadRetries] || 3000);
+        } else {
+          setHasError(true);
+          setIsLoading(false);
+        }
       };
       
       player.on('ready', handleReady);
@@ -179,12 +251,22 @@ const HeroVideo = memo(() => {
       };
     } catch (error) {
       console.error('Error initializing Vimeo player:', error);
-      setHasError(true);
-      setIsLoading(false);
+      
+      if (loadRetries < MAX_RETRIES) {
+        console.log(`Retrying Vimeo player initialization (${loadRetries + 1}/${MAX_RETRIES})...`);
+        
+        setTimeout(() => {
+          setLoadRetries(prev => prev + 1);
+          initVimeoPlayer();
+        }, RETRY_DELAYS[loadRetries] || 3000);
+      } else {
+        setHasError(true);
+        setIsLoading(false);
+      }
     }
-  }, [isMuted, loadVimeoScript]);
+  }, [isMuted, loadVimeoScript, loadRetries]);
 
-  // Main initialization effect
+  // Main initialization effect with enhanced reliability
   useEffect(() => {
     setIsLoading(true);
     setHasError(false);
@@ -265,15 +347,32 @@ const HeroVideo = memo(() => {
     }
   }, [useVimeoFallback, vimeoLoaded, initVimeoPlayer]);
 
-  // Handle play/pause
+  // Handle play/pause with enhanced error handling
   const togglePlayPause = useCallback(() => {
     if (isLoading) return;
     
     if (useVimeoFallback && vimeoPlayerRef.current) {
       if (isPlaying) {
-        vimeoPlayerRef.current.pause().catch(err => console.error('Error pausing Vimeo:', err));
+        vimeoPlayerRef.current.pause()
+          .catch(err => {
+            console.error('Error pausing Vimeo:', err);
+            // Update UI state anyway to match user intent
+            setIsPlaying(false);
+          });
       } else {
-        vimeoPlayerRef.current.play().catch(err => console.error('Error playing Vimeo:', err));
+        vimeoPlayerRef.current.play()
+          .catch(err => {
+            console.error('Error playing Vimeo:', err);
+            // Try again after a short delay
+            setTimeout(() => {
+              if (vimeoPlayerRef.current) {
+                vimeoPlayerRef.current.play()
+                  .catch(innerErr => {
+                    console.error('Error on second play attempt:', innerErr);
+                  });
+              }
+            }, 500);
+          });
       }
     } else if (videoRef.current) {
       const video = videoRef.current;
@@ -282,23 +381,48 @@ const HeroVideo = memo(() => {
         setIsPlaying(false);
         setShowControls(true);
       } else {
-        video.play().then(() => {
-          setIsPlaying(true);
-          // Auto-hide controls after playback starts
-          if (controlsTimeoutRef.current) {
-            clearTimeout(controlsTimeoutRef.current);
-          }
-          controlsTimeoutRef.current = setTimeout(() => {
-            if (!isHovering) {
-              setShowControls(false);
+        video.play()
+          .then(() => {
+            setIsPlaying(true);
+            // Auto-hide controls after playback starts
+            if (controlsTimeoutRef.current) {
+              clearTimeout(controlsTimeoutRef.current);
             }
-          }, 2000);
-        }).catch(err => console.error('Error playing MP4:', err));
+            controlsTimeoutRef.current = setTimeout(() => {
+              if (!isHovering) {
+                setShowControls(false);
+              }
+            }, 2000);
+          })
+          .catch(err => {
+            console.error('Error playing MP4:', err);
+            
+            // Try again with muted (to work around autoplay restrictions)
+            video.muted = true;
+            setIsMuted(true);
+            
+            video.play()
+              .then(() => {
+                setIsPlaying(true);
+                // Auto-hide controls after playback starts
+                if (controlsTimeoutRef.current) {
+                  clearTimeout(controlsTimeoutRef.current);
+                }
+                controlsTimeoutRef.current = setTimeout(() => {
+                  if (!isHovering) {
+                    setShowControls(false);
+                  }
+                }, 2000);
+              })
+              .catch(innerErr => {
+                console.error('Error playing muted MP4:', innerErr);
+              });
+          });
       }
     }
   }, [isPlaying, isLoading, useVimeoFallback, isHovering]);
 
-  // Handle mute/unmute
+  // Handle mute/unmute with enhanced error handling
   const toggleMute = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     
@@ -306,7 +430,12 @@ const HeroVideo = memo(() => {
     setIsMuted(newMutedState);
     
     if (useVimeoFallback && vimeoPlayerRef.current) {
-      vimeoPlayerRef.current.setMuted(newMutedState).catch(err => console.error('Error setting Vimeo mute state:', err));
+      vimeoPlayerRef.current.setMuted(newMutedState)
+        .catch(err => {
+          console.error('Error setting Vimeo mute state:', err);
+          // Revert UI state if operation fails
+          setIsMuted(!newMutedState);
+        });
     } else if (videoRef.current) {
       videoRef.current.muted = newMutedState;
     }
@@ -337,10 +466,11 @@ const HeroVideo = memo(() => {
     }
   }, [isPlaying]);
 
-  // Retry when both sources fail
+  // Retry when both sources fail with enhanced reliability
   const handleRetry = useCallback(() => {
     setHasError(false);
     setIsLoading(true);
+    setLoadRetries(0);
     setUseVimeoFallback(false);
     
     // Retry with MP4 first
@@ -446,22 +576,31 @@ const HeroVideo = memo(() => {
         </div>
       )}
       
-      {/* Loading Spinner */}
+      {/* Loading Spinner with enhanced visual feedback */}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/70">
-          <div className="relative">
-            <div className="w-16 h-16 rounded-full border-4 border-yellow/30 animate-pulse" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Loader className="h-8 w-8 text-yellow animate-spin" />
+          <div className="flex flex-col items-center justify-center space-y-3">
+            <div className="relative">
+              <div className="w-16 h-16 rounded-full border-4 border-yellow/30 animate-pulse" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Loader className="h-8 w-8 text-yellow animate-spin" />
+              </div>
             </div>
+            <p className="text-white text-sm">Loading video...</p>
+            {loadRetries > 0 && (
+              <p className="text-yellow text-xs">
+                Retry attempt {loadRetries}/{MAX_RETRIES}
+              </p>
+            )}
           </div>
         </div>
       )}
       
-      {/* Error UI */}
+      {/* Error UI with more detailed feedback */}
       {hasError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 text-white">
-          <p className="text-lg font-semibold mb-4">Video failed to load</p>
+          <p className="text-lg font-semibold mb-1">Video failed to load</p>
+          <p className="text-sm text-gray-300 mb-4">Please try again</p>
           <button
             className="bg-yellow hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-full flex items-center"
             onClick={handleRetry}
