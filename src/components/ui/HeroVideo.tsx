@@ -1,6 +1,5 @@
-
 import { useState, useEffect, useRef, useCallback, memo } from 'react';
-import { Play, Pause, Volume2, VolumeX, Loader, RefreshCw } from 'lucide-react';
+import { Play, Volume2, VolumeX, Loader, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import videoLoadManager from '@/utils/videoOptimization';
 
@@ -384,15 +383,8 @@ const HeroVideo = memo(() => {
         video.play()
           .then(() => {
             setIsPlaying(true);
-            // Auto-hide controls after playback starts
-            if (controlsTimeoutRef.current) {
-              clearTimeout(controlsTimeoutRef.current);
-            }
-            controlsTimeoutRef.current = setTimeout(() => {
-              if (!isHovering) {
-                setShowControls(false);
-              }
-            }, 2000);
+            // Immediately hide controls when video starts playing
+            setShowControls(false);
           })
           .catch(err => {
             console.error('Error playing MP4:', err);
@@ -404,15 +396,8 @@ const HeroVideo = memo(() => {
             video.play()
               .then(() => {
                 setIsPlaying(true);
-                // Auto-hide controls after playback starts
-                if (controlsTimeoutRef.current) {
-                  clearTimeout(controlsTimeoutRef.current);
-                }
-                controlsTimeoutRef.current = setTimeout(() => {
-                  if (!isHovering) {
-                    setShowControls(false);
-                  }
-                }, 2000);
+                // Immediately hide controls when video starts playing with muted
+                setShowControls(false);
               })
               .catch(innerErr => {
                 console.error('Error playing muted MP4:', innerErr);
@@ -420,7 +405,7 @@ const HeroVideo = memo(() => {
           });
       }
     }
-  }, [isPlaying, isLoading, useVimeoFallback, isHovering]);
+  }, [isPlaying, isLoading, useVimeoFallback]);
 
   // Handle mute/unmute with enhanced error handling
   const toggleMute = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
@@ -441,30 +426,23 @@ const HeroVideo = memo(() => {
     }
   }, [isMuted, useVimeoFallback]);
 
-  // Handle hover state for controls
+  // Modified hover state handling - we're changing this to not show controls during playback
   const handleMouseEnter = useCallback(() => {
     setIsHovering(true);
-    setShowControls(true);
+    // Only show controls if not playing
+    if (!isPlaying) {
+      setShowControls(true);
+    }
     
     if (controlsTimeoutRef.current) {
       clearTimeout(controlsTimeoutRef.current);
       controlsTimeoutRef.current = null;
     }
-  }, []);
+  }, [isPlaying]);
 
   const handleMouseLeave = useCallback(() => {
     setIsHovering(false);
-    
-    if (isPlaying) {
-      if (controlsTimeoutRef.current) {
-        clearTimeout(controlsTimeoutRef.current);
-      }
-      
-      controlsTimeoutRef.current = setTimeout(() => {
-        setShowControls(false);
-      }, 2000);
-    }
-  }, [isPlaying]);
+  }, []);
 
   // Retry when both sources fail with enhanced reliability
   const handleRetry = useCallback(() => {
@@ -539,8 +517,8 @@ const HeroVideo = memo(() => {
         style={{ display: useVimeoFallback ? 'block' : 'none' }}
       />
       
-      {/* Play/Pause Button */}
-      {showControls && !isLoading && !hasError && (
+      {/* Play Button - Only shown at start or when paused */}
+      {showControls && !isLoading && !hasError && !isPlaying && (
         <div className="absolute inset-0 flex items-center justify-center">
           <button
             className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-500 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2"
@@ -548,19 +526,15 @@ const HeroVideo = memo(() => {
               e.stopPropagation();
               togglePlayPause();
             }}
-            aria-label={isPlaying ? "Pause video" : "Play video"}
+            aria-label="Play video"
           >
-            {isPlaying ? (
-              <Pause className="h-8 w-8 text-black" />
-            ) : (
-              <Play className="h-8 w-8 text-black ml-1" />
-            )}
+            <Play className="h-8 w-8 text-black ml-1" />
           </button>
         </div>
       )}
       
-      {/* Mute/Unmute Button */}
-      {showControls && !isLoading && !hasError && (
+      {/* Mute/Unmute Button - always visible for accessibility */}
+      {!isLoading && !hasError && (
         <div className="absolute bottom-3 right-3">
           <button
             className="bg-black/60 hover:bg-black/80 p-2 rounded-full transition-colors duration-300 focus:outline-none"

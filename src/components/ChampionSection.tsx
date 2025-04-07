@@ -1,22 +1,24 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from '@/components/ui/dialog';
+
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const isInView = useInView(sectionRef);
   const isMobile = useIsMobile();
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
   const [showLibraryAccess, setShowLibraryAccess] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: ''
   });
+
   useEffect(() => {
     if (isInView && titleRef.current) {
       setTimeout(() => {
@@ -24,46 +26,19 @@ const ChampionSection = () => {
       }, 300);
     }
   }, [isInView]);
+
+  // Load Vimeo script
   useEffect(() => {
-    if (videoRef.current) {
-      const video = videoRef.current;
-      video.src = '';
-      video.load();
-      video.src = '/COACH.mp4';
-      const handleCanPlay = () => {
-        setIsVideoLoaded(true);
-        setVideoError(false);
-        console.log("Video can play now");
-      };
-      const handleError = (e: Event) => {
-        console.error("Video error:", e);
-        setVideoError(true);
-      };
-      video.addEventListener('canplay', handleCanPlay);
-      video.addEventListener('error', handleError);
-      if (isInView && !videoError) {
-        const playAttempt = setTimeout(() => {
-          if (video.readyState >= 2) {
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-              playPromise.catch(error => {
-                console.error("Video play error:", error);
-                if (error.name !== 'NotAllowedError') {
-                  setVideoError(true);
-                }
-              });
-            }
-          }
-        }, 100);
-        return () => clearTimeout(playAttempt);
-      }
-      return () => {
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('error', handleError);
-        video.pause();
-      };
+    // Check if script is already loaded
+    if (!document.getElementById('vimeo-player-script')) {
+      const script = document.createElement('script');
+      script.id = 'vimeo-player-script';
+      script.src = 'https://player.vimeo.com/api/player.js';
+      script.async = true;
+      document.head.appendChild(script);
     }
-  }, [isInView, videoError]);
+  }, []);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       name,
@@ -74,12 +49,14 @@ const ChampionSection = () => {
       [name]: value
     }));
   };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     setShowLibraryAccess(false);
     alert("Thank you! Access to the video library will be sent to your email.");
   };
+
   return <section id="video-library" ref={sectionRef} className="py-16">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
@@ -140,10 +117,17 @@ const ChampionSection = () => {
             </div>
             
             <div className="relative perspective">
-              <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-xl hover:scale-[1.02] group">
-                {videoError ? <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
-                    <p className="text-gray-500">Video unavailable</p>
-                  </div> : <video ref={videoRef} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" playsInline muted autoPlay loop preload="auto" />}
+              <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-xl hover:scale-[1.02] group" ref={videoRef}>
+                {/* Replace with new Vimeo embed */}
+                <div style={{padding:"100% 0 0 0", position:"relative"}}>
+                  <iframe 
+                    src="https://player.vimeo.com/video/1073285328?h=205f79391c&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" 
+                    frameBorder="0" 
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
+                    style={{position:"absolute", top:0, left:0, width:"100%", height:"100%"}} 
+                    title="training library optimized">
+                  </iframe>
+                </div>
                 
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
@@ -164,12 +148,16 @@ const ChampionSection = () => {
 
           <div className="grid gap-8 md:grid-cols-2 mt-4">
             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-              {videoError ? <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <p className="text-gray-500">Video unavailable</p>
-                </div> : <video className="w-full h-full object-cover" autoPlay muted loop>
-                  <source src="/COACH.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>}
+              {/* Replace the video source in dialog too */}
+              <div style={{padding:"100% 0 0 0", position:"relative"}}>
+                <iframe 
+                  src="https://player.vimeo.com/video/1073285328?h=205f79391c&badge=0&autopause=0&player_id=0&app_id=58479" 
+                  frameBorder="0" 
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
+                  style={{position:"absolute", top:0, left:0, width:"100%", height:"100%"}} 
+                  title="training library optimized">
+                </iframe>
+              </div>
             </div>
 
             <div>
