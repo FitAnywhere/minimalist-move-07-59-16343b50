@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -14,18 +13,6 @@ interface Testimonial {
 }
 
 const testimonials: Testimonial[] = [{
-  name: "Emily T.",
-  role: "Fitness Beginner",
-  quote: "Bands seemed basic until I tried this. My whole body's sore in the best way.",
-  vimeoId: "1067256372",
-  hash: "70ab6c252c"
-}, {
-  name: "Jordan P.",
-  role: "Calisthenics Enthusiast",
-  quote: "Didn't expect this to replace my entire workout routine…",
-  vimeoId: "1072106681",
-  hash: "ccbb523a7c"
-}, {
   name: "Jordan P.",
   role: "Calisthenics Enthusiast",
   quote: "I've never had so much fun while getting in shape",
@@ -38,47 +25,11 @@ const testimonials: Testimonial[] = [{
   vimeoId: "1072106631",
   hash: "962bdbefe6"
 }, {
-  name: "Sarah M.",
-  role: "Remote Worker",
-  quote: "Being remote used to mean no workouts. Now it means random 15 minute gains between Zooms.",
-  vimeoId: "1067256419",
-  hash: "9896ed5d93"
-}, {
-  name: "Chris L.",
-  role: "Fitness Advocate",
-  quote: "Our clients love it, and it looks clean and modern.",
-  vimeoId: "1067256325",
-  hash: "d9d4133cc1"
-}, {
-  name: "Alex G.",
-  role: "Busy Professional",
-  quote: "Time saving is underrated. Now I work out and still have time for my girl.",
-  vimeoId: "1067256239",
-  hash: "d5e32d0eef"
-}, {
-  name: "John D.",
-  role: "Fitness Enthusiast",
-  quote: "It's like minimalism for fitness. Simple yet everything you need.",
-  vimeoId: "1067256399",
-  hash: "317d8d1581"
-}, {
-  name: "Tom S.",
-  role: "Strength Seeker",
-  quote: "No more gym anxiety.. just good vibes, and loud music.",
-  vimeoId: "1072106714",
-  hash: "2f52dd8383"
-}, {
   name: "Tom S.",
   role: "Strength Seeker",
   quote: "Obsessed. This setup made my old gear feel like toys",
   vimeoId: "1072106738",
   hash: "462fcda05e"
-}, {
-  name: "Ryan P.",
-  role: "Leader with a Fitness Goal",
-  quote: "Perfect for a quick and effective workout, no matter where I am!",
-  vimeoId: "1072106699",
-  hash: "6075a29b52"
 }];
 
 const TestimonialVideo = memo(({
@@ -379,7 +330,7 @@ const TestimonialsCarouselThird = () => {
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-              WHY THEY LOVE FitAnywhere?
+              WHY THEY LOVE BOXFUN?
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
           </div>
