@@ -9,6 +9,7 @@ import ProductIntro from '@/components/ProductIntro';
 // Import ChampionSection eagerly as well to avoid dynamic import errors
 import ChampionSection from '@/components/ChampionSection';
 import TrainingVault from '@/components/TrainingVault';
+import WorkoutAddictSection from '@/components/WorkoutAddictSection';
 
 // Continue lazy loading other components with better error boundaries and loading fallbacks
 const ProductTabs = lazy(() => import('@/components/ProductTabs'));
@@ -208,7 +209,7 @@ const Index = () => {
       }, options);
       
       // Observe all main sections
-      ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault'].forEach(id => {
+      ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault', 'workout-addict'].forEach(id => {
         const element = document.getElementById(id);
         if (element) observer.observe(element);
       });
@@ -286,7 +287,6 @@ const Index = () => {
         <HeroSection />
       </div>
       
-      {/* ProductIntro is now eagerly loaded */}
       <div id="product">
         <ProductIntro />
         <Suspense fallback={<SectionLoader />}>
@@ -294,31 +294,27 @@ const Index = () => {
         </Suspense>
       </div>
       
-      {/* ChampionSection is now eagerly loaded */}
       <ChampionSection />
       
-      {/* Add the TrainingVault component between ChampionSection and LifestyleSection */}
       <div id="training-vault">
         <TrainingVault />
       </div>
       
       <Suspense fallback={<SectionLoader />}>
-        <div id="lifestyle">
-          <LifestyleSection />
-        </div>
-        <div id="bundle">
-          <BundleOffer />
-        </div>
         <div id="reviews">
           <TestimonialsCarousel />
         </div>
+        
+        <div id="workout-addict">
+          <WorkoutAddictSection />
+        </div>
+        
         <TimeAndCostCalculator />
         <TargetAndFAQ />
         <CallToAction />
         <Footer />
       </Suspense>
       
-      {/* Add ChatbotHelper component */}
       <ChatbotHelper />
     </div>
   );
