@@ -53,12 +53,6 @@ function getVimeoPlayer(): SafeVimeo["Player"] | null {
   return null;
 }
 
-// Current playback state tracking
-const playbackState = {
-  isActive: false,
-  timeoutId: null as NodeJS.Timeout | null
-};
-
 const HeroVideo = memo(() => {
   // Core state variables
   const [isPlaying, setIsPlaying] = useState(false);
@@ -77,21 +71,14 @@ const HeroVideo = memo(() => {
   const vimeoPlayerRef = useRef<VimeoPlayer | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const mountedRef = useRef<boolean>(true); // Track component mounted state
 
   const LOCAL_VIDEO_URL = '/fitanywhere intro.mp4';
-  const VIMEO_VIDEO_ID = 1067255623;
+  // Fix error: Type 'string' is not assignable to type 'number'
+  // Converting from string to number
+  const VIMEO_VIDEO_ID = 1067255623; 
   const MP4_TIMEOUT = 2500; // 2.5 seconds timeout for MP4 loading
   const MAX_RETRIES = 5;
   const RETRY_DELAYS = [1000, 2000, 4000, 8000, 16000]; // Exponential backoff
-
-  // Safe timeout clearing utility
-  const clearControlsTimeout = useCallback(() => {
-    if (controlsTimeoutRef.current) {
-      clearTimeout(controlsTimeoutRef.current);
-      controlsTimeoutRef.current = null;
-    }
-  }, []);
 
   // Load Vimeo script with enhanced reliability
   const loadVimeoScript = useCallback((): Promise<void> => {
@@ -103,11 +90,6 @@ const HeroVideo = memo(() => {
         } else {
           // Wait for the script to finish loading
           const checkVimeo = setInterval(() => {
-            if (!mountedRef.current) {
-              clearInterval(checkVimeo);
-              return;
-            }
-            
             if (window.Vimeo && window.Vimeo.Player) {
               clearInterval(checkVimeo);
               resolve();
@@ -117,8 +99,6 @@ const HeroVideo = memo(() => {
           // Timeout after 10 seconds
           setTimeout(() => {
             clearInterval(checkVimeo);
-            if (!mountedRef.current) return;
-            
             if (!window.Vimeo || !window.Vimeo.Player) {
               console.error('Vimeo Player API loading timed out');
               // Continue anyway, might still work
@@ -137,13 +117,11 @@ const HeroVideo = memo(() => {
       script.defer = true; // Add defer for better performance
       
       script.onload = () => {
-        if (!mountedRef.current) return;
         console.log('Vimeo Player API loaded');
         resolve();
       };
       
       script.onerror = (err) => {
-        if (!mountedRef.current) return;
         console.error('Failed to load Vimeo Player API:', err);
         reject(err);
       };
@@ -158,7 +136,7 @@ const HeroVideo = memo(() => {
 
   // Initialize Vimeo player with enhanced reliability
   const initVimeoPlayer = useCallback(async () => {
-    if (!vimeoContainerRef.current || !mountedRef.current) return;
+    if (!vimeoContainerRef.current) return;
     
     try {
       // Register with video load manager
@@ -170,8 +148,6 @@ const HeroVideo = memo(() => {
       }
       
       await loadVimeoScript();
-      if (!mountedRef.current) return;
-      
       const VimeoPlayer = getVimeoPlayer();
       
       if (!VimeoPlayer) {
@@ -182,11 +158,7 @@ const HeroVideo = memo(() => {
       }
       
       if (vimeoPlayerRef.current) {
-        try {
-          vimeoPlayerRef.current.destroy();
-        } catch (err) {
-          console.error('Error destroying previous Vimeo player:', err);
-        }
+        vimeoPlayerRef.current.destroy();
       }
       
       const options: VimeoPlayerOptions = {
@@ -204,74 +176,52 @@ const HeroVideo = memo(() => {
       };
       
       const player = new VimeoPlayer(vimeoContainerRef.current, options) as VimeoPlayer;
-      if (!mountedRef.current) {
-        try {
-          player.destroy();
-        } catch (err) {
-          console.error('Error destroying Vimeo player after unmount:', err);
-        }
-        return;
-      }
-      
       vimeoPlayerRef.current = player;
       
       // Event handlers
       const handleReady = () => {
-        if (!mountedRef.current) return;
         setVimeoLoaded(true);
         setIsLoading(false);
         console.log('Vimeo player ready');
       };
       
       const handlePlay = () => {
-        if (!mountedRef.current) return;
         setIsPlaying(true);
-        
         // Auto-hide controls after playback starts
-        clearControlsTimeout();
-        
-        if (!isHovering) {
-          controlsTimeoutRef.current = setTimeout(() => {
-            if (!mountedRef.current) return;
-            if (!isHovering) {
-              setShowControls(false);
-            }
-          }, 2000);
+        if (controlsTimeoutRef.current) {
+          clearTimeout(controlsTimeoutRef.current);
         }
+        controlsTimeoutRef.current = setTimeout(() => {
+          if (!isHovering) {
+            setShowControls(false);
+          }
+        }, 2000);
       };
       
       const handlePause = () => {
-        if (!mountedRef.current) return;
         setIsPlaying(false);
         setShowControls(true);
       };
       
       const handleEnded = () => {
-        if (!mountedRef.current) return;
         setIsPlaying(false);
         setShowControls(true);
-        
-        if (player && mountedRef.current) {
-          player.pause().catch(err => console.error('Error pausing vimeo after end:', err));
-        }
+        player.pause().catch(err => console.error('Error pausing vimeo after end:', err));
       };
       
       const handleError = (error: any) => {
-        if (!mountedRef.current) return;
         console.error('Vimeo player error:', error);
         
         if (loadRetries < MAX_RETRIES) {
           console.log(`Retrying Vimeo player load (${loadRetries + 1}/${MAX_RETRIES})...`);
           
           setTimeout(() => {
-            if (!mountedRef.current) return;
             setLoadRetries(prev => prev + 1);
             
             // Clean up before retrying
             if (player) {
               try {
                 player.destroy();
-                vimeoPlayerRef.current = null;
               } catch (e) {
                 console.error('Error destroying player for retry:', e);
               }
@@ -300,14 +250,12 @@ const HeroVideo = memo(() => {
         player.off('error', handleError);
       };
     } catch (error) {
-      if (!mountedRef.current) return;
       console.error('Error initializing Vimeo player:', error);
       
       if (loadRetries < MAX_RETRIES) {
         console.log(`Retrying Vimeo player initialization (${loadRetries + 1}/${MAX_RETRIES})...`);
         
         setTimeout(() => {
-          if (!mountedRef.current) return;
           setLoadRetries(prev => prev + 1);
           initVimeoPlayer();
         }, RETRY_DELAYS[loadRetries] || 3000);
@@ -316,11 +264,10 @@ const HeroVideo = memo(() => {
         setIsLoading(false);
       }
     }
-  }, [isMuted, loadVimeoScript, loadRetries, isHovering, clearControlsTimeout]);
+  }, [isMuted, loadVimeoScript, loadRetries]);
 
   // Main initialization effect with enhanced reliability
   useEffect(() => {
-    mountedRef.current = true;
     setIsLoading(true);
     setHasError(false);
     
@@ -329,7 +276,6 @@ const HeroVideo = memo(() => {
       const video = videoRef.current;
       
       const handleCanPlayThrough = () => {
-        if (!mountedRef.current) return;
         if (!useVimeoFallback) {
           setIsLoading(false);
           console.log('MP4 video loaded successfully');
@@ -343,13 +289,11 @@ const HeroVideo = memo(() => {
       };
       
       const handleError = () => {
-        if (!mountedRef.current) return;
         console.error('MP4 video failed to load, switching to Vimeo fallback');
         setUseVimeoFallback(true);
       };
       
       const handleEnded = () => {
-        if (!mountedRef.current) return;
         setIsPlaying(false);
         setShowControls(true);
         if (video) {
@@ -362,34 +306,10 @@ const HeroVideo = memo(() => {
       video.addEventListener('error', handleError);
       video.addEventListener('ended', handleEnded);
       
-      // MP4 playback events for controls state management
-      video.addEventListener('play', () => {
-        if (!mountedRef.current) return;
-        setIsPlaying(true);
-        
-        // Auto-hide controls after playback starts
-        clearControlsTimeout();
-        
-        if (!isHovering) {
-          controlsTimeoutRef.current = setTimeout(() => {
-            if (!mountedRef.current) return;
-            if (!isHovering) {
-              setShowControls(false);
-            }
-          }, 2000);
-        }
-      });
-      
-      video.addEventListener('pause', () => {
-        if (!mountedRef.current) return;
-        setIsPlaying(false);
-        setShowControls(true);
-      });
-      
       // Set a timeout for MP4 loading - if it takes too long, switch to Vimeo
       timeoutRef.current = setTimeout(() => {
-        if (!mountedRef.current) return;
-        // Check readyState properly
+        // Fix error: Operator '>=' cannot be applied to types 'boolean' and 'number'
+        // Checking readyState properly
         if (video.readyState < 4) {
           console.log('MP4 video taking too long to load, switching to Vimeo fallback');
           setUseVimeoFallback(true);
@@ -397,43 +317,31 @@ const HeroVideo = memo(() => {
       }, MP4_TIMEOUT);
       
       return () => {
-        mountedRef.current = false;
-        
         // Clean up event listeners
         video.removeEventListener('canplaythrough', handleCanPlayThrough);
         video.removeEventListener('error', handleError);
         video.removeEventListener('ended', handleEnded);
-        video.removeEventListener('play', () => {});
-        video.removeEventListener('pause', () => {});
         
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
           timeoutRef.current = null;
         }
-        
-        clearControlsTimeout();
       };
     }
-    
-    return () => {
-      mountedRef.current = false;
-    };
-  }, [isHovering, clearControlsTimeout]);
+  }, []);
 
   // Initialize Vimeo player when needed
   useEffect(() => {
     if (useVimeoFallback && !vimeoLoaded) {
+      // Fix error: This expression is not callable. Type 'never' has no call signatures.
+      // Instead of expecting a cleanup function, we'll just call the method
       initVimeoPlayer();
       
       return () => {
         // Clean up Vimeo player
         if (vimeoPlayerRef.current) {
-          try {
-            vimeoPlayerRef.current.destroy();
-            vimeoPlayerRef.current = null;
-          } catch (err) {
-            console.error('Error destroying Vimeo player on cleanup:', err);
-          }
+          vimeoPlayerRef.current.destroy();
+          vimeoPlayerRef.current = null;
         }
       };
     }
@@ -442,17 +350,6 @@ const HeroVideo = memo(() => {
   // Handle play/pause with enhanced error handling
   const togglePlayPause = useCallback(() => {
     if (isLoading) return;
-    
-    // Prevent repeated rapid clicking
-    if (playbackState.timeoutId) {
-      return;
-    }
-    
-    playbackState.isActive = true;
-    playbackState.timeoutId = setTimeout(() => {
-      playbackState.isActive = false;
-      playbackState.timeoutId = null;
-    }, 300); // Debounce period
     
     if (useVimeoFallback && vimeoPlayerRef.current) {
       if (isPlaying) {
@@ -468,7 +365,6 @@ const HeroVideo = memo(() => {
             console.error('Error playing Vimeo:', err);
             // Try again after a short delay
             setTimeout(() => {
-              if (!mountedRef.current) return;
               if (vimeoPlayerRef.current) {
                 vimeoPlayerRef.current.play()
                   .catch(innerErr => {
@@ -487,20 +383,16 @@ const HeroVideo = memo(() => {
       } else {
         video.play()
           .then(() => {
-            if (!mountedRef.current) return;
             setIsPlaying(true);
-            
             // Auto-hide controls after playback starts
-            clearControlsTimeout();
-            
-            if (!isHovering) {
-              controlsTimeoutRef.current = setTimeout(() => {
-                if (!mountedRef.current) return;
-                if (!isHovering) {
-                  setShowControls(false);
-                }
-              }, 2000);
+            if (controlsTimeoutRef.current) {
+              clearTimeout(controlsTimeoutRef.current);
             }
+            controlsTimeoutRef.current = setTimeout(() => {
+              if (!isHovering) {
+                setShowControls(false);
+              }
+            }, 2000);
           })
           .catch(err => {
             console.error('Error playing MP4:', err);
@@ -511,20 +403,16 @@ const HeroVideo = memo(() => {
             
             video.play()
               .then(() => {
-                if (!mountedRef.current) return;
                 setIsPlaying(true);
-                
                 // Auto-hide controls after playback starts
-                clearControlsTimeout();
-                
-                if (!isHovering) {
-                  controlsTimeoutRef.current = setTimeout(() => {
-                    if (!mountedRef.current) return;
-                    if (!isHovering) {
-                      setShowControls(false);
-                    }
-                  }, 2000);
+                if (controlsTimeoutRef.current) {
+                  clearTimeout(controlsTimeoutRef.current);
                 }
+                controlsTimeoutRef.current = setTimeout(() => {
+                  if (!isHovering) {
+                    setShowControls(false);
+                  }
+                }, 2000);
               })
               .catch(innerErr => {
                 console.error('Error playing muted MP4:', innerErr);
@@ -532,7 +420,7 @@ const HeroVideo = memo(() => {
           });
       }
     }
-  }, [isPlaying, isLoading, useVimeoFallback, isHovering, clearControlsTimeout]);
+  }, [isPlaying, isLoading, useVimeoFallback, isHovering]);
 
   // Handle mute/unmute with enhanced error handling
   const toggleMute = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
@@ -553,25 +441,30 @@ const HeroVideo = memo(() => {
     }
   }, [isMuted, useVimeoFallback]);
 
-  // Handle hover state for controls with improved timing
+  // Handle hover state for controls
   const handleMouseEnter = useCallback(() => {
     setIsHovering(true);
     setShowControls(true);
-    clearControlsTimeout();
-  }, [clearControlsTimeout]);
+    
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+      controlsTimeoutRef.current = null;
+    }
+  }, []);
 
   const handleMouseLeave = useCallback(() => {
     setIsHovering(false);
     
     if (isPlaying) {
-      clearControlsTimeout();
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
       
       controlsTimeoutRef.current = setTimeout(() => {
-        if (!mountedRef.current) return;
         setShowControls(false);
       }, 2000);
     }
-  }, [isPlaying, clearControlsTimeout]);
+  }, [isPlaying]);
 
   // Retry when both sources fail with enhanced reliability
   const handleRetry = useCallback(() => {
@@ -586,13 +479,9 @@ const HeroVideo = memo(() => {
       video.load();
       
       // Set timeout to switch to Vimeo if MP4 fails again
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      
       timeoutRef.current = setTimeout(() => {
-        if (!mountedRef.current) return;
-        // Check readyState properly
+        // Fix error: Operator '>=' cannot be applied to types 'boolean' and 'number'
+        // Checking readyState properly
         if (video.readyState < 4) {
           setUseVimeoFallback(true);
         }
@@ -603,34 +492,21 @@ const HeroVideo = memo(() => {
   // Clean up on unmount
   useEffect(() => {
     return () => {
-      mountedRef.current = false;
-      
       // Clean up timeouts
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
       }
       
-      clearControlsTimeout();
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
       
       // Clean up Vimeo player
       if (vimeoPlayerRef.current) {
-        try {
-          vimeoPlayerRef.current.destroy();
-          vimeoPlayerRef.current = null;
-        } catch (err) {
-          console.error('Error destroying Vimeo player on unmount:', err);
-        }
-      }
-      
-      // Clean up global playback state
-      if (playbackState.timeoutId) {
-        clearTimeout(playbackState.timeoutId);
-        playbackState.timeoutId = null;
-        playbackState.isActive = false;
+        vimeoPlayerRef.current.destroy();
       }
     };
-  }, [clearControlsTimeout]);
+  }, []);
 
   return (
     <div 
