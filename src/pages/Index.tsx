@@ -305,6 +305,10 @@ const Index = () => {
           <TestimonialsCarousel />
         </div>
         
+        <div id="bundle">
+          <BundleOffer />
+        </div>
+        
         <div id="workout-addict">
           <WorkoutAddictSection />
         </div>
