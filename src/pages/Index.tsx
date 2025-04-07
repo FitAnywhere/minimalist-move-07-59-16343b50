@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, lazy, Suspense, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -64,10 +63,9 @@ const SectionLoader = () => (
 
 // Critical videos to preload with proper timing
 const CRITICAL_VIDEOS = [
-  '1067255623', // Hero video - highest priority
   '1067257145', // TRX video
   '1067257124', // Bands video 
-  '1067256372', // Testimonial videos (first few)
+  '1067256372', // Testimonial videos
   '1067256325',
   '1067256399'
 ];

@@ -1,4 +1,3 @@
-
 import { memo, useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -9,7 +8,6 @@ interface HeroContentProps {
   isMobile?: boolean;
 }
 
-// Memoize the component to prevent unnecessary rerenders
 const HeroContent = memo(({
   isInView,
   scrollToOwnBoth,
