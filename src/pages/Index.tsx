@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, lazy, Suspense, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -9,6 +8,7 @@ import ChatbotHelper from '@/components/ChatbotHelper';
 import ProductIntro from '@/components/ProductIntro';
 // Import ChampionSection eagerly as well to avoid dynamic import errors
 import ChampionSection from '@/components/ChampionSection';
+import TrainingVault from '@/components/TrainingVault';
 
 // Continue lazy loading other components with better error boundaries and loading fallbacks
 const ProductTabs = lazy(() => import('@/components/ProductTabs'));
@@ -69,7 +69,8 @@ const CRITICAL_VIDEOS = [
   '1067257124', // Bands video 
   '1067256372', // Testimonial videos
   '1067256325',
-  '1067256399'
+  '1067256399',
+  '1073152410', // TrainingVault video
 ];
 
 const Index = () => {
@@ -78,7 +79,6 @@ const Index = () => {
   const vimeoAPILoadedRef = useRef(false);
   const [sectionsInView, setSectionsInView] = useState({});
   
-  // Add preload for Vimeo API and key videos immediately on page load
   useEffect(() => {
     // Preload Vimeo player API
     const preloadVimeoAPI = () => {
@@ -208,7 +208,7 @@ const Index = () => {
       }, options);
       
       // Observe all main sections
-      ['product', 'lifestyle', 'bundle', 'reviews'].forEach(id => {
+      ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault'].forEach(id => {
         const element = document.getElementById(id);
         if (element) observer.observe(element);
       });
@@ -296,6 +296,11 @@ const Index = () => {
       
       {/* ChampionSection is now eagerly loaded */}
       <ChampionSection />
+      
+      {/* Add the TrainingVault component between ChampionSection and LifestyleSection */}
+      <div id="training-vault">
+        <TrainingVault />
+      </div>
       
       <Suspense fallback={<SectionLoader />}>
         <div id="lifestyle">
