@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, lazy, Suspense, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -10,7 +9,6 @@ import ProductIntro from '@/components/ProductIntro';
 // Import ChampionSection eagerly as well to avoid dynamic import errors
 import ChampionSection from '@/components/ChampionSection';
 import TrainingVault from '@/components/TrainingVault';
-import LimitedOfferSection from '@/components/LimitedOfferSection';
 
 // Continue lazy loading other components with better error boundaries and loading fallbacks
 const ProductTabs = lazy(() => import('@/components/ProductTabs'));
@@ -299,30 +297,21 @@ const Index = () => {
       {/* ChampionSection is now eagerly loaded */}
       <ChampionSection />
       
-      {/* Training Vault section */}
+      {/* Add the TrainingVault component between ChampionSection and LifestyleSection */}
       <div id="training-vault">
         <TrainingVault />
       </div>
       
       <Suspense fallback={<SectionLoader />}>
-        {/* Testimonials section (Why They Love It) */}
-        <div id="reviews">
-          <TestimonialsCarousel />
-        </div>
-        
-        {/* LifestyleSection (Become Workout Addict) moved here - after testimonials */}
         <div id="lifestyle">
           <LifestyleSection />
         </div>
-        
-        {/* Bundle Offer (Your Lifetime Investment) */}
         <div id="bundle">
           <BundleOffer />
         </div>
-        
-        {/* Add the new independent Limited Offer section */}
-        <LimitedOfferSection />
-        
+        <div id="reviews">
+          <TestimonialsCarousel />
+        </div>
         <TimeAndCostCalculator />
         <TargetAndFAQ />
         <CallToAction />
