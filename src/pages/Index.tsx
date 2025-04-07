@@ -31,6 +31,12 @@ const TestimonialsCarousel = lazy(() =>
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
+const TestimonialsCarouselSecond = lazy(() => 
+  import('@/components/TestimonialsCarouselSecond').catch(err => {
+    console.error('Failed to load TestimonialsCarouselSecond:', err);
+    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+  })
+);
 const TimeAndCostCalculator = lazy(() => 
   import('@/components/TimeAndCostCalculator').catch(err => {
     console.error('Failed to load TimeAndCostCalculator:', err);
@@ -311,6 +317,10 @@ const Index = () => {
         
         <div id="workout-addict">
           <WorkoutAddictSection />
+        </div>
+        
+        <div id="reviews-second">
+          <TestimonialsCarouselSecond />
         </div>
         
         <TimeAndCostCalculator />
