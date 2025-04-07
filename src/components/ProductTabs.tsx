@@ -2,94 +2,81 @@
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Zap, ChevronDown, ChevronUp, Flame, Backpack } from 'lucide-react';
-import { useInView } from '@/utils/optimizedAnimations';
+import { useInView } from '@/utils/animations';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { loadVimeoScript, preloadVimeoVideo } from '@/utils/videoLoader';
 
-// Features data
 const bandsFeatures = [
-  { title: "10x MORE EXERCISES", description: "Push past plateaus, and keep progressing.", icon: Flame },
-  { title: "SUPPORT WHEN NEEDED", description: "Unfold, clip in, and train—whether at home or on the go.", icon: Backpack },
-  { title: "CHALLENGE WHEN READY", description: "From first reps to peak performance—bands move with you.", icon: Zap }
+  {
+    title: "10x MORE EXERCISES",
+    description: "Push past plateaus, and keep progressing.",
+    icon: Flame
+  }, 
+  {
+    title: "SUPPORT WHEN NEEDED",
+    description: "Unfold, clip in, and train—whether at home or on the go.",
+    icon: Backpack
+  },
+  {
+    title: "CHALLENGE WHEN READY",
+    description: "From first reps to peak performance—bands move with you.",
+    icon: Zap
+  }
 ];
 
-// Video rendering components
-const VideoFrame = ({ vimeoId, isVisible }: { vimeoId: string, isVisible: boolean }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  
-  useEffect(() => {
-    // Preload the video when component mounts
-    preloadVimeoVideo(vimeoId);
-  }, [vimeoId]);
-  
-  return (
-    <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
-      <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
-        <iframe 
-          src={`https://player.vimeo.com/video/${vimeoId}?title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=${isVisible ? '1' : '0'}&preload=auto`}
-          allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
-          className={cn(
-            "w-full h-full absolute inset-0",
-            isLoaded ? "opacity-100" : "opacity-0"
-          )}
-          title={`Video ${vimeoId}`}
-          style={{ border: 'none', transition: 'opacity 0.3s ease' }}
-          loading="lazy"
-          onLoad={() => setIsLoaded(true)}
-        ></iframe>
-        
-        {!isLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-800 rounded-2xl">
-            <div className="w-10 h-10 border-4 border-yellow rounded-full border-t-transparent animate-spin"></div>
-          </div>
-        )}
-      </AspectRatio>
-    </div>
-  );
-};
-
 const ProductTabs = () => {
-  // State
+  // Change default activeTab from 'trx' to 'bands'
   const [activeTab, setActiveTab] = useState<'trx' | 'bands'>('bands');
   const [bandsExpandedFeatures, setBandsExpandedFeatures] = useState<Record<number, boolean>>({});
   const [bulletPointsVisible, setBulletPointsVisible] = useState<boolean[]>([false, false, false]);
-  const [vimeoLoaded, setVimeoLoaded] = useState(false);
   
-  // Refs
   const sectionRef = useRef<HTMLElement>(null);
   const trxVideoRef = useRef<HTMLDivElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
   const trxTextRef = useRef<HTMLDivElement>(null);
   const bandsTextRef = useRef<HTMLDivElement>(null);
   
-  // Animation hooks
   const isInView = useInView(sectionRef);
-  const isVideoInView = useInView(trxVideoRef, { threshold: 0.3 });
-  const isBandsVideoInView = useInView(bandsVideoRef, { threshold: 0.3 });
-  const isTrxTextInView = useInView(trxTextRef, { threshold: 0.2 });
-  const isBandsTextInView = useInView(bandsTextRef, { threshold: 0.2 });
+  const isVideoInView = useInView(trxVideoRef, {
+    threshold: 0.3
+  });
+  const isBandsVideoInView = useInView(bandsVideoRef, {
+    threshold: 0.3
+  });
+  const isTrxTextInView = useInView(trxTextRef, {
+    threshold: 0.2
+  });
+  const isBandsTextInView = useInView(bandsTextRef, {
+    threshold: 0.2
+  });
   
   const isMobile = useIsMobile();
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
-  // Load Vimeo script once
   useEffect(() => {
-    loadVimeoScript()
-      .then(() => {
-        setVimeoLoaded(true);
-        console.log("Vimeo script loaded for ProductTabs");
-      })
-      .catch(err => {
-        console.error("Failed to load Vimeo script in ProductTabs:", err);
-      });
+    if (!window.Vimeo && !isScriptLoaded) {
+      const script = document.createElement('script');
+      script.src = 'https://player.vimeo.com/api/player.js';
+      script.async = true;
+      script.onload = () => setIsScriptLoaded(true);
+      document.body.appendChild(script);
+    } else if (window.Vimeo) {
+      setIsScriptLoaded(true);
+    }
     
-    // Preload videos
     const videoIds = ['1067257145', '1067257124'];
-    videoIds.forEach(videoId => preloadVimeoVideo(videoId));
-  }, []);
+    
+    videoIds.forEach(videoId => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'fetch';
+      link.href = `https://player.vimeo.com/video/${videoId}`;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    });
+  }, [isScriptLoaded]);
 
-  // Bullet points animation
   useEffect(() => {
     if (isTrxTextInView) {
       const timers = [0, 200, 400].map((delay, index) => 
@@ -108,7 +95,40 @@ const ProductTabs = () => {
     }
   }, [isTrxTextInView]);
 
-  // Feature toggling
+  const renderTrxVimeoVideo = () => {
+    return (
+      <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
+        <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
+          <iframe 
+            src="https://player.vimeo.com/video/1067257145?h=45e88fd96b&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto"
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+            className="w-full h-full absolute inset-0"
+            title="TRX video"
+            style={{ border: 'none' }}
+            loading="eager"
+          ></iframe>
+        </AspectRatio>
+      </div>
+    );
+  };
+
+  const renderBandsVimeoVideo = () => {
+    return (
+      <div className="w-full h-full overflow-hidden relative" style={{ maxWidth: '80%', margin: '0 auto' }}>
+        <AspectRatio ratio={3/4} className="overflow-hidden rounded-2xl">
+          <iframe 
+            src="https://player.vimeo.com/video/1067257124?h=1c3b52f7d4&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto" 
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+            className="w-full h-full absolute inset-0"
+            title="Bands video"
+            style={{ border: 'none' }}
+            loading="eager"
+          ></iframe>
+        </AspectRatio>
+      </div>
+    );
+  };
+
   const toggleBandsFeature = (index: number) => {
     setBandsExpandedFeatures(prev => ({
       ...prev,
@@ -130,11 +150,9 @@ const ProductTabs = () => {
           )}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
               MAXIMIZE YOUR EXPERIENCE
-              <span className={cn(
-                "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
-                isInView ? "scale-x-100" : "scale-x-0"
-              )}></span>
+              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
+            
           </div>
           
           <div className="flex justify-center mb-10">
@@ -160,7 +178,6 @@ const ProductTabs = () => {
             </div>
           </div>
           
-          {/* TRX Tab */}
           <div className={cn(
             "transition-all duration-500", 
             activeTab === 'trx' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20 hidden'
@@ -176,7 +193,7 @@ const ProductTabs = () => {
                   isMobile ? "order-1" : "order-2"
                 )}
               >
-                <VideoFrame vimeoId="1067257145" isVisible={isVideoInView} />
+                {renderTrxVimeoVideo()}
               </div>
               
               <div 
@@ -220,7 +237,6 @@ const ProductTabs = () => {
             </div>
           </div>
           
-          {/* Bands Tab */}
           <div className={cn(
             "transition-all duration-500", 
             activeTab === 'bands' ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20 hidden'
@@ -271,7 +287,7 @@ const ProductTabs = () => {
                   isMobile ? "order-1" : "order-2"
                 )}
               >
-                <VideoFrame vimeoId="1067257124" isVisible={isBandsVideoInView} />
+                {renderBandsVimeoVideo()}
               </div>
             </div>
           </div>
@@ -282,3 +298,4 @@ const ProductTabs = () => {
 };
 
 export default ProductTabs;
+

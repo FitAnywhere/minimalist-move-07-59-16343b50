@@ -1,7 +1,7 @@
 
 import { useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { useInView } from '@/utils/optimizedAnimations';
+import { useInView } from '@/utils/animations';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -59,12 +59,7 @@ const TestimonialsCarouselSecond = () => {
                       
                       <div className="flex items-center">
                         <Avatar className="h-12 w-12 border-2 border-yellow">
-                          <AvatarImage 
-                            src={testimonial.avatar} 
-                            alt={testimonial.name}
-                            loading="lazy"
-                            decoding="async"
-                          />
+                          <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
                           <AvatarFallback>{testimonial.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                         </Avatar>
                         <div className="ml-4">
