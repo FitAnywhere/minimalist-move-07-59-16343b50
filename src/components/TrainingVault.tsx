@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
+
 const TrainingVault = () => {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [selectedLevel, setSelectedLevel] = useState<'beginner' | 'expert' | null>(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -13,19 +13,20 @@ const TrainingVault = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const isMobile = useIsMobile();
+  
   const handleLevelSelect = (level: 'beginner' | 'expert') => {
     setSelectedLevel(level);
   };
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      name,
-      value
-    } = e.target;
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -86,6 +87,7 @@ const TrainingVault = () => {
       setIsLoading(false);
     }
   };
+  
   return <section className="bg-black text-white py-16">
       <div className="container mx-auto px-6">
         {/* Heading */}
@@ -118,7 +120,7 @@ const TrainingVault = () => {
             {/* Form (shown after selection) */}
             {selectedLevel && !hasSubmitted && <div className="animate-fade-in w-full">
                 <p className="text-lg mb-4 text-center font-medium">
-                  Tell us where to send your custom sample! 🏋️‍♂️
+                  Tell us where to send you FitAnywhere workout samples for {selectedLevel === 'beginner' ? 'beginners' : 'experts'}! 🏋️‍♂️
                 </p>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md mx-auto">
                   <div>
@@ -142,7 +144,7 @@ const TrainingVault = () => {
           
           {/* Right column: Equipment Image */}
           <div className="md:w-1/2 mt-8 md:mt-0 flex justify-center md:justify-start">
-            <div className="relative w-full max-w-[40%] md:max-w-[40%] mx-auto">
+            <div className="relative w-full max-w-[40%] md:max-w-[40%] mx-auto" style={isMobile ? { maxWidth: '50%' } : undefined}>
               <div style={{
               padding: '177.78% 0 0 0',
               position: 'relative'
@@ -161,4 +163,5 @@ const TrainingVault = () => {
       </div>
     </section>;
 };
+
 export default TrainingVault;

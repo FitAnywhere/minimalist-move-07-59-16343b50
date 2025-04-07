@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote, CheckCircle } from 'lucide-react';
@@ -29,6 +30,9 @@ const TimeAndCostCalculator = () => {
 
   // Calculate time wasted in 20 years (in hours)
   const timeWastedInYears = Math.round(timeWastedPerVisit * VISITS_PER_WEEK * WEEKS_PER_YEAR * YEARS_PROJECTION / 60);
+  
+  // Calculate time wasted in 1 year (in hours)
+  const timeWastedPerYear = Math.round(timeWastedPerVisit * VISITS_PER_WEEK * WEEKS_PER_YEAR / 60);
 
   // Calculate money spent in 20 years (in euros)
   const moneySpentInYears = gymMonthlyCost * 12 * YEARS_PROJECTION;
@@ -142,7 +146,7 @@ const TimeAndCostCalculator = () => {
                 {/* Payoff Timeframe Display - Added more padding/margin */}
                 {gymMonthlyCost >= 5 && <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-6 text-center my-10">
                     <p className="text-xl font-bold text-black">
-                      In less than {payoffTimeframe} {payoffTimeframe === 1 ? 'year' : 'years'} own FitAnywhere for free while saving €{annualSavings} every year.
+                      With FitAnywhere you can start saving €{annualSavings} every year.
                     </p>
                   </div>}
                 
@@ -153,7 +157,7 @@ const TimeAndCostCalculator = () => {
                     <div className="flex flex-col md:flex-row">
                       {/* Input section - Left side on desktop, top on mobile */}
                       <div className="bg-white p-6 md:p-8 md:w-1/2">
-                        <p className="mb-3 text-left font-bold text-sm">How much time do you spend going to the gym and back?</p>
+                        <p className="mb-3 text-left font-bold text-sm">How much time do you spend on the way to the gym?</p>
                         
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-gray-600">0 min</span>
@@ -166,6 +170,14 @@ const TimeAndCostCalculator = () => {
                         <div className="py-4 md:py-6">
                           <Slider value={[timeWastedPerVisit]} min={0} max={120} step={5} className="w-full" onValueChange={value => setTimeWastedPerVisit(value[0])} />
                         </div>
+                        
+                        {timeWastedPerVisit > 0 && (
+                          <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center mt-4">
+                            <p className="text-md font-bold text-black">
+                              What could you do with extra {timeWastedPerYear} hours a year?
+                            </p>
+                          </div>
+                        )}
                       </div>
                       
                       {/* Time Result - Right side on desktop, bottom on mobile */}
