@@ -3,6 +3,18 @@
  * Utilities for optimized resource loading
  */
 
+// Add interface for Network Information API
+interface NetworkInformation {
+  effectiveType: string;
+  saveData: boolean;
+  [key: string]: any;
+}
+
+// Extend Navigator interface to include connection property
+interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkInformation;
+}
+
 /**
  * Preload an image with proper error handling
  */
@@ -95,8 +107,11 @@ export const optimizeFontLoading = (fontUrls: string[]): void => {
  * Detect network connection quality
  */
 export const getConnectionQuality = (): 'slow' | 'medium' | 'fast' => {
-  if (navigator.connection) {
-    const conn = navigator.connection as any;
+  // Safely check for Network Information API with proper type casting
+  const navigatorWithConnection = navigator as NavigatorWithConnection;
+  
+  if (navigatorWithConnection.connection) {
+    const conn = navigatorWithConnection.connection;
     
     if (conn.saveData) {
       return 'slow';
