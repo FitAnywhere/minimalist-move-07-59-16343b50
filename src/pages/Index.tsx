@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, lazy, Suspense, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -10,19 +9,24 @@ import ProductIntro from '@/components/ProductIntro';
 // Import ChampionSection eagerly as well to avoid dynamic import errors
 import ChampionSection from '@/components/ChampionSection';
 import TrainingVault from '@/components/TrainingVault';
-import WorkoutAddictSection from '@/components/WorkoutAddictSection';
 
 // Continue lazy loading other components with better error boundaries and loading fallbacks
 const ProductTabs = lazy(() => import('@/components/ProductTabs'));
-const TestimonialsCarousel = lazy(() => 
-  import('@/components/TestimonialsCarousel').catch(err => {
-    console.error('Failed to load TestimonialsCarousel:', err);
+const LifestyleSection = lazy(() => 
+  import('@/components/LifestyleSection').catch(err => {
+    console.error('Failed to load LifestyleSection:', err);
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
 const BundleOffer = lazy(() => 
   import('@/components/BundleOffer').catch(err => {
     console.error('Failed to load BundleOffer:', err);
+    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+  })
+);
+const TestimonialsCarousel = lazy(() => 
+  import('@/components/TestimonialsCarousel').catch(err => {
+    console.error('Failed to load TestimonialsCarousel:', err);
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
@@ -293,26 +297,20 @@ const Index = () => {
       {/* ChampionSection is now eagerly loaded */}
       <ChampionSection />
       
-      {/* Reviews Section (Testimonials) */}
-      <div id="reviews">
-        <Suspense fallback={<SectionLoader />}>
-          <TestimonialsCarousel />
-        </Suspense>
-      </div>
-      
-      {/* Workout Addict Section - Moved to after testimonials */}
-      <div id="workout-addict">
-        <WorkoutAddictSection />
-      </div>
-      
-      {/* Add the TrainingVault component */}
+      {/* Add the TrainingVault component between ChampionSection and LifestyleSection */}
       <div id="training-vault">
         <TrainingVault />
       </div>
       
       <Suspense fallback={<SectionLoader />}>
+        <div id="lifestyle">
+          <LifestyleSection />
+        </div>
         <div id="bundle">
           <BundleOffer />
+        </div>
+        <div id="reviews">
+          <TestimonialsCarousel />
         </div>
         <TimeAndCostCalculator />
         <TargetAndFAQ />

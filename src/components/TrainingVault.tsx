@@ -1,44 +1,38 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+
 const TrainingVault = () => {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [selectedLevel, setSelectedLevel] = useState<'beginner' | 'expert' | null>(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: ''
-  });
+  const [formData, setFormData] = useState({ name: '', email: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+
   const handleLevelSelect = (level: 'beginner' | 'expert') => {
     setSelectedLevel(level);
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      name,
-      value
-    } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     // Basic validation
     if (!formData.name || !formData.email) {
       toast({
         title: "Error",
         description: "Please fill out all fields",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-
+    
     // Check if already submitted
     if (hasSubmitted) {
       toast({
@@ -47,32 +41,35 @@ const TrainingVault = () => {
       });
       return;
     }
+    
     setIsLoading(true);
+    
     try {
       // Format the payload according to the requirements
       const payload = {
         value: {
-          records: [{
-            fields: {
-              ime: formData.name,
-              email: formData.email,
-              inquiry: selectedLevel
+          records: [
+            {
+              fields: {
+                ime: formData.name,
+                email: formData.email,
+                inquiry: selectedLevel
+              }
             }
-          }]
+          ]
         }
       };
-
+      
       // Send to the webhook
       await fetch('https://hook.eu2.make.com/a7bqlmancbm03b6igrd574afaiy20v1o', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        mode: 'no-cors',
-        // Important for cross-origin requests
-        body: JSON.stringify(payload)
+        mode: 'no-cors', // Important for cross-origin requests
+        body: JSON.stringify(payload),
       });
-
+      
       // Mark as submitted
       setHasSubmitted(true);
     } catch (error) {
@@ -80,13 +77,15 @@ const TrainingVault = () => {
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
     }
   };
-  return <section className="bg-black text-white py-16">
+
+  return (
+    <section className="bg-black text-white py-16">
       <div className="container mx-auto px-6">
         {/* Heading */}
         <div className="flex flex-col items-center mb-8">
@@ -102,63 +101,94 @@ const TrainingVault = () => {
         <div className="flex flex-col md:flex-row md:gap-8 md:items-center md:justify-center">
           {/* Left column: Content */}
           <div className="md:w-1/2 flex flex-col items-center">
-            <p className="mb-10 text-white uppercase text-center text-2xl font-semibold">INSTANTLY ACCESS FitANYWHERE WORKOUT SAMPLES</p>
+            <p className="text-xl mb-10 text-white uppercase text-center">
+              INSTANTLY ACCESS WORKOUT SAMPLES
+            </p>
             
             {/* Buttons */}
             <div className="flex gap-4 justify-center mb-8">
-              <Button onClick={() => handleLevelSelect('beginner')} className={`bg-yellow hover:bg-yellow-dark text-black font-bold uppercase tracking-wide px-4 py-2 ${selectedLevel === 'beginner' ? 'ring-2 ring-yellow-light' : ''}`}>
+              <Button 
+                onClick={() => handleLevelSelect('beginner')}
+                className={`bg-yellow hover:bg-yellow-dark text-black font-bold uppercase tracking-wide px-4 py-2 ${selectedLevel === 'beginner' ? 'ring-2 ring-yellow-light' : ''}`}
+              >
                 FOR BEGINNERS
               </Button>
               
-              <Button onClick={() => handleLevelSelect('expert')} className={`bg-yellow hover:bg-yellow-dark text-black font-bold uppercase tracking-wide px-4 py-2 ${selectedLevel === 'expert' ? 'ring-2 ring-yellow-light' : ''}`}>
+              <Button 
+                onClick={() => handleLevelSelect('expert')}
+                className={`bg-yellow hover:bg-yellow-dark text-black font-bold uppercase tracking-wide px-4 py-2 ${selectedLevel === 'expert' ? 'ring-2 ring-yellow-light' : ''}`}
+              >
                 FOR EXPERTS
               </Button>
             </div>
             
             {/* Form (shown after selection) */}
-            {selectedLevel && !hasSubmitted && <div className="animate-fade-in w-full">
+            {selectedLevel && !hasSubmitted && (
+              <div className="animate-fade-in w-full">
                 <p className="text-lg mb-4 text-center font-medium">
                   Tell us where to send your custom sample! 🏋️‍♂️
                 </p>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md mx-auto">
                   <div>
-                    <Input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required className="w-full p-3 bg-gray-900 border border-gray-700 rounded text-white" />
+                    <Input
+                      type="text"
+                      name="name"
+                      placeholder="Your Name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full p-3 bg-gray-900 border border-gray-700 rounded text-white"
+                    />
                   </div>
                   <div>
-                    <Input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required className="w-full p-3 bg-gray-900 border border-gray-700 rounded text-white" />
+                    <Input
+                      type="email"
+                      name="email"
+                      placeholder="Your Email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full p-3 bg-gray-900 border border-gray-700 rounded text-white"
+                    />
                   </div>
-                  <Button type="submit" className="bg-yellow hover:bg-yellow-dark text-black font-bold w-full" disabled={isLoading}>
+                  <Button 
+                    type="submit" 
+                    className="bg-yellow hover:bg-yellow-dark text-black font-bold w-full"
+                    disabled={isLoading}
+                  >
                     {isLoading ? 'Sending...' : 'Send my FREE workouts!'}
                   </Button>
                 </form>
-              </div>}
+              </div>
+            )}
             
             {/* Success message (shown after submission) */}
-            {hasSubmitted && <div className="animate-fade-in bg-gray-900 p-6 rounded-lg max-w-md mx-auto text-center">
+            {hasSubmitted && (
+              <div className="animate-fade-in bg-gray-900 p-6 rounded-lg max-w-md mx-auto text-center">
                 <h3 className="text-2xl font-bold mb-2">Congratulations, {formData.name}!</h3>
                 <p className="mb-4">Your workout sample is on its way to {formData.email}.</p>
-              </div>}
+              </div>
+            )}
           </div>
           
           {/* Right column: Equipment Image */}
           <div className="md:w-1/2 mt-8 md:mt-0 flex justify-center md:justify-start">
             <div className="relative w-full max-w-[40%] md:max-w-[40%] mx-auto">
-              <div style={{
-              padding: '177.78% 0 0 0',
-              position: 'relative'
-            }}>
-                <iframe src="https://player.vimeo.com/video/1073152410?h=7283b3c537&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%'
-              }} title="Setup Video"></iframe>
+              <div style={{ padding: '177.78% 0 0 0', position: 'relative' }}>
+                <iframe 
+                  src="https://player.vimeo.com/video/1073152410?h=7283b3c537&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" 
+                  frameBorder="0" 
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
+                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} 
+                  title="Setup Video"
+                ></iframe>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default TrainingVault;
