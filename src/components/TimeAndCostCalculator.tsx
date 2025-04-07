@@ -187,15 +187,15 @@ const TimeAndCostCalculator = () => {
               <div className="mt-12 text-center">
                 <p className="text-lg font-medium mb-8">What can you do with that extra time and money?</p>
                 
-                {/* New CTA button */}
+                {/* Updated CTA button text and animation */}
                 <div className="flex justify-center mb-8">
                   <Button 
                     variant="yellow" 
                     size="lg" 
-                    className="bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-md hover:scale-105 button-glow animate-[pulse_6s_ease-in-out_infinite]"
+                    className="bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-md hover:scale-105 button-glow animate-[pulse_2s_ease-in-out_infinite]"
                     onClick={handleCTAClick}
                   >
-                    🛒 BREAK FREE NOW!
+                    🛒 INVEST IN YOURSELF
                   </Button>
                 </div>
                 

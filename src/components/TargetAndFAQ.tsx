@@ -1,9 +1,12 @@
+
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
+
 interface FAQItem {
   question: string;
   answer: string;
@@ -58,9 +61,16 @@ const TargetAndFAQ = () => {
   const isTargetInView = useInView(targetSectionRef);
   const isFaqInView = useInView(faqSectionRef);
   const isMobile = useIsMobile();
+  
   const toggleAudience = (index: number) => {
     setActiveAudience(activeAudience === index ? null : index);
   };
+  
+  const handleCTAClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
+  };
+  
   return <>
       {/* Target Audience Section */}
       <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
@@ -94,7 +104,21 @@ const TargetAndFAQ = () => {
                   </div>)}
               </div>
               
-              <p className={cn("mt-12 text-xl md:text-2xl font-semibold text-gray-700 transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-8")}>The committed don’t do ordinary — they do FitAnywhere.</p>
+              <p className={cn("mt-12 text-xl md:text-2xl font-semibold text-gray-700 transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-8")}>
+                The committed don't do ordinary — they do FitAnywhere.
+              </p>
+              
+              {/* Added new CTA button */}
+              <div className="flex justify-center mt-8">
+                <Button 
+                  variant="yellow" 
+                  size="lg" 
+                  className="bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-md hover:scale-105 button-glow animate-[pulse_2s_ease-in-out_infinite]"
+                  onClick={handleCTAClick}
+                >
+                  🛒 INVEST IN YOURSELF
+                </Button>
+              </div>
             </div>
           </div>
         </div>

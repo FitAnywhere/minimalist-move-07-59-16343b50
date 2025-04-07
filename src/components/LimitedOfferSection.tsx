@@ -36,10 +36,10 @@ const LimitedOfferSection = () => {
               Enjoy a free BoxFun when you order FitAnywhere today!
             </p>
             
-            <div className="max-w-md mx-auto mb-8">
+            <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <Card className="border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-6 flex flex-col items-center">
-                  <Carousel className="w-full max-w-xs mb-4">
+                  <Carousel className={isMobile ? "w-full max-w-xs mb-4" : "w-full max-w-lg mb-4"}>
                     <CarouselContent>
                       {boxfunImages.map((image, index) => (
                         <CarouselItem key={index}>
@@ -47,7 +47,7 @@ const LimitedOfferSection = () => {
                             <img 
                               src={image} 
                               alt={`BoxFun Offer ${index + 1}`} 
-                              className={isMobile ? "h-52 object-contain" : "h-64 object-contain"} 
+                              className={isMobile ? "h-52 object-contain" : "h-96 object-contain"} 
                             />
                           </div>
                         </CarouselItem>
@@ -73,7 +73,7 @@ const LimitedOfferSection = () => {
                   "text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
                   "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
                   "flex items-center gap-2", 
-                  "animate-[pulse_6s_ease-in-out_infinite]"
+                  "animate-[pulse_2s_ease-in-out_infinite]"
                 )} 
                 onClick={handleGetBoxFunFree}
               >
