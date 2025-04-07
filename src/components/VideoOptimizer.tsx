@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, memo } from 'react';
 import { Loader, RefreshCw } from 'lucide-react';
 import videoLoadManager from '@/utils/videoOptimization';
@@ -92,7 +91,30 @@ const VideoOptimizer = memo(({
   };
 
   const handleError = () => {
-    handleVideoError();
+    if (loadAttempts < maxRetries) {
+      const retryDelay = retryDelays[loadAttempts] || 3000;
+      console.log(`Video ${vimeoId} load failed, retrying in ${retryDelay}ms (attempt ${loadAttempts + 1}/${maxRetries})`);
+      
+      setLoadAttempts(prev => prev + 1);
+      
+      setTimeout(() => {
+        if (iframeRef.current) {
+          const src = iframeRef.current.src;
+          iframeRef.current.src = '';
+          
+          // Short delay before setting src again
+          setTimeout(() => {
+            if (iframeRef.current) {
+              iframeRef.current.src = src;
+            }
+          }, 50);
+        }
+      }, retryDelay);
+    } else {
+      console.error(`Video ${vimeoId} failed to load after ${maxRetries} attempts`);
+      setShowError(true);
+      setIsLoading(false);
+    }
   };
 
   const handleRetryClick = () => {

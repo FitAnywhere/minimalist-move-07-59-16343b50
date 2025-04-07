@@ -4,6 +4,8 @@ interface NetworkInformation {
   downlink: number;
   rtt: number;
   saveData: boolean;
+  addEventListener: (type: string, listener: EventListenerOrEventListenerObject) => void;
+  removeEventListener: (type: string, listener: EventListenerOrEventListenerObject) => void;
 }
 
 // Extended navigator interface that includes connection property
