@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronDown, X, Loader } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
+import EnhancedVimeoPlayer from '@/components/ui/EnhancedVimeoPlayer';
 
 interface LifestyleFeature {
   title: string;
@@ -151,37 +152,23 @@ const WorkoutAddictSection = () => {
     )} style={isMobile ? {
       width: mobileVideoWidth
     } : undefined}>
-        <div ref={vimeoContainerRef} className="relative w-full h-0 overflow-hidden bg-black" style={{
+        <div className="relative w-full h-0 overflow-hidden bg-black" style={{
         paddingBottom: '133.33%'
       }}>
-          {!isVideoPlaying && !videoError && <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-2xl">
-              <div className="flex flex-col items-center justify-center space-y-4">
-                <div className="relative">
-                  <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
-                  
-                  <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
-                    <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
-                  </div>
-                  
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Loader className="w-8 h-8 text-yellow animate-spin" />
-                  </div>
-                </div>
-                
-                <div className="text-white font-medium tracking-wide text-center">
-                  <p>LOADING VIDEO</p>
-                  <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
-                    <div className="h-full bg-yellow animate-pulse"></div>
-                  </div>
-                </div>
-              </div>
-            </div>}
-          
-          {videoError ? <div className="absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">
-              <p className="text-gray-500">Video unavailable</p>
-            </div> : <iframe ref={vimeoIframeRef} className={cn("absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105 bg-black", isVideoPlaying ? "opacity-100" : "opacity-0")} src="https://player.vimeo.com/video/1067256293?h=297c1637e6&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1&amp;background=1&amp;muted=1" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
-          border: 'none'
-        }} title="BoxFun"></iframe>}
+          <EnhancedVimeoPlayer
+            vimeoId="1073531176"
+            hash="5e0017e01d"
+            title="Boxfun opt"
+            autoplay={true}
+            loop={true}
+            muted={true}
+            controls={false}
+            background={true}
+            responsive={true}
+            aspectRatio="3:4"
+            placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_72_ggjdho.png"
+            className="absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105 bg-black"
+          />
           
           <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
         </div>
@@ -228,68 +215,42 @@ const WorkoutAddictSection = () => {
                   </div>}
                 
                 <div className="space-y-6 flex-grow">
-                  <div className={cn("px-6 py-3 rounded-full cursor-pointer", "transition-all duration-300 ease-in-out", "shadow-md", "transform opacity-0", openFeatureIndex === 0 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white", isInView ? "animate-fade-in opacity-100" : "")} style={{
-                  animationDelay: "300ms",
-                  animationDuration: "0.4s"
-                }} onClick={() => handleFeatureClick(0)} onMouseEnter={() => setHoverIndex(0)} onMouseLeave={() => setHoverIndex(null)}>
-                    <div className="flex justify-between items-center">
-                      <h4 className="text-lg font-semibold">
-                        {lifestyleFeatures[0].title}
-                      </h4>
+                  {lifestyleFeatures.map((feature, index) => (
+                    <div 
+                      key={index}
+                      className={cn(
+                        "px-6 py-3 rounded-full cursor-pointer", 
+                        "transition-all duration-300 ease-in-out", 
+                        "shadow-md", 
+                        "transform opacity-0",
+                        openFeatureIndex === index ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white",
+                        isInView ? "animate-fade-in opacity-100" : ""
+                      )}
+                      style={{
+                        animationDelay: `${300 + (index * 200)}ms`,
+                        animationDuration: "0.4s"
+                      }}
+                      onClick={() => handleFeatureClick(index)}
+                      onMouseEnter={() => setHoverIndex(index)}
+                      onMouseLeave={() => setHoverIndex(null)}
+                    >
+                      <div className="flex justify-between items-center">
+                        <h4 className="text-lg font-semibold">
+                          {feature.title}
+                        </h4>
+                        
+                        <div className={cn("transition-all duration-200", hoverIndex === index ? "transform translate-x-1" : "")}>
+                          {openFeatureIndex === index ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+                        </div>
+                      </div>
                       
-                      <div className={cn("transition-all duration-200", hoverIndex === 0 ? "transform translate-x-1" : "")}>
-                        {openFeatureIndex === 0 ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+                      <div className={cn("overflow-hidden transition-all duration-300 ease-in-out", openFeatureIndex === index ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0")}>
+                        <p className="text-gray-600">
+                          {feature.description}
+                        </p>
                       </div>
                     </div>
-                    
-                    <div className={cn("overflow-hidden transition-all duration-300 ease-in-out", openFeatureIndex === 0 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0")}>
-                      <p className="text-gray-600">
-                        {lifestyleFeatures[0].description}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className={cn("px-6 py-3 rounded-full cursor-pointer", "transition-all duration-300 ease-in-out", "shadow-md", "transform opacity-0", openFeatureIndex === 1 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white", isInView ? "animate-fade-in opacity-100" : "")} style={{
-                  animationDelay: "500ms",
-                  animationDuration: "0.4s"
-                }} onClick={() => handleFeatureClick(1)} onMouseEnter={() => setHoverIndex(1)} onMouseLeave={() => setHoverIndex(null)}>
-                    <div className="flex justify-between items-center">
-                      <h4 className="text-lg font-semibold">
-                        {lifestyleFeatures[1].title}
-                      </h4>
-                      
-                      <div className={cn("transition-all duration-200", hoverIndex === 1 ? "transform translate-x-1" : "")}>
-                        {openFeatureIndex === 1 ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
-                      </div>
-                    </div>
-                    
-                    <div className={cn("overflow-hidden transition-all duration-300 ease-in-out", openFeatureIndex === 1 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0")}>
-                      <p className="text-gray-600">
-                        {lifestyleFeatures[1].description}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className={cn("px-6 py-3 rounded-full cursor-pointer", "transition-all duration-300 ease-in-out", "shadow-md", "transform opacity-0", openFeatureIndex === 2 ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white", isInView ? "animate-fade-in opacity-100" : "")} style={{
-                  animationDelay: "700ms",
-                  animationDuration: "0.4s"
-                }} onClick={() => handleFeatureClick(2)} onMouseEnter={() => setHoverIndex(2)} onMouseLeave={() => setHoverIndex(null)}>
-                    <div className="flex justify-between items-center">
-                      <h4 className="text-lg font-semibold">
-                        {lifestyleFeatures[2].title}
-                      </h4>
-                      
-                      <div className={cn("transition-all duration-200", hoverIndex === 2 ? "transform translate-x-1" : "")}>
-                        {openFeatureIndex === 2 ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
-                      </div>
-                    </div>
-                    
-                    <div className={cn("overflow-hidden transition-all duration-300 ease-in-out", openFeatureIndex === 2 ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0")}>
-                      <p className="text-gray-600">
-                        {lifestyleFeatures[2].description}
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
                 
                 <div className="w-full flex justify-center mt-4 mb-4">
