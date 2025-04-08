@@ -1,10 +1,8 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
-import EnhancedVimeoPlayer from '@/components/ui/EnhancedVimeoPlayer';
 
 const TrainingVault = () => {
   const { toast } = useToast();
@@ -151,19 +149,13 @@ const TrainingVault = () => {
               padding: '177.78% 0 0 0',
               position: 'relative'
             }}>
-                <EnhancedVimeoPlayer
-                  vimeoId="1073152410"
-                  hash="7283b3c537"
-                  title="Setup Video"
-                  autoplay={true}
-                  loop={true}
-                  muted={true}
-                  controls={false}
-                  background={true}
-                  responsive={true}
-                  aspectRatio="9:16"
-                  placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097749/Screenshot_69_w6ixx7.png"
-                />
+                <iframe src="https://player.vimeo.com/video/1073152410?h=7283b3c537&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%'
+              }} title="Setup Video"></iframe>
               </div>
             </div>
           </div>

@@ -5,7 +5,6 @@ import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from '@/components/ui/dialog';
-import EnhancedVimeoPlayer from '@/components/ui/EnhancedVimeoPlayer';
 
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -13,6 +12,7 @@ const ChampionSection = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const isInView = useInView(sectionRef);
   const isMobile = useIsMobile();
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [showLibraryAccess, setShowLibraryAccess] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -118,20 +118,15 @@ const ChampionSection = () => {
             
             <div className="relative perspective">
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-xl hover:scale-[1.02] group" ref={videoRef}>
+                {/* Replace with new Vimeo embed */}
                 <div style={{padding:"100% 0 0 0", position:"relative"}}>
-                  <EnhancedVimeoPlayer
-                    vimeoId="1073285328"
-                    hash="205f79391c"
-                    title="training library optimized"
-                    autoplay={true}
-                    loop={true}
-                    muted={true}
-                    controls={false}
-                    background={true}
-                    responsive={true}
-                    aspectRatio="1:1"
-                    placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
-                  />
+                  <iframe 
+                    src="https://player.vimeo.com/video/1073285328?h=205f79391c&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" 
+                    frameBorder="0" 
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
+                    style={{position:"absolute", top:0, left:0, width:"100%", height:"100%"}} 
+                    title="training library optimized">
+                  </iframe>
                 </div>
                 
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
@@ -153,20 +148,15 @@ const ChampionSection = () => {
 
           <div className="grid gap-8 md:grid-cols-2 mt-4">
             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+              {/* Replace the video source in dialog too */}
               <div style={{padding:"100% 0 0 0", position:"relative"}}>
-                <EnhancedVimeoPlayer
-                  vimeoId="1073285328"
-                  hash="205f79391c"
-                  title="training library optimized"
-                  autoplay={false}
-                  loop={true}
-                  muted={false}
-                  controls={true}
-                  background={false}
-                  responsive={true}
-                  aspectRatio="1:1"
-                  placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
-                />
+                <iframe 
+                  src="https://player.vimeo.com/video/1073285328?h=205f79391c&badge=0&autopause=0&player_id=0&app_id=58479" 
+                  frameBorder="0" 
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
+                  style={{position:"absolute", top:0, left:0, width:"100%", height:"100%"}} 
+                  title="training library optimized">
+                </iframe>
               </div>
             </div>
 
