@@ -82,7 +82,7 @@ Yours with FitAnywhere.</p>
               
               {isMobile && <div className={cn("flex justify-center items-center transition-all duration-700 h-full md:hidden", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
                   <div className="w-full max-w-[64%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
-                    <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
+                    <video autoPlay muted loop playsInline className="w-full h-auto object-contain py-[2px] my-[8px]">
                       <source src="/home-360-tb.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
