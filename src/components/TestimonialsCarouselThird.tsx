@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -25,7 +26,7 @@ const testimonials: Testimonial[] = [{
   role: "Outdoor Lover",
   quote: "BoxFun didn't just get me moving. It made me want to move.",
   mediaType: "image",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_71_b7srzc.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097765/Izdelek_brez_naslova_-_2025-04-08T093354.537_ovbtbx.png"
 }, {
   name: "Tyler B.",
   role: "Calisthenics Enthusiast",
@@ -509,7 +510,7 @@ const TestimonialsCarouselThird = () => {
             
             <button 
               onClick={prevTestimonial} 
-              className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow pulse-glow" 
+              className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow" 
               aria-label="Previous testimonial"
             >
               <ChevronLeft className="w-4 h-4 text-gray-800" />
@@ -517,7 +518,7 @@ const TestimonialsCarouselThird = () => {
             
             <button 
               onClick={nextTestimonial} 
-              className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow pulse-glow" 
+              className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow" 
               aria-label="Next testimonial"
             >
               <ChevronRight className="w-4 h-4 text-gray-800" />

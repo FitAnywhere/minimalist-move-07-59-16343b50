@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -19,10 +18,9 @@ const testimonials: Testimonial[] = [
   {
     name: "Emily T.",
     role: "Fitness Beginner",
-    quote: "First time using bands seriously. Safe to say, my muscles felt it.",
-    mediaType: "video",
-    vimeoId: "1067256372",
-    hash: "70ab6c252c"
+    quote: "One workout in and I realized. Bands are no joke.",
+    mediaType: "image",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744150914/Screenshot_89_mw00er.png"
   }, {
     name: "Jordan P.",
     role: "Calisthenics Enthusiast",
@@ -246,7 +244,6 @@ const TestimonialsCarousel = () => {
     }
     
     const preloadTestimonials = () => {
-      // Preload first 3 testimonials
       testimonials.slice(0, 3).forEach(testimonial => {
         if (!testimonial) return;
         
@@ -268,7 +265,6 @@ const TestimonialsCarousel = () => {
         }
       });
       
-      // Preload remaining testimonials with delay
       testimonials.slice(3).forEach((testimonial, index) => {
         setTimeout(() => {
           if (!testimonial) return;
@@ -503,7 +499,7 @@ const TestimonialsCarousel = () => {
             
             <button 
               onClick={prevTestimonial} 
-              className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow pulse-glow" 
+              className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow" 
               aria-label="Previous testimonial"
             >
               <ChevronLeft className="w-4 h-4 text-gray-800" />
@@ -511,7 +507,7 @@ const TestimonialsCarousel = () => {
             
             <button 
               onClick={nextTestimonial} 
-              className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow pulse-glow" 
+              className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow" 
               aria-label="Next testimonial"
             >
               <ChevronRight className="w-4 h-4 text-gray-800" />

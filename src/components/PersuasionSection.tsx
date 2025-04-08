@@ -88,7 +88,7 @@ const PersuasionSection = () => {
         
         <p 
           className={cn(
-            "text-xl md:text-3xl font-bold text-white text-center max-w-2xl transition-all duration-1000 delay-[2000ms] parallax-bg pulse-glow",
+            "text-xl md:text-3xl font-bold text-white text-center max-w-2xl transition-all duration-1000 delay-[2000ms] parallax-bg",
             typedText === fullText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
@@ -104,7 +104,7 @@ const PersuasionSection = () => {
           <Button
             variant="yellow"
             size="xl"
-            className="font-bold text-xl shadow-lg hover:shadow-xl transition-all duration-300 button-glow group animate-[pulse_4s_ease-in-out_infinite]"
+            className="font-bold text-xl shadow-lg hover:shadow-xl transition-all duration-300"
             onClick={handleCheckout}
           >
             🛒 LAST CALL for €990!

@@ -88,6 +88,23 @@ const CRITICAL_VIDEOS = [
   '1073152410', // TrainingVault video
 ];
 
+// Add CSS for larger images in the WHO WE BUILT THIS FOR section
+const whoWeBuiltThisForStyles = `
+  @media (min-width: 768px) {
+    #target-section .user-image-container img {
+      height: 330px !important;
+      width: auto !important;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    #target-section .user-image-container img {
+      height: 240px !important;
+      width: auto !important;
+    }
+  }
+`;
+
 const Index = () => {
   const location = useLocation();
   const initialLoadRef = useRef(true);
@@ -95,6 +112,11 @@ const Index = () => {
   const [sectionsInView, setSectionsInView] = useState({});
   
   useEffect(() => {
+    // Add the custom styles for WHO WE BUILT THIS FOR section images
+    const styleEl = document.createElement('style');
+    styleEl.textContent = whoWeBuiltThisForStyles;
+    document.head.appendChild(styleEl);
+    
     // Preload Vimeo player API
     const preloadVimeoAPI = () => {
       if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]') && !vimeoAPILoadedRef.current) {

@@ -3,29 +3,16 @@ import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useIsMobile } from '@/hooks/use-mobile';
-
-// BoxFun carousel images
-const boxfunImages = ["https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/opt3_ly3euq.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/op2_wzwz9j.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095735/opt4_sqynru.png"];
-const fallbackImage = "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/opt3_ly3euq.png"; // Using first image as fallback
 
 const LimitedOfferSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
-  const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
   
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
-  };
-  
-  const handleImageError = (index: number) => {
-    setImageErrors(prev => ({
-      ...prev,
-      [index]: true
-    }));
   };
   
   return <section id="limited-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
@@ -45,22 +32,13 @@ const LimitedOfferSection = () => {
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <Card className="border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-6 flex flex-col items-center">
-                  <Carousel className={isMobile ? "w-full max-w-xs mb-4" : "w-full max-w-lg mb-4"}>
-                    <CarouselContent>
-                      {boxfunImages.map((image, index) => <CarouselItem key={index}>
-                          <div className="flex items-center justify-center p-2">
-                            <img 
-                              src={imageErrors[index] ? fallbackImage : image} 
-                              alt={`BoxFun Offer ${index + 1}`} 
-                              className={isMobile ? "h-52 object-contain" : "h-96 object-contain"} 
-                              onError={() => handleImageError(index)}
-                            />
-                          </div>
-                        </CarouselItem>)}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-1" />
-                    <CarouselNext className="right-1" />
-                  </Carousel>
+                  <div className="flex items-center justify-center p-2">
+                    <img 
+                      src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/op2_wzwz9j.png" 
+                      alt="BoxFun Offer" 
+                      className={isMobile ? "h-52 object-contain" : "h-96 object-contain"} 
+                    />
+                  </div>
                   <h3 className="font-bold text-xl text-center mb-2">50X GIVEAWAY</h3>
                 </CardContent>
               </Card>
@@ -71,8 +49,8 @@ const LimitedOfferSection = () => {
             </p>
             
             <div className="flex justify-center">
-              <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2", "animate-[pulse_2s_ease-in-out_infinite]")} onClick={handleGetBoxFunFree}>
-                €990 + FREE BoxFun!
+              <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105")} onClick={handleGetBoxFunFree}>
+                🛒 FitAnywhere + FREE BoxFun!
               </Button>
             </div>
           </div>
