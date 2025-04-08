@@ -5,18 +5,18 @@ import EnhancedVimeoPlayer from './EnhancedVimeoPlayer';
 const HeroVideo = memo(() => {
   return (
     <EnhancedVimeoPlayer
-      vimeoId="1073662161"
-      hash="9f083a1471"
-      title="intor video optt"
+      vimeoId="1073680510"
+      hash="006a5ccf10"
+      title="Bands trx optimized"
       autoplay={true}
-      loop={false}
+      loop={true}
       muted={true}
       controls={false}
       background={true}
       responsive={true}
       className="w-full h-full"
-      aspectRatio="16:9"
-      placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744102423/Screenshot_84_oi460p.png"
+      aspectRatio="4:3"
+      placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097749/Screenshot_68_ytnjfg.png"
     />
   );
 });
