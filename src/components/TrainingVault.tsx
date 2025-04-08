@@ -1,12 +1,12 @@
-
 import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const TrainingVault = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [selectedLevel, setSelectedLevel] = useState<'beginner' | 'expert' | null>(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -16,19 +16,19 @@ const TrainingVault = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const isMobile = useIsMobile();
   const [videoError, setVideoError] = useState(false);
-  
   const handleLevelSelect = (level: 'beginner' | 'expert') => {
     setSelectedLevel(level);
   };
-  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const {
+      name,
+      value
+    } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -89,15 +89,12 @@ const TrainingVault = () => {
       setIsLoading(false);
     }
   };
-  
   return <section className="bg-black text-white py-16">
       <div className="container mx-auto px-6">
-        {/* Heading - Updated title */}
+        {/* Heading */}
         <div className="flex flex-col items-center mb-8">
           <div className="relative inline-block">
-            <h2 className="text-4xl md:text-5xl font-bold uppercase text-white text-center">
-              TRAINING VAULT
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-bold uppercase text-white text-center">WORKOUT SAMPLES</h2>
             <div className="absolute -bottom-2 left-0 w-full h-1.5 bg-yellow"></div>
           </div>
         </div>
@@ -146,33 +143,23 @@ const TrainingVault = () => {
           
           {/* Right column: Equipment Image */}
           <div className="md:w-1/2 mt-8 md:mt-0 flex justify-center md:justify-start">
-            <div className="relative w-full max-w-[40%] md:max-w-[40%] mx-auto" style={isMobile ? { maxWidth: '50%' } : undefined}>
+            <div className="relative w-full max-w-[40%] md:max-w-[40%] mx-auto" style={isMobile ? {
+            maxWidth: '50%'
+          } : undefined}>
               <div style={{
               padding: '177.78% 0 0 0',
               position: 'relative'
             }}>
                 {/* Fallback thumbnail for video errors */}
-                {videoError && (
-                  <img 
-                    src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097749/Screenshot_69_w6ixx7.png"
-                    alt="Video thumbnail fallback"
-                    className="absolute inset-0 w-full h-full object-cover z-10"
-                  />
-                )}
+                {videoError && <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097749/Screenshot_69_w6ixx7.png" alt="Video thumbnail fallback" className="absolute inset-0 w-full h-full object-cover z-10" />}
                 
-                <iframe 
-                  src="https://player.vimeo.com/video/1073152410?h=7283b3c537&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" 
-                  frameBorder="0" 
-                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%'
-                  }} 
-                  title="Setup Video"
-                  onError={() => setVideoError(true)}>
+                <iframe src="https://player.vimeo.com/video/1073152410?h=7283b3c537&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%'
+              }} title="Setup Video" onError={() => setVideoError(true)}>
                 </iframe>
               </div>
             </div>
@@ -181,5 +168,4 @@ const TrainingVault = () => {
       </div>
     </section>;
 };
-
 export default TrainingVault;
