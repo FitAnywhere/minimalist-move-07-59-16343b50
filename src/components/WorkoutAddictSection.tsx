@@ -51,7 +51,8 @@ const WorkoutAddictSection = () => {
   
   const isInView = useInView(sectionRef, {
     threshold: 0.2,
-  }, false);
+    once: false
+  });
 
   const toggleFeature = (index: number) => {
     setOpenFeatureIndex(prev => prev === index ? null : index);
