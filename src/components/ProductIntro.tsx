@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronDown, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
-
 const features = [{
   title: "UNFOLD & GO",
   description: "No tools, no installation"
@@ -17,7 +16,6 @@ const features = [{
   title: "INFINITE POSSIBILITIES",
   description: "One station without limits"
 }];
-
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -32,24 +30,20 @@ const ProductIntro = () => {
   const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [showSpecs, setShowSpecs] = useState(false);
-
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         title: true
       })), 100);
-
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         subtitle: true
       })), 300);
-
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         paragraph: true
       })), 500);
-
       features.forEach((_, index) => {
         setTimeout(() => {
           setAnimationState(prev => {
@@ -62,20 +56,16 @@ const ProductIntro = () => {
           });
         }, 700 + index * 150);
       });
-
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         finalLine: true
       })), 1200);
     }
   }, [isInView]);
-
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
-
-  return (
-    <section id="product" ref={containerRef} className="py-16 bg-white">
+  return <section id="product" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6 items-center">
@@ -86,9 +76,8 @@ const ProductIntro = () => {
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
                 
-                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", isMobile ? "text-center mx-auto" : "")}>
-                  Space. Time. Yours with FitAnywhere.
-                </p>
+                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", isMobile ? "text-center mx-auto" : "")}>Space. Time. Money.
+Yours with FitAnywhere.</p>
               </div>
               
               {isMobile && <div className={cn("flex justify-center items-center transition-all duration-700 h-full md:hidden", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
@@ -211,8 +200,6 @@ const ProductIntro = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </section>
-  );
+    </section>;
 };
-
 export default ProductIntro;
