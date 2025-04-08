@@ -1,3 +1,4 @@
+
 import { memo, useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -20,10 +21,10 @@ const HeroContent = memo(({
   const [isWaiting, setIsWaiting] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Constants for the typewriter effect
-  const typingSpeed = 150; // Speed of typing in ms
-  const deletingSpeed = 40; // Speed of deleting in ms
-  const waitingTime = 300; // Time to wait when word is fully typed in ms
+  // Constants for the typewriter effect - updated for slower animation
+  const typingSpeed = 250; // Speed of typing in ms (increased from 150ms)
+  const deletingSpeed = 80; // Speed of deleting in ms (increased from 40ms)
+  const waitingTime = 1000; // Time to wait when word is fully typed in ms (increased from 300ms)
 
   // More efficient typewriter implementation
   useEffect(() => {

@@ -30,8 +30,8 @@ const CallToAction = () => {
       <div className="container relative z-20 mx-auto px-4 md:px-6">
         <div className="max-w-5xl mx-auto text-center">
           <div className="space-y-4 md:space-y-2">
-            {/* Promotional text above CTA button */}
-            <p className={cn("font-semibold text-lg md:text-xl text-yellow transition-all duration-1000 mb-4", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>Get FitAnywhere now and save 40% + get BoxFun FREE</p>
+            {/* Promotional text above CTA button - now with font-bold */}
+            <p className={cn("font-bold text-lg md:text-xl text-yellow transition-all duration-1000 mb-4", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>Get FitAnywhere now and save 40% + get BoxFun FREE</p>
             
             {/* CTA Button - reduced spacing */}
             <div className={cn("transition-all duration-1000 mt-4 md:mt-6", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>

@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote, CheckCircle } from 'lucide-react';
@@ -28,11 +27,11 @@ const TimeAndCostCalculator = () => {
   const YEARS_PROJECTION = 20;
   const FITANYWHERE_COST = 990; // Cost of FitAnywhere in euros
 
-  // Calculate time wasted in 20 years (in hours)
-  const timeWastedInYears = Math.round(timeWastedPerVisit * VISITS_PER_WEEK * WEEKS_PER_YEAR * YEARS_PROJECTION / 60);
+  // Calculate time wasted in 20 years (in hours) - doubled for round trips
+  const timeWastedInYears = Math.round(timeWastedPerVisit * VISITS_PER_WEEK * WEEKS_PER_YEAR * YEARS_PROJECTION / 60) * 2;
   
-  // Calculate time wasted in 1 year (in hours)
-  const timeWastedPerYear = Math.round(timeWastedPerVisit * VISITS_PER_WEEK * WEEKS_PER_YEAR / 60);
+  // Calculate time wasted in 1 year (in hours) - doubled for round trips
+  const timeWastedPerYear = Math.round(timeWastedPerVisit * VISITS_PER_WEEK * WEEKS_PER_YEAR / 60) * 2;
 
   // Calculate money spent in 20 years (in euros)
   const moneySpentInYears = gymMonthlyCost * 12 * YEARS_PROJECTION;
@@ -157,7 +156,7 @@ const TimeAndCostCalculator = () => {
                     <div className="flex flex-col md:flex-row">
                       {/* Input section - Left side on desktop, top on mobile */}
                       <div className="bg-white p-6 md:p-8 md:w-1/2">
-                        <p className="mb-3 text-left font-bold text-sm">How much time do you spend on the way to the gym?</p>
+                        <p className="mb-3 text-left font-bold text-sm">How much time do you spend on the way to and from the gym?</p>
                         
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-gray-600">0 min</span>
@@ -174,7 +173,7 @@ const TimeAndCostCalculator = () => {
                         {timeWastedPerVisit > 0 && (
                           <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center mt-4">
                             <p className="text-md font-bold text-black">
-                              What could you do with extra {timeWastedPerYear} hours a year?
+                              With FitAnywhere you can start gaining {timeWastedPerYear} hours every year.
                             </p>
                           </div>
                         )}
@@ -204,7 +203,7 @@ const TimeAndCostCalculator = () => {
                   <Button 
                     variant="yellow" 
                     size="lg" 
-                    className="bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-md hover:scale-105 button-glow animate-[pulse_2s_ease-in-out_infinite]"
+                    className="bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-md hover:scale-105"
                     onClick={handleCTAClick}
                   >
                     🛒 INVEST IN YOURSELF

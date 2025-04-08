@@ -92,11 +92,11 @@ const TrainingVault = () => {
   
   return <section className="bg-black text-white py-16">
       <div className="container mx-auto px-6">
-        {/* Heading */}
+        {/* Heading - Updated title */}
         <div className="flex flex-col items-center mb-8">
           <div className="relative inline-block">
             <h2 className="text-4xl md:text-5xl font-bold uppercase text-white text-center">
-              VIP TRAINING VAULT
+              TRAINING VAULT
             </h2>
             <div className="absolute -bottom-2 left-0 w-full h-1.5 bg-yellow"></div>
           </div>
