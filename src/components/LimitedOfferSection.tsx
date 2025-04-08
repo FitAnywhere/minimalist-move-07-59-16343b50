@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -7,33 +6,23 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { useIsMobile } from '@/hooks/use-mobile';
 
 // BoxFun carousel images
-const boxfunImages = [
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/opt3_ly3euq.png", 
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/op2_wzwz9j.png", 
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095735/opt4_sqynru.png"
-];
-
+const boxfunImages = ["https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/opt3_ly3euq.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/op2_wzwz9j.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095735/opt4_sqynru.png"];
 const LimitedOfferSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
-
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
-
-  return (
-    <section id="limited-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
+  return <section id="limited-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto">
-          <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", 
-            isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
+          <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
             
             <h2 className="text-3xl md:text-5xl font-extrabold text-black mb-4 relative inline-block">
               LIMITED OFFER
-              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
-                isVisible ? "scale-x-100" : "scale-x-0")}></span>
+              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
             <p className="text-gray-700 mb-6 max-w-xl mx-auto font-medium py-[16px] my-[12px] text-xl">
@@ -45,22 +34,16 @@ const LimitedOfferSection = () => {
                 <CardContent className="p-6 flex flex-col items-center">
                   <Carousel className={isMobile ? "w-full max-w-xs mb-4" : "w-full max-w-lg mb-4"}>
                     <CarouselContent>
-                      {boxfunImages.map((image, index) => (
-                        <CarouselItem key={index}>
+                      {boxfunImages.map((image, index) => <CarouselItem key={index}>
                           <div className="flex items-center justify-center p-2">
-                            <img 
-                              src={image} 
-                              alt={`BoxFun Offer ${index + 1}`} 
-                              className={isMobile ? "h-52 object-contain" : "h-96 object-contain"} 
-                            />
+                            <img src={image} alt={`BoxFun Offer ${index + 1}`} className={isMobile ? "h-52 object-contain" : "h-96 object-contain"} />
                           </div>
-                        </CarouselItem>
-                      ))}
+                        </CarouselItem>)}
                     </CarouselContent>
                     <CarouselPrevious className="left-1" />
                     <CarouselNext className="right-1" />
                   </Carousel>
-                  <h3 className="font-bold text-xl text-center mb-2">BOXFUN - 50X GIVEAWAY</h3>
+                  <h3 className="font-bold text-xl text-center mb-2">50X GIVEAWAY</h3>
                 </CardContent>
               </Card>
             </div>
@@ -70,25 +53,13 @@ const LimitedOfferSection = () => {
             </p>
             
             <div className="flex justify-center">
-              <Button 
-                size="lg" 
-                variant="yellow" 
-                className={cn(
-                  "text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
-                  "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", 
-                  "flex items-center gap-2", 
-                  "animate-[pulse_2s_ease-in-out_infinite]"
-                )} 
-                onClick={handleGetBoxFunFree}
-              >
+              <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105 button-glow", "flex items-center gap-2", "animate-[pulse_2s_ease-in-out_infinite]")} onClick={handleGetBoxFunFree}>
                 €990 + FREE BoxFun!
               </Button>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default LimitedOfferSection;
