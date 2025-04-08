@@ -1,10 +1,8 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
-import VimeoThumbnailPlayer from '@/components/ui/VimeoThumbnailPlayer';
 
 const TrainingVault = () => {
   const { toast } = useToast();
@@ -148,20 +146,16 @@ const TrainingVault = () => {
           <div className="md:w-1/2 mt-8 md:mt-0 flex justify-center md:justify-start">
             <div className="relative w-full max-w-[40%] md:max-w-[40%] mx-auto" style={isMobile ? { maxWidth: '50%' } : undefined}>
               <div style={{
-                padding: '177.78% 0 0 0',
-                position: 'relative'
-              }}>
-                {/* Replace the iframe with our new VimeoThumbnailPlayer */}
-                <VimeoThumbnailPlayer
-                  vimeoId="1073152410"
-                  thumbnailUrl="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097749/Screenshot_69_w6ixx7.png"
-                  aspectRatio="9:16"
-                  background={true}
-                  muted={true}
-                  loop={true}
-                  autoplay={true}
-                  className="absolute inset-0"
-                />
+              padding: '177.78% 0 0 0',
+              position: 'relative'
+            }}>
+                <iframe src="https://player.vimeo.com/video/1073152410?h=7283b3c537&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%'
+              }} title="Setup Video"></iframe>
               </div>
             </div>
           </div>
