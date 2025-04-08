@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -17,18 +16,19 @@ interface TargetAudience {
   description: string;
 }
 const targetAudiences: TargetAudience[] = [{
-  imageUrl: "https://i.imgur.com/tscnNiG.jpeg",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095735/tscnNiG_oldfpq.jpg",
   title: "DRIVEN ACHIEVERS",
   description: "For busy schedules and exceptional standards."
 }, {
-  imageUrl: "https://i.imgur.com/j9K9GFk.jpeg",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095735/j9K9GFk_mnmckb.jpg",
   title: "CITY HUSTLERS",
   description: "For those who cherish and honor their space."
 }, {
-  imageUrl: "https://i.imgur.com/zEAA8nc.jpeg",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095735/zEAA8nc_iydck6.jpg",
   title: "WELLNESS SEEKERS",
   description: "For those who embrace a life of constant positive energy."
 }];
+
 const faqItems: FAQItem[] = [{
   question: "How easy is FitAnywhere to set up?",
   answer: "Unfold, lock, and start training. Under two minutes, with no tools or drilling required."
@@ -54,6 +54,7 @@ const faqItems: FAQItem[] = [{
   question: "Are there any guarantees?",
   answer: "Yes. We don't just sell gear, we stand by it. If you're not satisfied for any reason, we'll take it back without hesitation."
 }];
+
 const TargetAndFAQ = () => {
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
   const targetSectionRef = useRef<HTMLElement>(null);
@@ -108,7 +109,6 @@ const TargetAndFAQ = () => {
                 The committed don't do ordinary — they do FitAnywhere.
               </p>
               
-              {/* Updated CTA button text */}
               <div className="flex justify-center mt-8">
                 <Button 
                   variant="yellow" 

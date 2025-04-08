@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
@@ -14,7 +13,7 @@ interface GiftItem {
 // Updated to just have the training library
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
-  image: "https://i.imgur.com/dZZFMFQ.png"
+  image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
 }];
 
 const BundleOffer = () => {
@@ -60,7 +59,7 @@ const BundleOffer = () => {
                     <div className="relative z-10">
                       <div className="h-72 md:h-80 flex items-center justify-center p-4 group">
                         <div className="relative w-full h-full flex items-center justify-center">
-                          <img src="https://i.imgur.com/coJB2up.png" alt="FitAnywhere" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10" />
+                          <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" alt="FitAnywhere" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10" />
                         </div>
                       </div>
                       
@@ -131,7 +130,7 @@ const BundleOffer = () => {
               <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
-                    <img src="https://i.imgur.com/coJB2up.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" />
+                    <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" />
                     <div className="w-full text-center mb-4">
                       <div className="flex justify-center items-center gap-3">
                         {productItems.map((item, index) => (

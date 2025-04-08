@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -295,7 +294,7 @@ const WorkoutAddictSection = () => {
                 
                 <div className="w-full flex justify-center mt-4 mb-4">
                   <img 
-                    src="https://i.imgur.com/OZcOmIp.png" 
+                    src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744101171/Screenshot_83_cupbkr.png" 
                     alt="BoxFun Product" 
                     className="max-w-[280px] w-full transition-all duration-500 hover:scale-105" 
                   />

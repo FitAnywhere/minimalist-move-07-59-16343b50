@@ -7,7 +7,11 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { useIsMobile } from '@/hooks/use-mobile';
 
 // BoxFun carousel images
-const boxfunImages = ["https://i.imgur.com/4OsWHfq.png", "https://i.imgur.com/mTSCOf7.png", "https://i.imgur.com/eWOENUF.png"];
+const boxfunImages = [
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/opt3_ly3euq.png", 
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/op2_wzwz9j.png", 
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095735/opt4_sqynru.png"
+];
 
 const LimitedOfferSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
