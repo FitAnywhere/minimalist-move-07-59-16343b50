@@ -5,6 +5,7 @@ import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from '@/components/ui/dialog';
+import VimeoThumbnailPlayer from '@/components/ui/VimeoThumbnailPlayer';
 
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -118,15 +119,19 @@ const ChampionSection = () => {
             
             <div className="relative perspective">
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-xl hover:scale-[1.02] group" ref={videoRef}>
-                {/* Replace with new Vimeo embed */}
+                {/* Replace with our new VimeoThumbnailPlayer */}
                 <div style={{padding:"100% 0 0 0", position:"relative"}}>
-                  <iframe 
-                    src="https://player.vimeo.com/video/1073285328?h=205f79391c&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" 
-                    frameBorder="0" 
-                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
-                    style={{position:"absolute", top:0, left:0, width:"100%", height:"100%"}} 
-                    title="training library optimized">
-                  </iframe>
+                  <VimeoThumbnailPlayer
+                    vimeoId="1073285328"
+                    thumbnailUrl="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
+                    aspectRatio="1:1"
+                    hash="205f79391c"
+                    background={true}
+                    muted={true}
+                    loop={true}
+                    autoplay={true}
+                    className="absolute inset-0"
+                  />
                 </div>
                 
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
@@ -148,16 +153,16 @@ const ChampionSection = () => {
 
           <div className="grid gap-8 md:grid-cols-2 mt-4">
             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-              {/* Replace the video source in dialog too */}
-              <div style={{padding:"100% 0 0 0", position:"relative"}}>
-                <iframe 
-                  src="https://player.vimeo.com/video/1073285328?h=205f79391c&badge=0&autopause=0&player_id=0&app_id=58479" 
-                  frameBorder="0" 
-                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
-                  style={{position:"absolute", top:0, left:0, width:"100%", height:"100%"}} 
-                  title="training library optimized">
-                </iframe>
-              </div>
+              {/* Replace the dialog video too */}
+              <VimeoThumbnailPlayer
+                vimeoId="1073285328"
+                thumbnailUrl="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
+                aspectRatio="16:9"
+                hash="205f79391c"
+                background={false}
+                muted={false}
+                autoplay={true}
+              />
             </div>
 
             <div>
