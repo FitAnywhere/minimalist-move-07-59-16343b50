@@ -59,7 +59,7 @@ const ProductTabs = () => {
               MAXIMIZE YOUR EXPERIENCE
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
-            <p className="mt-4 text-gray-700 font-medium text-lg">
+            <p className="mt-4 text-gray-700 font-medium text-xl py-[13px]">
               With TRX and Bands, your potential has no walls.
             </p>
           </div>
