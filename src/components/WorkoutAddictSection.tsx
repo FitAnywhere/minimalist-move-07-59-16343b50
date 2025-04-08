@@ -154,6 +154,15 @@ const WorkoutAddictSection = () => {
         <div ref={vimeoContainerRef} className="relative w-full h-0 overflow-hidden bg-black" style={{
         paddingBottom: '133.33%'
       }}>
+          {/* Fallback thumbnail for error state */}
+          {videoError && (
+            <img
+              src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_72_ggjdho.png"
+              alt="Video thumbnail fallback"
+              className="absolute inset-0 w-full h-full object-cover z-10 rounded-2xl"
+            />
+          )}
+          
           {!isVideoPlaying && !videoError && <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-2xl">
               <div className="flex flex-col items-center justify-center space-y-4">
                 <div className="relative">

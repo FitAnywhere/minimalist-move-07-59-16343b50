@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -14,6 +15,7 @@ const TrainingVault = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const isMobile = useIsMobile();
+  const [videoError, setVideoError] = useState(false);
   
   const handleLevelSelect = (level: 'beginner' | 'expert') => {
     setSelectedLevel(level);
@@ -149,13 +151,29 @@ const TrainingVault = () => {
               padding: '177.78% 0 0 0',
               position: 'relative'
             }}>
-                <iframe src="https://player.vimeo.com/video/1073152410?h=7283b3c537&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%'
-              }} title="Setup Video"></iframe>
+                {/* Fallback thumbnail for video errors */}
+                {videoError && (
+                  <img 
+                    src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097749/Screenshot_69_w6ixx7.png"
+                    alt="Video thumbnail fallback"
+                    className="absolute inset-0 w-full h-full object-cover z-10"
+                  />
+                )}
+                
+                <iframe 
+                  src="https://player.vimeo.com/video/1073152410?h=7283b3c537&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" 
+                  frameBorder="0" 
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%'
+                  }} 
+                  title="Setup Video"
+                  onError={() => setVideoError(true)}>
+                </iframe>
               </div>
             </div>
           </div>

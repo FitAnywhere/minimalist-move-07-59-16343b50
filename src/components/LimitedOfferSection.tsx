@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -7,14 +8,26 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 // BoxFun carousel images
 const boxfunImages = ["https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/opt3_ly3euq.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/op2_wzwz9j.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095735/opt4_sqynru.png"];
+const fallbackImage = "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/opt3_ly3euq.png"; // Using first image as fallback
+
 const LimitedOfferSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
+  const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
+  
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
+  
+  const handleImageError = (index: number) => {
+    setImageErrors(prev => ({
+      ...prev,
+      [index]: true
+    }));
+  };
+  
   return <section id="limited-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto">
@@ -36,7 +49,12 @@ const LimitedOfferSection = () => {
                     <CarouselContent>
                       {boxfunImages.map((image, index) => <CarouselItem key={index}>
                           <div className="flex items-center justify-center p-2">
-                            <img src={image} alt={`BoxFun Offer ${index + 1}`} className={isMobile ? "h-52 object-contain" : "h-96 object-contain"} />
+                            <img 
+                              src={imageErrors[index] ? fallbackImage : image} 
+                              alt={`BoxFun Offer ${index + 1}`} 
+                              className={isMobile ? "h-52 object-contain" : "h-96 object-contain"} 
+                              onError={() => handleImageError(index)}
+                            />
                           </div>
                         </CarouselItem>)}
                     </CarouselContent>
