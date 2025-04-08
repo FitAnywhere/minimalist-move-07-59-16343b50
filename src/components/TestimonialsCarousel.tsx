@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -8,72 +9,69 @@ interface Testimonial {
   name: string;
   role: string;
   quote: string;
-  vimeoId: string;
-  hash: string;
+  mediaType: "video" | "image";
+  vimeoId?: string;
+  hash?: string;
+  imageUrl?: string;
 }
 
-const testimonials: Testimonial[] = [{
-  name: "Emily T.",
-  role: "Fitness Beginner",
-  quote: "Bands seemed basic until I tried this. My whole body's sore in the best way.",
-  vimeoId: "1067256372",
-  hash: "70ab6c252c"
-}, {
-  name: "Jordan P.",
-  role: "Calisthenics Enthusiast",
-  quote: "Didn't expect this to replace my entire workout routine…",
-  vimeoId: "1072106681",
-  hash: "ccbb523a7c"
-}, {
-  name: "Sarah M.",
-  role: "Remote Worker",
-  quote: "Being remote used to mean no workouts. Now it means random 15 minute gains between Zooms.",
-  vimeoId: "1067256419",
-  hash: "9896ed5d93"
-}, {
-  name: "Chris L.",
-  role: "Fitness Advocate",
-  quote: "Our clients love it, and it looks clean and modern.",
-  vimeoId: "1067256325",
-  hash: "d9d4133cc1"
-}, {
-  name: "Alex G.",
-  role: "Busy Professional",
-  quote: "Time saving is underrated. Now I work out and still have time for my girl.",
-  vimeoId: "1067256239",
-  hash: "d5e32d0eef"
-}, {
-  name: "John D.",
-  role: "Fitness Enthusiast",
-  quote: "It's like minimalism for fitness. Simple yet everything you need.",
-  vimeoId: "1067256399",
-  hash: "317d8d1581"
-}, {
-  name: "Tom S.",
-  role: "Strength Seeker",
-  quote: "No more gym anxiety.. just good vibes, and loud music.",
-  vimeoId: "1072106714",
-  hash: "2f52dd8383"
-}, {
-  name: "Ryan P.",
-  role: "Leader with a Fitness Goal",
-  quote: "Perfect for a quick and effective workout, no matter where I am!",
-  vimeoId: "1072106699",
-  hash: "6075a29b52"
-}];
+const testimonials: Testimonial[] = [
+  {
+    name: "Emily T.",
+    role: "Fitness Beginner",
+    quote: "First time using bands seriously. Safe to say, my muscles felt it.",
+    mediaType: "video",
+    vimeoId: "1067256372",
+    hash: "70ab6c252c"
+  }, {
+    name: "Jordan P.",
+    role: "Calisthenics Enthusiast",
+    quote: "Honestly shocked how fast this became my main workout.",
+    mediaType: "image",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
+  }, {
+    name: "Sarah M.",
+    role: "Remote Worker",
+    quote: "Used to blame Zoom for no workouts. Now I sneak in 15 min wins.",
+    mediaType: "image",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099088/Screenshot_76_nkxmvr.png"
+  }, {
+    name: "Chris L.",
+    role: "Fitness Advocate",
+    quote: "Modern, minimal, and our people love it.",
+    mediaType: "image",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099090/Screenshot_73_tco9rh.png"
+  }, {
+    name: "Alex G.",
+    role: "Busy Professional",
+    quote: "Minimal gear. Maximum gains. Just how I like it.",
+    mediaType: "image",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_71_b7srzc.png"
+  }, {
+    name: "Tom S.",
+    role: "Strength Seeker",
+    quote: "No crowds, no pressure. Just me, music, and movement.",
+    mediaType: "image",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
+  }
+];
 
-const TestimonialVideo = memo(({
+const TestimonialMedia = memo(({
+  mediaType,
   vimeoId,
   hash,
+  imageUrl,
   onLoaded,
   isVisible,
   isMobile,
   uniqueKey,
   onRetry
 }: {
-  vimeoId: string;
-  hash: string;
-  onLoaded: (vimeoId: string) => void;
+  mediaType: "video" | "image";
+  vimeoId?: string;
+  hash?: string;
+  imageUrl?: string;
+  onLoaded: (id: string) => void;
   isVisible: boolean;
   isMobile: boolean;
   uniqueKey: string;
@@ -82,6 +80,8 @@ const TestimonialVideo = memo(({
   const [loadAttempts, setLoadAttempts] = useState(0);
   const [showError, setShowError] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const mediaId = vimeoId || imageUrl || "";
 
   useEffect(() => {
     setShowError(false);
@@ -90,7 +90,7 @@ const TestimonialVideo = memo(({
 
   const handleLoad = () => {
     setShowError(false);
-    onLoaded(vimeoId);
+    onLoaded(mediaId);
   };
 
   const handleError = () => {
@@ -99,11 +99,17 @@ const TestimonialVideo = memo(({
       setLoadAttempts(prev => prev + 1);
       
       setTimeout(() => {
-        if (iframeRef.current) {
+        if (mediaType === "video" && iframeRef.current) {
           const src = iframeRef.current.src;
           iframeRef.current.src = '';
           setTimeout(() => {
             if (iframeRef.current) iframeRef.current.src = src;
+          }, 50);
+        } else if (mediaType === "image" && imageRef.current) {
+          const src = imageRef.current.src;
+          imageRef.current.src = '';
+          setTimeout(() => {
+            if (imageRef.current) imageRef.current.src = src;
           }, 50);
         }
       }, retryDelay);
@@ -127,16 +133,35 @@ const TestimonialVideo = memo(({
       {showError ? (
         <div className="absolute inset-0 flex items-center justify-center bg-black">
           <div className="text-center">
-            <p className="text-white mb-4">Video could not be loaded</p>
+            <p className="text-white mb-4">Content could not be loaded</p>
             <button 
               onClick={onRetry} 
               className="flex items-center gap-2 bg-yellow text-black px-3 py-2 rounded-full text-sm"
             >
               <RefreshCw className="w-4 h-4" />
-              Retry Video
+              Retry Loading
             </button>
           </div>
         </div>
+      ) : mediaType === "image" ? (
+        <img 
+          ref={imageRef}
+          key={uniqueKey} 
+          src={imageUrl}
+          alt={`Testimonial from ${mediaId}`}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            backgroundColor: 'black'
+          }} 
+          onLoad={handleLoad}
+          onError={handleError}
+          loading="lazy"
+        />
       ) : (
         <iframe 
           ref={iframeRef}
@@ -161,7 +186,7 @@ const TestimonialVideo = memo(({
     </div>
   );
 });
-TestimonialVideo.displayName = 'TestimonialVideo';
+TestimonialMedia.displayName = 'TestimonialMedia';
 
 const VideoLoader = memo(() => <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
     <div className="flex flex-col items-center justify-center space-y-4">
@@ -178,7 +203,7 @@ const VideoLoader = memo(() => <div className="absolute inset-0 flex flex-col it
       </div>
       
       <div className="text-white font-medium tracking-wide text-center">
-        <p>LOADING VIDEO</p>
+        <p>LOADING CONTENT</p>
         <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
           <div className="h-full bg-yellow animate-pulse"></div>
         </div>
@@ -192,22 +217,22 @@ const TestimonialsCarousel = () => {
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [videosLoaded, setVideosLoaded] = useState<{
+  const [mediaLoaded, setMediaLoaded] = useState<{
     [key: string]: boolean;
   }>({});
-  const [videoVisible, setVideoVisible] = useState<{
+  const [mediaVisible, setMediaVisible] = useState<{
     [key: string]: boolean;
   }>({});
   const [key, setKey] = useState(0);
-  const [preloadedVideos, setPreloadedVideos] = useState<string[]>([]);
+  const [preloadedMedia, setPreloadedMedia] = useState<string[]>([]);
   const vimeoScriptLoadedRef = useRef(false);
-  const [videoError, setVideoError] = useState(false);
+  const [mediaError, setMediaError] = useState(false);
   
   const currentTestimonial = testimonials[activeIndex] || testimonials[0];
 
   useEffect(() => {
     if (vimeoScriptLoadedRef.current) return;
-    if (!document.getElementById('vimeo-player-api')) {
+    if (!document.getElementById('vimeo-player-api') && testimonials.some(t => t.mediaType === "video")) {
       const script = document.createElement('script');
       script.id = 'vimeo-player-api';
       script.src = 'https://player.vimeo.com/api/player.js';
@@ -221,29 +246,49 @@ const TestimonialsCarousel = () => {
     }
     
     const preloadTestimonials = () => {
+      // Preload first 3 testimonials
       testimonials.slice(0, 3).forEach(testimonial => {
         if (!testimonial) return;
         
-        const preloadLink = document.createElement('link');
-        preloadLink.rel = 'preload';
-        preloadLink.as = 'fetch';
-        preloadLink.href = `https://player.vimeo.com/video/${testimonial.vimeoId}?h=${testimonial.hash}`;
-        preloadLink.crossOrigin = 'anonymous';
-        document.head.appendChild(preloadLink);
-        setPreloadedVideos(prev => [...prev, testimonial.vimeoId]);
-      });
-      
-      testimonials.slice(3).forEach((testimonial, index) => {
-        setTimeout(() => {
-          if (!testimonial) return;
-          
+        if (testimonial.mediaType === "video" && testimonial.vimeoId) {
           const preloadLink = document.createElement('link');
           preloadLink.rel = 'preload';
           preloadLink.as = 'fetch';
           preloadLink.href = `https://player.vimeo.com/video/${testimonial.vimeoId}?h=${testimonial.hash}`;
           preloadLink.crossOrigin = 'anonymous';
           document.head.appendChild(preloadLink);
-          setPreloadedVideos(prev => [...prev, testimonial.vimeoId]);
+          setPreloadedMedia(prev => [...prev, testimonial.vimeoId || ""]);
+        } else if (testimonial.mediaType === "image" && testimonial.imageUrl) {
+          const preloadLink = document.createElement('link');
+          preloadLink.rel = 'preload';
+          preloadLink.as = 'image';
+          preloadLink.href = testimonial.imageUrl;
+          document.head.appendChild(preloadLink);
+          setPreloadedMedia(prev => [...prev, testimonial.imageUrl || ""]);
+        }
+      });
+      
+      // Preload remaining testimonials with delay
+      testimonials.slice(3).forEach((testimonial, index) => {
+        setTimeout(() => {
+          if (!testimonial) return;
+          
+          if (testimonial.mediaType === "video" && testimonial.vimeoId) {
+            const preloadLink = document.createElement('link');
+            preloadLink.rel = 'preload';
+            preloadLink.as = 'fetch';
+            preloadLink.href = `https://player.vimeo.com/video/${testimonial.vimeoId}?h=${testimonial.hash}`;
+            preloadLink.crossOrigin = 'anonymous';
+            document.head.appendChild(preloadLink);
+            setPreloadedMedia(prev => [...prev, testimonial.vimeoId || ""]);
+          } else if (testimonial.mediaType === "image" && testimonial.imageUrl) {
+            const preloadLink = document.createElement('link');
+            preloadLink.rel = 'preload';
+            preloadLink.as = 'image';
+            preloadLink.href = testimonial.imageUrl;
+            document.head.appendChild(preloadLink);
+            setPreloadedMedia(prev => [...prev, testimonial.imageUrl || ""]);
+          }
         }, (index + 1) * 500);
       });
     };
@@ -256,9 +301,10 @@ const TestimonialsCarousel = () => {
   const nextTestimonial = useCallback(() => {
     if (!currentTestimonial) return;
     
-    setVideoVisible(prev => ({
+    const mediaId = currentTestimonial.vimeoId || currentTestimonial.imageUrl || "";
+    setMediaVisible(prev => ({
       ...prev,
-      [currentTestimonial.vimeoId]: false
+      [mediaId]: false
     }));
     
     requestAnimationFrame(() => {
@@ -267,16 +313,17 @@ const TestimonialsCarousel = () => {
         return nextIndex >= testimonials.length ? 0 : nextIndex;
       });
       setKey(prev => prev + 1);
-      setVideoError(false);
+      setMediaError(false);
     });
   }, [currentTestimonial]);
 
   const prevTestimonial = useCallback(() => {
     if (!currentTestimonial) return;
     
-    setVideoVisible(prev => ({
+    const mediaId = currentTestimonial.vimeoId || currentTestimonial.imageUrl || "";
+    setMediaVisible(prev => ({
       ...prev,
-      [currentTestimonial.vimeoId]: false
+      [mediaId]: false
     }));
     
     requestAnimationFrame(() => {
@@ -285,71 +332,88 @@ const TestimonialsCarousel = () => {
         return nextIndex < 0 ? testimonials.length - 1 : nextIndex;
       });
       setKey(prev => prev + 1);
-      setVideoError(false);
+      setMediaError(false);
     });
   }, [currentTestimonial]);
 
   const goToTestimonial = useCallback((index: number) => {
     if (index === activeIndex || !currentTestimonial || index >= testimonials.length) return;
     
-    setVideoVisible(prev => ({
+    const mediaId = currentTestimonial.vimeoId || currentTestimonial.imageUrl || "";
+    setMediaVisible(prev => ({
       ...prev,
-      [currentTestimonial.vimeoId]: false
+      [mediaId]: false
     }));
     
     requestAnimationFrame(() => {
       setActiveIndex(index);
       setKey(prev => prev + 1);
-      setVideoError(false);
+      setMediaError(false);
     });
   }, [activeIndex, currentTestimonial]);
 
-  const handleVideoLoaded = useCallback((vimeoId: string) => {
-    setVideosLoaded(prev => ({
+  const handleMediaLoaded = useCallback((mediaId: string) => {
+    setMediaLoaded(prev => ({
       ...prev,
-      [vimeoId]: true
+      [mediaId]: true
     }));
     
     requestAnimationFrame(() => {
-      setVideoVisible(prev => ({
+      setMediaVisible(prev => ({
         ...prev,
-        [vimeoId]: true
+        [mediaId]: true
       }));
     });
   }, []);
 
   const handleRetry = useCallback(() => {
     setKey(prev => prev + 1);
-    setVideoError(false);
+    setMediaError(false);
   }, []);
 
   useEffect(() => {
     if (!currentTestimonial) return;
     
-    if (videosLoaded[currentTestimonial.vimeoId]) {
+    const mediaId = currentTestimonial.vimeoId || currentTestimonial.imageUrl || "";
+    
+    if (mediaLoaded[mediaId]) {
       const nextIndex = (activeIndex + 1) % testimonials.length;
       const nextTestimonial = testimonials[nextIndex];
       
-      if (nextTestimonial && !preloadedVideos.includes(nextTestimonial.vimeoId)) {
-        const preloadLink = document.createElement('link');
-        preloadLink.rel = 'preload';
-        preloadLink.as = 'fetch';
-        preloadLink.href = `https://player.vimeo.com/video/${nextTestimonial.vimeoId}?h=${nextTestimonial.hash}`;
-        preloadLink.crossOrigin = 'anonymous';
-        document.head.appendChild(preloadLink);
-        setPreloadedVideos(prev => [...prev, nextTestimonial.vimeoId]);
+      if (nextTestimonial) {
+        const nextMediaId = nextTestimonial.vimeoId || nextTestimonial.imageUrl || "";
+        
+        if (!preloadedMedia.includes(nextMediaId)) {
+          if (nextTestimonial.mediaType === "video" && nextTestimonial.vimeoId) {
+            const preloadLink = document.createElement('link');
+            preloadLink.rel = 'preload';
+            preloadLink.as = 'fetch';
+            preloadLink.href = `https://player.vimeo.com/video/${nextTestimonial.vimeoId}?h=${nextTestimonial.hash}`;
+            preloadLink.crossOrigin = 'anonymous';
+            document.head.appendChild(preloadLink);
+            setPreloadedMedia(prev => [...prev, nextMediaId]);
+          } else if (nextTestimonial.mediaType === "image" && nextTestimonial.imageUrl) {
+            const preloadLink = document.createElement('link');
+            preloadLink.rel = 'preload';
+            preloadLink.as = 'image';
+            preloadLink.href = nextTestimonial.imageUrl;
+            document.head.appendChild(preloadLink);
+            setPreloadedMedia(prev => [...prev, nextMediaId]);
+          }
+        }
       }
     }
-  }, [videosLoaded, activeIndex, currentTestimonial, preloadedVideos]);
+  }, [mediaLoaded, activeIndex, currentTestimonial, preloadedMedia]);
 
   useEffect(() => {
     if (!currentTestimonial) return;
     
-    setVideoVisible(prev => ({
+    const mediaId = currentTestimonial.vimeoId || currentTestimonial.imageUrl || "";
+    setMediaVisible(prev => ({
       ...prev,
-      [currentTestimonial.vimeoId]: videosLoaded[currentTestimonial.vimeoId] || false
+      [mediaId]: mediaLoaded[mediaId] || false
     }));
-  }, [activeIndex, currentTestimonial, videosLoaded]);
+  }, [activeIndex, currentTestimonial, mediaLoaded]);
 
   if (!currentTestimonial) {
     return <div className="py-16 md:py-20 bg-gray-50">Loading testimonials...</div>;
@@ -419,17 +483,19 @@ const TestimonialsCarousel = () => {
                     padding: '177.78% 0 0 0',
                     position: 'relative'
                   }} className="bg-black">
-                    <TestimonialVideo 
-                      vimeoId={currentTestimonial.vimeoId} 
-                      hash={currentTestimonial.hash} 
-                      onLoaded={handleVideoLoaded} 
-                      isVisible={videoVisible[currentTestimonial.vimeoId] || false} 
+                    <TestimonialMedia 
+                      mediaType={currentTestimonial.mediaType}
+                      vimeoId={currentTestimonial.vimeoId}
+                      hash={currentTestimonial.hash}
+                      imageUrl={currentTestimonial.imageUrl}
+                      onLoaded={handleMediaLoaded} 
+                      isVisible={mediaVisible[currentTestimonial.vimeoId || currentTestimonial.imageUrl || ""] || false} 
                       isMobile={isMobile} 
-                      uniqueKey={`${currentTestimonial.vimeoId}-${key}`}
+                      uniqueKey={`${currentTestimonial.vimeoId || currentTestimonial.imageUrl}-${key}`}
                       onRetry={handleRetry}
                     />
                     
-                    {!videoVisible[currentTestimonial.vimeoId] && <VideoLoader />}
+                    {!mediaVisible[currentTestimonial.vimeoId || currentTestimonial.imageUrl || ""] && <VideoLoader />}
                   </div>
                 </div>
               </div>
