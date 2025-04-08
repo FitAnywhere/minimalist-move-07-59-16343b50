@@ -80,7 +80,7 @@ const ProductTabs = () => {
                   </h3>
                 </div>
                 
-                <div className="space-y-8 mb-6 relative z-10">
+                <div className="space-y-8 mb-6 relative z-10 my-[69px] py-[35px] px-0 mx-0">
                   {bandsFeatures.map((feature, index) => <div key={index} className="flex items-start gap-3">
                       <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{
                     letterSpacing: "1px"
