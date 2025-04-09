@@ -16,11 +16,11 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
-    name: "Emily T.",
-    role: "Fitness Beginner",
-    quote: "One workout in and I realized. Bands are no joke.",
+    name: "Sarah M.",
+    role: "Remote Worker",
+    quote: "Used to blame Zoom for no workouts. Now I sneak in 15 min wins.",
     mediaType: "image",
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744150914/Screenshot_89_mw00er.png"
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099088/Screenshot_76_nkxmvr.png"
   }, {
     name: "Jordan P.",
     role: "Calisthenics Enthusiast",
@@ -28,17 +28,17 @@ const testimonials: Testimonial[] = [
     mediaType: "image",
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
   }, {
-    name: "Sarah M.",
-    role: "Remote Worker",
-    quote: "Used to blame Zoom for no workouts. Now I sneak in 15 min wins.",
-    mediaType: "image",
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099088/Screenshot_76_nkxmvr.png"
-  }, {
     name: "Chris L.",
     role: "Fitness Advocate",
     quote: "Modern, minimal, and our people love it.",
     mediaType: "image",
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099090/Screenshot_73_tco9rh.png"
+  }, {
+    name: "Emily T.",
+    role: "Fitness Beginner",
+    quote: "One workout in and I realized. Bands are no joke.",
+    mediaType: "image",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744150914/Screenshot_89_mw00er.png"
   }, {
     name: "Alex G.",
     role: "Busy Professional",
@@ -428,7 +428,7 @@ const TestimonialsCarousel = () => {
           <div className="relative">
             <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
               <div className="order-2 md:order-1 text-left flex flex-col justify-center scale-80 transform origin-center">
-                <div className="backdrop-blur-md bg-white/80 shadow-md p-5 rounded-xl relative mb-5 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20" style={{
+                <div className={cn("backdrop-blur-md bg-white/80 shadow-md p-5 rounded-xl relative mb-5 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20", isMobile ? "mb-1 p-4" : "")} style={{
                 borderColor: '#444444'
               }}>
                   <div className="text-gray-500 opacity-50 absolute left-3 top-3 pt-1" style={{
@@ -441,7 +441,7 @@ const TestimonialsCarousel = () => {
                     {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 mr-1" fill="#FFD700" />)}
                   </div>
                   
-                  <p className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 transition-all duration-500 pt-2 pl-2">
+                  <p className={cn("text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 transition-all duration-500 pt-2 pl-2", isMobile ? "text-lg md:text-xl lg:text-2xl mb-2" : "")}>
                     {currentTestimonial.quote}
                   </p>
                   
@@ -451,25 +451,6 @@ const TestimonialsCarousel = () => {
                       <p className="text-xs text-gray-500">{currentTestimonial.role}</p>
                     </div>
                   </div>
-                </div>
-                
-                <div className="flex space-x-2 mt-3 justify-center md:justify-start">
-                  {testimonials.map((_, index) => (
-                    <button 
-                      key={index} 
-                      onClick={() => goToTestimonial(index)} 
-                      className={cn(
-                        "transition-all duration-300", 
-                        index === activeIndex 
-                          ? "w-3 h-3 bg-gray-800 rounded-full" 
-                          : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400"
-                      )} 
-                      aria-label={`Go to testimonial ${index + 1}`} 
-                      style={{
-                        backgroundColor: index === activeIndex ? '#444444' : ''
-                      }} 
-                    />
-                  ))}
                 </div>
               </div>
               
@@ -493,30 +474,68 @@ const TestimonialsCarousel = () => {
                     
                     {!mediaVisible[currentTestimonial.vimeoId || currentTestimonial.imageUrl || ""] && <VideoLoader />}
                   </div>
+                  
+                  {isMobile && (
+                    <div className="flex space-x-3 mt-2 justify-center">
+                      {testimonials.map((_, index) => (
+                        <button 
+                          key={index} 
+                          onClick={() => goToTestimonial(index)} 
+                          className={cn(
+                            "transition-all duration-300", 
+                            index === activeIndex 
+                              ? "w-4 h-4 bg-gray-800 rounded-full" 
+                              : "w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400"
+                          )} 
+                          aria-label={`Go to testimonial ${index + 1}`} 
+                          style={{
+                            backgroundColor: index === activeIndex ? '#444444' : ''
+                          }} 
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
             
             <button 
               onClick={prevTestimonial} 
-              className="absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow" 
+              className={cn("absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3" : "")} 
               aria-label="Previous testimonial"
             >
-              <ChevronLeft className="w-4 h-4 text-gray-800" />
+              <ChevronLeft className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-4 h-4")} />
             </button>
             
             <button 
               onClick={nextTestimonial} 
-              className="absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow" 
+              className={cn("absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3" : "")} 
               aria-label="Next testimonial"
             >
-              <ChevronRight className="w-4 h-4 text-gray-800" />
+              <ChevronRight className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-4 h-4")} />
             </button>
           </div>
           
-          <div className={cn("mt-16 text-center transition-all duration-700", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-            
-          </div>
+          {!isMobile && (
+            <div className="flex space-x-2 mt-3 justify-center md:justify-start">
+              {testimonials.map((_, index) => (
+                <button 
+                  key={index} 
+                  onClick={() => goToTestimonial(index)} 
+                  className={cn(
+                    "transition-all duration-300", 
+                    index === activeIndex 
+                      ? "w-3 h-3 bg-gray-800 rounded-full" 
+                      : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400"
+                  )} 
+                  aria-label={`Go to testimonial ${index + 1}`} 
+                  style={{
+                    backgroundColor: index === activeIndex ? '#444444' : ''
+                  }} 
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>;

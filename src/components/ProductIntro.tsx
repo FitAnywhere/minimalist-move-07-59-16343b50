@@ -1,21 +1,25 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, ChevronDown, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
+
+// Updated features with new text
 const features = [{
-  title: "UNFOLD & GO",
-  description: "No tools, no installation"
+  title: "MONEY",
+  description: "Saves you 602,6€ every year"
 }, {
-  title: "MODERN DESIGN",
-  description: "Foldable for easy storage, with adjustable height for low ceilings"
+  title: "TIME",
+  description: "Gains you 104 hours every year"
 }, {
-  title: "INFINITE POSSIBILITIES",
-  description: "One station without limits"
+  title: "SPACE",
+  description: "Folds away in 2 minutes."
 }];
+
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -27,9 +31,8 @@ const ProductIntro = () => {
     features: [false, false, false],
     finalLine: false
   });
-  const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [showSpecs, setShowSpecs] = useState(false);
+  
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -62,9 +65,7 @@ const ProductIntro = () => {
       })), 1200);
     }
   }, [isInView]);
-  const handleFeatureClick = (index: number) => {
-    setOpenFeatureIndex(openFeatureIndex === index ? null : index);
-  };
+
   return <section id="product" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
@@ -90,25 +91,28 @@ Yours with FitAnywhere.</p>
                 </div>}
               
               <div className="space-y-5">
-                {features.map((feature, index) => <div key={index} className={cn("px-6 py-3 rounded-full cursor-pointer", "transition-all duration-300 ease-in-out", "shadow-md", "transform", openFeatureIndex === index ? "bg-gradient-to-r from-yellow-light to-yellow" : "bg-white", animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
-                transitionDelay: `${(index + 1) * 100}ms`
-              }} onClick={() => handleFeatureClick(index)} onMouseEnter={() => setHoverIndex(index)} onMouseLeave={() => setHoverIndex(null)}>
-                    <div className="flex justify-between items-center">
-                      <h4 className="text-lg font-semibold">
-                        {feature.title}
-                      </h4>
-                      
-                      <div className={cn("transition-all duration-200", hoverIndex === index ? "transform translate-x-1" : "")}>
-                        {openFeatureIndex === index ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
-                      </div>
-                    </div>
-                    
-                    <div className={cn("overflow-hidden transition-all duration-300 ease-in-out", openFeatureIndex === index ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0")}>
-                      <p className="text-gray-600">
-                        {feature.description}
-                      </p>
-                    </div>
-                  </div>)}
+                {features.map((feature, index) => <div key={index} className={cn(
+                  "px-6 py-3 rounded-full",
+                  "transition-all duration-300 ease-in-out",
+                  "shadow-md",
+                  "transform",
+                  "bg-gradient-to-r from-yellow-light to-yellow", // Always use gradient background
+                  animationState.features[index] ? "opacity-100" : "opacity-0"
+                )} style={{
+                  transitionDelay: `${(index + 1) * 100}ms`
+                }}>
+                  <div className="flex justify-between items-center">
+                    <h4 className="text-lg font-semibold">
+                      {feature.title}
+                    </h4>
+                  </div>
+                  
+                  <div className="mt-2 opacity-100">
+                    <p className="text-gray-600">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>)}
               </div>
               
               <div className="space-y-4">
@@ -202,4 +206,5 @@ Yours with FitAnywhere.</p>
       </Dialog>
     </section>;
 };
+
 export default ProductIntro;
