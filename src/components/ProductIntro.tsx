@@ -92,13 +92,13 @@ const ProductIntro = () => {
                 transitionDelay: `${(index + 1) * 100}ms`
               }}>
                   <div className="flex justify-between items-center">
-                    <h4 className="text-lg font-semibold">
+                    <h4 className="text-lg font-bold">
                       {feature.title}
                     </h4>
                   </div>
                   
                   <div className="mt-2 opacity-100">
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 py-0 font-medium">
                       {feature.description}
                     </p>
                   </div>
