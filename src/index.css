@@ -261,21 +261,6 @@
   .volume-control-container {
     @apply relative transition-all duration-300;
   }
-
-  /* Mobile-specific testimonial adjustments */
-  @media (max-width: 767px) {
-    #testimonials .backdrop-blur-md {
-      @apply p-2 mb-0;
-    }
-    
-    #testimonials .font-semibold + div {
-      @apply mt-0;
-    }
-    
-    #testimonials p.text-lg {
-      @apply mb-2;
-    }
-  }
 }
 
 @keyframes animate-slide-in {

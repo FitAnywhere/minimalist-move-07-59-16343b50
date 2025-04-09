@@ -225,8 +225,6 @@ const TestimonialsCarousel = () => {
   const [preloadedMedia, setPreloadedMedia] = useState<string[]>([]);
   const vimeoScriptLoadedRef = useRef(false);
   const [mediaError, setMediaError] = useState(false);
-  const [touchStartX, setTouchStartX] = useState(0);
-  const [touchEndX, setTouchEndX] = useState(0);
   
   const currentTestimonial = testimonials[activeIndex] || testimonials[0];
 
@@ -369,22 +367,6 @@ const TestimonialsCarousel = () => {
     setMediaError(false);
   }, []);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEndX(e.touches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStartX - touchEndX > 50) {
-      nextTestimonial();
-    } else if (touchEndX - touchStartX > 50) {
-      prevTestimonial();
-    }
-  };
-
   useEffect(() => {
     if (!currentTestimonial) return;
     
@@ -443,15 +425,10 @@ const TestimonialsCarousel = () => {
             </h2>
           </div>
           
-          <div 
-            className="relative"
-            onTouchStart={isMobile ? handleTouchStart : undefined}
-            onTouchMove={isMobile ? handleTouchMove : undefined}
-            onTouchEnd={isMobile ? handleTouchEnd : undefined}
-          >
+          <div className="relative">
             <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
               <div className="order-2 md:order-1 text-left flex flex-col justify-center scale-80 transform origin-center">
-                <div className={cn("backdrop-blur-md bg-white/80 shadow-md p-5 rounded-xl relative mb-5 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20", isMobile ? "mb-1 p-3" : "")} style={{
+                <div className={cn("backdrop-blur-md bg-white/80 shadow-md p-5 rounded-xl relative mb-5 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20", isMobile ? "mb-1 p-4" : "")} style={{
                 borderColor: '#444444'
               }}>
                   <div className="text-gray-500 opacity-50 absolute left-3 top-3 pt-1" style={{
@@ -460,14 +437,18 @@ const TestimonialsCarousel = () => {
                     <Quote className="h-6 w-6" />
                   </div>
                   
-                  <p className={cn("text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 transition-all duration-500 pt-2 pl-2", isMobile ? "text-lg md:text-xl lg:text-2xl mb-1" : "")}>
+                  <div className="flex mb-2 mt-5 animate-fade-in">
+                    {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 mr-1" fill="#FFD700" />)}
+                  </div>
+                  
+                  <p className={cn("text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 transition-all duration-500 pt-2 pl-2", isMobile ? "text-lg md:text-xl lg:text-2xl mb-2" : "")}>
                     {currentTestimonial.quote}
                   </p>
                   
-                  <div className="flex flex-col mt-3 animate-fade-in">
-                    <p className="font-semibold text-gray-800 text-sm">{currentTestimonial.name}</p>
-                    <div className="flex mt-1">
-                      {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 mr-1" fill="#FFD700" />)}
+                  <div className="flex items-center mt-3 animate-fade-in">
+                    <div>
+                      <p className="font-semibold text-gray-800 text-sm">{currentTestimonial.name}</p>
+                      <p className="text-xs text-gray-500">{currentTestimonial.role}</p>
                     </div>
                   </div>
                 </div>
@@ -503,12 +484,12 @@ const TestimonialsCarousel = () => {
                           className={cn(
                             "transition-all duration-300", 
                             index === activeIndex 
-                              ? "w-4 h-4 rounded-full" 
-                              : "w-3 h-3 rounded-full hover:bg-gray-400"
+                              ? "w-4 h-4 bg-gray-800 rounded-full" 
+                              : "w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400"
                           )} 
                           aria-label={`Go to testimonial ${index + 1}`} 
                           style={{
-                            backgroundColor: index === activeIndex ? '#444444' : '#f3f3f3'
+                            backgroundColor: index === activeIndex ? '#444444' : ''
                           }} 
                         />
                       ))}
