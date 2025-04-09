@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -19,7 +18,6 @@ const features = [{
   title: "SPACE",
   description: "Folds away in 2 minutes."
 }];
-
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -32,7 +30,6 @@ const ProductIntro = () => {
     finalLine: false
   });
   const [showSpecs, setShowSpecs] = useState(false);
-  
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -65,7 +62,6 @@ const ProductIntro = () => {
       })), 1200);
     }
   }, [isInView]);
-
   return <section id="product" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
@@ -77,8 +73,7 @@ const ProductIntro = () => {
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
                 
-                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", isMobile ? "text-center mx-auto" : "")}>Space. Time. Money.
-Yours with FitAnywhere.</p>
+                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", isMobile ? "text-center mx-auto" : "")}>Yours with FitAnywhere</p>
               </div>
               
               {isMobile && <div className={cn("flex justify-center items-center transition-all duration-700 h-full md:hidden", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
@@ -91,16 +86,11 @@ Yours with FitAnywhere.</p>
                 </div>}
               
               <div className="space-y-5">
-                {features.map((feature, index) => <div key={index} className={cn(
-                  "px-6 py-3 rounded-full",
-                  "transition-all duration-300 ease-in-out",
-                  "shadow-md",
-                  "transform",
-                  "bg-gradient-to-r from-yellow-light to-yellow", // Always use gradient background
-                  animationState.features[index] ? "opacity-100" : "opacity-0"
-                )} style={{
-                  transitionDelay: `${(index + 1) * 100}ms`
-                }}>
+                {features.map((feature, index) => <div key={index} className={cn("px-6 py-3 rounded-full", "transition-all duration-300 ease-in-out", "shadow-md", "transform", "bg-gradient-to-r from-yellow-light to-yellow",
+              // Always use gradient background
+              animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
+                transitionDelay: `${(index + 1) * 100}ms`
+              }}>
                   <div className="flex justify-between items-center">
                     <h4 className="text-lg font-semibold">
                       {feature.title}
@@ -206,5 +196,4 @@ Yours with FitAnywhere.</p>
       </Dialog>
     </section>;
 };
-
 export default ProductIntro;
