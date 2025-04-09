@@ -1,4 +1,3 @@
-
 import { useRef, useState, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -49,7 +48,7 @@ const HeroSection = memo(() => {
                 <div className={cn("mt-4 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <div className="mt-4 space-y-1">
                     <p className="text-gray-700 text-base font-semibold">On average, gym users lose:</p>
-                    <p className="text-gray-700 my-[9px] text-base font-semibold">€12,052 in fees + 883 hours in traffic</p>
+                    <p className="text-gray-700 my-[9px] text-base font-semibold">€12,052 in fees + 2,080 hours in traffic</p>
                   </div>
                   
                   <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]">
