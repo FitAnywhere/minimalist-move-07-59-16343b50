@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote, CheckCircle } from 'lucide-react';
@@ -156,7 +157,7 @@ const TimeAndCostCalculator = () => {
                     <div className="flex flex-col md:flex-row">
                       {/* Input section - Left side on desktop, top on mobile */}
                       <div className="bg-white p-6 md:p-8 md:w-1/2">
-                        <p className="mb-3 text-left font-bold text-sm">How much time do you spend on the way to and from the gym?</p>
+                        <p className="mb-3 text-left font-bold text-sm">How much time do you spend on the way to the gym?</p>
                         
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-gray-600">0 min</span>

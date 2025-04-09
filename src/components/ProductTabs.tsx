@@ -1,9 +1,12 @@
+
 import { useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Flame, Backpack, Zap } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import EnhancedVimeoPlayer from '@/components/ui/EnhancedVimeoPlayer';
+
 const bandsFeatures = [{
   title: "10x MORE EXERCISES",
   description: "Push past plateaus, and keep progressing.",
@@ -17,6 +20,7 @@ const bandsFeatures = [{
   description: "From first reps to peak performance—bands move with you.",
   icon: Zap
 }];
+
 const ProductTabs = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
@@ -29,28 +33,30 @@ const ProductTabs = () => {
     threshold: 0.2
   });
   const isMobile = useIsMobile();
+
   const renderBandsVimeoVideo = () => {
     return <div className="w-full h-full overflow-hidden relative" style={{
       maxWidth: '80%',
       margin: '0 auto'
     }}>
         <AspectRatio ratio={3 / 4} className="overflow-hidden rounded-2xl">
-          <iframe src="https://player.vimeo.com/video/1073680510?h=006a5ccf10&title=0&byline=0&portrait=0&badge=0&autopause=0&background=1&muted=1&loop=1&autoplay=1&preload=auto" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" className="w-full h-full absolute inset-0" title="Bands video" style={{
-          border: 'none'
-        }} loading="eager" onError={e => {
-          // Handle error case by displaying fallback image
-          const iframe = e.target as HTMLIFrameElement;
-          const parent = iframe.parentElement;
-          if (parent) {
-            parent.style.backgroundImage = "url('https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097749/Screenshot_68_ytnjfg.png')";
-            parent.style.backgroundSize = "cover";
-            parent.style.backgroundPosition = "center";
-            iframe.style.opacity = "0";
-          }
-        }}></iframe>
+          <EnhancedVimeoPlayer 
+            vimeoId="1073680510"
+            hash="006a5ccf10"
+            title="Bands video"
+            autoplay={true}
+            loop={true}
+            muted={true}
+            controls={false}
+            background={true}
+            responsive={true}
+            aspectRatio="3:4"
+            placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png"
+          />
         </AspectRatio>
       </div>;
   };
+
   return <section id="accessories" ref={sectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
@@ -104,4 +110,5 @@ const ProductTabs = () => {
       </div>
     </section>;
 };
+
 export default ProductTabs;

@@ -96,6 +96,11 @@ const HeroContent = memo(({
           "mt-10 transition-all duration-1000 delay-500", 
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         )}>
+          <div className="mt-4 space-y-1">
+            <p className="text-gray-700 font-bold text-lg">On average, gym users lose:</p>
+            <p className="text-gray-700 px-0 py-[4px] font-bold text-lg">€12,052 in fees + 883 hours in traffic</p>
+          </div>
+          
           <button 
             onClick={scrollToOwnBoth} 
             className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px]"
@@ -103,11 +108,6 @@ const HeroContent = memo(({
             STOP SUBSCRIBING
             <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
-          
-          <div className="mt-4 space-y-1">
-            <p className="text-gray-700 font-bold text-lg">On average, gym users lose:</p>
-            <p className="text-gray-700 px-0 py-[4px] font-bold text-lg">€12,052 in fees + 883 hours in traffic</p>
-          </div>
         </div>
       )}
     </div>
