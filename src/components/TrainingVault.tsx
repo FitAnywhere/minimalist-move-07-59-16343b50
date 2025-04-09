@@ -1,8 +1,10 @@
+
 import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const TrainingVault = () => {
   const {
     toast
@@ -16,9 +18,11 @@ const TrainingVault = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const isMobile = useIsMobile();
   const [videoError, setVideoError] = useState(false);
+  
   const handleLevelSelect = (level: 'beginner' | 'expert') => {
     setSelectedLevel(level);
   };
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       name,
@@ -29,6 +33,7 @@ const TrainingVault = () => {
       [name]: value
     }));
   };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -89,14 +94,16 @@ const TrainingVault = () => {
       setIsLoading(false);
     }
   };
+  
   return <section className="bg-black text-white py-16">
       <div className="container mx-auto px-6">
         {/* Heading */}
         <div className="flex flex-col items-center mb-8">
           <div className="relative inline-block">
-            <h2 className="text-4xl md:text-5xl font-bold uppercase text-white text-center">WORKOUT SAMPLES</h2>
+            <h2 className="text-4xl md:text-5xl font-bold uppercase text-white text-center">YOUR LAST GYM</h2>
             <div className="absolute -bottom-2 left-0 w-full h-1.5 bg-yellow"></div>
           </div>
+          <p className="text-lg mt-4 text-center max-w-3xl">FitAnywhere - everything you need for fitness and calisthenics, plus a full training guide.</p>
         </div>
         
         {/* Two-column layout */}
@@ -168,4 +175,5 @@ const TrainingVault = () => {
       </div>
     </section>;
 };
+
 export default TrainingVault;

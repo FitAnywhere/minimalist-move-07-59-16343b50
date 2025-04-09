@@ -1,3 +1,4 @@
+
 import { useRef, useState, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -20,13 +21,14 @@ const HeroSection = memo(() => {
   // Memoize event handlers
   const scrollToOwnBoth = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    const calculatorSection = document.getElementById('calculator');
-    if (calculatorSection) {
-      calculatorSection.scrollIntoView({
+    const luxuriesSection = document.getElementById('rare-luxuries');
+    if (luxuriesSection) {
+      luxuriesSection.scrollIntoView({
         behavior: 'smooth'
       });
     }
   }, []);
+  
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
       

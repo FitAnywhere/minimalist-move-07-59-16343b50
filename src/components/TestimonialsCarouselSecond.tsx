@@ -5,6 +5,7 @@ import { useInView } from '@/utils/animations';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Star } from 'lucide-react';
 
 const testimonials = [{
   name: "Sarah M.",
@@ -57,14 +58,10 @@ const TestimonialsCarouselSecond = () => {
                         <p className="text-gray-700 mb-6 text-lg leading-relaxed">"{testimonial.text}"</p>
                       </div>
                       
-                      <div className="flex items-center">
-                        <Avatar className="h-12 w-12 border-2 border-yellow">
-                          <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                          <AvatarFallback>{testimonial.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                        </Avatar>
-                        <div className="ml-4">
-                          <p className="font-semibold text-black">{testimonial.name}</p>
-                          <p className="text-sm text-gray-500">{testimonial.location}</p>
+                      <div className="flex flex-col">
+                        <p className="font-semibold text-black">{testimonial.name}</p>
+                        <div className="flex mt-1 mb-2">
+                          {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 mr-1" fill="#FFD700" />)}
                         </div>
                       </div>
                     </div>
