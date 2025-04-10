@@ -157,7 +157,7 @@ const WorkoutAddictSection = () => {
           {/* Fallback thumbnail for error state */}
           {videoError && (
             <img
-              src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_72_ggjdho.png"
+              src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744294274/Screenshot_46_oimbqr.png"
               alt="Video thumbnail fallback"
               className="absolute inset-0 w-full h-full object-cover z-10 rounded-2xl"
             />
@@ -188,7 +188,7 @@ const WorkoutAddictSection = () => {
           
           {videoError ? <div className="absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">
               <p className="text-gray-500">Video unavailable</p>
-            </div> : <iframe ref={vimeoIframeRef} className={cn("absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105 bg-black", isVideoPlaying ? "opacity-100" : "opacity-0")} src="https://player.vimeo.com/video/1067256293?h=297c1637e6&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1&amp;background=1&amp;muted=1" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
+            </div> : <iframe ref={vimeoIframeRef} className={cn("absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105 bg-black", isVideoPlaying ? "opacity-100" : "opacity-0")} src="https://player.vimeo.com/video/1074313924?h=b99fcf1434&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1&amp;background=1&amp;muted=1" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
           border: 'none'
         }} title="BoxFun"></iframe>}
           
@@ -219,9 +219,10 @@ const WorkoutAddictSection = () => {
               <div className="space-y-6 w-full md:w-1/2 flex flex-col h-full justify-between">
                 <div className="space-y-4 text-center md:text-left mb-6 flex-grow-0">
                   <h2 id="become-workout-addict" className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-                    BECOME WORKOUT ADDICT
+                    BOXFUN
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                   </h2>
+                  <p className="text-gray-700 font-medium text-lg mt-2">Freedom, strength, and fun — all in one.</p>
                 </div>
                 
                 {isMobile && <div className="w-full flex flex-col items-center my-6">
