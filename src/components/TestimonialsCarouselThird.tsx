@@ -438,74 +438,113 @@ const TestimonialsCarouselThird = () => {
           <div className="relative">
             <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
               <div className="order-2 md:order-1 text-left flex flex-col justify-center scale-80 transform origin-center">
-                <div className={cn("backdrop-blur-md bg-white/80 shadow-md p-5 rounded-xl relative mb-5 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20", isMobile ? "mb-1 p-4" : "")} style={{
-                borderColor: '#444444'
-              }}>
-                  <div className="text-gray-500 opacity-50 absolute left-3 top-3 pt-1" style={{
-                  color: '#666666'
-                }}>
-                    <Quote className="h-6 w-6" />
-                  </div>
-                  
-                  <div className="flex mb-2 mt-5 animate-fade-in">
-                    {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 mr-1" fill="#FFD700" />)}
-                  </div>
-                  
-                  <p className={cn("text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 transition-all duration-500 pt-2 pl-2", isMobile ? "text-lg md:text-xl lg:text-2xl mb-2" : "")}>
-                    {currentTestimonial.quote}
-                  </p>
-                  
-                  <div className="flex items-center mt-3 animate-fade-in">
-                    <div>
-                      <p className="font-semibold text-gray-800 text-sm">{currentTestimonial.name}</p>
-                      <p className="text-xs text-gray-500">{currentTestimonial.role}</p>
+                {!isMobile && (
+                  <div className={cn("backdrop-blur-md bg-white/80 shadow-md p-5 rounded-xl relative mb-5 transition-all duration-300 hover:shadow-lg border-t-2 border-gray-800 slide-in-right group hover:shadow-gray-800/20", isMobile ? "mb-1 p-4" : "")} style={{
+                    borderColor: '#444444'
+                  }}>
+                    <div className="text-gray-500 opacity-50 absolute left-3 top-3 pt-1" style={{
+                      color: '#666666'
+                    }}>
+                      <Quote className="h-6 w-6" />
+                    </div>
+                    
+                    <div className="flex mb-2 mt-5 animate-fade-in">
+                      {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 mr-1" fill="#FFD700" />)}
+                    </div>
+                    
+                    <p className={cn("text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 transition-all duration-500 pt-2 pl-2", isMobile ? "text-lg md:text-xl lg:text-2xl mb-2" : "")}>
+                      {currentTestimonial.quote}
+                    </p>
+                    
+                    <div className="flex items-center mt-3 animate-fade-in">
+                      <div>
+                        <p className="font-semibold text-gray-800 text-sm">{currentTestimonial.name}</p>
+                        <p className="text-xs text-gray-500">{currentTestimonial.role}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500 w-full flex justify-center">
-                <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black">
-                  <div style={{
-                    padding: '177.78% 0 0 0',
-                    position: 'relative'
-                  }} className="bg-black">
-                    <TestimonialMedia 
-                      mediaType={currentTestimonial.mediaType}
-                      vimeoId={currentTestimonial.vimeoId} 
-                      hash={currentTestimonial.hash} 
-                      imageUrl={currentTestimonial.imageUrl}
-                      onLoaded={handleMediaLoaded} 
-                      isVisible={mediaId ? (mediaVisible[mediaId] || false) : false} 
-                      isMobile={isMobile} 
-                      uniqueKey={`${mediaId}-${key}`}
-                      onRetry={handleRetry}
-                    />
-                    
-                    {mediaId && !mediaVisible[mediaId] && <VideoLoader />}
-                  </div>
-                  
-                  {isMobile && (
-                    <div className="flex space-x-3 mt-2 justify-center">
-                      {testimonials.map((_, index) => (
-                        <button 
-                          key={index} 
-                          onClick={() => goToTestimonial(index)} 
-                          className={cn(
-                            "transition-all duration-300", 
-                            index === activeIndex 
-                              ? "w-4 h-4 bg-gray-800 rounded-full" 
-                              : "w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400"
-                          )} 
-                          aria-label={`Go to testimonial ${index + 1}`} 
-                          style={{
-                            backgroundColor: index === activeIndex ? '#444444' : ''
-                          }} 
+                {isMobile ? (
+                  <div className="w-3/5 mx-auto overflow-hidden shadow-md rounded-xl transition-all duration-300 border border-gray-200">
+                    <div className="bg-black">
+                      <div style={{
+                        padding: '177.78% 0 0 0',
+                        position: 'relative'
+                      }} className="bg-black">
+                        <TestimonialMedia 
+                          mediaType={currentTestimonial.mediaType}
+                          vimeoId={currentTestimonial.vimeoId} 
+                          hash={currentTestimonial.hash} 
+                          imageUrl={currentTestimonial.imageUrl}
+                          onLoaded={handleMediaLoaded} 
+                          isVisible={mediaId ? (mediaVisible[mediaId] || false) : false} 
+                          isMobile={isMobile} 
+                          uniqueKey={`${mediaId}-${key}`}
+                          onRetry={handleRetry}
                         />
-                      ))}
+                        
+                        {mediaId && !mediaVisible[mediaId] && <VideoLoader />}
+                      </div>
                     </div>
-                  )}
-                </div>
+                    
+                    <div className="bg-white p-4">
+                      <div className="flex mb-2 justify-center">
+                        {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 mr-1" fill="#FFD700" />)}
+                      </div>
+                      
+                      <p className="text-lg font-bold text-gray-900 mb-2 text-center">
+                        {currentTestimonial.quote}
+                      </p>
+                      
+                      <div className="text-center">
+                        <p className="font-semibold text-gray-800 text-sm">{currentTestimonial.name}</p>
+                        <p className="text-xs text-gray-500">{currentTestimonial.role}</p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black">
+                    <div style={{
+                      padding: '177.78% 0 0 0',
+                      position: 'relative'
+                    }} className="bg-black">
+                      <TestimonialMedia 
+                        mediaType={currentTestimonial.mediaType}
+                        vimeoId={currentTestimonial.vimeoId} 
+                        hash={currentTestimonial.hash} 
+                        imageUrl={currentTestimonial.imageUrl}
+                        onLoaded={handleMediaLoaded} 
+                        isVisible={mediaId ? (mediaVisible[mediaId] || false) : false} 
+                        isMobile={isMobile} 
+                        uniqueKey={`${mediaId}-${key}`}
+                        onRetry={handleRetry}
+                      />
+                      
+                      {mediaId && !mediaVisible[mediaId] && <VideoLoader />}
+                    </div>
+                  </div>
+                )}
+                
+                {isMobile && (
+                  <div className="flex space-x-3 mt-3 justify-center">
+                    {testimonials.map((_, index) => (
+                      <button 
+                        key={index} 
+                        onClick={() => goToTestimonial(index)} 
+                        className={cn(
+                          "transition-all duration-300", 
+                          index === activeIndex 
+                            ? "w-4 h-4 bg-yellow rounded-full" 
+                            : "w-3 h-3 bg-gray-200 rounded-full hover:bg-gray-300"
+                        )} 
+                        aria-label={`Go to testimonial ${index + 1}`} 
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
             
