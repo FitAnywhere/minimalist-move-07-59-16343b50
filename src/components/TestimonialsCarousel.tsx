@@ -517,7 +517,7 @@ const TestimonialsCarousel = () => {
           </div>
           
           {!isMobile && (
-            <div className="flex space-x-2 mt-3 justify-center md:justify-start">
+            <div className="flex space-x-2 mt-3 justify-center md:justify-start bg-white">
               {testimonials.map((_, index) => (
                 <button 
                   key={index} 
@@ -525,13 +525,10 @@ const TestimonialsCarousel = () => {
                   className={cn(
                     "transition-all duration-300", 
                     index === activeIndex 
-                      ? "w-3 h-3 bg-gray-800 rounded-full" 
-                      : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400"
+                      ? "w-3 h-3 bg-black rounded-full" 
+                      : "w-2 h-2 bg-[#F1F0FB] rounded-full hover:bg-gray-400"
                   )} 
                   aria-label={`Go to testimonial ${index + 1}`} 
-                  style={{
-                    backgroundColor: index === activeIndex ? '#444444' : ''
-                  }} 
                 />
               ))}
             </div>

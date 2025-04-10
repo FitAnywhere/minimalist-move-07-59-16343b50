@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
@@ -48,6 +49,7 @@ const BundleOffer = () => {
               LAST GYM YOU WILL EVER NEED
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
+            <p className="mt-4 text-gray-700 font-medium text-xl py-[13px]">Everything you need for fitness and calisthenics, plus a full training guide.</p>
           </div>
           
           {isMobile ? (
