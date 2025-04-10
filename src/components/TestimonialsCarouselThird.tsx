@@ -484,27 +484,6 @@ const TestimonialsCarouselThird = () => {
                     
                     {mediaId && !mediaVisible[mediaId] && <VideoLoader />}
                   </div>
-                  
-                  {isMobile && (
-                    <div className="flex space-x-3 mt-2 justify-center">
-                      {testimonials.map((_, index) => (
-                        <button 
-                          key={index} 
-                          onClick={() => goToTestimonial(index)} 
-                          className={cn(
-                            "transition-all duration-300", 
-                            index === activeIndex 
-                              ? "w-4 h-4 bg-gray-800 rounded-full" 
-                              : "w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400"
-                          )} 
-                          aria-label={`Go to testimonial ${index + 1}`} 
-                          style={{
-                            backgroundColor: index === activeIndex ? '#444444' : ''
-                          }} 
-                        />
-                      ))}
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
@@ -525,6 +504,24 @@ const TestimonialsCarouselThird = () => {
               <ChevronRight className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-4 h-4")} />
             </button>
           </div>
+          
+          {isMobile && (
+            <div className="flex justify-center mt-4 bg-white py-2">
+              {testimonials.map((_, index) => (
+                <button 
+                  key={index} 
+                  onClick={() => goToTestimonial(index)} 
+                  className={cn(
+                    "mx-1 transition-all duration-300", 
+                    index === activeIndex 
+                      ? "w-2 h-2 bg-yellow rounded-full" 
+                      : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400"
+                  )} 
+                  aria-label={`Go to testimonial ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
           
           {!isMobile && (
             <div className="flex space-x-2 mt-3 justify-center md:justify-start bg-white">
