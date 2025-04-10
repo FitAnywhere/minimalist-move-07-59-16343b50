@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
-import { Star, Loader, RefreshCw } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote, Star, Loader, RefreshCw } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Testimonial {
@@ -136,7 +136,7 @@ const TestimonialMedia = memo(({
 
 TestimonialMedia.displayName = 'TestimonialMedia';
 
-const VideoLoader = memo(() => <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-t-xl">
+const VideoLoader = memo(() => <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
     <div className="flex flex-col items-center justify-center space-y-4">
       <div className="relative">
         <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
@@ -163,7 +163,6 @@ VideoLoader.displayName = 'VideoLoader';
 
 const TestimonialsFitanywhereSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -177,8 +176,6 @@ const TestimonialsFitanywhereSection = () => {
   const [preloadedMedia, setPreloadedMedia] = useState<string[]>([]);
   const vimeoScriptLoadedRef = useRef(false);
   const [mediaError, setMediaError] = useState(false);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   
   const currentTestimonial = testimonials[activeIndex] || testimonials[0];
   
@@ -318,31 +315,6 @@ const TestimonialsFitanywhereSection = () => {
     setMediaError(false);
   }, []);
   
-  // Touch events for mobile swipe functionality
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-  
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-  
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-    
-    if (isLeftSwipe) {
-      nextTestimonial();
-    } else if (isRightSwipe) {
-      prevTestimonial();
-    }
-    
-    setTouchStart(null);
-    setTouchEnd(null);
-  };
-  
   useEffect(() => {
     if (!currentTestimonial) return;
     const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
@@ -401,103 +373,61 @@ const TestimonialsFitanywhereSection = () => {
           </div>
           
           <div className="relative">
-            <div 
-              ref={carouselRef}
-              className={cn("transition-all duration-500 w-full flex justify-center", 
-                isInView ? "opacity-100" : "opacity-0 translate-y-4"
-              )}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              {/* Integrated card design similar to BOXFUN */}
-              <div className="w-3/5 mx-auto shadow-md hover:shadow-lg transition-all duration-300 bg-white rounded-xl">
-                <div className="flex flex-col">
-                  <div style={{
+            <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
+              <div className="order-2 md:order-1 text-left flex flex-col justify-center scale-80 transform origin-center">
+                
+              </div>
+              
+              <div className="order-1 md:order-2 relative transition-all duration-500 w-full flex justify-center">
+                <div className="w-3/5 mx-auto overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
+                  <div className="flex flex-col">
+                    <div style={{
                     padding: '177.78% 0 0 0',
                     position: 'relative'
                   }} className="bg-black rounded-t-xl">
-                    <TestimonialMedia 
-                      mediaType={currentTestimonial.mediaType} 
-                      vimeoId={currentTestimonial.vimeoId} 
-                      hash={currentTestimonial.hash} 
-                      imageUrl={currentTestimonial.imageUrl} 
-                      onLoaded={handleMediaLoaded} 
-                      isVisible={mediaId ? mediaVisible[mediaId] || false : false} 
-                      isMobile={isMobile} 
-                      uniqueKey={`${mediaId}-${key}`} 
-                      onRetry={handleRetry} 
-                    />
-                    
-                    {mediaId && !mediaVisible[mediaId] && <VideoLoader />}
-                  </div>
-                  
-                  <div className="p-3 pt-2 shadow-md rounded-b-xl border border-gray-100">
-                    <div className="flex mb-1 animate-fade-in">
-                      {[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 text-yellow-400 mr-1" fill="#FFD700" />)}
+                      <TestimonialMedia mediaType={currentTestimonial.mediaType} vimeoId={currentTestimonial.vimeoId} hash={currentTestimonial.hash} imageUrl={currentTestimonial.imageUrl} onLoaded={handleMediaLoaded} isVisible={mediaId ? mediaVisible[mediaId] || false : false} isMobile={isMobile} uniqueKey={`${mediaId}-${key}`} onRetry={handleRetry} />
+                      
+                      {mediaId && !mediaVisible[mediaId] && <VideoLoader />}
                     </div>
                     
-                    <p className="text-sm font-bold text-gray-900 mb-1">
-                      {currentTestimonial.quote}
-                    </p>
-                    
-                    <div className="flex items-center animate-fade-in">
-                      <p className="font-semibold text-gray-800 text-xs">{currentTestimonial.name}</p>
+                    <div className="bg-white p-3 shadow-md rounded-b-xl border border-gray-100">
+                      <div className="flex mb-1 animate-fade-in">
+                        {[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 text-yellow-400 mr-1" fill="#FFD700" />)}
+                      </div>
+                      
+                      <p className="text-sm font-bold text-gray-900 mb-1">
+                        {currentTestimonial.quote}
+                      </p>
+                      
+                      <div className="flex items-center animate-fade-in">
+                        <div>
+                          <p className="font-semibold text-gray-800 text-xs">{currentTestimonial.name}</p>
+                          <p className="text-gray-500 text-xs">{currentTestimonial.role}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                {/* Dots indicator positioned directly below card with minimal spacing */}
-                <div className="flex justify-center mt-1 mb-0">
-                  {testimonials.map((_, index) => (
-                    <button 
-                      key={index} 
-                      onClick={() => goToTestimonial(index)} 
-                      className={cn(
-                        "mx-1 transition-all duration-300", 
-                        index === activeIndex 
-                          ? "w-2 h-2 bg-black rounded-full" 
-                          : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400"
-                      )} 
-                      aria-label={`Go to testimonial ${index + 1}`} 
-                    />
-                  ))}
                 </div>
               </div>
             </div>
             
-            <button 
-              onClick={prevTestimonial} 
-              className={cn(
-                "absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow",
-                "h-8 w-8 rounded-full animate-[pulse_2s_ease-in-out_infinite]",
-                "border-yellow border-2 hover:border-opacity-100 transition-all duration-700",
-                "shadow-[0_0_10px_rgba(255,215,0,0.5)] pulse-glow",
-                isMobile ? "p-3" : ""
-              )} 
-              aria-label="Previous testimonial"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-4 h-4")}>
-                <path d="m15 18-6-6 6-6"/>
-              </svg>
+            <button onClick={prevTestimonial} className={cn("absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3" : "")} aria-label="Previous testimonial">
+              <ChevronLeft className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-4 h-4")} />
             </button>
             
-            <button 
-              onClick={nextTestimonial} 
-              className={cn(
-                "absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow",
-                "h-8 w-8 rounded-full animate-[pulse_2s_ease-in-out_infinite]",
-                "border-yellow border-2 hover:border-opacity-100 transition-all duration-700",
-                "shadow-[0_0_10px_rgba(255,215,0,0.5)] pulse-glow",
-                isMobile ? "p-3" : ""
-              )} 
-              aria-label="Next testimonial"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-4 h-4")}>
-                <path d="m9 18 6-6-6-6"/>
-              </svg>
+            <button onClick={nextTestimonial} className={cn("absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3" : "")} aria-label="Next testimonial">
+              <ChevronRight className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-4 h-4")} />
             </button>
           </div>
+          
+          {/* Mobile dots indicator - positioned directly under the testimonial card */}
+          {isMobile && <div className="flex justify-center mt-1 bg-white py-2">
+              {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("mx-1 transition-all duration-300", index === activeIndex ? "w-2 h-2 bg-yellow rounded-full" : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
+            </div>}
+          
+          {!isMobile && <div className="flex space-x-2 mt-3 justify-center md:justify-start bg-white">
+              {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-3 h-3 bg-black rounded-full" : "w-2 h-2 bg-[#F1F0FB] rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
+            </div>}
         </div>
       </div>
     </section>;

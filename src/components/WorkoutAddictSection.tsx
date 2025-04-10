@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -43,8 +42,6 @@ const WorkoutAddictSection = () => {
   const [videoError, setVideoError] = useState(false);
   const [showSpecs, setShowSpecs] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const isMobile = useIsMobile();
   const isInView = useInView(sectionRef, {
     threshold: 0.2
@@ -66,32 +63,6 @@ const WorkoutAddictSection = () => {
     e.preventDefault();
     window.open('https://buy.stripe.com/7sI3eC1dB7zvcFy3cr', '_blank');
   };
-  
-  // Touch events for mobile swipe functionality
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-  
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-  
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-    
-    if (isLeftSwipe) {
-      // Handle left swipe - next video logic would go here if needed
-    } else if (isRightSwipe) {
-      // Handle right swipe - previous video logic would go here if needed
-    }
-    
-    setTouchStart(null);
-    setTouchEnd(null);
-  };
-  
   useEffect(() => {
     if (vimeoIframeRef.current && !vimeoPlayerRef.current && typeof window !== 'undefined') {
       if (!window.Vimeo) {
@@ -165,16 +136,10 @@ const WorkoutAddictSection = () => {
   const renderVimeoVideo = () => {
     const mobileVideoWidth = "80%"; // 20% smaller on mobile
 
-    return <div 
-        className={cn(
-          "relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group", 
-          isMobile && "mx-auto" // Center on mobile
-        )} 
-        style={isMobile ? { width: mobileVideoWidth } : undefined}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
+    return <div className={cn("relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group", isMobile && "mx-auto" // Center on mobile
+    )} style={isMobile ? {
+      width: mobileVideoWidth
+    } : undefined}>
         <div ref={vimeoContainerRef} className="relative w-full h-0 overflow-hidden bg-black" style={{
         paddingBottom: '133.33%'
       }}>
@@ -337,8 +302,8 @@ const WorkoutAddictSection = () => {
                     {renderVimeoVideo()}
                   </div>
                   
-                  <div className={cn("mt-1 w-full flex justify-center transition-all duration-700 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
-                    <Button variant="outline" size="sm" className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1 mt-1" onClick={() => setShowSpecs(true)}>
+                  <div className={cn("mt-6 w-full flex justify-center transition-all duration-700 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
+                    <Button variant="outline" size="sm" className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1" onClick={() => setShowSpecs(true)}>
                       Specifications
                     </Button>
                   </div>

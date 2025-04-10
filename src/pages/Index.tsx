@@ -32,13 +32,7 @@ const TestimonialsCarousel = lazy(() =>
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
-// Import TestimonialsFitanywhereSection
-const TestimonialsFitanywhereSection = lazy(() => 
-  import('@/components/TestimonialsFitanywhereSection').catch(err => {
-    console.error('Failed to load TestimonialsFitanywhereSection:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
+// Remove TestimonialsCarouselSecond import
 const TestimonialsCarouselThird = lazy(() => 
   import('@/components/TestimonialsCarouselThird').catch(err => {
     console.error('Failed to load TestimonialsCarouselThird:', err);
@@ -251,7 +245,7 @@ const Index = () => {
       }, options);
       
       // Observe all main sections
-      ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault', 'workout-addict', 'testimonials-fitanywhere'].forEach(id => {
+      ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault', 'workout-addict'].forEach(id => {
         const element = document.getElementById(id);
         if (element) observer.observe(element);
       });
@@ -343,10 +337,6 @@ const Index = () => {
       </div>
       
       <Suspense fallback={<SectionLoader />}>
-        <div id="testimonials-fitanywhere">
-          <TestimonialsFitanywhereSection />
-        </div>
-        
         <div id="reviews">
           <TestimonialsCarousel />
         </div>
@@ -358,6 +348,8 @@ const Index = () => {
         <div id="workout-addict">
           <WorkoutAddictSection />
         </div>
+        
+        {/* Removed TestimonialsCarouselSecond component */}
         
         <div id="reviews-third">
           <TestimonialsCarouselThird />

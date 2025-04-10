@@ -57,15 +57,13 @@ const Carousel = React.forwardRef<
     },
     ref
   ) => {
-    // Enable touch scrolling by default for mobile
-    const defaultOpts = React.useMemo(() => ({
-      dragFree: false,
-      draggable: true,
-      ...opts,
-      axis: orientation === "horizontal" ? "x" : "y",
-    }), [opts, orientation]);
-
-    const [carouselRef, api] = useEmblaCarousel(defaultOpts, plugins)
+    const [carouselRef, api] = useEmblaCarousel(
+      {
+        ...opts,
+        axis: orientation === "horizontal" ? "x" : "y",
+      },
+      plugins
+    )
     const [canScrollPrev, setCanScrollPrev] = React.useState(false)
     const [canScrollNext, setCanScrollNext] = React.useState(false)
 
@@ -126,9 +124,9 @@ const Carousel = React.forwardRef<
         value={{
           carouselRef,
           api: api,
-          opts: defaultOpts,
+          opts,
           orientation:
-            orientation || (defaultOpts?.axis === "y" ? "vertical" : "horizontal"),
+            orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
           scrollPrev,
           scrollNext,
           canScrollPrev,
