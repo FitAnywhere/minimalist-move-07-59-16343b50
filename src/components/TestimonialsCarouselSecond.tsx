@@ -58,7 +58,10 @@ const TestimonialsCarouselSecond = () => {
                       </div>
                       
                       <div className="flex items-center">
-                        <Avatar className="h-12 w-12 border-2 border-yellow">
+                        <Avatar className={cn(
+                          "border-2 border-yellow",
+                          isMobile ? "h-12 w-12" : "h-8 w-8" // Much smaller avatar on desktop
+                        )}>
                           <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
                           <AvatarFallback>{testimonial.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                         </Avatar>
@@ -73,8 +76,8 @@ const TestimonialsCarouselSecond = () => {
               </CarouselContent>
               
               <div className="hidden md:block">
-                <CarouselPrevious className="animate-[pulse_2s_ease-in-out_infinite]" />
-                <CarouselNext className="animate-[pulse_2s_ease-in-out_infinite]" />
+                <CarouselPrevious />
+                <CarouselNext />
               </div>
             </Carousel>
           </div>
