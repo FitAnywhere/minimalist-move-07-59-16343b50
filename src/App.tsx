@@ -1,27 +1,14 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ScrollToTopOnRefresh from "@/components/ui/ScrollToTopOnRefresh";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import TermsOfService from "./pages/TermsOfService";
 
 const queryClient = new QueryClient();
-
-// Custom component to handle scroll to top on refresh
-const ScrollToTopOnRefresh = () => {
-  useEffect(() => {
-    // Only execute on page load/refresh, not on navigation
-    if (performance.navigation.type === 1 || !performance.navigation.type) {
-      window.scrollTo(0, 0);
-    }
-  }, []);
-
-  return null;
-};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

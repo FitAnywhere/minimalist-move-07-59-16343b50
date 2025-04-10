@@ -1,17 +1,22 @@
-import { useEffect, useRef, lazy, Suspense, useState } from 'react';
+import { useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
 import ChatbotHelper from '@/components/ChatbotHelper';
 
-// Import critical components eagerly instead of lazy loading
+// Import critical components eagerly
 import ProductIntro from '@/components/ProductIntro';
-// Import ChampionSection eagerly as well to avoid dynamic import errors
 import ChampionSection from '@/components/ChampionSection';
 import TrainingVault from '@/components/TrainingVault';
 import WorkoutAddictSection from '@/components/WorkoutAddictSection';
 
-// Continue lazy loading other components with better error boundaries and loading fallbacks
+// Import utilities
+import { useSectionObserver } from '@/hooks/useSectionObserver';
+import { setupAnchorClickHandler, handleExternalNavigation } from '@/utils/scrollUtils';
+import { initVideoPreloading } from '@/utils/videoPreloader';
+import { initStyles } from '@/utils/styleUtils';
+
+// Continue lazy loading other components with better error boundaries and fallbacks
 const ProductTabs = lazy(() => import('@/components/ProductTabs'));
 const LifestyleSection = lazy(() => 
   import('@/components/LifestyleSection').catch(err => {
@@ -75,254 +80,38 @@ const SectionLoader = () => (
   </div>
 );
 
-// Critical videos to preload with proper timing
-const CRITICAL_VIDEOS = [
-  '1067255623', // Hero video
-  '1067257145', // TRX video
-  '1067257124', // Bands video 
-  '1067256372', // Testimonial videos
-  '1067256325',
-  '1067256399',
-  '1073152410', // TrainingVault video
-];
-
-// Clean up the CSS styles to remove references to the deleted component
-const whoWeBuiltThisForStyles = `
-  @media (min-width: 768px) {
-    #target-section .user-image-container img {
-      height: 330px !important;
-      width: auto !important;
-    }
-  }
-  
-  @media (max-width: 767px) {
-    #target-section .user-image-container img {
-      height: 240px !important;
-      width: auto !important;
-    }
-  }
-  
-  /* Testimonial Styles for improved positioning */
-  #testimonials-third .flex space-x-2,
-  #reviews .testimonial-dots {
-    margin-top: 0.5rem !important;
-  }
-  
-  /* Change active dot color to yellow */
-  #testimonials-third .bg-black.rounded-full,
-  #reviews .testimonial-dots .active-dot {
-    background-color: #FFD700 !important;
-  }
-`;
-
 const Index = () => {
   const location = useLocation();
   const initialLoadRef = useRef(true);
-  const vimeoAPILoadedRef = useRef(false);
-  const [sectionsInView, setSectionsInView] = useState({});
+  
+  // Set up section observation
+  useSectionObserver({
+    sectionIds: ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault', 'workout-addict'],
+    onVisibilityChange: (id, isVisible) => {
+      if (isVisible) {
+        console.log(`Section ${id} is now visible`);
+      }
+    }
+  });
   
   useEffect(() => {
-    // Add the custom styles for WHO WE BUILT THIS FOR section images
-    const styleEl = document.createElement('style');
-    styleEl.textContent = whoWeBuiltThisForStyles;
-    document.head.appendChild(styleEl);
+    // Initialize styles
+    initStyles();
     
-    // Preload Vimeo player API
-    const preloadVimeoAPI = () => {
-      if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]') && !vimeoAPILoadedRef.current) {
-        const script = document.createElement('script');
-        script.src = 'https://player.vimeo.com/api/player.js';
-        script.async = true;
-        script.id = 'vimeo-player-api';
-        
-        script.onload = () => {
-          console.log("Vimeo Player API loaded");
-          vimeoAPILoadedRef.current = true;
-          
-          // Once API is loaded, preload critical videos
-          preloadCriticalVideos();
-        };
-        
-        script.onerror = () => {
-          console.error("Failed to load Vimeo Player API");
-          
-          // Retry loading after a delay
-          setTimeout(() => {
-            const failedScript = document.getElementById('vimeo-player-api');
-            if (failedScript) failedScript.remove();
-            preloadVimeoAPI();
-          }, 2000);
-        };
-        
-        document.head.appendChild(script);
-      } else if (vimeoAPILoadedRef.current) {
-        // If API is already loaded, preload videos
-        preloadCriticalVideos();
-      }
-    };
+    // Initialize video preloading
+    initVideoPreloading();
     
-    // Add preload hints for critical videos
-    const preloadCriticalVideos = () => {
-      CRITICAL_VIDEOS.forEach((id, index) => {
-        const existingLink = document.querySelector(`link[href*="${id}"]`);
-        if (!existingLink) {
-          const link = document.createElement('link');
-          
-          // Use appropriate preload strategy based on importance
-          if (index === 0) {
-            link.rel = 'preload';
-            link.as = 'fetch';
-            // Fix: Remove the importance attribute which isn't supported in TypeScript's HTMLLinkElement
-            // Use dataset instead for custom attributes
-            link.dataset.importance = 'high';
-          } else {
-            link.rel = 'prefetch';
-            link.as = 'fetch';
-            // Fix: Remove the importance attribute which isn't supported in TypeScript's HTMLLinkElement
-            link.dataset.importance = 'low';
-          }
-          
-          link.href = `https://player.vimeo.com/video/${id}`;
-          link.crossOrigin = 'anonymous';
-          document.head.appendChild(link);
-          
-          console.log(`Preloaded video: ${id}`);
-        }
-      });
-    };
+    // Set up anchor click handler
+    const cleanupAnchorHandler = setupAnchorClickHandler();
     
-    // Add scale keyframes for carousel arrows
-    const addScaleKeyframes = () => {
-      if (!document.querySelector('#scale-keyframes')) {
-        const styleSheet = document.createElement('style');
-        styleSheet.id = 'scale-keyframes';
-        styleSheet.textContent = `
-          @keyframes scale {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-          }
-          
-          .scale-animation {
-            animation: scale 8s ease-in-out infinite;
-          }
-          
-          @keyframes pulse-yellow {
-            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
-          }
-          
-          .button-retry-pulse {
-            animation: pulse-yellow 2s infinite;
-          }
-        `;
-        document.head.appendChild(styleSheet);
-      }
-    };
-    
-    // Execute preloads with requestIdleCallback for better performance
-    if (window.requestIdleCallback) {
-      requestIdleCallback(() => {
-        preloadVimeoAPI();
-        addScaleKeyframes();
-      }, { timeout: 2000 });
-    } else {
-      // Fallback for browsers without requestIdleCallback
-      setTimeout(() => {
-        preloadVimeoAPI();
-        addScaleKeyframes();
-      }, 100);
+    // Handle external navigation
+    if (initialLoadRef.current) {
+      handleExternalNavigation(location);
+      initialLoadRef.current = false;
     }
     
-    // Set up intersection observer for section loading
-    const observeSections = () => {
-      const options = {
-        root: null,
-        rootMargin: '200px 0px', // Load 200px before section comes into view
-        threshold: 0.1
-      };
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const id = entry.target.id;
-            setSectionsInView(prev => ({ ...prev, [id]: true }));
-            
-            // Once loaded, stop observing
-            observer.unobserve(entry.target);
-          }
-        });
-      }, options);
-      
-      // Observe all main sections
-      ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault', 'workout-addict'].forEach(id => {
-        const element = document.getElementById(id);
-        if (element) observer.observe(element);
-      });
-      
-      return () => observer.disconnect();
-    };
-    
-    // Start observing after a short delay to allow initial render
-    const observerTimer = setTimeout(observeSections, 500);
-    
-    // Improved scroll handling
-    const handleNavigation = () => {
-      const handleTargetSection = (targetId: string) => {
-        setTimeout(() => {
-          const targetElement = document.querySelector(targetId);
-          if (targetElement) {
-            window.scrollTo({
-              top: targetElement.getBoundingClientRect().top + window.scrollY - 100,
-              behavior: 'smooth'
-            });
-          }
-        }, 800);
-      };
-
-      // Handle external navigation with state
-      if (location.state?.fromExternalPage) {
-        if (location.state.targetSection) {
-          handleTargetSection(`#${location.state.targetSection}`);
-        } else {
-          window.scrollTo(0, 0);
-        }
-      } 
-      // Handle URL hash on initial load
-      else if (window.location.hash && initialLoadRef.current) {
-        handleTargetSection(window.location.hash);
-      }
-      
-      initialLoadRef.current = false;
-    };
-    
-    handleNavigation();
-    
-    // Optimized anchor click handler with passive event
-    const handleAnchorClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const anchor = target.closest('a');
-      
-      if (anchor && anchor.hash && anchor.hash.startsWith('#') && anchor.hostname === window.location.hostname) {
-        e.preventDefault();
-        
-        const targetElement = document.querySelector(anchor.hash);
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.getBoundingClientRect().top + window.scrollY - 100,
-            behavior: 'smooth'
-          });
-          
-          history.pushState(null, '', anchor.hash);
-        }
-      }
-    };
-    
-    document.addEventListener('click', handleAnchorClick, { passive: false });
-    
     return () => {
-      document.removeEventListener('click', handleAnchorClick);
-      clearTimeout(observerTimer);
+      cleanupAnchorHandler();
     };
   }, [location]);
   
