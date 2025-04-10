@@ -5,12 +5,10 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronDown, X, Loader } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
-
 interface LifestyleFeature {
   title: string;
   description: string;
 }
-
 interface VimeoPlayerAPI {
   play: () => Promise<void>;
   pause: () => Promise<void>;
@@ -22,7 +20,6 @@ interface VimeoPlayerAPI {
   ready: () => Promise<void>;
   destroy: () => void;
 }
-
 const lifestyleFeatures: LifestyleFeature[] = [{
   title: "FEEL UNSTOPPABLE",
   description: "Tap into boundless energy to train like never before."
@@ -33,7 +30,6 @@ const lifestyleFeatures: LifestyleFeature[] = [{
   title: "WORKOUT YOU'LL ACTUALLY LOVE",
   description: "It's addictive in the best way possible."
 }];
-
 const WorkoutAddictSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -60,16 +56,13 @@ const WorkoutAddictSection = () => {
       vimeoPlayerRef.current.setMuted(true);
     }
   });
-
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
-
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/7sI3eC1dB7zvcFy3cr', '_blank');
   };
-
   useEffect(() => {
     if (vimeoIframeRef.current && !vimeoPlayerRef.current && typeof window !== 'undefined') {
       if (!window.Vimeo) {
@@ -82,7 +75,6 @@ const WorkoutAddictSection = () => {
         initializePlayer();
       }
     }
-
     function initializePlayer() {
       if (!window.Vimeo || !vimeoIframeRef.current) return;
       try {
@@ -116,7 +108,6 @@ const WorkoutAddictSection = () => {
         setVideoError(true);
       }
     }
-
     return () => {
       if (vimeoPlayerRef.current) {
         vimeoPlayerRef.current.destroy();
@@ -124,7 +115,6 @@ const WorkoutAddictSection = () => {
       }
     };
   }, []);
-
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://player.vimeo.com") return;
@@ -143,7 +133,6 @@ const WorkoutAddictSection = () => {
       window.removeEventListener('message', handleMessage);
     };
   }, []);
-
   const renderVimeoVideo = () => {
     const mobileVideoWidth = "80%"; // 20% smaller on mobile
 
@@ -155,13 +144,7 @@ const WorkoutAddictSection = () => {
         paddingBottom: '133.33%'
       }}>
           {/* Fallback thumbnail for error state */}
-          {videoError && (
-            <img
-              src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744294274/Screenshot_46_oimbqr.png"
-              alt="Video thumbnail fallback"
-              className="absolute inset-0 w-full h-full object-cover z-10 rounded-2xl"
-            />
-          )}
+          {videoError && <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744294274/Screenshot_46_oimbqr.png" alt="Video thumbnail fallback" className="absolute inset-0 w-full h-full object-cover z-10 rounded-2xl" />}
           
           {!isVideoPlaying && !videoError && <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-2xl">
               <div className="flex flex-col items-center justify-center space-y-4">
@@ -196,7 +179,6 @@ const WorkoutAddictSection = () => {
         </div>
       </div>;
   };
-
   return <section ref={sectionRef} className="py-20 relative overflow-hidden" id="workout-addict">
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         {Array.from({
@@ -222,7 +204,7 @@ const WorkoutAddictSection = () => {
                     BOXFUN
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                   </h2>
-                  <p className="text-gray-700 font-medium text-lg mt-2">Freedom, strength, and fun — all in one.</p>
+                  <p className="text-gray-700 font-medium text-lg mt-2">Freedom, strength, and fun.</p>
                 </div>
                 
                 {isMobile && <div className="w-full flex flex-col items-center my-6">
@@ -303,11 +285,7 @@ const WorkoutAddictSection = () => {
                 </div>
                 
                 <div className="w-full flex justify-center mt-4 mb-4">
-                  <img 
-                    src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744101171/Screenshot_83_cupbkr.png" 
-                    alt="BoxFun Product" 
-                    className="max-w-[280px] w-full transition-all duration-500 hover:scale-105" 
-                  />
+                  <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744101171/Screenshot_83_cupbkr.png" alt="BoxFun Product" className="max-w-[280px] w-full transition-all duration-500 hover:scale-105" />
                 </div>
                 
                 <div className="flex flex-col items-center mt-2 flex-grow-0">
@@ -394,5 +372,4 @@ const WorkoutAddictSection = () => {
       </Dialog>
     </section>;
 };
-
 export default WorkoutAddictSection;
