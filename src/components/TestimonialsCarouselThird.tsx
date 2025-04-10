@@ -13,25 +13,29 @@ interface Testimonial {
   vimeoId?: string;
   hash?: string;
   imageUrl?: string;
+  mobileImageUrl?: string;
 }
 const testimonials: Testimonial[] = [{
   name: "Mason K.",
   role: "Outdoor Lover",
   quote: "BoxFun didn't just get me moving. It made me want to move.",
   mediaType: "image",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744097765/Izdelek_brez_naslova_-_2025-04-08T093354.537_ovbtbx.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744097765/Izdelek_brez_naslova_-_2025-04-08T093354.537_ovbtbx.png",
+  mobileImageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_200/v1744097765/Izdelek_brez_naslova_-_2025-04-08T093354.537_ovbtbx.png"
 }, {
   name: "Blake H.",
   role: "Strength Seeker",
   quote: "Never thought working out could feel this fun.",
   mediaType: "image",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744097748/Screenshot_72_ggjdho.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744097748/Screenshot_72_ggjdho.png",
+  mobileImageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_200/v1744097748/Screenshot_72_ggjdho.png"
 }, {
   name: "Tyler B.",
   role: "Calisthenics Enthusiast",
   quote: "Getting fit used to feel like work. Now it feels like play.",
   mediaType: "image",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744141492/Izdelek_brez_naslova_-_2025-04-08T214404.198_yb1jc0.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744141492/Izdelek_brez_naslova_-_2025-04-08T214404.198_yb1jc0.png",
+  mobileImageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_200/v1744141492/Izdelek_brez_naslova_-_2025-04-08T214404.198_yb1jc0.png"
 }];
 
 const TestimonialMedia = memo(({
@@ -366,13 +370,23 @@ const TestimonialsCarouselThird = () => {
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500 w-full flex justify-center">
-                <div className="w-full md:w-1/3 mx-auto overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
+                <div className="w-1/2 md:w-1/3 mx-auto overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
                   <div className="flex flex-col">
                     <div style={{
                     padding: '150% 0 0 0',
                     position: 'relative'
                   }} className="bg-black rounded-t-xl">
-                      <TestimonialMedia mediaType={currentTestimonial.mediaType} vimeoId={currentTestimonial.vimeoId} hash={currentTestimonial.hash} imageUrl={currentTestimonial.imageUrl} onLoaded={handleMediaLoaded} isVisible={mediaId ? mediaVisible[mediaId] || false : false} isMobile={isMobile} uniqueKey={`${mediaId}-${key}`} onRetry={handleRetry} />
+                      <TestimonialMedia 
+                        mediaType={currentTestimonial.mediaType} 
+                        vimeoId={currentTestimonial.vimeoId} 
+                        hash={currentTestimonial.hash} 
+                        imageUrl={isMobile ? currentTestimonial.mobileImageUrl : currentTestimonial.imageUrl} 
+                        onLoaded={handleMediaLoaded} 
+                        isVisible={mediaId ? mediaVisible[mediaId] || false : false} 
+                        isMobile={isMobile} 
+                        uniqueKey={`${mediaId}-${key}`} 
+                        onRetry={handleRetry} 
+                      />
                       
                       {mediaId && !mediaVisible[mediaId] && <VideoLoader />}
                     </div>
@@ -398,11 +412,11 @@ const TestimonialsCarouselThird = () => {
               </div>
             </div>
             
-            <button onClick={prevTestimonial} className={cn("absolute top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3 -left-2" : "-left-6 p-4")} aria-label="Previous testimonial">
+            <button onClick={prevTestimonial} className={cn("absolute top-1/2 transform -translate-y-1/2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3 left-0 -translate-x-1/2" : "p-4 left-[calc(33.33%-1rem)] -translate-x-full")} aria-label="Previous testimonial">
               <ChevronLeft className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-8 h-8")} />
             </button>
             
-            <button onClick={nextTestimonial} className={cn("absolute top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3 -right-2" : "-right-6 p-4")} aria-label="Next testimonial">
+            <button onClick={nextTestimonial} className={cn("absolute top-1/2 transform -translate-y-1/2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3 right-0 translate-x-1/2" : "p-4 right-[calc(33.33%-1rem)] translate-x-full")} aria-label="Next testimonial">
               <ChevronRight className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-8 h-8")} />
             </button>
           </div>
