@@ -465,24 +465,43 @@ const TestimonialsCarouselThird = () => {
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500 w-full flex justify-center">
-                <div className="w-3/5 mx-auto rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black">
-                  <div style={{
-                    padding: '177.78% 0 0 0',
-                    position: 'relative'
-                  }} className="bg-black">
-                    <TestimonialMedia 
-                      mediaType={currentTestimonial.mediaType}
-                      vimeoId={currentTestimonial.vimeoId} 
-                      hash={currentTestimonial.hash} 
-                      imageUrl={currentTestimonial.imageUrl}
-                      onLoaded={handleMediaLoaded} 
-                      isVisible={mediaId ? (mediaVisible[mediaId] || false) : false} 
-                      isMobile={isMobile} 
-                      uniqueKey={`${mediaId}-${key}`}
-                      onRetry={handleRetry}
-                    />
+                <div className="w-3/5 mx-auto overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
+                  <div className="flex flex-col">
+                    <div style={{
+                      padding: '177.78% 0 0 0',
+                      position: 'relative'
+                    }} className="bg-black rounded-t-xl">
+                      <TestimonialMedia 
+                        mediaType={currentTestimonial.mediaType}
+                        vimeoId={currentTestimonial.vimeoId} 
+                        hash={currentTestimonial.hash} 
+                        imageUrl={currentTestimonial.imageUrl}
+                        onLoaded={handleMediaLoaded} 
+                        isVisible={mediaId ? (mediaVisible[mediaId] || false) : false} 
+                        isMobile={isMobile} 
+                        uniqueKey={`${mediaId}-${key}`}
+                        onRetry={handleRetry}
+                      />
+                      
+                      {mediaId && !mediaVisible[mediaId] && <VideoLoader />}
+                    </div>
                     
-                    {mediaId && !mediaVisible[mediaId] && <VideoLoader />}
+                    <div className="bg-white p-3 shadow-md rounded-b-xl border border-gray-100">
+                      <div className="flex mb-1 animate-fade-in">
+                        {[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 text-yellow-400 mr-1" fill="#FFD700" />)}
+                      </div>
+                      
+                      <p className="text-sm font-bold text-gray-900 mb-1">
+                        {currentTestimonial.quote}
+                      </p>
+                      
+                      <div className="flex items-center animate-fade-in">
+                        <div>
+                          <p className="font-semibold text-gray-800 text-xs">{currentTestimonial.name}</p>
+                          <p className="text-xs text-gray-500">{currentTestimonial.role}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
