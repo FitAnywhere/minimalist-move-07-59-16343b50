@@ -34,7 +34,7 @@ const LimitedOfferSection = () => {
               </Card>
             </div>
             
-            <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">The addiction that lifts you up.</p>
+            <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">The upgrade your lifestyle deserves.</p>
             
             <div className="flex justify-center">
               <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105")} onClick={handleGetBoxFunFree}>
