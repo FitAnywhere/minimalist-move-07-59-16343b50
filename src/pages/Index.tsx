@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, lazy, Suspense, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';

@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -373,16 +372,16 @@ const TestimonialsFitanywhereSection = () => {
           </div>
           
           <div className="relative">
-            <div className={cn("flex flex-col md:grid md:grid-cols-2 gap-8 items-center transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
+            <div className={cn("flex flex-col md:flex md:justify-center md:items-center gap-8 transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
               <div className="order-2 md:order-1 text-left flex flex-col justify-center scale-80 transform origin-center">
                 
               </div>
               
               <div className="order-1 md:order-2 relative transition-all duration-500 w-full flex justify-center">
-                <div className="w-3/5 mx-auto overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
+                <div className="w-full md:w-1/2 mx-auto overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
                   <div className="flex flex-col">
                     <div style={{
-                    padding: '177.78% 0 0 0',
+                    padding: '150% 0 0 0',
                     position: 'relative'
                   }} className="bg-black rounded-t-xl">
                       <TestimonialMedia mediaType={currentTestimonial.mediaType} vimeoId={currentTestimonial.vimeoId} hash={currentTestimonial.hash} imageUrl={currentTestimonial.imageUrl} onLoaded={handleMediaLoaded} isVisible={mediaId ? mediaVisible[mediaId] || false : false} isMobile={isMobile} uniqueKey={`${mediaId}-${key}`} onRetry={handleRetry} />
@@ -411,11 +410,11 @@ const TestimonialsFitanywhereSection = () => {
               </div>
             </div>
             
-            <button onClick={prevTestimonial} className={cn("absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3" : "")} aria-label="Previous testimonial">
+            <button onClick={prevTestimonial} className={cn("absolute top-1/2 md:-left-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3 -left-4" : "")} aria-label="Previous testimonial">
               <ChevronLeft className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-4 h-4")} />
             </button>
             
-            <button onClick={nextTestimonial} className={cn("absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3" : "")} aria-label="Next testimonial">
+            <button onClick={nextTestimonial} className={cn("absolute top-1/2 md:-right-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3 -right-4" : "")} aria-label="Next testimonial">
               <ChevronRight className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-4 h-4")} />
             </button>
           </div>
@@ -425,8 +424,8 @@ const TestimonialsFitanywhereSection = () => {
               {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("mx-1 transition-all duration-300", index === activeIndex ? "w-2 h-2 bg-yellow rounded-full" : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
             </div>}
           
-          {!isMobile && <div className="flex space-x-2 mt-3 justify-center md:justify-start bg-white">
-              {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-3 h-3 bg-black rounded-full" : "w-2 h-2 bg-[#F1F0FB] rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
+          {!isMobile && <div className="flex space-x-2 mt-1 justify-center bg-white">
+              {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-3 h-3 bg-yellow rounded-full" : "w-2 h-2 bg-[#F1F0FB] rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
             </div>}
         </div>
       </div>
