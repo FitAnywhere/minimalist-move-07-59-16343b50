@@ -1,12 +1,9 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Star } from 'lucide-react';
-
 interface GiftItem {
   name: string;
   image: string;
@@ -40,7 +37,7 @@ const BundleOffer = () => {
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-              WHY THEY LOVE FITANYWHERE?
+              LAST GYM YOU WILL EVER NEED
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             <p className="mt-4 text-gray-700 font-medium py-[13px] text-base">Everything you need for fitness and calisthenics with training guide as a GIFT.</p>
@@ -49,55 +46,29 @@ const BundleOffer = () => {
           {isMobile ? <div className="space-y-8">
               <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="max-w-2xl mx-auto">
-                  {/* Mobile card design for product */}
-                  <div className="w-3/5 mx-auto overflow-hidden shadow-md rounded-xl transition-all duration-300 border border-gray-200">
-                    <div className="bg-white">
-                      <div className="relative">
-                        <div className="h-72 md:h-80 flex items-center justify-center p-4 group">
-                          <div className="relative w-full h-full flex items-center justify-center">
-                            <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" alt="FitAnywhere" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10" />
-                          </div>
+                  <div className={cn("rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", "h-full relative bg-white", "hover:translate-y-[-5px]", "shadow border border-gray-200")}>
+                    <div className="relative z-10">
+                      <div className="h-72 md:h-80 flex items-center justify-center p-4 group">
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" alt="FitAnywhere" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10" />
+                        </div>
+                      </div>
+                      
+                      <div className="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-white/90 to-white/20 py-3 px-2">
+                        <div className="flex justify-center items-center gap-2">
+                          {productItems.map((item, index) => <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110" : "text-gray-500 scale-90")}>
+                              {item}
+                            </span>)}
+                        </div>
+                      </div>
+                      
+                      <div className="p-6 pt-0 text-center relative z-10">
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                          
                         </div>
                         
-                        <div className="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-white/90 to-white/20 py-3 px-2">
-                          <div className="flex justify-center items-center gap-2">
-                            {productItems.map((item, index) => <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110" : "text-gray-500 scale-90")}>
-                                {item}
-                              </span>)}
-                          </div>
-                        </div>
                       </div>
                     </div>
-                    
-                    {/* Mobile testimonial text (attached to image) */}
-                    <div className="bg-white p-4 border-t border-gray-100">
-                      <div className="flex mb-2 justify-center">
-                        {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 mr-1" fill="#FFD700" />)}
-                      </div>
-                      
-                      <p className="text-lg font-bold text-gray-900 mb-2 text-center">
-                        Finally a home gym that doesn't take up space!
-                      </p>
-                      
-                      <div className="text-center">
-                        <p className="font-semibold text-gray-800 text-sm">Alex P.</p>
-                        <p className="text-xs text-gray-500">Calisthenics Athlete</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Mobile pagination indicators with updated colors */}
-                  <div className="flex justify-center mt-3 space-x-3">
-                    {[0, 1, 2].map((index) => (
-                      <button 
-                        key={index}
-                        className={cn(
-                          "transition-all duration-300 rounded-full",
-                          index === 0 ? "w-4 h-4 bg-yellow" : "w-3 h-3 bg-gray-200"
-                        )}
-                        aria-label={`Go to testimonial ${index + 1}`}
-                      />
-                    ))}
                   </div>
                 </div>
               </div>
