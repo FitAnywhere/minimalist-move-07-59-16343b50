@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -97,7 +98,7 @@ const ProductIntro = () => {
                     </h4>
                   </div>
                   
-                  <div className="mt-2 opacity-100">
+                  <div className={cn("mt-1 opacity-100", isMobile ? "mt-0" : "")}>
                     <p className="text-gray-600 py-0 font-medium">
                       {feature.description}
                     </p>

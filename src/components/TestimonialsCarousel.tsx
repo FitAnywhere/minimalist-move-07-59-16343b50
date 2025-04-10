@@ -437,18 +437,15 @@ const TestimonialsCarousel = () => {
                     <Quote className="h-6 w-6" />
                   </div>
                   
-                  <div className="flex mb-2 mt-5 animate-fade-in">
-                    {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 mr-1" fill="#FFD700" />)}
-                  </div>
-                  
                   <p className={cn("text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 transition-all duration-500 pt-2 pl-2", isMobile ? "text-lg md:text-xl lg:text-2xl mb-2" : "")}>
                     {currentTestimonial.quote}
                   </p>
                   
                   <div className="flex items-center mt-3 animate-fade-in">
                     <div>
-                      <p className="font-semibold text-gray-800 text-sm">{currentTestimonial.name}</p>
-                      <p className="text-xs text-gray-500">{currentTestimonial.role}</p>
+                      <div className="flex mt-1">
+                        {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 mr-1" fill="#FFD700" />)}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -476,7 +473,7 @@ const TestimonialsCarousel = () => {
                   </div>
                   
                   {isMobile && (
-                    <div className="flex space-x-3 mt-2 justify-center">
+                    <div className="flex space-x-3 mt-2 justify-center touch-action-pan-y">
                       {testimonials.map((_, index) => (
                         <button 
                           key={index} 
@@ -484,13 +481,10 @@ const TestimonialsCarousel = () => {
                           className={cn(
                             "transition-all duration-300", 
                             index === activeIndex 
-                              ? "w-4 h-4 bg-gray-800 rounded-full" 
-                              : "w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400"
+                              ? "w-4 h-4 bg-gray-300/50 rounded-full" 
+                              : "w-3 h-3 bg-gray-200/30 rounded-full hover:bg-gray-200/50"
                           )} 
-                          aria-label={`Go to testimonial ${index + 1}`} 
-                          style={{
-                            backgroundColor: index === activeIndex ? '#444444' : ''
-                          }} 
+                          aria-label={`Go to testimonial ${index + 1}`}
                         />
                       ))}
                     </div>
