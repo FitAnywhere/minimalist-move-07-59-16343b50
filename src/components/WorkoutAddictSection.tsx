@@ -293,7 +293,7 @@ const WorkoutAddictSection = () => {
                     <span className="my-0 mx-[6px] px-[14px] text-sm font-bold py-0">🛒 BUY BOXFUN NOW Only €69,99!</span>
                   </Button>
                   
-                  <p className="text-sm text-gray-500 mt-2 text-center">50X BoxFun units being given away</p>
+                  <p className="text-sm text-gray-500 mt-2 text-center">An original creation in finest materials.</p>
                 </div>
               </div>
               
