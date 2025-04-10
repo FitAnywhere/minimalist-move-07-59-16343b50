@@ -374,7 +374,7 @@ const TestimonialsCarouselThird = () => {
                       
                       <div className="flex items-center animate-fade-in">
                         <div>
-                          
+                          <p className="font-semibold text-gray-800 text-xs">{currentTestimonial.name}</p>
                           
                         </div>
                       </div>
