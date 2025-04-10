@@ -1,7 +1,8 @@
+
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight, Star, Loader, RefreshCw } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote, Star, Loader, RefreshCw } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Testimonial {
@@ -13,25 +14,27 @@ interface Testimonial {
   hash?: string;
   imageUrl?: string;
 }
+
 const testimonials: Testimonial[] = [{
-  name: "Blake H.",
-  role: "Strength Seeker",
-  quote: "Never thought working out could feel this fun.",
+  name: "Sarah M.",
+  role: "Remote Worker",
+  quote: "Used to blame Zoom for no workouts. Now I sneak in 15 min wins.",
   mediaType: "image",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_72_ggjdho.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744322325/fitanywhere-testimonial1_pdv5gi.jpg"
 }, {
-  name: "Mason K.",
-  role: "Outdoor Lover",
-  quote: "BoxFun didn't just get me moving. It made me want to move.",
+  name: "Alex J.",
+  role: "Busy Parent",
+  quote: "Finally found an exercise routine that fits into my chaotic schedule.",
   mediaType: "image",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097765/Izdelek_brez_naslova_-_2025-04-08T093354.537_ovbtbx.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744322325/fitanywhere-testimonial2_cqgrma.jpg"
 }, {
-  name: "Tyler B.",
-  role: "Calisthenics Enthusiast",
-  quote: "Getting fit used to feel like work. Now it feels like play.",
+  name: "Michael T.",
+  role: "Office Professional",
+  quote: "No more excuses about lack of equipment or gym access.",
   mediaType: "image",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744141492/Izdelek_brez_naslova_-_2025-04-08T214404.198_yb1jc0.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744322325/fitanywhere-testimonial3_mku3et.jpg"
 }];
+
 const TestimonialMedia = memo(({
   mediaType,
   vimeoId,
@@ -58,14 +61,17 @@ const TestimonialMedia = memo(({
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const mediaId = vimeoId || imageUrl || '';
+  
   useEffect(() => {
     setShowError(false);
     setLoadAttempts(0);
   }, [uniqueKey]);
+  
   const handleLoad = () => {
     setShowError(false);
     onLoaded(mediaId);
   };
+  
   const handleError = () => {
     if (loadAttempts < 3) {
       const retryDelay = (loadAttempts + 1) * 1000;
@@ -89,6 +95,7 @@ const TestimonialMedia = memo(({
       setShowError(true);
     }
   };
+  
   return <div style={{
     position: 'absolute',
     top: 0,
@@ -126,7 +133,9 @@ const TestimonialMedia = memo(({
     }} title={`Testimonial video ${vimeoId}`} onLoad={handleLoad} onError={handleError} loading="eager"></iframe>}
     </div>;
 });
+
 TestimonialMedia.displayName = 'TestimonialMedia';
+
 const VideoLoader = memo(() => <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
     <div className="flex flex-col items-center justify-center space-y-4">
       <div className="relative">
@@ -149,8 +158,10 @@ const VideoLoader = memo(() => <div className="absolute inset-0 flex flex-col it
       </div>
     </div>
   </div>);
+
 VideoLoader.displayName = 'VideoLoader';
-const TestimonialsCarouselThird = () => {
+
+const TestimonialsFitanywhereSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
@@ -165,7 +176,9 @@ const TestimonialsCarouselThird = () => {
   const [preloadedMedia, setPreloadedMedia] = useState<string[]>([]);
   const vimeoScriptLoadedRef = useRef(false);
   const [mediaError, setMediaError] = useState(false);
+  
   const currentTestimonial = testimonials[activeIndex] || testimonials[0];
+  
   useEffect(() => {
     if (vimeoScriptLoadedRef.current) return;
     if (!document.getElementById('vimeo-player-api') && testimonials.some(t => t.mediaType === "video")) {
@@ -180,6 +193,7 @@ const TestimonialsCarouselThird = () => {
     } else {
       vimeoScriptLoadedRef.current = true;
     }
+    
     const preloadTestimonials = () => {
       testimonials.slice(0, 3).forEach(testimonial => {
         if (!testimonial) return;
@@ -200,6 +214,7 @@ const TestimonialsCarouselThird = () => {
           setPreloadedMedia(prev => [...prev, testimonial.imageUrl || '']);
         }
       });
+      
       testimonials.slice(3).forEach((testimonial, index) => {
         setTimeout(() => {
           if (!testimonial) return;
@@ -222,10 +237,12 @@ const TestimonialsCarouselThird = () => {
         }, (index + 1) * 500);
       });
     };
+    
     if (isInView) {
       preloadTestimonials();
     }
   }, [isInView]);
+  
   const nextTestimonial = useCallback(() => {
     if (!currentTestimonial) return;
     const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
@@ -244,6 +261,7 @@ const TestimonialsCarouselThird = () => {
       setMediaError(false);
     });
   }, [currentTestimonial]);
+  
   const prevTestimonial = useCallback(() => {
     if (!currentTestimonial) return;
     const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
@@ -262,6 +280,7 @@ const TestimonialsCarouselThird = () => {
       setMediaError(false);
     });
   }, [currentTestimonial]);
+  
   const goToTestimonial = useCallback((index: number) => {
     if (index === activeIndex || !currentTestimonial || index >= testimonials.length) return;
     const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
@@ -277,6 +296,7 @@ const TestimonialsCarouselThird = () => {
       setMediaError(false);
     });
   }, [activeIndex, currentTestimonial]);
+  
   const handleMediaLoaded = useCallback((mediaId: string) => {
     setMediasLoaded(prev => ({
       ...prev,
@@ -289,10 +309,12 @@ const TestimonialsCarouselThird = () => {
       }));
     });
   }, []);
+  
   const handleRetry = useCallback(() => {
     setKey(prev => prev + 1);
     setMediaError(false);
   }, []);
+  
   useEffect(() => {
     if (!currentTestimonial) return;
     const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
@@ -322,6 +344,7 @@ const TestimonialsCarouselThird = () => {
       }
     }
   }, [mediasLoaded, activeIndex, currentTestimonial, preloadedMedia]);
+  
   useEffect(() => {
     if (!currentTestimonial) return;
     const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
@@ -332,16 +355,19 @@ const TestimonialsCarouselThird = () => {
       }));
     }
   }, [activeIndex, currentTestimonial, mediasLoaded]);
+  
   if (!currentTestimonial) {
     return <div className="py-16 md:py-20 bg-gray-50">Loading testimonials...</div>;
   }
+  
   const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
-  return <section ref={containerRef} id="testimonials-third" className="py-16 bg-white">
+  
+  return <section ref={containerRef} id="testimonials-fitanywhere" className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-              WHY THEY LOVE BOXFUN?
+              WHY THEY LOVE FITANYWHERE?
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
           </div>
@@ -376,7 +402,7 @@ const TestimonialsCarouselThird = () => {
                       <div className="flex items-center animate-fade-in">
                         <div>
                           <p className="font-semibold text-gray-800 text-xs">{currentTestimonial.name}</p>
-                          
+                          <p className="text-gray-500 text-xs">{currentTestimonial.role}</p>
                         </div>
                       </div>
                     </div>
@@ -394,6 +420,7 @@ const TestimonialsCarouselThird = () => {
             </button>
           </div>
           
+          {/* Mobile dots indicator - positioned directly under the testimonial card */}
           {isMobile && <div className="flex justify-center mt-1 bg-white py-2">
               {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("mx-1 transition-all duration-300", index === activeIndex ? "w-2 h-2 bg-yellow rounded-full" : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
             </div>}
@@ -405,4 +432,5 @@ const TestimonialsCarouselThird = () => {
       </div>
     </section>;
 };
-export default TestimonialsCarouselThird;
+
+export default TestimonialsFitanywhereSection;
