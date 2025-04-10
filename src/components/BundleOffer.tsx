@@ -1,33 +1,27 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 interface GiftItem {
   name: string;
   image: string;
 }
-
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
 }];
-
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [animatedItem, setAnimatedItem] = useState(0);
   const productItems = ["1X PowerTower", "1X TRX", "4X Bands"];
-
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
-
   useEffect(() => {
     setIsVisible(true);
     const interval = setInterval(() => {
@@ -35,13 +29,10 @@ const BundleOffer = () => {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
-
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
-
-  return (
-    <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
+  return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
@@ -49,11 +40,10 @@ const BundleOffer = () => {
               LAST GYM YOU WILL EVER NEED
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
-            <p className="mt-4 text-gray-700 font-medium text-xl py-[13px]">Everything you need for fitness and calisthenics, plus a full training guide.</p>
+            <p className="mt-4 text-gray-700 font-medium py-[13px] text-base">Everything you need for fitness and calisthenics with training guide as a GIFT.</p>
           </div>
           
-          {isMobile ? (
-            <div className="space-y-8">
+          {isMobile ? <div className="space-y-8">
               <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="max-w-2xl mx-auto">
                   <div className={cn("rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", "h-full relative bg-white", "hover:translate-y-[-5px]", "shadow border border-gray-200")}>
@@ -66,11 +56,9 @@ const BundleOffer = () => {
                       
                       <div className="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-white/90 to-white/20 py-3 px-2">
                         <div className="flex justify-center items-center gap-2">
-                          {productItems.map((item, index) => (
-                            <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110" : "text-gray-500 scale-90")}>
+                          {productItems.map((item, index) => <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110" : "text-gray-500 scale-90")}>
                               {item}
-                            </span>
-                          ))}
+                            </span>)}
                         </div>
                       </div>
                       
@@ -109,11 +97,9 @@ const BundleOffer = () => {
               <div className={cn("mb-8 transition-all duration-1000 delay-500", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="flex flex-col items-center justify-center my-0">
                   <span className="text-xl text-gray-700 line-through mb-1">
-                    {isVisible ? (
-                      <>
+                    {isVisible ? <>
                         €<CountUp start={0} end={originalPrice} duration={2} separator="," />
-                      </>
-                    ) : `€${originalPrice}`}
+                      </> : `€${originalPrice}`}
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-bold">
@@ -125,20 +111,16 @@ const BundleOffer = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div className="mb-10 transition-all duration-1000">
+            </div> : <div className="mb-10 transition-all duration-1000">
               <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
                     <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" />
                     <div className="w-full text-center mb-4">
                       <div className="flex justify-center items-center gap-3">
-                        {productItems.map((item, index) => (
-                          <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110 text-xl" : "text-gray-500 scale-95")}>
+                        {productItems.map((item, index) => <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110 text-xl" : "text-gray-500 scale-95")}>
                             {item}
-                          </span>
-                        ))}
+                          </span>)}
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -182,8 +164,7 @@ const BundleOffer = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
           
           <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
             <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4 mb-6 mx-[16px] my-[34px]">
@@ -198,8 +179,6 @@ const BundleOffer = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default BundleOffer;
