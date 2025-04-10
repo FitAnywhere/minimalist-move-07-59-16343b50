@@ -14,17 +14,17 @@ interface Testimonial {
   imageUrl?: string;
 }
 const testimonials: Testimonial[] = [{
-  name: "Blake H.",
-  role: "Strength Seeker",
-  quote: "Never thought working out could feel this fun.",
-  mediaType: "image",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_72_ggjdho.png"
-}, {
   name: "Mason K.",
   role: "Outdoor Lover",
   quote: "BoxFun didn't just get me moving. It made me want to move.",
   mediaType: "image",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097765/Izdelek_brez_naslova_-_2025-04-08T093354.537_ovbtbx.png"
+}, {
+  name: "Blake H.",
+  role: "Strength Seeker",
+  quote: "Never thought working out could feel this fun.",
+  mediaType: "image",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_72_ggjdho.png"
 }, {
   name: "Tyler B.",
   role: "Calisthenics Enthusiast",
@@ -32,6 +32,7 @@ const testimonials: Testimonial[] = [{
   mediaType: "image",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744141492/Izdelek_brez_naslova_-_2025-04-08T214404.198_yb1jc0.png"
 }];
+
 const TestimonialMedia = memo(({
   mediaType,
   vimeoId,
@@ -127,6 +128,7 @@ const TestimonialMedia = memo(({
     </div>;
 });
 TestimonialMedia.displayName = 'TestimonialMedia';
+
 const VideoLoader = memo(() => <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-lg">
     <div className="flex flex-col items-center justify-center space-y-4">
       <div className="relative">
@@ -150,6 +152,7 @@ const VideoLoader = memo(() => <div className="absolute inset-0 flex flex-col it
     </div>
   </div>);
 VideoLoader.displayName = 'VideoLoader';
+
 const TestimonialsCarouselThird = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -166,6 +169,7 @@ const TestimonialsCarouselThird = () => {
   const vimeoScriptLoadedRef = useRef(false);
   const [mediaError, setMediaError] = useState(false);
   const currentTestimonial = testimonials[activeIndex] || testimonials[0];
+
   useEffect(() => {
     if (vimeoScriptLoadedRef.current) return;
     if (!document.getElementById('vimeo-player-api') && testimonials.some(t => t.mediaType === "video")) {
@@ -226,6 +230,7 @@ const TestimonialsCarouselThird = () => {
       preloadTestimonials();
     }
   }, [isInView]);
+
   const nextTestimonial = useCallback(() => {
     if (!currentTestimonial) return;
     const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
@@ -244,6 +249,7 @@ const TestimonialsCarouselThird = () => {
       setMediaError(false);
     });
   }, [currentTestimonial]);
+
   const prevTestimonial = useCallback(() => {
     if (!currentTestimonial) return;
     const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
@@ -262,6 +268,7 @@ const TestimonialsCarouselThird = () => {
       setMediaError(false);
     });
   }, [currentTestimonial]);
+
   const goToTestimonial = useCallback((index: number) => {
     if (index === activeIndex || !currentTestimonial || index >= testimonials.length) return;
     const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
@@ -277,6 +284,7 @@ const TestimonialsCarouselThird = () => {
       setMediaError(false);
     });
   }, [activeIndex, currentTestimonial]);
+
   const handleMediaLoaded = useCallback((mediaId: string) => {
     setMediasLoaded(prev => ({
       ...prev,
@@ -289,10 +297,12 @@ const TestimonialsCarouselThird = () => {
       }));
     });
   }, []);
+
   const handleRetry = useCallback(() => {
     setKey(prev => prev + 1);
     setMediaError(false);
   }, []);
+
   useEffect(() => {
     if (!currentTestimonial) return;
     const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
@@ -322,6 +332,7 @@ const TestimonialsCarouselThird = () => {
       }
     }
   }, [mediasLoaded, activeIndex, currentTestimonial, preloadedMedia]);
+
   useEffect(() => {
     if (!currentTestimonial) return;
     const mediaId = currentTestimonial.mediaType === "video" ? currentTestimonial.vimeoId : currentTestimonial.imageUrl;
@@ -332,6 +343,7 @@ const TestimonialsCarouselThird = () => {
       }));
     }
   }, [activeIndex, currentTestimonial, mediasLoaded]);
+
   if (!currentTestimonial) {
     return <div className="py-16 md:py-20 bg-gray-50">Loading testimonials...</div>;
   }
@@ -385,21 +397,21 @@ const TestimonialsCarouselThird = () => {
               </div>
             </div>
             
-            <button onClick={prevTestimonial} className={cn("absolute top-1/2 -left-4 md:-left-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3" : "")} aria-label="Previous testimonial">
+            <button onClick={prevTestimonial} className={cn("absolute top-1/2 -left-4 md:-left-8 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3" : "")} aria-label="Previous testimonial">
               <ChevronLeft className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-4 h-4")} />
             </button>
             
-            <button onClick={nextTestimonial} className={cn("absolute top-1/2 -right-4 md:-right-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3" : "")} aria-label="Next testimonial">
+            <button onClick={nextTestimonial} className={cn("absolute top-1/2 -right-4 md:-right-8 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all hover:scale-110 z-10 focus:outline-none border-2 border-yellow", isMobile ? "p-3" : "")} aria-label="Next testimonial">
               <ChevronRight className={cn("text-gray-800", isMobile ? "w-5 h-5" : "w-4 h-4")} />
             </button>
           </div>
           
-          {isMobile && <div className="flex justify-center mt-1 bg-white py-2">
+          {isMobile && <div className="flex justify-center mt-1 bg-white py-1">
               {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("mx-1 transition-all duration-300", index === activeIndex ? "w-2 h-2 bg-yellow rounded-full" : "w-2 h-2 bg-gray-300 rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
             </div>}
           
-          {!isMobile && <div className="flex space-x-2 mt-3 justify-center md:justify-start bg-white">
-              {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-3 h-3 bg-black rounded-full" : "w-2 h-2 bg-[#F1F0FB] rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
+          {!isMobile && <div className="flex space-x-2 mt-2 justify-center md:justify-start bg-white">
+              {testimonials.map((_, index) => <button key={index} onClick={() => goToTestimonial(index)} className={cn("transition-all duration-300", index === activeIndex ? "w-3 h-3 bg-yellow rounded-full" : "w-2 h-2 bg-[#F1F0FB] rounded-full hover:bg-gray-400")} aria-label={`Go to testimonial ${index + 1}`} />)}
             </div>}
         </div>
       </div>

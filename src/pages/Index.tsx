@@ -103,6 +103,18 @@ const whoWeBuiltThisForStyles = `
       width: auto !important;
     }
   }
+  
+  /* Testimonial Styles for improved positioning */
+  #testimonials-third .flex space-x-2,
+  #reviews .testimonial-dots {
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Change active dot color to yellow */
+  #testimonials-third .bg-black.rounded-full,
+  #reviews .testimonial-dots .active-dot {
+    background-color: #FFD700 !important;
+  }
 `;
 
 const Index = () => {
