@@ -31,7 +31,6 @@ const TestimonialsCarousel = lazy(() =>
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
-// Remove TestimonialsCarouselSecond import
 const TestimonialsCarouselThird = lazy(() => 
   import('@/components/TestimonialsCarouselThird').catch(err => {
     console.error('Failed to load TestimonialsCarouselThird:', err);
@@ -87,7 +86,7 @@ const CRITICAL_VIDEOS = [
   '1073152410', // TrainingVault video
 ];
 
-// Add CSS for larger images in the WHO WE BUILT THIS FOR section
+// Clean up the CSS styles to remove references to the deleted component
 const whoWeBuiltThisForStyles = `
   @media (min-width: 768px) {
     #target-section .user-image-container img {
@@ -359,8 +358,6 @@ const Index = () => {
         <div id="workout-addict">
           <WorkoutAddictSection />
         </div>
-        
-        {/* Removed TestimonialsCarouselSecond component */}
         
         <div id="reviews-third">
           <TestimonialsCarouselThird />
