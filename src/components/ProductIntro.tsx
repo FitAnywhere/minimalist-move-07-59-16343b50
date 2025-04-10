@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -74,7 +73,7 @@ const ProductIntro = () => {
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
                 
-                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", isMobile ? "text-center mx-auto" : "")}>Money. Time. Space. Yours with FitAnywhere</p>
+                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", isMobile ? "text-center mx-auto" : "")}>Yours with FitAnywhere</p>
               </div>
               
               {isMobile && <div className={cn("flex justify-center items-center transition-all duration-700 h-full md:hidden", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
@@ -98,7 +97,7 @@ const ProductIntro = () => {
                     </h4>
                   </div>
                   
-                  <div className={cn("mt-1 opacity-100", isMobile ? "mt-0" : "")}>
+                  <div className="mt-2 opacity-100">
                     <p className="text-gray-600 py-0 font-medium">
                       {feature.description}
                     </p>

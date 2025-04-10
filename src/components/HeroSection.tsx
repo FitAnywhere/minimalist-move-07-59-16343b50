@@ -1,4 +1,3 @@
-
 import { useRef, useState, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -21,10 +20,9 @@ const HeroSection = memo(() => {
   // Memoize event handlers
   const scrollToOwnBoth = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    // Updated to scroll to "RARE LUXURIES" section instead of calculator
-    const productSection = document.getElementById('product');
-    if (productSection) {
-      productSection.scrollIntoView({
+    const calculatorSection = document.getElementById('calculator');
+    if (calculatorSection) {
+      calculatorSection.scrollIntoView({
         behavior: 'smooth'
       });
     }
