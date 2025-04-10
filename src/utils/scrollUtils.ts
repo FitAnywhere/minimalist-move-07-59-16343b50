@@ -56,3 +56,44 @@ export const handleExternalNavigation = (location: any): void => {
     scrollToElement(window.location.hash);
   }
 };
+
+// Enable better touch/swipe detection for carousels
+export const enableSmoothCarouselScrolling = (carouselElement: HTMLElement): void => {
+  let startX: number;
+  let isDragging = false;
+  
+  const handleTouchStart = (e: TouchEvent) => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+  };
+  
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!isDragging) return;
+    
+    const touchX = e.touches[0].clientX;
+    const diffX = startX - touchX;
+    
+    // Prevent page scroll while swiping carousel
+    if (Math.abs(diffX) > 5) {
+      e.preventDefault();
+    }
+  };
+  
+  const handleTouchEnd = () => {
+    isDragging = false;
+  };
+  
+  if (carouselElement) {
+    carouselElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+    carouselElement.addEventListener('touchmove', handleTouchMove, { passive: false });
+    carouselElement.addEventListener('touchend', handleTouchEnd);
+  }
+  
+  return () => {
+    if (carouselElement) {
+      carouselElement.removeEventListener('touchstart', handleTouchStart);
+      carouselElement.removeEventListener('touchmove', handleTouchMove);
+      carouselElement.removeEventListener('touchend', handleTouchEnd);
+    }
+  };
+};

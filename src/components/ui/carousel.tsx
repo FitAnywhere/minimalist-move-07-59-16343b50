@@ -61,7 +61,7 @@ const Carousel = React.forwardRef<
       {
         ...opts,
         axis: orientation === "horizontal" ? "x" : "y",
-        dragFree: true,
+        dragFree: false, // Allow more control for swipe behavior
       },
       plugins
     )
@@ -206,11 +206,11 @@ const CarouselPrevious = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-12 w-12 rounded-full animate-[pulse_2s_ease-in-out_infinite]",
+        "absolute h-8 w-8 md:h-10 md:w-10 rounded-full",
         "border-yellow border-2 hover:border-opacity-100 transition-all duration-700",
-        "shadow-[0_0_10px_rgba(255,215,0,0.5)] pulse-glow", 
+        "shadow-[0_0_5px_rgba(255,215,0,0.4)]", 
         orientation === "horizontal"
-          ? "left-0 top-1/2 -translate-y-1/2" // Positioned right next to the card
+          ? "left-1 top-1/2 -translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
@@ -218,7 +218,7 @@ const CarouselPrevious = React.forwardRef<
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft className="h-6 w-6" />
+      <ArrowLeft className="h-4 w-4 md:h-6 md:w-6" />
       <span className="sr-only">Previous slide</span>
     </Button>
   )
@@ -237,11 +237,11 @@ const CarouselNext = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-12 w-12 rounded-full animate-[pulse_2s_ease-in-out_infinite]",
+        "absolute h-8 w-8 md:h-10 md:w-10 rounded-full",
         "border-yellow border-2 hover:border-opacity-100 transition-all duration-700",
-        "shadow-[0_0_10px_rgba(255,215,0,0.5)] pulse-glow", 
+        "shadow-[0_0_5px_rgba(255,215,0,0.4)]", 
         orientation === "horizontal"
-          ? "right-0 top-1/2 -translate-y-1/2" // Positioned right next to the card
+          ? "right-1 top-1/2 -translate-y-1/2"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
@@ -249,7 +249,7 @@ const CarouselNext = React.forwardRef<
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className="h-6 w-6" />
+      <ArrowRight className="h-4 w-4 md:h-6 md:w-6" />
       <span className="sr-only">Next slide</span>
     </Button>
   )
