@@ -36,26 +36,37 @@ export const prefetchCriticalVideos = (): void => {
   if (typeof window === 'undefined') return;
   
   // Use requestIdleCallback to prefetch when the browser is idle
-  const prefetchMethod = window.requestIdleCallback || window.setTimeout;
-  
-  prefetchMethod(() => {
-    criticalVideos.forEach(videoUrl => {
-      // Create link element for prefetching
-      const link = document.createElement('link');
-      link.rel = 'prefetch';
-      link.as = 'video';
-      link.href = videoUrl;
-      link.type = 'video/mp4';
-      
-      // Add custom attribute to identify this as a video prefetch
-      link.setAttribute('data-video-prefetch', 'true');
-      
-      // Append to document head
-      document.head.appendChild(link);
-      
-      console.log(`Prefetched video: ${videoUrl}`);
-    });
-  }, { timeout: 5000 });
+  if (window.requestIdleCallback) {
+    window.requestIdleCallback(
+      () => {
+        prefetchVideos();
+      },
+      { timeout: 5000 }
+    );
+  } else {
+    // Fallback to setTimeout with just the delay value
+    setTimeout(prefetchVideos, 5000);
+  }
+};
+
+// Helper function to actually perform the prefetching
+const prefetchVideos = (): void => {
+  criticalVideos.forEach(videoUrl => {
+    // Create link element for prefetching
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.as = 'video';
+    link.href = videoUrl;
+    link.type = 'video/mp4';
+    
+    // Add custom attribute to identify this as a video prefetch
+    link.setAttribute('data-video-prefetch', 'true');
+    
+    // Append to document head
+    document.head.appendChild(link);
+    
+    console.log(`Prefetched video: ${videoUrl}`);
+  });
 };
 
 // Load video metadata but not content
