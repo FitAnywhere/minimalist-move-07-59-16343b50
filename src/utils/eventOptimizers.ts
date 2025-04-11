@@ -44,14 +44,60 @@ export function throttle<T extends (...args: any[]) => any>(
   limit = 100
 ): (...args: Parameters<T>) => void {
   let lastCall = 0;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
   
   return function(this: any, ...args: Parameters<T>) {
     const now = Date.now();
     const context = this;
+    const timeSinceLastCall = now - lastCall;
     
-    if (now - lastCall >= limit) {
+    // First check if we're outside the limit window
+    if (timeSinceLastCall >= limit) {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+      
       func.apply(context, args);
       lastCall = now;
+    } else {
+      // If we're inside the limit window and no timeout is scheduled,
+      // schedule a timeout to execute at the end of the limit window
+      if (!timeoutId) {
+        timeoutId = setTimeout(() => {
+          lastCall = Date.now();
+          timeoutId = null;
+          func.apply(context, args);
+        }, limit - timeSinceLastCall);
+      }
+    }
+  };
+}
+
+/**
+ * Creates a requestAnimationFrame-based throttled function that's useful for animations
+ * and visual updates to ensure they run at optimal times in the browser's render cycle.
+ * 
+ * @param func The function to RAF-throttle 
+ * @returns A RAF-throttled version of the function
+ */
+export function rafThrottle<T extends (...args: any[]) => any>(
+  func: T
+): (...args: Parameters<T>) => void {
+  let rafId: number | null = null;
+  let lastArgs: Parameters<T> | null = null;
+  
+  return function(this: any, ...args: Parameters<T>) {
+    const context = this;
+    lastArgs = args;
+    
+    if (rafId === null) {
+      rafId = requestAnimationFrame(() => {
+        if (lastArgs) {
+          func.apply(context, lastArgs);
+        }
+        rafId = null;
+      });
     }
   };
 }

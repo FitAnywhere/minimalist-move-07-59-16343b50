@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
-import { throttle } from '@/utils/eventOptimizers';
+import { throttle, rafThrottle } from '@/utils/eventOptimizers';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
 import ChatbotHelper from '@/components/ChatbotHelper';
@@ -24,56 +24,67 @@ const SectionLoader = () => (
   </div>
 );
 
-// Lazy load components that are not critical for the initial viewport
-const ProductTabs = lazy(() => import('@/components/ProductTabs'));
-const WorkoutAddictSection = lazy(() => import('@/components/WorkoutAddictSection'));
-const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
+// Define chunk names for better debugging and performance monitoring
+const ProductTabs = lazy(() => import(/* webpackChunkName: "product-tabs" */ '@/components/ProductTabs'));
+const WorkoutAddictSection = lazy(() => import(/* webpackChunkName: "workout-addict" */ '@/components/WorkoutAddictSection'));
+const TestimonialsCarousel = lazy(() => import(/* webpackChunkName: "testimonials" */ '@/components/TestimonialsCarousel'));
+
+// Define chunk group for below-the-fold content
 const LifestyleSection = lazy(() => 
-  import('@/components/LifestyleSection').catch(err => {
+  import(/* webpackChunkName: "below-fold-1" */ '@/components/LifestyleSection').catch(err => {
     console.error('Failed to load LifestyleSection:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+    return { default: () => <div className="min-h-[400px]" role="alert">Loading content...</div> };
   })
 );
+
 const BundleOffer = lazy(() => 
-  import('@/components/BundleOffer').catch(err => {
+  import(/* webpackChunkName: "below-fold-1" */ '@/components/BundleOffer').catch(err => {
     console.error('Failed to load BundleOffer:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+    return { default: () => <div className="min-h-[400px]" role="alert">Loading content...</div> };
   })
 );
+
+// Define another chunk group for further below-the-fold content
 const TestimonialsCarouselThird = lazy(() => 
-  import('@/components/TestimonialsCarouselThird').catch(err => {
+  import(/* webpackChunkName: "below-fold-2" */ '@/components/TestimonialsCarouselThird').catch(err => {
     console.error('Failed to load TestimonialsCarouselThird:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+    return { default: () => <div className="min-h-[400px]" role="alert">Loading content...</div> };
   })
 );
+
 const LimitedOfferSection = lazy(() => 
-  import('@/components/LimitedOfferSection').catch(err => {
+  import(/* webpackChunkName: "below-fold-2" */ '@/components/LimitedOfferSection').catch(err => {
     console.error('Failed to load LimitedOfferSection:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+    return { default: () => <div className="min-h-[400px]" role="alert">Loading content...</div> };
   })
 );
+
+// Define final chunk group for lowest content
 const TimeAndCostCalculator = lazy(() => 
-  import('@/components/TimeAndCostCalculator').catch(err => {
+  import(/* webpackChunkName: "below-fold-3" */ '@/components/TimeAndCostCalculator').catch(err => {
     console.error('Failed to load TimeAndCostCalculator:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+    return { default: () => <div className="min-h-[400px]" role="alert">Loading content...</div> };
   })
 );
+
 const TargetAndFAQ = lazy(() => 
-  import('@/components/TargetAndFAQ').catch(err => {
+  import(/* webpackChunkName: "below-fold-3" */ '@/components/TargetAndFAQ').catch(err => {
     console.error('Failed to load TargetAndFAQ:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+    return { default: () => <div className="min-h-[400px]" role="alert">Loading content...</div> };
   })
 );
+
 const CallToAction = lazy(() => 
-  import('@/components/CallToAction').catch(err => {
+  import(/* webpackChunkName: "footer-group" */ '@/components/CallToAction').catch(err => {
     console.error('Failed to load CallToAction:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+    return { default: () => <div className="min-h-[400px]" role="alert">Loading content...</div> };
   })
 );
+
 const Footer = lazy(() => 
-  import('@/components/Footer').catch(err => {
+  import(/* webpackChunkName: "footer-group" */ '@/components/Footer').catch(err => {
     console.error('Failed to load Footer:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
+    return { default: () => <div className="min-h-[400px]" role="alert">Loading content...</div> };
   })
 );
 
@@ -81,14 +92,24 @@ const Index = () => {
   const location = useLocation();
   const initialLoadRef = useRef(true);
   
-  // Set up section observation with throttled callback
+  // Set up section observation with optimized throttled callback
   useSectionObserver({
     sectionIds: ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault', 'workout-addict'],
-    onVisibilityChange: throttle((id, isVisible) => {
+    onVisibilityChange: rafThrottle((id, isVisible) => {
       if (isVisible) {
         console.log(`Section ${id} is now visible`);
+        
+        // Prefetch next section components when current section becomes visible
+        if (id === 'product') {
+          // Prefetch workout-addict content when product section is visible
+          const link = document.createElement('link');
+          link.rel = 'prefetch';
+          link.as = 'script';
+          link.href = '/src/components/WorkoutAddictSection.tsx';
+          document.head.appendChild(link);
+        }
       }
-    }, 200)
+    })
   });
   
   useEffect(() => {
@@ -98,7 +119,7 @@ const Index = () => {
     // Initialize video preloading
     initVideoPreloading();
     
-    // Set up anchor click handler
+    // Set up anchor click handler with improved throttling
     const cleanupAnchorHandler = setupAnchorClickHandler();
     
     // Handle external navigation
@@ -107,8 +128,16 @@ const Index = () => {
       initialLoadRef.current = false;
     }
     
+    // Optimize scroll performance with passive listeners
+    const optimizedScroll = throttle(() => {
+      // Throttled scroll handler logic
+    }, 100);
+    
+    window.addEventListener('scroll', optimizedScroll, { passive: true });
+    
     return () => {
       cleanupAnchorHandler();
+      window.removeEventListener('scroll', optimizedScroll);
     };
   }, [location]);
   
@@ -117,59 +146,61 @@ const Index = () => {
       <NavBar />
       
       {/* Critical hero section - not lazy loaded */}
-      <div id="hero">
+      <section id="hero" aria-label="Introduction to FitAnywhere">
         <HeroSection />
-      </div>
+      </section>
       
       {/* Critical product section - not lazy loaded */}
-      <div id="product">
+      <section id="product" aria-label="Product information">
         <ProductIntro />
         <Suspense fallback={<SectionLoader />}>
           <ProductTabs />
         </Suspense>
-      </div>
+      </section>
       
-      <ChampionSection />
+      <section id="champion-section" aria-label="Champion information">
+        <ChampionSection />
+      </section>
       
-      <div id="training-vault">
+      <section id="training-vault" aria-label="Training vault">
         <TrainingVault />
-      </div>
+      </section>
       
       {/* Below-the-fold sections - all lazy loaded */}
-      <div id="reviews" className="content-visibility-auto">
+      <section id="reviews" className="content-visibility-auto" aria-label="Customer testimonials">
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsCarousel />
         </Suspense>
-      </div>
+      </section>
       
       <Suspense fallback={<SectionLoader />}>
-        <div id="bundle" className="content-visibility-auto">
+        <section id="bundle" className="content-visibility-auto" aria-label="Bundle offers">
           <BundleOffer />
-        </div>
+        </section>
         
-        <div id="workout-addict" className="content-visibility-auto">
+        <section id="workout-addict" className="content-visibility-auto" aria-label="Workout addict information">
           <WorkoutAddictSection />
-        </div>
+        </section>
         
-        <div id="reviews-third" className="content-visibility-auto">
+        <section id="reviews-third" className="content-visibility-auto" aria-label="More customer testimonials">
           <TestimonialsCarouselThird />
-        </div>
+        </section>
         
-        <div id="limited-offer" className="content-visibility-auto">
+        <section id="limited-offer" className="content-visibility-auto" aria-label="Limited time offers">
           <LimitedOfferSection />
-        </div>
+        </section>
         
-        <div id="calculator" className="content-visibility-auto">
+        <section id="calculator" className="content-visibility-auto" aria-label="Time and cost calculator">
           <TimeAndCostCalculator />
-        </div>
+        </section>
         
-        <div id="target-faq" className="content-visibility-auto">
+        <section id="target-faq" className="content-visibility-auto" aria-label="Target audience and FAQ">
           <TargetAndFAQ />
-        </div>
+        </section>
         
-        <div id="cta">
+        <section id="cta" aria-label="Call to action">
           <CallToAction />
-        </div>
+        </section>
         
         <Footer />
       </Suspense>
