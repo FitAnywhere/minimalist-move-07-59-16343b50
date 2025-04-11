@@ -31,7 +31,7 @@ const LimitedOfferSection = () => {
                 <img 
                   src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png" 
                   alt="BoxFun Offer" 
-                  className="object-contain w-full" 
+                  className="object-contain w-full rounded-2xl" 
                 />
                 <h3 className="font-bold text-xl text-center mb-2">GIVEAWAY</h3>
               </div>
