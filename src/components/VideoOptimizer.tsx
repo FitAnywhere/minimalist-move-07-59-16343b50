@@ -1,6 +1,6 @@
 
 import { useState, useRef, useEffect, memo } from 'react';
-import { Loader, RefreshCw } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import videoLoadManager from '@/utils/videoOptimization';
 import EnhancedVimeoPlayer from '@/components/ui/EnhancedVimeoPlayer';
 
@@ -93,6 +93,7 @@ const VideoOptimizer = memo(({
       }}
       className={className}
       data-vimeo-id={vimeoId}
+      data-key={uniqueKey}
     >
       <EnhancedVimeoPlayer 
         vimeoId={vimeoId}

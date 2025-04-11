@@ -57,6 +57,7 @@ const EnhancedVimeoPlayer = memo(({
   const vimeoPlayerRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const mountedRef = useRef<boolean>(true);
+  const pendingRemovalRef = useRef<boolean>(false); // Track if we're in the process of removal
   
   // Handle aspect ratio calculation
   const getAspectRatioPadding = () => {
@@ -88,17 +89,36 @@ const EnhancedVimeoPlayer = memo(({
 
   // Safely remove iframe from container
   const safeRemoveIframe = useCallback(() => {
-    if (iframeRef.current) {
-      try {
+    if (pendingRemovalRef.current) {
+      // Already trying to remove, avoid duplicate removal attempts
+      return;
+    }
+    
+    pendingRemovalRef.current = true;
+    
+    try {
+      if (iframeRef.current) {
         // Only attempt to remove if it's still in the DOM and has a parent
-        if (iframeRef.current.parentNode) {
-          iframeRef.current.parentNode.removeChild(iframeRef.current);
+        const iframe = iframeRef.current;
+        const parent = iframe.parentNode;
+        
+        if (parent) {
+          try {
+            // Use try-catch specifically around the removeChild operation
+            parent.removeChild(iframe);
+          } catch (removeError) {
+            console.warn('Iframe removal failed, but will continue:', removeError);
+            // Don't throw here, we still want to clear the ref
+          }
         }
-      } catch (error) {
-        console.error('Error removing iframe:', error);
+        
+        // Clear the ref regardless of removal success
+        iframeRef.current = null;
       }
-      // Clear the ref regardless of removal success
-      iframeRef.current = null;
+    } catch (error) {
+      console.error('Error in safeRemoveIframe:', error);
+    } finally {
+      pendingRemovalRef.current = false;
     }
   }, []);
 
@@ -157,16 +177,24 @@ const EnhancedVimeoPlayer = memo(({
       iframe.onload = handleIframeLoad;
       iframe.onerror = handleIframeError;
       
-      // Before appending, make sure the container is empty
-      if (containerRef.current) {
+      // Before appending, make sure the container exists and is mounted
+      if (containerRef.current && mountedRef.current) {
         try {
-          // Clear any existing children from container
-          while (containerRef.current.firstChild) {
-            containerRef.current.removeChild(containerRef.current.firstChild);
+          // Clear any existing children from container safely
+          const container = containerRef.current;
+          while (container.firstChild) {
+            try {
+              container.removeChild(container.firstChild);
+            } catch (e) {
+              console.warn('Error removing container child:', e);
+              break; // Prevent infinite loop if removal fails
+            }
           }
           
-          // Append the new iframe
-          containerRef.current.appendChild(iframe);
+          // Only append if we're still mounted
+          if (mountedRef.current) {
+            container.appendChild(iframe);
+          }
         } catch (error) {
           console.error('Error manipulating container DOM:', error);
           setLoadState('error');
@@ -243,16 +271,16 @@ const EnhancedVimeoPlayer = memo(({
     
     // Schedule retry with exponential backoff
     const retryTimer = setTimeout(() => {
-      if (!mountedRef.current) return;
-      
-      // Safely remove iframe
-      safeRemoveIframe();
-      
-      // Reset to idle state to trigger a fresh load
-      setLoadState('idle');
+      if (mountedRef.current) {
+        // Safely remove iframe
+        safeRemoveIframe();
+        
+        // Reset to idle state to trigger a fresh load
+        setLoadState('idle');
+      }
     }, nextRetryDelay);
     
-    // Clean up timer if component unmounts
+    // Return cleanup function
     return () => clearTimeout(retryTimer);
   }, [vimeoId, retryCount, getRetryDelay, onError, safeRemoveIframe]);
 
@@ -333,22 +361,26 @@ const EnhancedVimeoPlayer = memo(({
     };
   }, [vimeoId, placeholderImage, loadState, initializePlayer]);
 
-  // Clean up on unmount
+  // Clean up on unmount - CRITICAL for preventing React issues
   useEffect(() => {
     return () => {
       mountedRef.current = false;
       
+      // Clean up Vimeo player instance if it exists
       if (vimeoPlayerRef.current) {
         try {
           vimeoPlayerRef.current.destroy();
-          vimeoPlayerRef.current = null;
         } catch (error) {
           console.error('Error destroying Vimeo player:', error);
+        } finally {
+          vimeoPlayerRef.current = null;
         }
       }
       
       // Ensure iframe is removed when component unmounts
-      safeRemoveIframe();
+      if (iframeRef.current) {
+        safeRemoveIframe();
+      }
     };
   }, [safeRemoveIframe]);
 
@@ -364,6 +396,7 @@ const EnhancedVimeoPlayer = memo(({
         <div 
           ref={containerRef} 
           className="absolute inset-0 bg-black overflow-hidden"
+          data-vimeo-container={vimeoId}
         >
           {/* Loading state */}
           {loadState === 'loading' && (
