@@ -1,9 +1,11 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from '@/components/ui/dialog';
+import EnhancedVimeoPlayer from '@/components/ui/EnhancedVimeoPlayer';
 
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -11,14 +13,11 @@ const ChampionSection = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const isInView = useInView(sectionRef);
   const isMobile = useIsMobile();
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [showLibraryAccess, setShowLibraryAccess] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: ''
   });
-  const [videoError, setVideoError] = useState(false);
-  const [dialogVideoError, setDialogVideoError] = useState(false);
 
   useEffect(() => {
     if (isInView && titleRef.current) {
@@ -27,16 +26,6 @@ const ChampionSection = () => {
       }, 300);
     }
   }, [isInView]);
-
-  useEffect(() => {
-    if (!document.getElementById('vimeo-player-script')) {
-      const script = document.createElement('script');
-      script.id = 'vimeo-player-script';
-      script.src = 'https://player.vimeo.com/api/player.js';
-      script.async = true;
-      document.head.appendChild(script);
-    }
-  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -54,6 +43,14 @@ const ChampionSection = () => {
     console.log("Form submitted:", formData);
     setShowLibraryAccess(false);
     alert("Thank you! Access to the video library will be sent to your email.");
+  };
+
+  const handleVideoLoad = () => {
+    console.log("Library video loaded successfully");
+  };
+
+  const handleVideoError = () => {
+    console.log("Library video failed to load, retry will be attempted");
   };
 
   return <section id="video-library" ref={sectionRef} className="py-16">
@@ -117,24 +114,21 @@ const ChampionSection = () => {
             
             <div className="relative perspective">
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-xl hover:scale-[1.02] group" ref={videoRef}>
-                {videoError && (
-                  <img 
-                    src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
-                    alt="Video thumbnail fallback"
-                    className="absolute inset-0 w-full h-full object-cover z-10 rounded-2xl"
-                  />
-                )}
-                
-                <div style={{padding:"100% 0 0 0", position:"relative"}}>
-                  <iframe 
-                    src="https://player.vimeo.com/video/1073285328?h=205f79391c&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" 
-                    frameBorder="0" 
-                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
-                    style={{position:"absolute", top:0, left:0, width:"100%", height:"100%"}} 
-                    title="training library optimized"
-                    onError={() => setVideoError(true)}>
-                  </iframe>
-                </div>
+                <EnhancedVimeoPlayer
+                  vimeoId="1073285328" 
+                  hash="205f79391c"
+                  title="Training library optimized"
+                  autoplay={true}
+                  loop={true}
+                  muted={true}
+                  background={true}
+                  responsive={true}
+                  className="w-full h-full"
+                  aspectRatio="16:9"
+                  onLoad={handleVideoLoad}
+                  onError={handleVideoError}
+                  placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
+                />
                 
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
@@ -155,24 +149,20 @@ const ChampionSection = () => {
 
           <div className="grid gap-8 md:grid-cols-2 mt-4">
             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden relative">
-              {dialogVideoError && (
-                <img 
-                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
-                  alt="Video thumbnail fallback"
-                  className="absolute inset-0 w-full h-full object-cover z-10"
-                />
-              )}
-              
-              <div style={{padding:"100% 0 0 0", position:"relative"}}>
-                <iframe 
-                  src="https://player.vimeo.com/video/1073285328?h=205f79391c&badge=0&autopause=0&player_id=0&app_id=58479" 
-                  frameBorder="0" 
-                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
-                  style={{position:"absolute", top:0, left:0, width:"100%", height:"100%"}} 
-                  title="training library optimized"
-                  onError={() => setDialogVideoError(true)}>
-                </iframe>
-              </div>
+              <EnhancedVimeoPlayer
+                vimeoId="1073285328" 
+                hash="205f79391c"
+                title="Training library optimized"
+                autoplay={false}
+                loop={true}
+                muted={false}
+                controls={true}
+                background={false}
+                responsive={true}
+                className="w-full h-full"
+                aspectRatio="16:9"
+                placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
+              />
             </div>
 
             <div>
