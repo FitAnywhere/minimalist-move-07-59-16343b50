@@ -58,7 +58,7 @@ export const handleExternalNavigation = (location: any): void => {
 };
 
 // Enable better touch/swipe detection for carousels
-export const enableSmoothCarouselScrolling = (carouselElement: HTMLElement): void => {
+export const enableSmoothCarouselScrolling = (carouselElement: HTMLElement): (() => void) => {
   let startX: number;
   let isDragging = false;
   
