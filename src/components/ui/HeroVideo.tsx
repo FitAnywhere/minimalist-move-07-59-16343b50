@@ -1,15 +1,15 @@
 
 import { memo } from 'react';
-import EnhancedVimeoPlayer from './EnhancedVimeoPlayer';
+import OptimizedVideo from './OptimizedVideo';
 
 const HeroVideo = memo(() => {
   return (
-    <EnhancedVimeoPlayer
+    <OptimizedVideo
       vimeoId="1073662161"
       hash="9f083a1471"
-      title="intor video optt"
-      autoplay={true}
-      loop={false}
+      title="intro video optt"
+      autoplay={false}
+      loop={true}
       muted={true}
       controls={false}
       background={true}

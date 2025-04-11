@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -7,18 +8,26 @@ import ChatbotHelper from '@/components/ChatbotHelper';
 // Import critical components eagerly
 import ProductIntro from '@/components/ProductIntro';
 import ChampionSection from '@/components/ChampionSection';
-import TrainingVault from '@/components/TrainingVault';
-import WorkoutAddictSection from '@/components/WorkoutAddictSection';
-import TestimonialsCarousel from '@/components/TestimonialsCarousel';
 
 // Import utilities
 import { useSectionObserver } from '@/hooks/useSectionObserver';
 import { setupAnchorClickHandler, handleExternalNavigation } from '@/utils/scrollUtils';
 import { initVideoPreloading } from '@/utils/videoPreloader';
 import { initStyles } from '@/utils/styleUtils';
+import { throttle } from '@/utils/performance';
+
+// Better loading fallback with reduced CLS (Cumulative Layout Shift)
+const SectionLoader = () => (
+  <div className="min-h-[400px] w-full flex items-center justify-center" aria-hidden="true">
+    <div className="w-8 h-8 border-4 border-yellow border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
 
 // Continue lazy loading other components with better error boundaries and fallbacks
 const ProductTabs = lazy(() => import('@/components/ProductTabs'));
+const TrainingVault = lazy(() => import('@/components/TrainingVault'));
+const WorkoutAddictSection = lazy(() => import('@/components/WorkoutAddictSection'));
+const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
 const LifestyleSection = lazy(() => 
   import('@/components/LifestyleSection').catch(err => {
     console.error('Failed to load LifestyleSection:', err);
@@ -68,25 +77,18 @@ const Footer = lazy(() =>
   })
 );
 
-// Better loading fallback with reduced CLS (Cumulative Layout Shift)
-const SectionLoader = () => (
-  <div className="min-h-[400px] w-full flex items-center justify-center" aria-hidden="true">
-    <div className="w-8 h-8 border-4 border-yellow border-t-transparent rounded-full animate-spin"></div>
-  </div>
-);
-
 const Index = () => {
   const location = useLocation();
   const initialLoadRef = useRef(true);
   
-  // Set up section observation
+  // Set up section observation with throttled callbacks
   useSectionObserver({
     sectionIds: ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault', 'workout-addict'],
-    onVisibilityChange: (id, isVisible) => {
+    onVisibilityChange: throttle((id, isVisible) => {
       if (isVisible) {
         console.log(`Section ${id} is now visible`);
       }
-    }
+    }, 100)
   });
   
   useEffect(() => {
@@ -126,28 +128,32 @@ const Index = () => {
       
       <ChampionSection />
       
-      <div id="training-vault">
-        <TrainingVault />
-      </div>
-      
-      <div id="reviews">
-        <TestimonialsCarousel />
-      </div>
+      <Suspense fallback={<SectionLoader />}>
+        <div id="training-vault" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 800px' }}>
+          <TrainingVault />
+        </div>
+      </Suspense>
       
       <Suspense fallback={<SectionLoader />}>
-        <div id="bundle">
+        <div id="reviews" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 600px' }}>
+          <TestimonialsCarousel />
+        </div>
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <div id="bundle" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 800px' }}>
           <BundleOffer />
         </div>
         
-        <div id="workout-addict">
+        <div id="workout-addict" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 800px' }}>
           <WorkoutAddictSection />
         </div>
         
-        <div id="reviews-third">
+        <div id="reviews-third" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 600px' }}>
           <TestimonialsCarouselThird />
         </div>
         
-        <div id="limited-offer">
+        <div id="limited-offer" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 600px' }}>
           <LimitedOfferSection />
         </div>
         
