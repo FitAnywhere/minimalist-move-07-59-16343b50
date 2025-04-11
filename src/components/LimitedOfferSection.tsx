@@ -25,7 +25,7 @@ const LimitedOfferSection = () => {
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <div className="p-6 flex flex-col items-center">
                 <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png" alt="BoxFun Offer" className="object-contain w-full rounded-2xl" />
-                <h3 className="font-bold text-xl text-center mb-2">GIVEAWAY</h3>
+                <h3 className="text-center mb-2 text-[#D4AF37] text-2xl font-bold">GIVEAWAY</h3>
               </div>
             </div>
             
