@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -31,6 +32,7 @@ const WorkoutAddictSection = () => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [showSpecs, setShowSpecs] = useState(false);
   const isMobile = useIsMobile();
   
   const isInView = useInView(sectionRef, {
@@ -103,7 +105,7 @@ const WorkoutAddictSection = () => {
               isVideoLoaded ? "opacity-100" : "opacity-0"
             )}
             onPlay={handleVideoPlay}
-            onLoad={handleVideoLoad}
+            onLoadedMetadata={() => setIsVideoLoaded(true)}
           />
           
           <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
