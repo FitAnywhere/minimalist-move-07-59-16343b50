@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -27,7 +28,7 @@ const LimitedOfferSection = () => {
               <Card className="border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-6 flex flex-col items-center">
                   <div className="flex items-center justify-center p-2 w-full">
-                    <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744318784/use_wskjj7.png" alt="BoxFun Offer" className={cn("object-contain", isMobile ? "w-full" : "w-full")} />
+                    <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379552/use_1144_exhxid.png" alt="BoxFun Offer" className={cn("object-contain", isMobile ? "w-full" : "w-full")} />
                   </div>
                   <h3 className="font-bold text-xl text-center mb-2">GIVEAWAY</h3>
                 </CardContent>
