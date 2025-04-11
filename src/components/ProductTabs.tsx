@@ -4,7 +4,8 @@ import { Flame, Backpack, Zap } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import EnhancedVimeoPlayer from '@/components/ui/EnhancedVimeoPlayer';
+import OptimizedVideo from '@/components/ui/OptimizedVideo';
+
 const bandsFeatures = [{
   title: "10x MORE EXERCISES",
   description: "Push past plateaus, and keep progressing.",
@@ -18,10 +19,12 @@ const bandsFeatures = [{
   description: "From first reps to peak performance—bands move with you.",
   icon: Zap
 }];
+
 const ProductTabs = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
   const bandsTextRef = useRef<HTMLDivElement>(null);
+  
   const isInView = useInView(sectionRef);
   const isBandsVideoInView = useInView(bandsVideoRef, {
     threshold: 0.3
@@ -29,17 +32,37 @@ const ProductTabs = () => {
   const isBandsTextInView = useInView(bandsTextRef, {
     threshold: 0.2
   });
+  
   const isMobile = useIsMobile();
+  
   const renderBandsVimeoVideo = () => {
-    return <div className="w-full h-full overflow-hidden relative" style={{
-      maxWidth: '80%',
-      margin: '0 auto'
-    }}>
+    return (
+      <div 
+        className="w-full h-full overflow-hidden relative" 
+        style={{
+          maxWidth: '80%',
+          margin: '0 auto'
+        }}
+      >
         <AspectRatio ratio={3 / 4} className="overflow-hidden rounded-2xl">
-          <EnhancedVimeoPlayer vimeoId="1073680510" hash="006a5ccf10" title="Bands video" autoplay={true} loop={true} muted={true} controls={false} background={true} responsive={true} aspectRatio="3:4" placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png" />
+          <OptimizedVideo 
+            vimeoId="1073680510" 
+            hash="006a5ccf10" 
+            title="Bands video" 
+            autoplay={false}
+            loop={true} 
+            muted={true} 
+            controls={false} 
+            background={true} 
+            responsive={true} 
+            aspectRatio="3:4" 
+            placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png" 
+          />
         </AspectRatio>
-      </div>;
+      </div>
+    );
   };
+
   return <section id="accessories" ref={sectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
@@ -91,4 +114,5 @@ const ProductTabs = () => {
       </div>
     </section>;
 };
+
 export default ProductTabs;

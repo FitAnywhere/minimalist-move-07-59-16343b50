@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -119,6 +120,11 @@
 
   p {
     @apply leading-relaxed;
+  }
+  
+  /* Add font-display: swap to all @font-face declarations */
+  @font-face {
+    font-display: swap;
   }
 }
 
@@ -261,6 +267,35 @@
   .volume-control-container {
     @apply relative transition-all duration-300;
   }
+  
+  /* New optimization utilities */
+  .content-visibility-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 5000px; /* Provide size hint to avoid layout shifts */
+  }
+  
+  .tap-target {
+    min-width: 48px;
+    min-height: 48px;
+  }
+  
+  .transform-only-animation {
+    will-change: transform, opacity;
+  }
+  
+  .preload-image {
+    fetch-priority: high;
+  }
+}
+
+/* Below-the-fold sections */
+#bundle, 
+#workout-addict, 
+#reviews-third, 
+#limited-offer, 
+#target-faq {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px; /* Estimate height to avoid CLS */
 }
 
 @keyframes animate-slide-in {
