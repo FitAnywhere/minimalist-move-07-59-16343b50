@@ -54,7 +54,7 @@ TestimonialImage.displayName = 'TestimonialImage';
 
 const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
   return (
-    <div className="flex flex-col overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
+    <div className="flex flex-col overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-xl">
       <TestimonialImage imageUrl={testimonial.imageUrl} />
       
       <div className="bg-white p-3 shadow-md rounded-b-xl border border-gray-100">
@@ -83,6 +83,26 @@ const TestimonialsFitanywhereSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const goToTestimonial = (index: number) => {
+    if (index === activeIndex || index >= testimonials.length) return;
+    setActiveIndex(index);
+  };
+
+  const nextTestimonial = () => {
+    setActiveIndex(prevIndex => {
+      const nextIndex = prevIndex + 1;
+      return nextIndex >= testimonials.length ? 0 : nextIndex;
+    });
+  };
+
+  const prevTestimonial = () => {
+    setActiveIndex(prevIndex => {
+      const nextIndex = prevIndex - 1;
+      return nextIndex < 0 ? testimonials.length - 1 : nextIndex;
+    });
+  };
 
   return (
     <section ref={containerRef} id="testimonials-fitanywhere" className="py-16 bg-white">
@@ -126,6 +146,24 @@ const TestimonialsFitanywhereSection = () => {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
+            
+            {!isMobile && (
+              <div className="flex space-x-2 mt-3 justify-center md:justify-start bg-white">
+                {testimonials.map((_, index) => (
+                  <button 
+                    key={index} 
+                    onClick={() => goToTestimonial(index)} 
+                    className={cn(
+                      "transition-all duration-300", 
+                      index === activeIndex 
+                        ? "w-3 h-3 bg-black rounded-full" 
+                        : "w-2 h-2 bg-[#F1F0FB] rounded-full hover:bg-gray-400"
+                    )} 
+                    aria-label={`Go to testimonial ${index + 1}`} 
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
