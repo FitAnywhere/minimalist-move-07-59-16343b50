@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect, memo } from 'react';
 import { Loader, Play, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { rafThrottle } from '@/utils/eventOptimizers';
 
 interface OptimizedVideoProps {
   vimeoId: string;
@@ -30,7 +29,7 @@ const OptimizedVideo = ({
   vimeoId,
   hash,
   title,
-  autoplay = false, // Default to false for better performance
+  autoplay = true,
   loop = false,
   muted = true,
   controls = false,
@@ -53,20 +52,6 @@ const OptimizedVideo = ({
   const [isInView, setIsInView] = useState(false);
   const [userInteracted, setUserInteracted] = useState(false);
 
-  // Extract image dimensions from aspect ratio
-  const getImageDimensions = () => {
-    if (!aspectRatio) return { width: 1280, height: 720 }; // Default 16:9
-    
-    const [width, height] = aspectRatio.split(':').map(Number);
-    if (!width || !height) return { width: 1280, height: 720 };
-    
-    // Scale to reasonable size while maintaining aspect ratio
-    const baseWidth = 1280;
-    const scaledHeight = Math.round((height / width) * baseWidth);
-    
-    return { width: baseWidth, height: scaledHeight };
-  };
-
   // Handle aspect ratio calculation
   const getAspectRatioPadding = () => {
     if (!aspectRatio) return '56.25%'; // Default to 16:9
@@ -87,15 +72,10 @@ const OptimizedVideo = ({
       threshold: 0.1 // trigger when 10% of element is visible
     };
 
-    const handleIntersection = rafThrottle((entries: IntersectionObserverEntry[]) => {
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
       setIsInView(entry.isIntersecting);
-      
-      // Auto-load video when it comes into view if autoplay is true
-      if (entry.isIntersecting && autoplay && loadState === 'idle') {
-        loadVideo();
-      }
-    });
+    };
 
     observerRef.current = new IntersectionObserver(handleIntersection, options);
     observerRef.current.observe(containerRef.current);
@@ -105,9 +85,9 @@ const OptimizedVideo = ({
         observerRef.current.disconnect();
       }
     };
-  }, [autoplay, loadState]);
+  }, []);
 
-  // Initialize Vimeo player when user interacts or element is in view with autoplay
+  // Initialize Vimeo player when user interacts and element is in view
   const loadVideo = () => {
     if (!containerRef.current || loadState === 'loading' || loadState === 'loaded') return;
     
@@ -148,11 +128,6 @@ const OptimizedVideo = ({
         iframe.style.border = 'none';
         iframe.title = title || `Vimeo video player: ${vimeoId}`;
         iframe.loading = 'lazy';
-        
-        // Set attributes to help prevent CLS
-        const { width, height } = getImageDimensions();
-        iframe.width = width.toString();
-        iframe.height = height.toString();
         
         // Set up event listeners for iframe
         iframe.onload = handleVideoLoaded;
@@ -221,9 +196,6 @@ const OptimizedVideo = ({
     };
   }, []);
 
-  // Get image dimensions for the placeholder
-  const { width, height } = getImageDimensions();
-
   // Render different UI based on load state
   return (
     <div className={cn("relative overflow-hidden", className)}>
@@ -283,12 +255,12 @@ const OptimizedVideo = ({
                     className="w-full h-full object-cover"
                     loading="lazy"
                     decoding="async"
-                    width={width}
-                    height={height}
+                    width="640" 
+                    height="360"
                   />
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                     <button 
-                      className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-transform hover:scale-105"
+                      className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-colors"
                       aria-label="Play video"
                     >
                       <Play className="w-8 h-8 text-black ml-1" />
@@ -297,7 +269,7 @@ const OptimizedVideo = ({
                 </div>
               ) : (
                 <button 
-                  className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-transform hover:scale-105"
+                  className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-colors"
                   aria-label="Play video"
                 >
                   <Play className="w-8 h-8 text-black ml-1" />
