@@ -5,6 +5,10 @@
 
 /* Apply font-display:swap to all font-face declarations for faster perceived loading */
 @layer base {
+  @font-face {
+    font-display: swap;
+  }
+  
   :root {
     /* ... keep existing code (color variables) */
   }
@@ -51,11 +55,6 @@
 
   p {
     @apply leading-relaxed;
-  }
-  
-  /* Add font-display: swap to all @font-face declarations */
-  @font-face {
-    font-display: swap;
   }
   
   /* Optimize images during loading */
@@ -163,7 +162,7 @@
     will-change: transform;
   }
   
-  .underline-animation.underline-animation::after {
+  .underline-animation.active::after {
     transform: scaleX(1);
   }
 
@@ -265,9 +264,11 @@
 @keyframes pulse {
   0%, 100% {
     transform: scale(1);
+    opacity: 1;
   }
   50% {
     transform: scale(1.05);
+    opacity: 0.9;
   }
 }
 
@@ -283,11 +284,9 @@
 @keyframes pulse-glow {
   0%, 100% {
     opacity: 1;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
   }
   50% {
-    opacity: 1;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    opacity: 0.8;
   }
 }
 

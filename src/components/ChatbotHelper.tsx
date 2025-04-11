@@ -1,17 +1,17 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { rafThrottle } from '@/utils/eventOptimizers';
 
 const ChatbotHelper = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [chatbotLoaded, setChatbotLoaded] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   
   useEffect(() => {
-    // Use requestIdleCallback to schedule non-critical initialization
+    // Only schedule popup after at least 20 seconds of engagement
     const schedulePopup = () => {
-      // Show popup after 20 seconds (when user has had time to engage with the page)
       timerRef.current = setTimeout(() => {
         // Only show if the user hasn't scrolled to the bottom yet
         if (window.scrollY < document.body.scrollHeight - window.innerHeight * 1.5) {
@@ -25,24 +25,78 @@ const ChatbotHelper = () => {
       }, 20000);
     };
     
+    // Wait for idle callback to schedule non-critical initialization
     if (window.requestIdleCallback) {
       requestIdleCallback(() => schedulePopup(), { timeout: 5000 });
     } else {
       // Fallback for browsers that don't support requestIdleCallback
-      setTimeout(schedulePopup, 2000);
+      setTimeout(schedulePopup, 5000);
     }
+    
+    // Setup intersection observer for viewport detection
+    const observer = new IntersectionObserver(
+      rafThrottle(entries => {
+        const [entry] = entries;
+        if (entry.isIntersecting && !chatbotLoaded) {
+          loadChatbot();
+        }
+      }),
+      { threshold: 0.1, rootMargin: '0px 0px 300px 0px' }
+    );
+    
+    // Observe the document body to detect when we're near the bottom
+    observer.observe(document.body);
     
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
+      observer.disconnect();
     };
-  }, []);
+  }, [chatbotLoaded]);
+  
+  // Load the chatbot only when needed
+  const loadChatbot = () => {
+    if (chatbotLoaded) return;
+    setChatbotLoaded(true);
+    
+    // Check if Voiceflow script is already loaded in index.html
+    if (window.voiceflow && window.voiceflow.chat) return;
+    
+    // Otherwise, load it manually
+    (function(d, t) {
+      const v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        if (window.voiceflow && window.voiceflow.chat) {
+          window.voiceflow.chat.load({
+            verify: { projectID: '67eb8f96dd5fb1db6bcdae42' },
+            url: "https://general-runtime.voiceflow.com",
+            versionID: "production",
+            voice: {
+              url: "https://runtime-api.voiceflow.com"
+            }
+          });
+        }
+      };
+      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; 
+      v.type = "text/javascript"; 
+      s.parentNode.insertBefore(v, s);
+    })(document, 'script');
+  };
 
   const handleAskClick = () => {
-    if (window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
-      window.voiceflow.chat.open();
+    // Load chatbot if not already loaded
+    if (!chatbotLoaded) {
+      loadChatbot();
     }
+    
+    // Add small delay to ensure widget is initialized
+    setTimeout(() => {
+      if (window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
+        window.voiceflow.chat.open();
+      }
+    }, 300);
+    
     setIsVisible(false);
     
     // Clear any pending timers
@@ -68,6 +122,7 @@ const ChatbotHelper = () => {
         <button
           onClick={handleClose}
           className="absolute top-1 right-1 text-gray-400 hover:text-gray-600 rounded-full p-1"
+          aria-label="Close help prompt"
         >
           <X className="w-3 h-3" />
         </button>
