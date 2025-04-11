@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote, CheckCircle } from 'lucide-react';
@@ -9,7 +8,6 @@ import CountUp from 'react-countup';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -30,7 +28,7 @@ const TimeAndCostCalculator = () => {
 
   // Calculate time wasted in 20 years (in hours) - doubled for round trips
   const timeWastedInYears = Math.round(timeWastedPerVisit * VISITS_PER_WEEK * WEEKS_PER_YEAR * YEARS_PROJECTION / 60) * 2;
-  
+
   // Calculate time wasted in 1 year (in hours) - doubled for round trips
   const timeWastedPerYear = Math.round(timeWastedPerVisit * VISITS_PER_WEEK * WEEKS_PER_YEAR / 60) * 2;
 
@@ -82,7 +80,6 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
-
   return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
@@ -128,27 +125,23 @@ const TimeAndCostCalculator = () => {
                           <Slider value={[gymMonthlyCost]} min={0} max={150} step={5} className="w-full" onValueChange={value => setGymMonthlyCost(value[0])} />
                         </div>
                         
-                        {gymMonthlyCost > 0 && (
-                          <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center mt-4">
+                        {gymMonthlyCost > 0 && <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center mt-4">
                             <p className="text-md font-bold text-black">
                               With FitAnywhere you can start saving €{annualSavings} every year.
                             </p>
-                          </div>
-                        )}
+                          </div>}
                       </div>
                       
                       {/* Money Result - Right side on desktop, bottom on mobile - NOW CONDITIONALLY RENDERED */}
-                      {gymMonthlyCost > 0 && (
-                        <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
+                      {gymMonthlyCost > 0 && <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
                           <div className="flex items-center justify-center mb-2">
                             <Banknote className="w-5 h-5 text-yellow mr-2" />
-                            <h3 className="text-lg font-bold">MONEY SPENT - 20 YEARS</h3>
+                            <h3 className="text-lg font-bold">MONEY SAVED - 20 YEARS</h3>
                           </div>
                           <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
                             {shouldAnimate ? <CountUp start={previousMoneyCost} end={moneySpentInYears} duration={1} separator="," prefix="€" suffix="+" useEasing /> : "€0+"}
                           </p>
-                        </div>
-                      )}
+                        </div>}
                     </div>
                   </CardContent>
                 </Card>
@@ -176,18 +169,15 @@ const TimeAndCostCalculator = () => {
                           <Slider value={[timeWastedPerVisit]} min={0} max={120} step={5} className="w-full" onValueChange={value => setTimeWastedPerVisit(value[0])} />
                         </div>
                         
-                        {timeWastedPerVisit > 0 && (
-                          <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center mt-4">
+                        {timeWastedPerVisit > 0 && <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center mt-4">
                             <p className="text-md font-bold text-black">
                               With FitAnywhere you can start gaining {timeWastedPerYear} hours every year.
                             </p>
-                          </div>
-                        )}
+                          </div>}
                       </div>
                       
                       {/* Time Result - Right side on desktop, bottom on mobile - NOW CONDITIONALLY RENDERED */}
-                      {timeWastedPerVisit > 0 && (
-                        <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
+                      {timeWastedPerVisit > 0 && <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
                           <div className="flex items-center justify-center mb-2">
                             <Clock className="w-5 h-5 text-yellow mr-2" />
                             <h3 className="text-lg font-bold"> TIME WASTED - 20 YEARS</h3>
@@ -195,8 +185,7 @@ const TimeAndCostCalculator = () => {
                           <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
                             {shouldAnimate ? <CountUp start={previousTimeWasted} end={timeWastedInYears} duration={1} separator="," suffix=" hours" useEasing /> : "0 hours"}
                           </p>
-                        </div>
-                      )}
+                        </div>}
                     </div>
                   </CardContent>
                 </Card>
@@ -208,12 +197,7 @@ const TimeAndCostCalculator = () => {
                 
                 {/* Updated CTA button text and animation */}
                 <div className="flex justify-center mb-8">
-                  <Button 
-                    variant="yellow" 
-                    size="lg" 
-                    className="bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-md hover:scale-105"
-                    onClick={handleCTAClick}
-                  >
+                  <Button variant="yellow" size="lg" className="bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-md hover:scale-105" onClick={handleCTAClick}>
                     🛒 INVEST IN YOURSELF
                   </Button>
                 </div>
@@ -228,5 +212,4 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
-
 export default TimeAndCostCalculator;
