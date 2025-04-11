@@ -1,5 +1,5 @@
 
-import { useState, useRef, memo } from 'react';
+import { useState, useRef, memo, useCallback } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Star } from 'lucide-react';
@@ -11,6 +11,7 @@ import {
   CarouselNext,
   CarouselPrevious
 } from "@/components/ui/carousel";
+import { throttle } from '@/utils/performanceUtils';
 
 interface Testimonial {
   name: string;
@@ -51,6 +52,7 @@ const testimonials: Testimonial[] = [{
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
 }];
 
+// Memoize image component to prevent unnecessary re-renders
 const TestimonialImage = memo(({ imageUrl }: { imageUrl: string }) => {
   return (
     <div className="relative w-full" style={{ paddingBottom: '150%' }}>
@@ -59,13 +61,17 @@ const TestimonialImage = memo(({ imageUrl }: { imageUrl: string }) => {
         alt="Testimonial" 
         className="absolute inset-0 w-full h-full object-cover rounded-t-xl"
         loading="lazy"
+        decoding="async"
+        width="300"
+        height="450"
       />
     </div>
   );
 });
 TestimonialImage.displayName = 'TestimonialImage';
 
-const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
+// Memoize testimonial card to prevent unnecessary re-renders
+const TestimonialCard = memo(({ testimonial }: { testimonial: Testimonial }) => {
   return (
     <div className="flex flex-col overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
       <TestimonialImage imageUrl={testimonial.imageUrl} />
@@ -90,15 +96,26 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
       </div>
     </div>
   );
-};
+});
+TestimonialCard.displayName = 'TestimonialCard';
 
 const TestimonialsCarousel = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
 
+  // Throttle carousel drag events to improve performance
+  const handleDrag = useCallback(throttle(() => {
+    // Handle any drag-related logic in a performant way
+  }, 100), []);
+
   return (
-    <section ref={containerRef} id="testimonials" className="py-16 bg-white">
+    <section 
+      ref={containerRef} 
+      id="testimonials" 
+      className="py-16 bg-white"
+      style={{ contentVisibility: 'auto', containIntrinsicSize: '600px' }}
+    >
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className={cn(
@@ -118,19 +135,22 @@ const TestimonialsCarousel = () => {
             "relative transition-all duration-500",
             isInView ? "opacity-100" : "opacity-0 translate-y-4"
           )}>
-            <Carousel opts={{ 
-              loop: true,
-              align: "start",
-              skipSnaps: false,
-              dragFree: true,
-            }}>
+            <Carousel 
+              opts={{ 
+                loop: true,
+                align: "start",
+                skipSnaps: false,
+                dragFree: true,
+              }}
+              onDragStart={handleDrag}
+            >
               <CarouselContent>
                 {testimonials.map((testimonial, index) => (
                   <CarouselItem 
                     key={index} 
                     className={isMobile ? "basis-3/4 md:basis-1/2" : "basis-1/4 md:basis-1/3"}
                   >
-                    <div className="p-1">
+                    <div className="p-1" style={{ minHeight: '420px' }}>
                       <TestimonialCard testimonial={testimonial} />
                     </div>
                   </CarouselItem>

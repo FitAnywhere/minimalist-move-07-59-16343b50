@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -8,59 +9,85 @@ import ChatbotHelper from '@/components/ChatbotHelper';
 import ProductIntro from '@/components/ProductIntro';
 import ChampionSection from '@/components/ChampionSection';
 import TrainingVault from '@/components/TrainingVault';
-import WorkoutAddictSection from '@/components/WorkoutAddictSection';
-import TestimonialsCarousel from '@/components/TestimonialsCarousel';
 
 // Import utilities
 import { useSectionObserver } from '@/hooks/useSectionObserver';
 import { setupAnchorClickHandler, handleExternalNavigation } from '@/utils/scrollUtils';
 import { initVideoPreloading } from '@/utils/videoPreloader';
 import { initStyles } from '@/utils/styleUtils';
+import { debounce } from '@/utils/performanceUtils';
 
 // Continue lazy loading other components with better error boundaries and fallbacks
-const ProductTabs = lazy(() => import('@/components/ProductTabs'));
+const ProductTabs = lazy(() => 
+  import('@/components/ProductTabs').then(module => {
+    console.log('ProductTabs loaded');
+    return module;
+  })
+);
+
+const WorkoutAddictSection = lazy(() => 
+  import('@/components/WorkoutAddictSection').then(module => {
+    console.log('WorkoutAddictSection loaded');
+    return module;
+  })
+);
+
+const TestimonialsCarousel = lazy(() => 
+  import('@/components/TestimonialsCarousel').then(module => {
+    console.log('TestimonialsCarousel loaded');
+    return module;
+  })
+);
+
 const LifestyleSection = lazy(() => 
   import('@/components/LifestyleSection').catch(err => {
     console.error('Failed to load LifestyleSection:', err);
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
+
 const BundleOffer = lazy(() => 
   import('@/components/BundleOffer').catch(err => {
     console.error('Failed to load BundleOffer:', err);
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
+
 const TestimonialsCarouselThird = lazy(() => 
   import('@/components/TestimonialsCarouselThird').catch(err => {
     console.error('Failed to load TestimonialsCarouselThird:', err);
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
+
 const LimitedOfferSection = lazy(() => 
   import('@/components/LimitedOfferSection').catch(err => {
     console.error('Failed to load LimitedOfferSection:', err);
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
+
 const TimeAndCostCalculator = lazy(() => 
   import('@/components/TimeAndCostCalculator').catch(err => {
     console.error('Failed to load TimeAndCostCalculator:', err);
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
+
 const TargetAndFAQ = lazy(() => 
   import('@/components/TargetAndFAQ').catch(err => {
     console.error('Failed to load TargetAndFAQ:', err);
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
+
 const CallToAction = lazy(() => 
   import('@/components/CallToAction').catch(err => {
     console.error('Failed to load CallToAction:', err);
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
+
 const Footer = lazy(() => 
   import('@/components/Footer').catch(err => {
     console.error('Failed to load Footer:', err);
@@ -79,14 +106,14 @@ const Index = () => {
   const location = useLocation();
   const initialLoadRef = useRef(true);
   
-  // Set up section observation
+  // Set up section observation with debounced callback
   useSectionObserver({
     sectionIds: ['product', 'lifestyle', 'bundle', 'reviews', 'training-vault', 'workout-addict'],
-    onVisibilityChange: (id, isVisible) => {
+    onVisibilityChange: debounce((id, isVisible) => {
       if (isVisible) {
         console.log(`Section ${id} is now visible`);
       }
-    }
+    }, 150)
   });
   
   useEffect(() => {
@@ -131,7 +158,9 @@ const Index = () => {
       </div>
       
       <div id="reviews">
-        <TestimonialsCarousel />
+        <Suspense fallback={<SectionLoader />}>
+          <TestimonialsCarousel />
+        </Suspense>
       </div>
       
       <Suspense fallback={<SectionLoader />}>
