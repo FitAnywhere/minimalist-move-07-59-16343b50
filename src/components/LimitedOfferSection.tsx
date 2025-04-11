@@ -18,7 +18,7 @@ const LimitedOfferSection = () => {
           <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
             
             <h2 className="text-3xl md:text-5xl font-extrabold text-black mb-4 relative inline-block">
-              LIMITED OFFER
+              SPECIAL OFFER
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
@@ -27,8 +27,12 @@ const LimitedOfferSection = () => {
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <Card className="border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-6 flex flex-col items-center">
-                  <div className="flex items-center justify-center p-2 w-full">
-                    <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379552/use_1144_exhxid.png" alt="BoxFun Offer" className={cn("object-contain", isMobile ? "w-full" : "w-full")} />
+                  <div className="flex items-center justify-center p-2 w-full h-full">
+                    <img 
+                      src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744395819/Screenshot_65-Photoroom_om22zu.png" 
+                      alt="BoxFun Offer" 
+                      className={cn("object-cover w-full h-full")} 
+                    />
                   </div>
                   <h3 className="font-bold text-xl text-center mb-2">GIVEAWAY</h3>
                 </CardContent>
