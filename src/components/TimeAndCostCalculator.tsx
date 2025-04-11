@@ -180,7 +180,7 @@ const TimeAndCostCalculator = () => {
                       {timeWastedPerVisit > 0 && <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
                           <div className="flex items-center justify-center mb-2">
                             <Clock className="w-5 h-5 text-yellow mr-2" />
-                            <h3 className="text-lg font-bold"> TIME WASTED - 20 YEARS</h3>
+                            <h3 className="text-lg font-bold">TIME GAINED - 20 YEARS</h3>
                           </div>
                           <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
                             {shouldAnimate ? <CountUp start={previousTimeWasted} end={timeWastedInYears} duration={1} separator="," suffix=" hours" useEasing /> : "0 hours"}
