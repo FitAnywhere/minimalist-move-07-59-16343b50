@@ -58,9 +58,8 @@ const NavBar = () => {
   };
 
   const navLinks = [
-    { name: "PowerTower", href: "#product", section: "OWN BOTH" },
-    { name: "BoxFun", href: "#lifestyle", section: "BECOME WORKOUT ADDICT" },
-    { name: "Testimonials", href: "#reviews", section: "WHY THEY LOVE IT?" },
+    { name: "GYM", href: "#product", section: "LAST GYM YOU WILL EVER NEED" },
+    { name: "BOX", href: "#lifestyle", section: "BOXFUN" },
     { name: "FAQ", href: "#faq", section: "FREQUENTLY ASKED QUESTIONS" }
   ];
 
