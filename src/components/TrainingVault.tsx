@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const TrainingVault = () => {
   const {
     toast
@@ -16,9 +17,11 @@ const TrainingVault = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const isMobile = useIsMobile();
   const [videoError, setVideoError] = useState(false);
+
   const handleLevelSelect = (level: 'beginner' | 'expert') => {
     setSelectedLevel(level);
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       name,
@@ -29,6 +32,7 @@ const TrainingVault = () => {
       [name]: value
     }));
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -89,6 +93,7 @@ const TrainingVault = () => {
       setIsLoading(false);
     }
   };
+
   return <section className="bg-black text-white py-16">
       <div className="container mx-auto px-6">
         {/* Heading */}
@@ -153,7 +158,7 @@ const TrainingVault = () => {
                 {/* Fallback thumbnail for video errors */}
                 {videoError && <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097749/Screenshot_69_w6ixx7.png" alt="Video thumbnail fallback" className="absolute inset-0 w-full h-full object-cover z-10" />}
                 
-                <iframe src="https://player.vimeo.com/video/1073152410?h=7283b3c537&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
+                <iframe src="https://player.vimeo.com/video/1074680436?h=18af3e368f&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
@@ -168,4 +173,5 @@ const TrainingVault = () => {
       </div>
     </section>;
 };
+
 export default TrainingVault;
