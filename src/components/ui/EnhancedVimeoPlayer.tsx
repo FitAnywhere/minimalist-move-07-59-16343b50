@@ -280,7 +280,7 @@ const EnhancedVimeoPlayer = memo(({
     onError?.();
     
     // Schedule retry with exponential backoff
-    const retryTimer = setTimeout(() => {
+    const retryTimerId = window.setTimeout(() => {
       if (mountedRef.current) {
         // Safely remove iframe
         safeRemoveIframe();
@@ -290,8 +290,8 @@ const EnhancedVimeoPlayer = memo(({
       }
     }, nextRetryDelay);
     
-    // Store timer reference for cleanup
-    cleanupTimersRef.current.push(retryTimer);
+    // Store timer reference for cleanup - ensure we cast it as number for TypeScript
+    cleanupTimersRef.current.push(retryTimerId as unknown as number);
   }, [vimeoId, retryCount, getRetryDelay, onError, safeRemoveIframe]);
 
   // Handle retry button click
@@ -307,14 +307,14 @@ const EnhancedVimeoPlayer = memo(({
     setLoadState('idle');
     
     // Short delay before attempting reload
-    const reloadTimer = setTimeout(() => {
+    const reloadTimerId = window.setTimeout(() => {
       if (mountedRef.current) {
         initializePlayer();
       }
     }, 100);
     
-    // Store timer reference for cleanup
-    cleanupTimersRef.current.push(reloadTimer);
+    // Store timer reference for cleanup - ensure we cast it as number for TypeScript
+    cleanupTimersRef.current.push(reloadTimerId as unknown as number);
   }, [vimeoId, initializePlayer, safeRemoveIframe]);
 
   // Manual play button handler
@@ -339,18 +339,18 @@ const EnhancedVimeoPlayer = memo(({
   useEffect(() => {
     if (loadState === 'idle' && mountedRef.current) {
       // Small delay to avoid rapid re-initialization
-      const initTimer = setTimeout(() => {
+      const initTimerId = window.setTimeout(() => {
         if (mountedRef.current) {
           initializePlayer();
         }
       }, 100);
       
-      // Store timer reference for cleanup
-      cleanupTimersRef.current.push(initTimer);
+      // Store timer reference for cleanup - ensure we cast it as number for TypeScript
+      cleanupTimersRef.current.push(initTimerId as unknown as number);
       
       return () => {
-        window.clearTimeout(initTimer);
-        cleanupTimersRef.current = cleanupTimersRef.current.filter(id => id !== initTimer);
+        window.clearTimeout(initTimerId);
+        cleanupTimersRef.current = cleanupTimersRef.current.filter(id => id !== (initTimerId as unknown as number));
       };
     }
   }, [loadState, initializePlayer]);
