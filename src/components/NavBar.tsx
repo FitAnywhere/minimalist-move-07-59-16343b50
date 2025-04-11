@@ -58,7 +58,7 @@ const NavBar = () => {
   };
 
   const navLinks = [
-    { name: "GYM", href: "#video-library", section: "LAST GYM YOU WILL EVER NEED" },
+    { name: "GYM", href: "#bundle", section: "LAST GYM YOU WILL EVER NEED" },
     { name: "BOX", href: "#workout-addict", section: "BOXFUN" },
     { name: "FAQ", href: "#faq", section: "FREQUENTLY ASKED QUESTIONS" }
   ];
