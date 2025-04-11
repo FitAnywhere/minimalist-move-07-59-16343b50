@@ -204,7 +204,7 @@ const WorkoutAddictSection = () => {
                     BOXFUN
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                   </h2>
-                  <p className="text-gray-700 font-medium text-lg mt-2">Freedom, strength, and fun.</p>
+                  <p className="text-gray-700 mt-2 font-medium text-base py-[9px]">FREEDOM, STRENGHT, AND FUN, strength, and fun.</p>
                 </div>
                 
                 {isMobile && <div className="w-full flex flex-col items-center my-6">
