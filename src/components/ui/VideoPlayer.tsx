@@ -17,6 +17,7 @@ interface VideoPlayerProps {
   onPlay?: () => void;
   onPause?: () => void;
   onEnded?: () => void;
+  onLoadedMetadata?: (event: React.SyntheticEvent<HTMLVideoElement>) => void;
 }
 
 const VideoPlayer = memo(({
@@ -32,7 +33,8 @@ const VideoPlayer = memo(({
   priority = false,
   onPlay,
   onPause,
-  onEnded
+  onEnded,
+  onLoadedMetadata
 }: VideoPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [isVisible, setIsVisible] = useState(false);
@@ -176,6 +178,10 @@ const VideoPlayer = memo(({
         poster={poster}
         className="w-full h-full object-cover"
         aria-label="Video player"
+        onLoadedMetadata={(event) => {
+          setIsLoaded(true);
+          onLoadedMetadata?.(event);
+        }}
       >
         <source src={src} type="video/mp4" />
         Your browser does not support the video tag.

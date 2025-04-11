@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -105,7 +104,7 @@ const WorkoutAddictSection = () => {
               isVideoLoaded ? "opacity-100" : "opacity-0"
             )}
             onPlay={handleVideoPlay}
-            onLoadedMetadata={() => setIsVideoLoaded(true)}
+            onLoadedMetadata={handleVideoLoad}
           />
           
           <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
