@@ -1,16 +1,20 @@
+
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const LimitedOfferSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
+  
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
+  
   return <section id="limited-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto">
@@ -27,9 +31,16 @@ const LimitedOfferSection = () => {
               <Card className="border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-6 flex flex-col items-center">
                   <div className="flex items-center justify-center p-2 w-full">
-                    <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744318784/use_wskjj7.png" alt="BoxFun Offer" className={cn("object-contain", isMobile ? "w-full" : "w-full")} />
+                    <img 
+                      src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744318784/use_wskjj7.png" 
+                      alt="BoxFun Offer" 
+                      className={cn(
+                        "object-contain", 
+                        isMobile ? "w-full" : "w-full"
+                      )} 
+                    />
                   </div>
-                  <h3 className="font-bold text-xl text-center mb-2">GIVEAWAY</h3>
+                  <h3 className="font-bold text-xl text-center mb-2">LIMITED GIVEAWAY</h3>
                 </CardContent>
               </Card>
             </div>
@@ -46,4 +57,5 @@ const LimitedOfferSection = () => {
       </div>
     </section>;
 };
+
 export default LimitedOfferSection;
