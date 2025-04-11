@@ -56,6 +56,7 @@ const EnhancedVimeoPlayer = memo(({
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const vimeoPlayerRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const mountedRef = useRef<boolean>(true);
   
   // Handle aspect ratio calculation
   const getAspectRatioPadding = () => {
@@ -77,24 +78,33 @@ const EnhancedVimeoPlayer = memo(({
     return exponentialDelay * (0.75 + Math.random() * 0.25);
   }, []);
 
+  // Set mounted ref to false when component unmounts
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
   // Safely remove iframe from container
   const safeRemoveIframe = useCallback(() => {
     if (iframeRef.current) {
       try {
-        // Check if iframe is still in DOM and has a parent
+        // Only attempt to remove if it's still in the DOM and has a parent
         if (iframeRef.current.parentNode) {
           iframeRef.current.parentNode.removeChild(iframeRef.current);
         }
       } catch (error) {
         console.error('Error removing iframe:', error);
       }
+      // Clear the ref regardless of removal success
       iframeRef.current = null;
     }
   }, []);
 
   // Initialize Vimeo player
   const initializePlayer = useCallback(() => {
-    if (!containerRef.current || loadState === 'loading' || loadState === 'loaded') return;
+    if (!containerRef.current || loadState === 'loading' || loadState === 'loaded' || !mountedRef.current) return;
     
     setLoadState('loading');
     
@@ -122,8 +132,12 @@ const EnhancedVimeoPlayer = memo(({
       
       url = `${url}?${params.toString()}`;
       
+      // Double-check that the container still exists and component is mounted
+      if (!containerRef.current || !mountedRef.current) {
+        return;
+      }
+      
       // Create iframe if it doesn't exist
-      // Create a new iframe element
       const iframe = document.createElement('iframe');
       iframe.src = url;
       iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
@@ -143,22 +157,18 @@ const EnhancedVimeoPlayer = memo(({
       iframe.onload = handleIframeLoad;
       iframe.onerror = handleIframeError;
       
+      // Before appending, make sure the container is empty
       if (containerRef.current) {
-        // Clear any existing children from container
-        while (containerRef.current.firstChild) {
-          try {
-            containerRef.current.removeChild(containerRef.current.firstChild);
-          } catch (error) {
-            console.error('Error clearing container:', error);
-            break; // Prevent infinite loop if removal fails
-          }
-        }
-        
-        // Append the new iframe
         try {
+          // Clear any existing children from container
+          while (containerRef.current.firstChild) {
+            containerRef.current.removeChild(containerRef.current.firstChild);
+          }
+          
+          // Append the new iframe
           containerRef.current.appendChild(iframe);
         } catch (error) {
-          console.error('Error appending iframe:', error);
+          console.error('Error manipulating container DOM:', error);
           setLoadState('error');
         }
       }
@@ -170,6 +180,8 @@ const EnhancedVimeoPlayer = memo(({
 
   // Handle iframe load success
   const handleIframeLoad = useCallback(() => {
+    if (!mountedRef.current) return;
+    
     console.log(`Vimeo player ${vimeoId} loaded successfully`);
     setLoadState('loaded');
     setRetryCount(0); // Reset retry count on successful load
@@ -181,18 +193,24 @@ const EnhancedVimeoPlayer = memo(({
         
         // Set up event listeners
         vimeoPlayerRef.current.on('play', () => {
-          setIsPlaying(true);
-          onPlay?.();
+          if (mountedRef.current) {
+            setIsPlaying(true);
+            onPlay?.();
+          }
         });
         
         vimeoPlayerRef.current.on('pause', () => {
-          setIsPlaying(false);
-          onPause?.();
+          if (mountedRef.current) {
+            setIsPlaying(false);
+            onPause?.();
+          }
         });
         
         vimeoPlayerRef.current.on('ended', () => {
-          setIsPlaying(false);
-          onEnd?.();
+          if (mountedRef.current) {
+            setIsPlaying(false);
+            onEnd?.();
+          }
         });
         
         vimeoPlayerRef.current.on('error', handleIframeError);
@@ -208,6 +226,8 @@ const EnhancedVimeoPlayer = memo(({
 
   // Handle iframe load error
   const handleIframeError = useCallback(() => {
+    if (!mountedRef.current) return;
+    
     console.error(`Vimeo player ${vimeoId} failed to load (attempt ${retryCount + 1})`);
     setLoadState('error');
     
@@ -222,17 +242,24 @@ const EnhancedVimeoPlayer = memo(({
     onError?.();
     
     // Schedule retry with exponential backoff
-    setTimeout(() => {
+    const retryTimer = setTimeout(() => {
+      if (!mountedRef.current) return;
+      
       // Safely remove iframe
       safeRemoveIframe();
       
       // Reset to idle state to trigger a fresh load
       setLoadState('idle');
     }, nextRetryDelay);
+    
+    // Clean up timer if component unmounts
+    return () => clearTimeout(retryTimer);
   }, [vimeoId, retryCount, getRetryDelay, onError, safeRemoveIframe]);
 
   // Handle retry button click
   const handleManualRetry = useCallback(() => {
+    if (!mountedRef.current) return;
+    
     console.log(`Manual retry for video ${vimeoId}`);
     
     // Safely remove iframe
@@ -243,12 +270,16 @@ const EnhancedVimeoPlayer = memo(({
     
     // Short delay before attempting reload
     setTimeout(() => {
-      initializePlayer();
+      if (mountedRef.current) {
+        initializePlayer();
+      }
     }, 100);
   }, [vimeoId, initializePlayer, safeRemoveIframe]);
 
   // Manual play button handler
   const handlePlayClick = useCallback(() => {
+    if (!mountedRef.current) return;
+    
     if (loadState === 'loaded' && vimeoPlayerRef.current) {
       vimeoPlayerRef.current.play().catch(console.error);
     } else if (loadState === 'idle') {
@@ -265,10 +296,12 @@ const EnhancedVimeoPlayer = memo(({
 
   // Effect to initialize player when idle
   useEffect(() => {
-    if (loadState === 'idle') {
+    if (loadState === 'idle' && mountedRef.current) {
       // Small delay to avoid rapid re-initialization
       const initTimer = setTimeout(() => {
-        initializePlayer();
+        if (mountedRef.current) {
+          initializePlayer();
+        }
       }, 100);
       
       return () => clearTimeout(initTimer);
@@ -277,7 +310,7 @@ const EnhancedVimeoPlayer = memo(({
 
   // Register with video load manager on mount
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !mountedRef.current) return;
     
     // Register this video with the load manager
     videoLoadManager.registerVideo(
@@ -288,7 +321,7 @@ const EnhancedVimeoPlayer = memo(({
     
     // Add event listener for state changes
     const handleStateChange = (event: 'loading' | 'loaded' | 'error') => {
-      if (event === 'loading' && loadState !== 'loading') {
+      if (event === 'loading' && loadState !== 'loading' && mountedRef.current) {
         initializePlayer();
       }
     };
@@ -303,6 +336,8 @@ const EnhancedVimeoPlayer = memo(({
   // Clean up on unmount
   useEffect(() => {
     return () => {
+      mountedRef.current = false;
+      
       if (vimeoPlayerRef.current) {
         try {
           vimeoPlayerRef.current.destroy();
