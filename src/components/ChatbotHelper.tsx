@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -65,7 +66,8 @@ const ChatbotHelper = () => {
     
     // Otherwise, load it manually
     (function(d, t) {
-      const v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      const v = d.createElement(t) as HTMLScriptElement; // Fix: Cast to HTMLScriptElement
+      const s = d.getElementsByTagName(t)[0];
       v.onload = function() {
         if (window.voiceflow && window.voiceflow.chat) {
           window.voiceflow.chat.load({
