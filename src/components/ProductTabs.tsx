@@ -5,6 +5,7 @@ import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import OptimizedVideo from '@/components/ui/OptimizedVideo';
+
 const bandsFeatures = [{
   title: "10x MORE EXERCISES",
   description: "Push past plateaus, and keep progressing.",
@@ -18,6 +19,7 @@ const bandsFeatures = [{
   description: "From first reps to peak performance—bands move with you.",
   icon: Zap
 }];
+
 const ProductTabs = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
@@ -30,16 +32,30 @@ const ProductTabs = () => {
     threshold: 0.2
   });
   const isMobile = useIsMobile();
+
   const renderBandsVimeoVideo = () => {
     return <div className="w-full h-full overflow-hidden relative" style={{
       maxWidth: '80%',
       margin: '0 auto'
     }}>
         <AspectRatio ratio={3 / 4} className="overflow-hidden rounded-2xl">
-          <OptimizedVideo vimeoId="1073680510" hash="006a5ccf10" title="Bands video" autoplay={false} loop={true} muted={true} controls={false} background={true} responsive={true} aspectRatio="3:4" placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png" />
+          <OptimizedVideo 
+            vimeoId="1074680536" 
+            hash="c8b5eb9c54" 
+            title="Bands video" 
+            autoplay={false} 
+            loop={true} 
+            muted={true} 
+            controls={false} 
+            background={true} 
+            responsive={true} 
+            aspectRatio="3:4" 
+            placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png" 
+          />
         </AspectRatio>
       </div>;
   };
+
   return <section id="accessories" ref={sectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
@@ -91,4 +107,5 @@ const ProductTabs = () => {
       </div>
     </section>;
 };
+
 export default ProductTabs;

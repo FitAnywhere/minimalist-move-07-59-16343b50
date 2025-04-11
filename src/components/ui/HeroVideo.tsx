@@ -5,9 +5,9 @@ import OptimizedVideo from './OptimizedVideo';
 const HeroVideo = memo(() => {
   return (
     <OptimizedVideo
-      vimeoId="1073662161"
-      hash="9f083a1471"
-      title="intro video optt"
+      vimeoId="1074680489"
+      hash="a0b733db13"
+      title="Intro Video Optt"
       autoplay={false} // Changed to false to ensure it only plays after user interaction
       loop={false}
       muted={true}
