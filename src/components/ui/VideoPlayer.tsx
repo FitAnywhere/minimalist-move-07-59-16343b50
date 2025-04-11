@@ -1,0 +1,203 @@
+
+import { useState, useRef, useEffect, memo } from 'react';
+import { Play } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface VideoPlayerProps {
+  src: string;
+  poster: string;
+  className?: string;
+  aspectRatio?: 'video' | 'square' | 'portrait';
+  autoPlay?: boolean;
+  muted?: boolean;
+  loop?: boolean;
+  controls?: boolean;
+  preload?: 'none' | 'metadata' | 'auto';
+  priority?: boolean;
+  onPlay?: () => void;
+  onPause?: () => void;
+  onEnded?: () => void;
+}
+
+const VideoPlayer = memo(({
+  src,
+  poster,
+  className,
+  aspectRatio = 'video',
+  autoPlay = false,
+  muted = true,
+  loop = false,
+  controls = false,
+  preload = 'metadata',
+  priority = false,
+  onPlay,
+  onPause,
+  onEnded
+}: VideoPlayerProps) => {
+  const [isPlaying, setIsPlaying] = useState(autoPlay);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // Get aspect ratio style
+  const getAspectRatioClass = () => {
+    switch (aspectRatio) {
+      case 'square': return 'aspect-square';
+      case 'portrait': return 'aspect-[3/4]';
+      case 'video':
+      default: return 'aspect-video';
+    }
+  };
+
+  // Setup intersection observer to detect when video is in viewport
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const options = {
+      rootMargin: '100px', // Start loading slightly before video enters viewport
+      threshold: 0.1 // 10% visibility to trigger
+    };
+
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
+      setIsVisible(entry.isIntersecting);
+    };
+
+    observerRef.current = new IntersectionObserver(handleIntersection, options);
+    observerRef.current.observe(containerRef.current);
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  // Load video when it becomes visible or if it has priority
+  useEffect(() => {
+    if ((isVisible || priority) && videoRef.current && !isLoaded) {
+      // If video is already in memory, this won't cause a network request
+      // If not, it will only load metadata due to preload="metadata"
+      videoRef.current.load();
+      setIsLoaded(true);
+    }
+  }, [isVisible, priority, isLoaded]);
+
+  // Handle auto-play when video is visible (if enabled)
+  useEffect(() => {
+    if (autoPlay && isVisible && videoRef.current && !isPlaying) {
+      try {
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+              onPlay?.();
+            })
+            .catch(error => {
+              console.error('Auto-play failed:', error);
+            });
+        }
+      } catch (error) {
+        console.error('Error during auto-play:', error);
+      }
+    }
+  }, [autoPlay, isVisible, isPlaying, onPlay]);
+
+  // Handle play button click
+  const handlePlayClick = () => {
+    if (!videoRef.current) return;
+
+    // Ensure video is loaded before trying to play
+    if (!isLoaded) {
+      videoRef.current.load();
+      setIsLoaded(true);
+    }
+
+    try {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+            onPlay?.();
+          })
+          .catch(error => {
+            console.error('Play failed:', error);
+          });
+      }
+    } catch (error) {
+      console.error('Error playing video:', error);
+    }
+  };
+
+  // Handle video ended event
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
+
+    const handleEnded = () => {
+      if (!loop) {
+        setIsPlaying(false);
+        onEnded?.();
+      }
+    };
+
+    const handlePause = () => {
+      setIsPlaying(false);
+      onPause?.();
+    };
+
+    videoElement.addEventListener('ended', handleEnded);
+    videoElement.addEventListener('pause', handlePause);
+
+    return () => {
+      videoElement.removeEventListener('ended', handleEnded);
+      videoElement.removeEventListener('pause', handlePause);
+    };
+  }, [loop, onEnded, onPause]);
+
+  return (
+    <div 
+      ref={containerRef}
+      className={cn("relative overflow-hidden", getAspectRatioClass(), className)}
+      data-loaded={isLoaded}
+      data-playing={isPlaying}
+    >
+      <video
+        ref={videoRef}
+        preload={preload}
+        muted={muted}
+        playsInline
+        loop={loop}
+        controls={controls && isPlaying}
+        poster={poster}
+        className="w-full h-full object-cover"
+        aria-label="Video player"
+      >
+        <source src={src} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      {!isPlaying && (
+        <div
+          className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer transition-opacity duration-300"
+          onClick={handlePlayClick}
+        >
+          <button
+            className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-colors"
+            aria-label="Play video"
+            type="button"
+          >
+            <Play className="w-8 h-8 text-black ml-1" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+});
+
+VideoPlayer.displayName = 'VideoPlayer';
+export default VideoPlayer;

@@ -4,8 +4,7 @@ import { cn } from '@/lib/utils';
 import { Flame, Backpack, Zap } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { Play } from 'lucide-react';
+import VideoPlayer from '@/components/ui/VideoPlayer';
 
 const bandsFeatures = [{
   title: "10x MORE EXERCISES",
@@ -25,8 +24,6 @@ const ProductTabs = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
   const bandsTextRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   
   const isInView = useInView(sectionRef);
   const isBandsVideoInView = useInView(bandsVideoRef, {
@@ -37,49 +34,19 @@ const ProductTabs = () => {
   });
   const isMobile = useIsMobile();
   
-  const handlePlayClick = () => {
-    if (videoRef.current) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-  
   const renderBandsVideo = () => {
     return (
       <div className="w-full h-full overflow-hidden relative" style={{
         maxWidth: '80%',
         margin: '0 auto'
       }}>
-        <AspectRatio ratio={3 / 4} className="overflow-hidden rounded-2xl">
-          <div className="relative w-full h-full">
-            <video
-              ref={videoRef}
-              preload="metadata"
-              muted
-              playsInline
-              loop
-              className="w-full h-full object-cover"
-              poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png"
-            >
-              <source src="/114 Trxbands 11044.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            
-            {!isPlaying && (
-              <div 
-                className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer"
-                onClick={handlePlayClick}
-              >
-                <button 
-                  className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-colors"
-                  aria-label="Play video"
-                >
-                  <Play className="w-8 h-8 text-black ml-1" />
-                </button>
-              </div>
-            )}
-          </div>
-        </AspectRatio>
+        <div className="rounded-2xl overflow-hidden">
+          <VideoPlayer 
+            src="/114 Trxbands 11044.mp4"
+            poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png"
+            aspectRatio="portrait"
+          />
+        </div>
       </div>
     );
   };
