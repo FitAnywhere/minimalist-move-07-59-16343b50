@@ -81,9 +81,9 @@ const BundleOffer = () => {
                 </div>
               </div>
               
-              {/* Modified mobile view for TRAINING LIBRARY */}
-              <div className={cn("flex items-center mb-4 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
-                <Plus className="h-8 w-8 text-green-600 mr-1 flex-shrink-0" />
+              {/* Modified mobile view for TRAINING LIBRARY - adjusted Plus icon spacing */}
+              <div className={cn("flex items-center justify-center mb-4 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
+                <Plus className="h-8 w-8 text-green-600 -mr-2 flex-shrink-0" />
                 <div className="max-w-2xl mx-auto">
                   <div className="rounded-lg bg-white p-3 border border-green-600 flex flex-col items-center">
                     <div className="flex items-center justify-center">
@@ -132,12 +132,13 @@ const BundleOffer = () => {
                     </div>
                   </div>
                   
-                  <div className="w-full md:w-1/2 p-8 flex flex-col">
-                    <div className="mb-8 flex flex-col items-center">
-                      <div className="flex items-center w-full justify-start mb-4">
-                        <div className="flex items-center">
+                  <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
+                    {/* Updated desktop view - centered TRAINING LIBRARY with Plus icon */}
+                    <div className="mb-8 flex flex-col items-center w-full">
+                      <div className="flex items-center justify-center w-full mb-4">
+                        <div className="flex items-center justify-center">
                           <Plus className="h-12 w-12 text-green-600 mr-4" />
-                          <div className="rounded-lg bg-white p-6 border border-green-600 w-full">
+                          <div className="rounded-lg bg-white p-6 border border-green-600">
                             <div className="flex items-center justify-center">
                               <div className="flex flex-col items-center">
                                 <div className="w-40 h-40 mb-3 flex-shrink-0 overflow-hidden">
@@ -151,7 +152,7 @@ const BundleOffer = () => {
                       </div>
                     </div>
                     
-                    <div className="mb-6">
+                    <div className="mb-6 w-full">
                       <div className="flex items-center gap-3 justify-center">
                         <span className="text-xl text-gray-700 line-through">
                           €{originalPrice}
