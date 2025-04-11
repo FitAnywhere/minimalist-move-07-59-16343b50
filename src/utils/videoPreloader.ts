@@ -6,14 +6,17 @@
 interface PreloadOptions {
   importance?: 'high' | 'low';
   type?: 'preload' | 'prefetch';
-  failureCallback?: () => void;
 }
 
 // Critical videos that should be preloaded as soon as possible
 export const CRITICAL_VIDEOS = [
-  { id: '1073662161', importance: 'high' as const, hash: '9f083a1471' }, // Hero video
-  { id: '1074313924', importance: 'high' as const, hash: 'b99fcf1434' }, // BoxFun video
-  { id: '1073285328', importance: 'low' as const, hash: '205f79391c' }, // Training video
+  { id: '1067255623', importance: 'high' as const }, // Hero video
+  { id: '1067257145', importance: 'low' as const }, // TRX video
+  { id: '1067257124', importance: 'low' as const }, // Bands video 
+  { id: '1067256372', importance: 'low' as const }, // Testimonial videos
+  { id: '1067256325', importance: 'low' as const },
+  { id: '1067256399', importance: 'low' as const },
+  { id: '1073152410', importance: 'low' as const } // TrainingVault video
 ];
 
 // Check if the Vimeo API script is already loaded
@@ -21,18 +24,12 @@ export const isVimeoApiLoaded = (): boolean => {
   return !!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]');
 };
 
-// Load the Vimeo Player API with improved error handling and retry logic
+// Load the Vimeo Player API
 export const loadVimeoApi = (): Promise<void> => {
   return new Promise((resolve, reject) => {
     if (isVimeoApiLoaded()) {
       resolve();
       return;
-    }
-    
-    // If there's already a script tag with an error, remove it
-    const failedScript = document.querySelector('script[src="https://player.vimeo.com/api/player.js"][data-failed="true"]');
-    if (failedScript) {
-      failedScript.remove();
     }
     
     const script = document.createElement('script');
@@ -41,33 +38,24 @@ export const loadVimeoApi = (): Promise<void> => {
     script.id = 'vimeo-player-api';
     
     script.onload = () => {
-      console.log("Vimeo Player API loaded successfully");
-      script.dataset.loaded = 'true';
+      console.log("Vimeo Player API loaded");
       resolve();
     };
     
     script.onerror = () => {
-      console.error("Failed to load Vimeo Player API, will retry automatically");
-      script.dataset.failed = 'true';
-      
-      // Retry with exponential backoff
-      setTimeout(() => {
-        loadVimeoApi()
-          .then(resolve)
-          .catch(reject);
-      }, 2000);
+      console.error("Failed to load Vimeo Player API");
+      reject(new Error("Failed to load Vimeo Player API"));
     };
     
     document.head.appendChild(script);
   });
 };
 
-// Add preload hints for critical videos with enhanced error handling
-export const preloadVideos = (videoIds: Array<string | {id: string, importance?: 'high' | 'low', hash?: string}>): void => {
+// Add preload hints for critical videos
+export const preloadVideos = (videoIds: Array<string | {id: string, importance?: 'high' | 'low'}>): void => {
   videoIds.forEach((item, index) => {
     const id = typeof item === 'string' ? item : item.id;
     const importance = typeof item === 'string' ? (index === 0 ? 'high' : 'low') : (item.importance || 'low');
-    const hash = typeof item === 'object' && item.hash ? item.hash : '';
     const existingLink = document.querySelector(`link[href*="${id}"]`);
     
     if (!existingLink) {
@@ -83,13 +71,7 @@ export const preloadVideos = (videoIds: Array<string | {id: string, importance?:
         link.dataset.importance = 'low';
       }
       
-      // Add hash parameter if available
-      let url = `https://player.vimeo.com/video/${id}`;
-      if (hash) {
-        url += `?h=${hash}`;
-      }
-      
-      link.href = url;
+      link.href = `https://player.vimeo.com/video/${id}`;
       link.crossOrigin = 'anonymous';
       document.head.appendChild(link);
       
@@ -98,29 +80,20 @@ export const preloadVideos = (videoIds: Array<string | {id: string, importance?:
   });
 };
 
-// Initialize video preloading with retry logic
+// Initialize video preloading
 export const initVideoPreloading = (): void => {
-  const initPreloading = () => {
-    loadVimeoApi()
-      .then(() => {
-        preloadVideos(CRITICAL_VIDEOS);
-        console.log("All critical videos preloaded successfully");
-      })
-      .catch(error => {
-        console.error("Error in video preloading, retrying:", error);
-        // Retry after delay
-        setTimeout(initPreloading, 5000);
-      });
-  };
-
   if (window.requestIdleCallback) {
     requestIdleCallback(() => {
-      initPreloading();
+      loadVimeoApi()
+        .then(() => preloadVideos(CRITICAL_VIDEOS))
+        .catch(error => console.error("Error in video preloading:", error));
     }, { timeout: 2000 });
   } else {
     // Fallback for browsers without requestIdleCallback
     setTimeout(() => {
-      initPreloading();
+      loadVimeoApi()
+        .then(() => preloadVideos(CRITICAL_VIDEOS))
+        .catch(error => console.error("Error in video preloading:", error));
     }, 100);
   }
 };

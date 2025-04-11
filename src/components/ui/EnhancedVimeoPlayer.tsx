@@ -1,5 +1,5 @@
 
-import { useState, useRef, useEffect, memo, useCallback } from 'react';
+import { useState, useRef, useEffect, memo } from 'react';
 import { Loader, RefreshCw, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import videoLoadManager from '@/utils/videoOptimization';
@@ -26,10 +26,6 @@ interface EnhancedVimeoPlayerProps {
 
 type VideoLoadState = 'idle' | 'loading' | 'loaded' | 'error';
 
-const MAX_RETRIES = Infinity; // Set to Infinity for unlimited retries
-const RETRY_DELAY_BASE = 2000; // Base delay in ms
-const RETRY_DELAY_MAX = 30000; // Maximum delay in ms
-
 const EnhancedVimeoPlayer = memo(({
   vimeoId,
   hash,
@@ -51,15 +47,10 @@ const EnhancedVimeoPlayer = memo(({
 }: EnhancedVimeoPlayerProps) => {
   const [loadState, setLoadState] = useState<VideoLoadState>('idle');
   const [retryCount, setRetryCount] = useState(0);
-  const [showControls, setShowControls] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const vimeoPlayerRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const mountedRef = useRef<boolean>(true);
-  const pendingRemovalRef = useRef<boolean>(false); // Track if we're in the process of removal
-  const cleanupTimersRef = useRef<Array<number>>([]);
-  const iframeRemovedRef = useRef<boolean>(false); // Track if iframe was already removed
   
   // Handle aspect ratio calculation
   const getAspectRatioPadding = () => {
@@ -71,96 +62,13 @@ const EnhancedVimeoPlayer = memo(({
     return `${(height / width) * 100}%`;
   };
 
-  // Calculate exponential backoff with jitter for retries
-  const getRetryDelay = useCallback((retryAttempt: number) => {
-    const exponentialDelay = Math.min(
-      RETRY_DELAY_MAX,
-      RETRY_DELAY_BASE * Math.pow(1.5, retryAttempt)
-    );
-    // Add jitter: random value between 75% and 100% of the calculated delay
-    return exponentialDelay * (0.75 + Math.random() * 0.25);
-  }, []);
-
-  // Clear any timers on unmount or key changes
-  const clearAllTimers = useCallback(() => {
-    if (cleanupTimersRef.current && cleanupTimersRef.current.length > 0) {
-      cleanupTimersRef.current.forEach(timerId => {
-        if (timerId) {
-          try {
-            window.clearTimeout(timerId);
-          } catch (e) {
-            console.warn('Error clearing timer:', e);
-          }
-        }
-      });
-      cleanupTimersRef.current = [];
-    }
-  }, []);
-
-  // Set mounted ref to false when component unmounts
-  useEffect(() => {
-    mountedRef.current = true;
-    iframeRemovedRef.current = false;
-    return () => {
-      mountedRef.current = false;
-      clearAllTimers();
-    };
-  }, [clearAllTimers]);
-
-  // Safely remove iframe from container
-  const safeRemoveIframe = useCallback(() => {
-    // Avoid race conditions with multiple removal attempts
-    if (pendingRemovalRef.current || iframeRemovedRef.current) {
-      return;
-    }
-    
-    pendingRemovalRef.current = true;
-    
-    try {
-      if (iframeRef.current) {
-        const iframe = iframeRef.current;
-        const parent = iframe.parentNode;
-        
-        if (parent) {
-          try {
-            parent.removeChild(iframe);
-            iframeRemovedRef.current = true;
-          } catch (removeError) {
-            console.warn('Iframe removal failed, marking as removed anyway:', removeError);
-            // Even if removal fails in the DOM, we still want to mark it as removed in our state
-            // to prevent further removal attempts
-            iframeRemovedRef.current = true;
-          }
-        } else {
-          // If no parent, mark as removed to prevent future removal attempts
-          iframeRemovedRef.current = true;
-        }
-        
-        // Clear the ref regardless of removal success
-        iframeRef.current = null;
-      }
-    } catch (error) {
-      console.error('Error in safeRemoveIframe:', error);
-      // Still mark as removed to prevent further attempts that might cause errors
-      iframeRemovedRef.current = true;
-    } finally {
-      pendingRemovalRef.current = false;
-    }
-  }, []);
-
   // Initialize Vimeo player
-  const initializePlayer = useCallback(() => {
-    if (!containerRef.current || loadState === 'loading' || loadState === 'loaded' || !mountedRef.current) return;
+  const initializePlayer = () => {
+    if (!containerRef.current || loadState === 'loading' || loadState === 'loaded') return;
     
     setLoadState('loading');
     
     try {
-      // First, ensure any existing iframe is properly removed
-      safeRemoveIframe();
-      
-      // Reset the iframe removed flag since we're creating a new one
-      iframeRemovedRef.current = false;
-      
       // Build URL with parameters
       let url = `https://player.vimeo.com/video/${vimeoId}`;
       const params = new URLSearchParams();
@@ -170,122 +78,74 @@ const EnhancedVimeoPlayer = memo(({
       if (background) params.append('background', '1');
       if (loop) params.append('loop', '1');
       if (muted) params.append('muted', '1');
-      if (controls || showControls) params.append('controls', '1');
+      if (!controls) params.append('controls', '0');
       
       // Add standard parameters
       params.append('title', '0');
       params.append('byline', '0');
       params.append('portrait', '0');
       params.append('dnt', '1');
-      params.append('quality', 'auto'); // Let Vimeo optimize quality
       
       url = `${url}?${params.toString()}`;
       
-      // Double-check that the container still exists and component is mounted
-      if (!containerRef.current || !mountedRef.current) {
-        return;
-      }
-      
       // Create iframe if it doesn't exist
-      const iframe = document.createElement('iframe');
-      iframe.src = url;
-      iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
-      iframe.allowFullscreen = true;
-      iframe.style.position = 'absolute';
-      iframe.style.top = '0';
-      iframe.style.left = '0';
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-      iframe.style.border = 'none';
-      iframe.title = title || `Vimeo video player: ${vimeoId}`;
-      iframe.loading = 'eager';
-      
-      iframeRef.current = iframe;
-      
-      // Set up event listeners for iframe
-      iframe.onload = handleIframeLoad;
-      iframe.onerror = handleIframeError;
-      
-      // Before appending, make sure the container exists and is mounted
-      if (containerRef.current && mountedRef.current) {
-        try {
-          // Use a safe approach to clear container children
-          const container = containerRef.current;
-          
-          // Check if container has children before attempting to remove them
-          if (container.hasChildNodes()) {
-            // Create a static array of children to avoid live collection issues
-            const children = Array.from(container.childNodes);
-            
-            // Remove each child with proper error handling
-            children.forEach(child => {
-              try {
-                container.removeChild(child);
-              } catch (e) {
-                console.warn('Error removing container child:', e);
-              }
-            });
-          }
-          
-          // Only append if we're still mounted
-          if (mountedRef.current) {
-            container.appendChild(iframe);
-          }
-        } catch (error) {
-          console.error('Error manipulating container DOM:', error);
-          setLoadState('error');
+      if (!iframeRef.current) {
+        const iframe = document.createElement('iframe');
+        iframe.src = url;
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+        iframe.allowFullscreen = true;
+        iframe.style.position = 'absolute';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        iframe.title = title || `Vimeo video player: ${vimeoId}`;
+        iframe.loading = 'eager';
+        
+        iframeRef.current = iframe;
+        
+        // Set up event listeners for iframe
+        iframe.onload = handleIframeLoad;
+        iframe.onerror = handleIframeError;
+        
+        if (containerRef.current) {
+          containerRef.current.appendChild(iframe);
         }
+      } else {
+        // If iframe exists, update source
+        iframeRef.current.src = url;
       }
     } catch (error) {
       console.error('Error creating Vimeo iframe:', error);
       handleIframeError();
     }
-  }, [vimeoId, hash, autoplay, background, loop, muted, controls, showControls, title, safeRemoveIframe]);
+  };
 
   // Handle iframe load success
-  const handleIframeLoad = useCallback(() => {
-    if (!mountedRef.current) return;
-    
+  const handleIframeLoad = () => {
     console.log(`Vimeo player ${vimeoId} loaded successfully`);
     setLoadState('loaded');
-    setRetryCount(0); // Reset retry count on successful load
     
     try {
       // Initialize Vimeo player API if available
       if (window.Vimeo && window.Vimeo.Player && iframeRef.current) {
-        // Clean up any existing player instance
-        if (vimeoPlayerRef.current) {
-          try {
-            vimeoPlayerRef.current.destroy();
-          } catch (e) {
-            console.warn('Error destroying previous Vimeo player:', e);
-          }
-          vimeoPlayerRef.current = null;
-        }
-        
-        // Create new player instance
         vimeoPlayerRef.current = new window.Vimeo.Player(iframeRef.current);
         
         // Set up event listeners
         vimeoPlayerRef.current.on('play', () => {
-          if (mountedRef.current) {
-            setIsPlaying(true);
-            onPlay?.();
-          }
+          setIsPlaying(true);
+          onPlay?.();
         });
         
         vimeoPlayerRef.current.on('pause', () => {
-          if (mountedRef.current) {
-            setIsPlaying(false);
-            onPause?.();
-          }
+          setIsPlaying(false);
+          onPause?.();
         });
         
         vimeoPlayerRef.current.on('ended', () => {
-          if (mountedRef.current) {
-            setIsPlaying(false);
-            onEnd?.();
-          }
+          setIsPlaying(false);
+          onEnd?.();
         });
         
         vimeoPlayerRef.current.on('error', handleIframeError);
@@ -296,109 +156,56 @@ const EnhancedVimeoPlayer = memo(({
       // as the iframe might still work
     }
     
-    if (mountedRef.current && onLoad) {
-      onLoad();
-    }
-  }, [vimeoId, onLoad, onPlay, onPause, onEnd]);
+    onLoad?.();
+  };
 
   // Handle iframe load error
-  const handleIframeError = useCallback(() => {
-    if (!mountedRef.current) return;
-    
-    console.error(`Vimeo player ${vimeoId} failed to load (attempt ${retryCount + 1})`);
+  const handleIframeError = () => {
+    console.error(`Vimeo player ${vimeoId} failed to load`);
     setLoadState('error');
     
-    // Handle retry logic
-    setRetryCount(prev => prev + 1);
-    
-    // Since we want unlimited retries, we'll always attempt to retry
-    const nextRetryDelay = getRetryDelay(retryCount);
-    console.log(`Will retry in ${Math.round(nextRetryDelay / 1000)} seconds`);
-    
-    // Notify error callback if provided
-    if (onError && mountedRef.current) {
-      onError();
+    // Remove iframe if it exists
+    if (iframeRef.current && iframeRef.current.parentNode) {
+      iframeRef.current.parentNode.removeChild(iframeRef.current);
+      iframeRef.current = null;
     }
     
-    // Schedule retry with exponential backoff
-    const retryTimerId = window.setTimeout(() => {
-      if (mountedRef.current) {
-        // Safely remove iframe
-        safeRemoveIframe();
-        
-        // Reset to idle state to trigger a fresh load
-        setLoadState('idle');
-      }
-    }, nextRetryDelay);
-    
-    // Store timer reference for cleanup - ensure we cast it as number for TypeScript
-    cleanupTimersRef.current.push(retryTimerId as unknown as number);
-  }, [vimeoId, retryCount, getRetryDelay, onError, safeRemoveIframe]);
+    onError?.();
+  };
 
   // Handle retry button click
-  const handleManualRetry = useCallback(() => {
-    if (!mountedRef.current) return;
+  const handleRetry = () => {
+    if (loadState !== 'error') return;
     
-    console.log(`Manual retry for video ${vimeoId}`);
-    
-    // Safely remove iframe
-    safeRemoveIframe();
-    
-    // Reset state and trigger reload
+    setRetryCount(prev => prev + 1);
     setLoadState('idle');
     
-    // Short delay before attempting reload
-    const reloadTimerId = window.setTimeout(() => {
-      if (mountedRef.current) {
-        initializePlayer();
-      }
-    }, 100);
+    // Clean up old iframe if it exists
+    if (iframeRef.current && iframeRef.current.parentNode) {
+      iframeRef.current.parentNode.removeChild(iframeRef.current);
+      iframeRef.current = null;
+    }
     
-    // Store timer reference for cleanup - ensure we cast it as number for TypeScript
-    cleanupTimersRef.current.push(reloadTimerId as unknown as number);
-  }, [vimeoId, initializePlayer, safeRemoveIframe]);
+    // Wait a bit before retrying
+    setTimeout(() => {
+      initializePlayer();
+    }, 500);
+  };
 
   // Manual play button handler
-  const handlePlayClick = useCallback(() => {
-    if (!mountedRef.current) return;
-    
+  const handlePlayClick = () => {
     if (loadState === 'loaded' && vimeoPlayerRef.current) {
       vimeoPlayerRef.current.play().catch(console.error);
     } else if (loadState === 'idle') {
       initializePlayer();
     } else if (loadState === 'error') {
-      handleManualRetry();
+      handleRetry();
     }
-    
-    // If we have controls, show them when user interacts
-    if (controls) {
-      setShowControls(true);
-    }
-  }, [loadState, controls, initializePlayer, handleManualRetry]);
-
-  // Effect to initialize player when idle
-  useEffect(() => {
-    if (loadState === 'idle' && mountedRef.current) {
-      // Small delay to avoid rapid re-initialization
-      const initTimerId = window.setTimeout(() => {
-        if (mountedRef.current) {
-          initializePlayer();
-        }
-      }, 100);
-      
-      // Store timer reference for cleanup - ensure we cast it as number for TypeScript
-      cleanupTimersRef.current.push(initTimerId as unknown as number);
-      
-      return () => {
-        window.clearTimeout(initTimerId);
-        cleanupTimersRef.current = cleanupTimersRef.current.filter(id => id !== (initTimerId as unknown as number));
-      };
-    }
-  }, [loadState, initializePlayer]);
+  };
 
   // Register with video load manager on mount
   useEffect(() => {
-    if (!containerRef.current || !mountedRef.current) return;
+    if (!containerRef.current) return;
     
     // Register this video with the load manager
     videoLoadManager.registerVideo(
@@ -409,7 +216,7 @@ const EnhancedVimeoPlayer = memo(({
     
     // Add event listener for state changes
     const handleStateChange = (event: 'loading' | 'loaded' | 'error') => {
-      if (event === 'loading' && loadState !== 'loading' && mountedRef.current) {
+      if (event === 'loading' && loadState !== 'loading') {
         initializePlayer();
       }
     };
@@ -417,49 +224,22 @@ const EnhancedVimeoPlayer = memo(({
     videoLoadManager.addEventListener(vimeoId, handleStateChange);
     
     return () => {
-      if (vimeoId) {
-        try {
-          videoLoadManager.removeEventListener(vimeoId, handleStateChange);
-        } catch (e) {
-          console.warn('Error removing event listener:', e);
-        }
-      }
+      videoLoadManager.removeEventListener(vimeoId, handleStateChange);
     };
-  }, [vimeoId, placeholderImage, loadState, initializePlayer]);
+  }, [vimeoId, placeholderImage, loadState]);
 
-  // Clean up on unmount - CRITICAL for preventing React issues
+  // Clean up on unmount
   useEffect(() => {
     return () => {
-      mountedRef.current = false;
-      
-      // Clean up Vimeo player instance if it exists
       if (vimeoPlayerRef.current) {
         try {
           vimeoPlayerRef.current.destroy();
         } catch (error) {
           console.error('Error destroying Vimeo player:', error);
-        } finally {
-          vimeoPlayerRef.current = null;
         }
       }
-      
-      // Remove any event listeners from iframe
-      if (iframeRef.current) {
-        try {
-          iframeRef.current.onload = null;
-          iframeRef.current.onerror = null;
-        } catch (e) {
-          console.warn('Error cleaning up iframe event listeners:', e);
-        }
-      }
-      
-      // Ensure iframe is removed when component unmounts
-      safeRemoveIframe();
-      
-      // Clear all timers
-      clearAllTimers();
     };
-  }, [safeRemoveIframe, clearAllTimers]);
+  }, []);
 
   // Render different UI based on load state
   return (
@@ -473,53 +253,34 @@ const EnhancedVimeoPlayer = memo(({
         <div 
           ref={containerRef} 
           className="absolute inset-0 bg-black overflow-hidden"
-          data-vimeo-container={vimeoId}
         >
           {/* Loading state */}
           {loadState === 'loading' && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-10">
-              <div className="flex flex-col items-center justify-center space-y-3">
+            <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-10">
+              <div className="flex flex-col items-center justify-center space-y-2">
                 <div className="relative">
                   <div className="w-16 h-16 rounded-full border-4 border-yellow/30 animate-pulse"></div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Loader className="w-8 h-8 text-yellow animate-spin" />
                   </div>
                 </div>
-                <div className="text-center">
-                  <p className="text-white text-sm font-medium">Loading video...</p>
-                  {retryCount > 0 && (
-                    <p className="text-yellow-400 text-xs mt-1">
-                      Retry attempt {retryCount}
-                    </p>
-                  )}
-                </div>
+                <p className="text-white text-sm font-medium">Loading video...</p>
               </div>
             </div>
           )}
 
           {/* Error state */}
           {loadState === 'error' && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-10">
-              <div className="flex flex-col items-center justify-center space-y-4">
-                <p className="text-white text-center">Video is temporarily unavailable</p>
+            <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-10">
+              <div className="flex flex-col items-center justify-center space-y-3">
+                <p className="text-white text-center">Video could not be loaded</p>
                 <button
-                  onClick={handleManualRetry}
-                  className="flex items-center space-x-2 bg-yellow text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-yellow-500 transition-colors animate-pulse"
+                  onClick={handleRetry}
+                  className="flex items-center space-x-2 bg-yellow text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-yellow-500 transition-colors"
                 >
-                  <RefreshCw className="w-4 h-4 mr-1 animate-spin" />
-                  <span>Automatic retry in progress...</span>
+                  <RefreshCw className="w-4 h-4" />
+                  <span>Retry Video</span>
                 </button>
-                
-                {/* Show fallback image if provided */}
-                {placeholderImage && (
-                  <div className="mt-4 w-full max-w-xs">
-                    <img 
-                      src={placeholderImage} 
-                      alt="Video thumbnail" 
-                      className="w-full rounded-lg border border-gray-700"
-                    />
-                  </div>
-                )}
               </div>
             </div>
           )}
@@ -539,7 +300,7 @@ const EnhancedVimeoPlayer = memo(({
                   />
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                     <button 
-                      className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-colors transform hover:scale-105 duration-300 animate-pulse"
+                      className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-colors"
                       aria-label="Play video"
                     >
                       <Play className="w-8 h-8 text-black ml-1" />
@@ -554,17 +315,6 @@ const EnhancedVimeoPlayer = memo(({
                   <Play className="w-8 h-8 text-black ml-1" />
                 </button>
               )}
-            </div>
-          )}
-          
-          {/* Fallback image when video is in error state but still trying to load */}
-          {loadState === 'error' && placeholderImage && (
-            <div className="absolute inset-0 z-5">
-              <img 
-                src={placeholderImage} 
-                alt="Video thumbnail fallback" 
-                className="w-full h-full object-cover opacity-60"
-              />
             </div>
           )}
         </div>

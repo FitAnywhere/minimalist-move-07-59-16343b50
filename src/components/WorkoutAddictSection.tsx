@@ -1,17 +1,14 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronDown, X, Loader } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
-import EnhancedVimeoPlayer from '@/components/ui/EnhancedVimeoPlayer';
-
 interface LifestyleFeature {
   title: string;
   description: string;
 }
-
 interface VimeoPlayerAPI {
   play: () => Promise<void>;
   pause: () => Promise<void>;
@@ -23,7 +20,6 @@ interface VimeoPlayerAPI {
   ready: () => Promise<void>;
   destroy: () => void;
 }
-
 const lifestyleFeatures: LifestyleFeature[] = [{
   title: "FEEL UNSTOPPABLE",
   description: "Tap into boundless energy to train like never before."
@@ -34,69 +30,155 @@ const lifestyleFeatures: LifestyleFeature[] = [{
   title: "WORKOUT YOU'LL ACTUALLY LOVE",
   description: "It's addictive in the best way possible."
 }];
-
 const WorkoutAddictSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const vimeoContainerRef = useRef<HTMLDivElement>(null);
+  const vimeoIframeRef = useRef<HTMLIFrameElement>(null);
+  const vimeoPlayerRef = useRef<VimeoPlayerAPI | null>(null);
   const [openFeatureIndex, setOpenFeatureIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const [showSpecs, setShowSpecs] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const isMobile = useIsMobile();
-  
   const isInView = useInView(sectionRef, {
     threshold: 0.2
+  }, false, () => {
+    if (vimeoPlayerRef.current && !videoError) {
+      vimeoPlayerRef.current.play().catch(err => {
+        console.error("Vimeo play error:", err);
+      });
+    }
+  }, () => {
+    if (vimeoPlayerRef.current) {
+      vimeoPlayerRef.current.setMuted(true);
+    }
   });
-
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
-  
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/7sI3eC1dB7zvcFy3cr', '_blank');
   };
-
-  const handleVideoLoad = useCallback(() => {
-    console.log('BoxFun video loaded successfully');
+  useEffect(() => {
+    if (vimeoIframeRef.current && !vimeoPlayerRef.current && typeof window !== 'undefined') {
+      if (!window.Vimeo) {
+        const script = document.createElement('script');
+        script.src = 'https://player.vimeo.com/api/player.js';
+        script.async = true;
+        script.onload = initializePlayer;
+        document.body.appendChild(script);
+      } else {
+        initializePlayer();
+      }
+    }
+    function initializePlayer() {
+      if (!window.Vimeo || !vimeoIframeRef.current) return;
+      try {
+        const player = new window.Vimeo.Player(vimeoIframeRef.current);
+        player.ready().then(() => {
+          player.setVolume(1);
+          player.setMuted(true);
+          player.setLoop(true);
+          player.setAutopause(false);
+          player.play().catch(err => {
+            console.error("Initial Vimeo play error:", err);
+          });
+          setIsVideoLoaded(true);
+          setVideoError(false);
+          console.log("Vimeo player is ready");
+        }).catch(err => {
+          console.error("Vimeo player ready error:", err);
+          setVideoError(true);
+        });
+        player.on('error', (err: any) => {
+          console.error("Vimeo player error:", err);
+          setVideoError(true);
+        });
+        player.on('play', () => {
+          setIsVideoPlaying(true);
+          console.log("Vimeo video is now playing");
+        });
+        vimeoPlayerRef.current = player;
+      } catch (error) {
+        console.error("Error initializing Vimeo player:", error);
+        setVideoError(true);
+      }
+    }
+    return () => {
+      if (vimeoPlayerRef.current) {
+        vimeoPlayerRef.current.destroy();
+        vimeoPlayerRef.current = null;
+      }
+    };
   }, []);
-
-  const handleVideoError = useCallback(() => {
-    console.log('BoxFun video error occurred, will retry automatically');
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== "https://player.vimeo.com") return;
+      try {
+        const data = typeof event.data === 'object' ? event.data : JSON.parse(event.data);
+        if (data.event === "play") {
+          setIsVideoPlaying(true);
+          console.log("Video play event detected from postMessage");
+        }
+      } catch (e) {
+        console.error("Error handling Vimeo message:", e);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
   }, []);
-
   const renderVimeoVideo = () => {
     const mobileVideoWidth = "80%"; // 20% smaller on mobile
 
-    return (
-      <div 
-        className={cn(
-          "relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group", 
-          isMobile && "mx-auto" // Center on mobile
-        )} 
-        style={isMobile ? { width: mobileVideoWidth } : undefined}
-      >
-        <div className="relative w-full h-0 overflow-hidden bg-black" style={{ paddingBottom: '133.33%' }}>
-          <EnhancedVimeoPlayer
-            vimeoId="1074313924"
-            hash="b99fcf1434"
-            title="BoxFun"
-            autoplay={true}
-            loop={true}
-            muted={true}
-            background={true}
-            className="absolute inset-0 w-full h-full"
-            aspectRatio="3:4"
-            onLoad={handleVideoLoad}
-            onError={handleVideoError}
-            placeholderImage="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744294274/Screenshot_46_oimbqr.png"
-          />
+    return <div className={cn("relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group", isMobile && "mx-auto" // Center on mobile
+    )} style={isMobile ? {
+      width: mobileVideoWidth
+    } : undefined}>
+        <div ref={vimeoContainerRef} className="relative w-full h-0 overflow-hidden bg-black" style={{
+        paddingBottom: '133.33%'
+      }}>
+          {/* Fallback thumbnail for error state */}
+          {videoError && <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744294274/Screenshot_46_oimbqr.png" alt="Video thumbnail fallback" className="absolute inset-0 w-full h-full object-cover z-10 rounded-2xl" />}
+          
+          {!isVideoPlaying && !videoError && <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-2xl">
+              <div className="flex flex-col items-center justify-center space-y-4">
+                <div className="relative">
+                  <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
+                  
+                  <div className="absolute inset-0 w-20 h-20 flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-full border-4 border-yellow/50 animate-pulse animation-delay-200" />
+                  </div>
+                  
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Loader className="w-8 h-8 text-yellow animate-spin" />
+                  </div>
+                </div>
+                
+                <div className="text-white font-medium tracking-wide text-center">
+                  <p>LOADING VIDEO</p>
+                  <div className="mt-2 h-1 w-32 bg-white/20 rounded-full overflow-hidden">
+                    <div className="h-full bg-yellow animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            </div>}
+          
+          {videoError ? <div className="absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">
+              <p className="text-gray-500">Video unavailable</p>
+            </div> : <iframe ref={vimeoIframeRef} className={cn("absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105 bg-black", isVideoPlaying ? "opacity-100" : "opacity-0")} src="https://player.vimeo.com/video/1074313924?h=b99fcf1434&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1&amp;background=1&amp;muted=1" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style={{
+          border: 'none'
+        }} title="BoxFun"></iframe>}
           
           <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
         </div>
-      </div>
-    );
+      </div>;
   };
-
   return <section ref={sectionRef} className="py-20 relative overflow-hidden" id="workout-addict">
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         {Array.from({
@@ -290,5 +372,4 @@ const WorkoutAddictSection = () => {
       </Dialog>
     </section>;
 };
-
 export default WorkoutAddictSection;
