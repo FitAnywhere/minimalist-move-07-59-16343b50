@@ -4,6 +4,7 @@ import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from '@/components/ui/dialog';
+import VideoPlayer from '@/components/ui/VideoPlayer';
 
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -17,8 +18,6 @@ const ChampionSection = () => {
     name: '',
     email: ''
   });
-  const [videoError, setVideoError] = useState(false);
-  const [dialogVideoError, setDialogVideoError] = useState(false);
 
   useEffect(() => {
     if (isInView && titleRef.current) {
@@ -117,24 +116,16 @@ const ChampionSection = () => {
             
             <div className="relative perspective">
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-xl hover:scale-[1.02] group" ref={videoRef}>
-                {videoError && (
-                  <img 
-                    src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
-                    alt="Video thumbnail fallback"
-                    className="absolute inset-0 w-full h-full object-cover z-10 rounded-2xl"
-                  />
-                )}
-                
-                <div style={{padding:"100% 0 0 0", position:"relative"}}>
-                  <iframe 
-                    src="https://player.vimeo.com/video/1073285328?h=205f79391c&badge=0&autopause=0&player_id=0&app_id=58479&loop=1&background=1&muted=1" 
-                    frameBorder="0" 
-                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
-                    style={{position:"absolute", top:0, left:0, width:"100%", height:"100%"}} 
-                    title="training library optimized"
-                    onError={() => setVideoError(true)}>
-                  </iframe>
-                </div>
+                <VideoPlayer 
+                  src="/114 Librarytraining 1144.mp4" 
+                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
+                  aspectRatio="video"
+                  className="rounded-2xl"
+                  autoPlay={isInView}
+                  muted={true}
+                  loop={true}
+                  preload="metadata"
+                />
                 
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
@@ -155,24 +146,16 @@ const ChampionSection = () => {
 
           <div className="grid gap-8 md:grid-cols-2 mt-4">
             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden relative">
-              {dialogVideoError && (
-                <img 
-                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
-                  alt="Video thumbnail fallback"
-                  className="absolute inset-0 w-full h-full object-cover z-10"
-                />
-              )}
-              
-              <div style={{padding:"100% 0 0 0", position:"relative"}}>
-                <iframe 
-                  src="https://player.vimeo.com/video/1073285328?h=205f79391c&badge=0&autopause=0&player_id=0&app_id=58479" 
-                  frameBorder="0" 
-                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
-                  style={{position:"absolute", top:0, left:0, width:"100%", height:"100%"}} 
-                  title="training library optimized"
-                  onError={() => setDialogVideoError(true)}>
-                </iframe>
-              </div>
+              <VideoPlayer 
+                src="/114 Librarytraining 1144.mp4" 
+                poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
+                aspectRatio="video"
+                autoPlay={false}
+                muted={false}
+                loop={false}
+                controls={true}
+                className="rounded-lg"
+              />
             </div>
 
             <div>

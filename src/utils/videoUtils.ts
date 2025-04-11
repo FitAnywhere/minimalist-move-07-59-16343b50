@@ -25,6 +25,9 @@ export const isSlowConnection = (): boolean => {
 // Critical video files that should be preloaded
 const criticalVideos = [
   '/114 Intor Video Optt.mp4',
+  '/114 Librarytraining 1144.mp4',
+  '/114 Setup (1080P).mp4',
+  '/114Bboxfun 104.mp4'
 ];
 
 // Prefetch video files only if connection is fast enough
