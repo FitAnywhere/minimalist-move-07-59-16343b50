@@ -118,6 +118,7 @@ const BundleOffer = () => {
             </div> : <div className="mb-10 transition-all duration-1000">
               <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
+                  {/* Left side with product image */}
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
                     <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" />
                     <div className="w-full text-center mb-4">
@@ -127,46 +128,41 @@ const BundleOffer = () => {
                           </span>)}
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      
-                    </div>
                   </div>
                   
+                  {/* Right side with TRAINING LIBRARY */}
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
                     {/* Updated desktop view - centered TRAINING LIBRARY with Plus icon */}
-                    <div className="mb-8 flex flex-col items-center w-full">
-                      <div className="flex items-center justify-center w-full mb-4">
+                    <div className="flex items-center justify-center w-full mb-8">
+                      <Plus className="h-12 w-12 text-green-600 mr-4" />
+                      <div className="rounded-lg bg-white p-6 border border-green-600">
                         <div className="flex items-center justify-center">
-                          <Plus className="h-12 w-12 text-green-600 mr-4" />
-                          <div className="rounded-lg bg-white p-6 border border-green-600">
-                            <div className="flex items-center justify-center">
-                              <div className="flex flex-col items-center">
-                                <div className="w-40 h-40 mb-3 flex-shrink-0 overflow-hidden">
-                                  <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain" />
-                                </div>
-                                <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
-                              </div>
+                          <div className="flex flex-col items-center">
+                            <div className="w-40 h-40 mb-3 flex-shrink-0 overflow-hidden">
+                              <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain" />
                             </div>
+                            <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
                           </div>
                         </div>
                       </div>
                     </div>
-                    
-                    <div className="mb-6 w-full">
-                      <div className="flex items-center gap-3 justify-center">
-                        <span className="text-xl text-gray-700 line-through">
-                          €{originalPrice}
-                        </span>
-                        <div className="bg-green-600 px-3 py-1 rounded-full text-white text-xs font-bold">
-                          {discountPercentage}% OFF
-                        </div>
-                      </div>
-                      
-                      <div className="text-3xl font-bold text-green-600 text-center mt-2">
-                        €{currentPrice}
-                      </div>
-                    </div>
                   </div>
+                </div>
+              </div>
+              
+              {/* Moved pricing outside the bundle container for desktop view */}
+              <div className="flex flex-col items-center justify-center mt-8 mb-8">
+                <div className="flex items-center gap-3 justify-center">
+                  <span className="text-xl text-gray-700 line-through">
+                    €{originalPrice}
+                  </span>
+                  <div className="bg-green-600 px-3 py-1 rounded-full text-white text-xs font-bold">
+                    {discountPercentage}% OFF
+                  </div>
+                </div>
+                
+                <div className="text-3xl font-bold text-green-600 text-center mt-2">
+                  €{currentPrice}
                 </div>
               </div>
             </div>}
