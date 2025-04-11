@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -10,6 +9,7 @@ import ProductIntro from '@/components/ProductIntro';
 import ChampionSection from '@/components/ChampionSection';
 import TrainingVault from '@/components/TrainingVault';
 import WorkoutAddictSection from '@/components/WorkoutAddictSection';
+import TestimonialsCarousel from '@/components/TestimonialsCarousel';
 
 // Import utilities
 import { useSectionObserver } from '@/hooks/useSectionObserver';
@@ -28,12 +28,6 @@ const LifestyleSection = lazy(() =>
 const BundleOffer = lazy(() => 
   import('@/components/BundleOffer').catch(err => {
     console.error('Failed to load BundleOffer:', err);
-    return { default: () => <div className="min-h-[400px]">Loading content...</div> };
-  })
-);
-const TestimonialsCarousel = lazy(() => 
-  import('@/components/TestimonialsCarousel').catch(err => {
-    console.error('Failed to load TestimonialsCarousel:', err);
     return { default: () => <div className="min-h-[400px]">Loading content...</div> };
   })
 );
@@ -136,11 +130,11 @@ const Index = () => {
         <TrainingVault />
       </div>
       
+      <div id="reviews">
+        <TestimonialsCarousel />
+      </div>
+      
       <Suspense fallback={<SectionLoader />}>
-        <div id="reviews">
-          <TestimonialsCarousel />
-        </div>
-        
         <div id="bundle">
           <BundleOffer />
         </div>
