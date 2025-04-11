@@ -1,33 +1,27 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 interface GiftItem {
   name: string;
   image: string;
 }
-
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
 }];
-
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [animatedItem, setAnimatedItem] = useState(0);
   const productItems = ["1X PowerTower", "1X TRX", "4X Bands"];
-
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
-
   useEffect(() => {
     setIsVisible(true);
     const interval = setInterval(() => {
@@ -35,14 +29,12 @@ const BundleOffer = () => {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
-
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
-
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl px-[115px] my-0 mx-[174px] py-[14px]">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
               LAST GYM YOU WILL EVER NEED
@@ -182,5 +174,4 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
-
 export default BundleOffer;
