@@ -14,6 +14,7 @@ interface VideoPlayerProps {
   controls?: boolean;
   preload?: 'none' | 'metadata' | 'auto';
   priority?: boolean;
+  playMode?: 'always' | 'onView';
   onPlay?: () => void;
   onPause?: () => void;
   onEnded?: () => void;
@@ -31,12 +32,13 @@ const VideoPlayer = memo(({
   controls = false,
   preload = 'metadata',
   priority = false,
+  playMode = 'onView',
   onPlay,
   onPause,
   onEnded,
   onLoadedMetadata
 }: VideoPlayerProps) => {
-  const [isPlaying, setIsPlaying] = useState(autoPlay);
+  const [isPlaying, setIsPlaying] = useState(autoPlay && playMode === 'always');
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -87,9 +89,12 @@ const VideoPlayer = memo(({
     }
   }, [isVisible, priority, isLoaded]);
 
-  // Handle auto-play when video is visible (if enabled)
+  // Handle playback based on visibility and playMode
   useEffect(() => {
-    if (autoPlay && isVisible && videoRef.current && !isPlaying) {
+    if (!videoRef.current || !isLoaded) return;
+
+    // For "always" mode, play regardless of visibility once loaded
+    if (playMode === 'always' && autoPlay) {
       try {
         const playPromise = videoRef.current.play();
         if (playPromise !== undefined) {
@@ -100,13 +105,40 @@ const VideoPlayer = memo(({
             })
             .catch(error => {
               console.error('Auto-play failed:', error);
+              // On mobile, especially Safari, we might need user interaction
+              // The play button will be shown in this case
             });
         }
       } catch (error) {
         console.error('Error during auto-play:', error);
       }
     }
-  }, [autoPlay, isVisible, isPlaying, onPlay]);
+    // For "onView" mode, play only when visible
+    else if (playMode === 'onView') {
+      if (isVisible && autoPlay) {
+        try {
+          const playPromise = videoRef.current.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                setIsPlaying(true);
+                onPlay?.();
+              })
+              .catch(error => {
+                console.error('Play on view failed:', error);
+              });
+          }
+        } catch (error) {
+          console.error('Error playing video on view:', error);
+        }
+      } else if (!isVisible && isPlaying) {
+        // Pause when out of view
+        videoRef.current.pause();
+        setIsPlaying(false);
+        onPause?.();
+      }
+    }
+  }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPlay, onPause]);
 
   // Handle play button click
   const handlePlayClick = () => {

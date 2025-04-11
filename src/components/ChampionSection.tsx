@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
@@ -124,6 +125,7 @@ const ChampionSection = () => {
                   autoPlay={isInView}
                   muted={true}
                   loop={true}
+                  playMode="onView"
                   preload="metadata"
                 />
                 

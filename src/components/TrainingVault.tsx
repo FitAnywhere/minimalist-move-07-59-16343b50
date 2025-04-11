@@ -163,6 +163,7 @@ const TrainingVault = () => {
                   autoPlay={true}
                   muted={true}
                   loop={true}
+                  playMode="always"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>

@@ -99,6 +99,7 @@ const WorkoutAddictSection = () => {
             autoPlay={isInView}
             muted={true}
             loop={true}
+            playMode="onView"
             className={cn(
               "absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105 bg-black", 
               isVideoLoaded ? "opacity-100" : "opacity-0"
