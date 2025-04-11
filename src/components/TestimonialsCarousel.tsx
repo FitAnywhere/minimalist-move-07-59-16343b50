@@ -1,4 +1,6 @@
+
 import { useState, useRef, memo } from 'react';
+import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Star } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -9,8 +11,6 @@ import {
   CarouselNext,
   CarouselPrevious
 } from "@/components/ui/carousel";
-import OptimizedImage from './ui/OptimizedImage';
-import { useInView } from '@/utils/optimizedAnimations';
 
 interface Testimonial {
   name: string;
@@ -19,51 +19,46 @@ interface Testimonial {
   imageUrl: string;
 }
 
-const testimonials: Testimonial[] = [
-  {
-    name: "Sarah M.",
-    role: "Remote Worker",
-    quote: "Used to blame Zoom for no workouts. Now I sneak in 15 min wins.",
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099088/Screenshot_76_nkxmvr.png"
-  }, {
-    name: "Jordan P.",
-    role: "Calisthenics Enthusiast",
-    quote: "Honestly shocked how fast this became my main workout.",
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
-  }, {
-    name: "Chris L.",
-    role: "Fitness Advocate",
-    quote: "Modern, minimal, and our people love it.",
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099090/Screenshot_73_tco9rh.png"
-  }, {
-    name: "Emily T.",
-    role: "Fitness Beginner",
-    quote: "One workout in and I realized. Bands are no joke.",
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744150914/Screenshot_89_mw00er.png"
-  }, {
-    name: "Alex G.",
-    role: "Busy Professional",
-    quote: "Minimal gear. Maximum gains. Just how I like it.",
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_71_b7srzc.png"
-  }, {
-    name: "Tom S.",
-    role: "Strength Seeker",
-    quote: "No crowds, no pressure. Just me, music, and movement.",
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
-  }
-];
+const testimonials: Testimonial[] = [{
+  name: "Sarah M.",
+  role: "Remote Worker",
+  quote: "Used to blame Zoom for no workouts. Now I sneak in 15 min wins.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099088/Screenshot_76_nkxmvr.png"
+}, {
+  name: "Jordan P.",
+  role: "Calisthenics Enthusiast",
+  quote: "Honestly shocked how fast this became my main workout.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
+}, {
+  name: "Chris L.",
+  role: "Fitness Advocate",
+  quote: "Modern, minimal, and our people love it.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099090/Screenshot_73_tco9rh.png"
+}, {
+  name: "Emily T.",
+  role: "Fitness Beginner",
+  quote: "One workout in and I realized. Bands are no joke.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744150914/Screenshot_89_mw00er.png"
+}, {
+  name: "Alex G.",
+  role: "Busy Professional",
+  quote: "Minimal gear. Maximum gains. Just how I like it.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_71_b7srzc.png"
+}, {
+  name: "Tom S.",
+  role: "Strength Seeker",
+  quote: "No crowds, no pressure. Just me, music, and movement.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
+}];
 
 const TestimonialImage = memo(({ imageUrl }: { imageUrl: string }) => {
   return (
     <div className="relative w-full" style={{ paddingBottom: '150%' }}>
-      <OptimizedImage 
+      <img 
         src={imageUrl}
         alt="Testimonial" 
-        width={300}
-        height={450}
-        className="absolute inset-0 w-full h-full rounded-t-xl"
-        objectFit="cover"
-        sizes="(max-width: 640px) 75vw, (max-width: 1024px) 33vw, 25vw"
+        className="absolute inset-0 w-full h-full object-cover rounded-t-xl"
+        loading="lazy"
       />
     </div>
   );
@@ -103,16 +98,11 @@ const TestimonialsCarousel = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section 
-      ref={containerRef} 
-      id="testimonials" 
-      className="py-16 bg-white"
-      style={{ contentVisibility: 'auto', containIntrinsicSize: '0 600px' }}
-    >
+    <section ref={containerRef} id="testimonials" className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className={cn(
-            "text-center transition-all duration-1000 transform", 
+            "text-center transition-all duration-1000 transform mb-10", 
             isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
           )}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">

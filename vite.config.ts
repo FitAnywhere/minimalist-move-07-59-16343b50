@@ -1,42 +1,22 @@
-
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
+export default defineConfig(({ mode }) => ({
+  server: {
+    host: "::",
+    port: 8080,
+  },
+  plugins: [
+    react(),
+    mode === 'development' &&
+    componentTagger(),
+  ].filter(Boolean),
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
-  build: {
-    minify: 'terser',
-    cssMinify: true,
-    terserOptions: {
-      compress: {
-        drop_console: false, // Keep console logs for now, set to true for production
-        drop_debugger: true,
-      },
-    },
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // Split bundle by module
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-aspect-ratio'],
-          'vendor-utils': ['date-fns', 'class-variance-authority', 'clsx', 'tailwind-merge'],
-          'animations': ['framer-motion'],
-          'charts': ['recharts'],
-        },
-      },
-    },
-  },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-  },
-  server: {
-    open: true,
-  },
-});
+}));

@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FitAnywhere</title>
     <meta name="description" content="Discover easy, minimalist workouts made to fit your lifestyle." />
     <meta name="author" content="Lovable" />
@@ -12,23 +12,20 @@
     <meta property="og:image" content="https://i.imgur.com/MhpVrki.png" />
     <link rel="icon" href="https://i.imgur.com/MhpVrki.png" />
     
-    <!-- Performance optimizations: Preconnect to critical domains -->
+    <!-- Preconnect to video hosting domains -->
     <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
     <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
     <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
-    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
-    <link rel="dns-prefetch" href="https://player.vimeo.com" />
-    <link rel="dns-prefetch" href="https://res.cloudinary.com" />
     
-    <!-- Preload critical assets -->
-    <link rel="preload" as="image" href="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744102423/Screenshot_84_oi460p.png" />
+    <!-- Preload hero video assets -->
     <link rel="preload" as="fetch" href="https://player.vimeo.com/video/1067255623" crossorigin importance="high" />
+    <link rel="preload" as="video" href="/fitanywhere intro.mp4" fetchpriority="high" />
     
-    <!-- Critical Font preload -->
-    <link rel="preload" href="/src/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <!-- Preload Training Vault video -->
+    <link rel="prefetch" as="fetch" href="https://player.vimeo.com/video/1073152410" crossorigin />
     
     <!-- Mouseflow Tracking Code - Loading with defer for better performance -->
-    <script type="text/javascript" defer>
+    <script type="text/javascript">
       window._mfq = window._mfq || [];
       (function() {
         var mf = document.createElement("script");
@@ -45,8 +42,11 @@
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Voiceflow Chatbot Widget - Deferred loading for better performance -->
-    <script type="text/javascript" defer>
+    <!-- Vimeo Player API - Load for both HeroVideo and TrainingVault -->
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    
+    <!-- Voiceflow Chatbot Widget - Moving to end of body for better performance -->
+    <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', function() {
         (function(d, t) {
             var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
@@ -60,7 +60,7 @@
                 }
               });
             }
-            v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; v.defer = true; s.parentNode.insertBefore(v, s);
+            v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
         })(document, 'script');
       });
     </script>
