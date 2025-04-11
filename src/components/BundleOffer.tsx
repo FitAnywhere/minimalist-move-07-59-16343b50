@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
@@ -73,21 +74,17 @@ const BundleOffer = () => {
                 </div>
               </div>
               
-              <div className={cn("mb-6 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
-                <div className="text-center mb-6">
-                  <h3 className="text-xl md:text-2xl font-bold text-black flex items-center justify-center gap-2 my-[31px]">
-                    <Plus className="h-8 w-8 text-green-600" />
-                  </h3>
-                </div>
-                
+              {/* Modified mobile view for TRAINING LIBRARY */}
+              <div className={cn("flex items-center mb-4 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
+                <Plus className="h-8 w-8 text-green-600 mr-2 flex-shrink-0" />
                 <div className="max-w-2xl mx-auto">
-                  <div className="rounded-lg bg-white p-6 border border-[#13613A] flex flex-col items-center">
+                  <div className="rounded-lg bg-white p-3 border border-[#13613A] flex flex-col items-center">
                     <div className="flex items-center justify-center">
                       <div className="flex flex-col items-center w-full">
-                        <div className="w-64 h-64 mb-2 flex-shrink-0 overflow-hidden">
+                        <div className="w-20 h-20 mb-1 flex-shrink-0 overflow-hidden">
                           <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" />
                         </div>
-                        <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
+                        <h4 className="font-bold text-sm text-center">{giftItems[0].name}</h4>
                       </div>
                     </div>
                   </div>
