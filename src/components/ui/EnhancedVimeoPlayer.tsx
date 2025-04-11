@@ -58,6 +58,7 @@ const EnhancedVimeoPlayer = memo(({
   const [isPlaying, setIsPlaying] = useState(false);
   const mountedRef = useRef<boolean>(true);
   const pendingRemovalRef = useRef<boolean>(false); // Track if we're in the process of removal
+  const cleanupTimersRef = useRef<Array<number>>([]);
   
   // Handle aspect ratio calculation
   const getAspectRatioPadding = () => {
@@ -79,13 +80,22 @@ const EnhancedVimeoPlayer = memo(({
     return exponentialDelay * (0.75 + Math.random() * 0.25);
   }, []);
 
+  // Clear any timers on unmount or key changes
+  const clearAllTimers = useCallback(() => {
+    cleanupTimersRef.current.forEach(timerId => {
+      window.clearTimeout(timerId);
+    });
+    cleanupTimersRef.current = [];
+  }, []);
+
   // Set mounted ref to false when component unmounts
   useEffect(() => {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
+      clearAllTimers();
     };
-  }, []);
+  }, [clearAllTimers]);
 
   // Safely remove iframe from container
   const safeRemoveIframe = useCallback(() => {
@@ -280,8 +290,8 @@ const EnhancedVimeoPlayer = memo(({
       }
     }, nextRetryDelay);
     
-    // Return cleanup function
-    return () => clearTimeout(retryTimer);
+    // Store timer reference for cleanup
+    cleanupTimersRef.current.push(retryTimer);
   }, [vimeoId, retryCount, getRetryDelay, onError, safeRemoveIframe]);
 
   // Handle retry button click
@@ -297,11 +307,14 @@ const EnhancedVimeoPlayer = memo(({
     setLoadState('idle');
     
     // Short delay before attempting reload
-    setTimeout(() => {
+    const reloadTimer = setTimeout(() => {
       if (mountedRef.current) {
         initializePlayer();
       }
     }, 100);
+    
+    // Store timer reference for cleanup
+    cleanupTimersRef.current.push(reloadTimer);
   }, [vimeoId, initializePlayer, safeRemoveIframe]);
 
   // Manual play button handler
@@ -332,7 +345,13 @@ const EnhancedVimeoPlayer = memo(({
         }
       }, 100);
       
-      return () => clearTimeout(initTimer);
+      // Store timer reference for cleanup
+      cleanupTimersRef.current.push(initTimer);
+      
+      return () => {
+        window.clearTimeout(initTimer);
+        cleanupTimersRef.current = cleanupTimersRef.current.filter(id => id !== initTimer);
+      };
     }
   }, [loadState, initializePlayer]);
 
@@ -378,11 +397,12 @@ const EnhancedVimeoPlayer = memo(({
       }
       
       // Ensure iframe is removed when component unmounts
-      if (iframeRef.current) {
-        safeRemoveIframe();
-      }
+      safeRemoveIframe();
+      
+      // Clear all timers
+      clearAllTimers();
     };
-  }, [safeRemoveIframe]);
+  }, [safeRemoveIframe, clearAllTimers]);
 
   // Render different UI based on load state
   return (

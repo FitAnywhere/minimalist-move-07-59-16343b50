@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, memo } from 'react';
 import { Loader } from 'lucide-react';
 import videoLoadManager from '@/utils/videoOptimization';
@@ -35,28 +34,36 @@ const VideoOptimizer = memo(({
   const [showError, setShowError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // EnhancedVimeoPlayer already handles retries internally
+  const mountedRef = useRef<boolean>(true);
   
   useEffect(() => {
-    // Reset state when key changes (e.g., changing videos)
-    setShowError(false);
-    setLoadAttempts(0);
-    setIsLoading(true);
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+  
+  useEffect(() => {
+    if (mountedRef.current) {
+      setShowError(false);
+      setLoadAttempts(0);
+      setIsLoading(true);
+    }
   }, [uniqueKey]);
 
   useEffect(() => {
-    // Register with video load manager
     if (containerRef.current) {
       videoLoadManager.registerVideo(vimeoId, containerRef.current);
     }
     
     return () => {
-      // Cleanup
+      // Cleanup is handled by the manager
     };
   }, [vimeoId]);
 
   const handleLoad = () => {
+    if (!mountedRef.current) return;
+    
     console.log(`Video ${vimeoId} loaded successfully`);
     setShowError(false);
     setIsLoading(false);
@@ -64,19 +71,22 @@ const VideoOptimizer = memo(({
   };
 
   const handleError = () => {
+    if (!mountedRef.current) return;
+    
     console.log(`Video ${vimeoId} reported an error, will auto-retry`);
     setLoadAttempts(prev => prev + 1);
     // EnhancedVimeoPlayer handles retries, we just track attempt count
   };
 
   const handleRetryClick = () => {
+    if (!mountedRef.current) return;
+    
     setShowError(false);
     setLoadAttempts(0);
     setIsLoading(true);
     onRetry();
   };
 
-  // Use EnhancedVimeoPlayer component for better handling
   return (
     <div 
       ref={containerRef}

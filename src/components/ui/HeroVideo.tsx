@@ -1,14 +1,26 @@
-
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useRef, useEffect } from 'react';
 import EnhancedVimeoPlayer from './EnhancedVimeoPlayer';
 
 const HeroVideo = memo(() => {
+  const mountedRef = useRef<boolean>(true);
+  
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+  
   const handleVideoLoad = useCallback(() => {
-    console.log('Hero video loaded successfully');
+    if (mountedRef.current) {
+      console.log('Hero video loaded successfully');
+    }
   }, []);
 
   const handleVideoError = useCallback(() => {
-    console.log('Hero video error occurred, will retry automatically');
+    if (mountedRef.current) {
+      console.log('Hero video error occurred, will retry automatically');
+    }
   }, []);
 
   return (
