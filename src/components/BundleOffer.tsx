@@ -5,24 +5,29 @@ import { Plus } from 'lucide-react';
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 interface GiftItem {
   name: string;
   image: string;
 }
+
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
 }];
+
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [animatedItem, setAnimatedItem] = useState(0);
   const productItems = ["1X PowerTower", "1X TRX", "4X Bands"];
+
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
+
   useEffect(() => {
     setIsVisible(true);
     const interval = setInterval(() => {
@@ -30,9 +35,11 @@ const BundleOffer = () => {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
+
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
+
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -76,9 +83,9 @@ const BundleOffer = () => {
               
               {/* Modified mobile view for TRAINING LIBRARY */}
               <div className={cn("flex items-center mb-4 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
-                <Plus className="h-8 w-8 text-green-600 mr-2 flex-shrink-0" />
+                <Plus className="h-8 w-8 text-green-600 mr-1 flex-shrink-0" />
                 <div className="max-w-2xl mx-auto">
-                  <div className="rounded-lg bg-white p-3 border border-[#13613A] flex flex-col items-center">
+                  <div className="rounded-lg bg-white p-3 border border-green-600 flex flex-col items-center">
                     <div className="flex items-center justify-center">
                       <div className="flex flex-col items-center w-full">
                         <div className="w-20 h-20 mb-1 flex-shrink-0 overflow-hidden">
@@ -130,10 +137,10 @@ const BundleOffer = () => {
                       <div className="flex items-center w-full justify-start mb-4">
                         <div className="flex items-center">
                           <Plus className="h-12 w-12 text-green-600 mr-4" />
-                          <div className="rounded-lg bg-white p-6 border border-[#13613A] w-full">
+                          <div className="rounded-lg bg-white p-6 border border-green-600 w-full">
                             <div className="flex items-center justify-center">
                               <div className="flex flex-col items-center">
-                                <div className="w-80 h-80 mb-3 flex-shrink-0 overflow-hidden">
+                                <div className="w-40 h-40 mb-3 flex-shrink-0 overflow-hidden">
                                   <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain" />
                                 </div>
                                 <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
@@ -178,4 +185,5 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
+
 export default BundleOffer;
