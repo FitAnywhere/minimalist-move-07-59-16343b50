@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -86,17 +85,12 @@ const ProductIntro = () => {
                   </div>
                 </div>}
               
-              <div className="space-y-5">
-                {features.map((feature, index) => <div key={index} className={cn(
-                  "px-6 py-3 rounded-full",
-                  "transition-all duration-300 ease-in-out",
-                  "shadow-md",
-                  "transform",
-                  "border-2 border-yellow bg-white", // Changed to white background with yellow border
-                  animationState.features[index] ? "opacity-100" : "opacity-0"
-                )} style={{
-                  transitionDelay: `${(index + 1) * 100}ms`
-                }}>
+              <div className="space-y-5 my-[9px] mx-0 px-0 py-0 rounded-none">
+                {features.map((feature, index) => <div key={index} className={cn("px-6 py-3 rounded-full", "transition-all duration-300 ease-in-out", "shadow-md", "transform", "border-2 border-yellow bg-white",
+              // Changed to white background with yellow border
+              animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
+                transitionDelay: `${(index + 1) * 100}ms`
+              }}>
                   <div className="flex justify-between items-center">
                     <h4 className="text-lg font-bold">
                       {feature.title}
