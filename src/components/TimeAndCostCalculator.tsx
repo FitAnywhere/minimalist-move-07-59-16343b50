@@ -127,28 +127,33 @@ const TimeAndCostCalculator = () => {
                         <div className="py-4 md:py-6">
                           <Slider value={[gymMonthlyCost]} min={0} max={150} step={5} className="w-full" onValueChange={value => setGymMonthlyCost(value[0])} />
                         </div>
+                        
+                        {gymMonthlyCost > 0 && (
+                          <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center mt-4">
+                            <p className="text-md font-bold text-black">
+                              With FitAnywhere you can start saving €{annualSavings} every year.
+                            </p>
+                          </div>
+                        )}
                       </div>
                       
-                      {/* Money Result - Right side on desktop, bottom on mobile */}
-                      <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
-                        <div className="flex items-center justify-center mb-2">
-                          <Banknote className="w-5 h-5 text-yellow mr-2" />
-                          <h3 className="text-lg font-bold">MONEY SPENT - 20 YEARS</h3>
+                      {/* Money Result - Right side on desktop, bottom on mobile - NOW CONDITIONALLY RENDERED */}
+                      {gymMonthlyCost > 0 && (
+                        <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
+                          <div className="flex items-center justify-center mb-2">
+                            <Banknote className="w-5 h-5 text-yellow mr-2" />
+                            <h3 className="text-lg font-bold">MONEY SPENT - 20 YEARS</h3>
+                          </div>
+                          <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
+                            {shouldAnimate ? <CountUp start={previousMoneyCost} end={moneySpentInYears} duration={1} separator="," prefix="€" suffix="+" useEasing /> : "€0+"}
+                          </p>
                         </div>
-                        <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
-                          {shouldAnimate ? <CountUp start={previousMoneyCost} end={moneySpentInYears} duration={1} separator="," prefix="€" suffix="+" useEasing /> : "€0+"}
-                        </p>
-                      </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
                 
-                {/* Payoff Timeframe Display - Added more padding/margin */}
-                {gymMonthlyCost >= 5 && <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-6 text-center my-10">
-                    <p className="text-xl font-bold text-black">
-                      With FitAnywhere you can start saving €{annualSavings} every year.
-                    </p>
-                  </div>}
+                {/* Removed the standalone payoff timeframe display that showed when gymMonthlyCost >= 5 */}
                 
                 {/* Time Cost Box - Moved below */}
                 <Card className="rounded-xl shadow-md border-2 border-black overflow-hidden w-full">
