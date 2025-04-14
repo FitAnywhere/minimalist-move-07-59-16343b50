@@ -216,7 +216,7 @@ const VideoPlayer = memo(({
         width={width}
         height={height}
         fetchpriority={fetchpriority}
-        loading="lazy"
+        // Removed the "loading" attribute since it's not valid for video elements
         onLoadedMetadata={(event) => {
           setIsLoaded(true);
           onLoadedMetadata?.(event);
