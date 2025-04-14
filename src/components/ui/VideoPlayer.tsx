@@ -101,7 +101,7 @@ const VideoPlayer = memo(({
   useEffect(() => {
     if (!videoRef.current || !isLoaded || disableAutoplay) return;
 
-    if (playMode === 'always' && autoPlay) {
+    if (playMode === 'always' && autoPlay && !disableAutoplay) {
       try {
         const playPromise = videoRef.current.play();
         if (playPromise !== undefined) {
@@ -118,8 +118,8 @@ const VideoPlayer = memo(({
       } catch (error) {
         console.error('Error during auto-play:', error);
       }
-    } else if (playMode === 'onView' && !disableAutoplay) {
-      if (isVisible && autoPlay) {
+    } else if (playMode === 'onView') {
+      if (isVisible && autoPlay && !disableAutoplay) {
         try {
           const playPromise = videoRef.current.play();
           if (playPromise !== undefined) {
@@ -263,22 +263,25 @@ const VideoPlayer = memo(({
 
       {showHeroVolumeControl && (
         <div 
-          className="absolute bottom-4 right-4 flex flex-col items-end gap-4"
+          className="absolute bottom-4 right-4 flex flex-col items-end"
           onMouseEnter={() => setShowVolumeSlider(true)}
           onMouseLeave={() => setShowVolumeSlider(false)}
         >
-          {showVolumeSlider && (
-            <div className="bg-black/50 px-3 py-4 rounded-lg mb-2">
-              <Slider
-                defaultValue={[volume]}
-                max={1}
-                step={0.1}
-                orientation="vertical"
-                className="h-24"
-                onValueChange={handleVolumeChange}
-              />
-            </div>
-          )}
+          <div 
+            className={cn(
+              "bg-black/50 px-3 py-4 rounded-lg mb-2 transition-opacity duration-150",
+              showVolumeSlider ? "opacity-100 visible" : "opacity-0 invisible"
+            )}
+          >
+            <Slider
+              defaultValue={[volume]}
+              max={1}
+              step={0.1}
+              orientation="vertical"
+              className="h-24"
+              onValueChange={handleVolumeChange}
+            />
+          </div>
           <button
             onClick={toggleMute}
             className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center hover:bg-black/70 transition-colors"
