@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
 const CallToAction = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
@@ -43,4 +44,5 @@ const CallToAction = () => {
       </div>
     </section>;
 };
+
 export default CallToAction;

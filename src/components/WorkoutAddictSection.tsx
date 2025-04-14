@@ -220,7 +220,19 @@ const WorkoutAddictSection = () => {
                 </div>
                 
                 <div className="w-full flex justify-center mt-4 mb-4">
-                  <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744101171/Screenshot_83_cupbkr.png" alt="BoxFun Product" className="max-w-[280px] w-full transition-all duration-500 hover:scale-105" />
+                  <img 
+                    src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744101171/Screenshot_83_cupbkr.png" 
+                    alt="BoxFun Product" 
+                    className="max-w-[280px] w-full transition-all duration-500 hover:scale-105" 
+                    loading="lazy"
+                    width="280"
+                    height="280"
+                    srcSet="
+                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_280/v1744101171/Screenshot_83_cupbkr.png 280w,
+                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744101171/Screenshot_83_cupbkr.png 400w
+                    "
+                    sizes="(max-width: 768px) 280px, 280px"
+                  />
                 </div>
                 
                 <div className="flex flex-col items-center mt-2 flex-grow-0">

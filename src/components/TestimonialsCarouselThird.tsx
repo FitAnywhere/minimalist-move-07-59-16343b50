@@ -1,4 +1,3 @@
-
 import { useState, useRef, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -37,6 +36,20 @@ const testimonials: Testimonial[] = [{
 }];
 
 const TestimonialImage = memo(({ imageUrl }: { imageUrl: string }) => {
+  const width = 400;
+  const height = 600;
+  
+  const getResponsiveUrl = (url: string, width: number) => {
+    if (url.includes('f_auto,q_auto')) {
+      return url.replace('f_auto,q_auto', `f_auto,q_auto,w_${width}`);
+    }
+    return url;
+  };
+  
+  const smallUrl = getResponsiveUrl(imageUrl, 300);
+  const mediumUrl = getResponsiveUrl(imageUrl, 400);
+  const largeUrl = getResponsiveUrl(imageUrl, 600);
+  
   return (
     <div className="relative w-full" style={{ paddingBottom: '150%' }}>
       <img 
@@ -44,6 +57,14 @@ const TestimonialImage = memo(({ imageUrl }: { imageUrl: string }) => {
         alt="Testimonial" 
         className="absolute inset-0 w-full h-full object-cover rounded-t-xl"
         loading="lazy"
+        width={width}
+        height={height}
+        srcSet={`
+          ${smallUrl} 300w,
+          ${mediumUrl} 400w,
+          ${largeUrl} 600w
+        `}
+        sizes="(max-width: 640px) 300px, (max-width: 768px) 400px, 600px"
       />
     </div>
   );

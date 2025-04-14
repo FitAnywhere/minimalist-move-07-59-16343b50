@@ -1,4 +1,3 @@
-
 import { useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Flame, Backpack, Zap } from 'lucide-react';
@@ -49,6 +48,9 @@ const ProductTabs = () => {
             muted={true}
             loop={true}
             playMode="onView"
+            width={400}
+            height={720}
+            preload="none"
           />
         </div>
       </div>

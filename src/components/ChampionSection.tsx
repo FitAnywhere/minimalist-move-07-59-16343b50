@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Video, Clock, Dumbbell, Globe } from 'lucide-react';
@@ -127,6 +126,8 @@ const ChampionSection = () => {
                   loop={true}
                   playMode="onView"
                   preload="metadata"
+                  width={640}
+                  height={360}
                 />
                 
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
