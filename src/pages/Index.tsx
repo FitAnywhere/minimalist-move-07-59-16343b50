@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 import { throttle } from '@/utils/eventOptimizers';
@@ -14,7 +13,7 @@ import TrainingVault from '@/components/TrainingVault';
 // Import utilities
 import { useSectionObserver } from '@/hooks/useSectionObserver';
 import { setupAnchorClickHandler, handleExternalNavigation } from '@/utils/scrollUtils';
-import { initVideoPreloading } from '@/utils/videoUtils';
+import { initVideoPreloading } from '@/utils/videoUtils';  // Updated import directly from videoUtils
 import { initStyles } from '@/utils/styleUtils';
 
 // Better loading fallback with reduced CLS (Cumulative Layout Shift)
