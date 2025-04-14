@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, memo } from 'react';
-import { Play } from 'lucide-react';
+import { Play, Volume2, VolumeX } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface VideoPlayerProps {
@@ -17,6 +17,7 @@ interface VideoPlayerProps {
   width?: number;
   height?: number;
   fetchpriority?: 'high' | 'low' | 'auto';
+  showVolumeControl?: boolean;
   onPlay?: () => void;
   onPause?: () => void;
   onEnded?: () => void;
@@ -38,6 +39,7 @@ const VideoPlayer = memo(({
   width,
   height,
   fetchpriority,
+  showVolumeControl = false,
   onPlay,
   onPause,
   onEnded,
@@ -46,9 +48,11 @@ const VideoPlayer = memo(({
   const [isPlaying, setIsPlaying] = useState(autoPlay && playMode === 'always');
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isMuted, setIsMuted] = useState(muted);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const getAspectRatioClass = () => {
     switch (aspectRatio) {
@@ -160,6 +164,13 @@ const VideoPlayer = memo(({
     }
   };
 
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    const newMutedState = !isMuted;
+    videoRef.current.muted = newMutedState;
+    setIsMuted(newMutedState);
+  };
+
   useEffect(() => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
@@ -185,6 +196,33 @@ const VideoPlayer = memo(({
     };
   }, [loop, onEnded, onPause]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+
+      scrollTimeoutRef.current = setTimeout(() => {
+        if (videoRef.current && isVisible && !isPlaying) {
+          handlePlayClick();
+        }
+      }, 150);
+    };
+
+    if (playMode === 'onView') {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+
+    return () => {
+      if (playMode === 'onView') {
+        window.removeEventListener('scroll', handleScroll);
+      }
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, [isVisible, isPlaying, playMode]);
+
   return (
     <div 
       ref={containerRef}
@@ -195,7 +233,7 @@ const VideoPlayer = memo(({
       <video
         ref={videoRef}
         preload={preload}
-        muted={muted}
+        muted={isMuted}
         playsInline
         loop={loop}
         controls={controls && isPlaying}
@@ -227,6 +265,21 @@ const VideoPlayer = memo(({
             <Play className="w-8 h-8 text-black ml-1" />
           </button>
         </div>
+      )}
+
+      {showVolumeControl && isPlaying && (
+        <button
+          onClick={toggleMute}
+          className="absolute bottom-4 right-4 w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-colors"
+          aria-label={isMuted ? "Unmute video" : "Mute video"}
+          type="button"
+        >
+          {isMuted ? (
+            <VolumeX className="w-5 h-5 text-white" />
+          ) : (
+            <Volume2 className="w-5 h-5 text-white" />
+          )}
+        </button>
       )}
     </div>
   );
