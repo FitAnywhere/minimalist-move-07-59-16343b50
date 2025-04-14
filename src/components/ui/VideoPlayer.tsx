@@ -238,7 +238,6 @@ const VideoPlayer = memo(({
         aria-label="Video player"
         width={width}
         height={height}
-        loading={shouldLazyLoad ? "lazy" : "eager"}
         fetchpriority={isHeroVideo ? "high" : "auto"}
         onLoadedMetadata={(event) => {
           setIsLoaded(true);
