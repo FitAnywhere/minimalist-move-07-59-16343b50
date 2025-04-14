@@ -13,7 +13,7 @@ const HeroVideo = memo(() => {
       height={720}
       fetchpriority="high"
       autoPlay={false}
-      playMode="onView"
+      playMode="firstScroll"
       muted={true}
       showVolumeControl={true}
       loop={false}
