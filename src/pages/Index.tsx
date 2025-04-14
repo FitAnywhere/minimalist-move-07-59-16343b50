@@ -26,8 +26,8 @@ const SectionLoader = () => (
 
 // Lazy load components that are not critical for the initial viewport
 const ProductTabs = lazy(() => import('@/components/ProductTabs'));
-const WorkoutAddictSection = lazy(() => import('@/components/WorkoutAddictSection'));
 const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
+const WorkoutAddictSection = lazy(() => import('@/components/WorkoutAddictSection'));
 const LifestyleSection = lazy(() => 
   import('@/components/LifestyleSection').catch(err => {
     console.error('Failed to load LifestyleSection:', err);
