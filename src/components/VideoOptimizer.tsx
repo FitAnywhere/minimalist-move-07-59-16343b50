@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, memo } from 'react';
 import { Loader, RefreshCw } from 'lucide-react';
-import videoLoadManager from '@/utils/videoLoadManager';
+import videoLoadManager from '@/utils/videoOptimization';
 
 interface VideoOptimizerProps {
   vimeoId: string;
