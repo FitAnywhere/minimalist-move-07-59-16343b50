@@ -15,52 +15,81 @@ const HeroContent = memo(({
   isMobile = false
 }: HeroContentProps) => {
   const words = ["CALISTHENICS", "FITNESS", "BOX"];
-  const [displayText, setDisplayText] = useState(words[0].substring(0, 1));
-  const [isDeleting, setIsDeleting] = useState(false);
+  // Start with the full first word prerendered
+  const [displayText, setDisplayText] = useState(words[0]);
+  const [isTypingActive, setIsTypingActive] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
-  const [isWaiting, setIsWaiting] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Constants for the typewriter effect - updated for slower animation
-  const typingSpeed = 250; // Speed of typing in ms (increased from 150ms)
-  const deletingSpeed = 80; // Speed of deleting in ms (increased from 40ms)
-  const waitingTime = 1000; // Time to wait when word is fully typed in ms (increased from 300ms)
-
-  // More efficient typewriter implementation
+  
+  // Initialize animation with a delay to ensure first word is visible for LCP
   useEffect(() => {
-    const currentWord = words[wordIndex];
-    
+    // Clear any existing timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
     
+    // Start animation after delay to improve LCP
     timeoutRef.current = setTimeout(() => {
-      if (isWaiting) {
-        setIsWaiting(false);
-        setIsDeleting(true);
-        return;
-      }
-      
-      if (isDeleting) {
-        setDisplayText(currentWord.substring(0, displayText.length - 1));
-        if (displayText.length === 1) {
-          setIsDeleting(false);
-          setWordIndex((prevIndex) => (prevIndex + 1) % words.length);
-        }
-      } else {
-        setDisplayText(currentWord.substring(0, displayText.length + 1));
-        if (displayText.length === currentWord.length) {
-          setIsWaiting(true);
-        }
-      }
-    }, isWaiting ? waitingTime : isDeleting ? deletingSpeed : typingSpeed);
+      setIsTypingActive(true);
+    }, 1800); // 1.8s delay before starting animation
     
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [displayText, isDeleting, wordIndex, isWaiting, words]);
+  }, []);
+  
+  // Simplified animation logic that only runs after initial delay
+  useEffect(() => {
+    if (!isTypingActive) return;
+    
+    const typingSpeed = 250; // Speed of typing in ms
+    const deletingSpeed = 80; // Speed of deleting in ms
+    const waitingTime = 1000; // Time to wait when word is fully typed in ms
+    
+    const animateText = () => {
+      const currentWord = words[wordIndex];
+      const nextWordIndex = (wordIndex + 1) % words.length;
+      
+      // Delete current word
+      const deleteWord = () => {
+        let currentText = currentWord;
+        const deleteInterval = setInterval(() => {
+          if (currentText.length <= 1) {
+            clearInterval(deleteInterval);
+            setDisplayText(words[nextWordIndex].charAt(0));
+            setTimeout(() => typeWord(words[nextWordIndex], 1), typingSpeed);
+            return;
+          }
+          currentText = currentText.substring(0, currentText.length - 1);
+          setDisplayText(currentText);
+        }, deletingSpeed);
+      };
+      
+      // Type the next word
+      const typeWord = (word: string, charIndex: number) => {
+        if (charIndex >= word.length) {
+          setWordIndex(nextWordIndex);
+          setTimeout(deleteWord, waitingTime);
+          return;
+        }
+        
+        setDisplayText(word.substring(0, charIndex + 1));
+        setTimeout(() => typeWord(word, charIndex + 1), typingSpeed);
+      };
+      
+      // Start the delete animation after waiting time
+      setTimeout(deleteWord, waitingTime);
+    };
+    
+    // Start the animation cycle
+    const animationTimeout = setTimeout(animateText, 500);
+    
+    return () => {
+      clearTimeout(animationTimeout);
+    };
+  }, [isTypingActive, wordIndex, words]);
   
   return (
     <div className="text-center md:text-left">
@@ -71,7 +100,7 @@ const HeroContent = memo(({
         <span className="relative inline-block min-w-[300px] md:min-w-[400px]">
           {displayText}
           <span 
-            className={`${isWaiting ? 'opacity-0' : 'opacity-100'} inline-block w-[2px] h-[1em] bg-black ml-1 animate-pulse`}
+            className={`inline-block w-[2px] h-[1em] bg-black ml-1 ${isTypingActive ? 'animate-pulse' : 'opacity-0'}`}
             aria-hidden="true"
           ></span>
           <span 
