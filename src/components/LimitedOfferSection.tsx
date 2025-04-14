@@ -29,7 +29,7 @@ const LimitedOfferSection = () => {
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <div className="p-6 flex flex-col items-center">
                 <img 
-                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png" 
+                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png" 
                   alt="BoxFun Offer" 
                   className="object-contain w-full rounded-2xl" 
                   loading="lazy" 

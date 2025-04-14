@@ -60,7 +60,7 @@ const BundleOffer = () => {
                       <div className="h-72 md:h-80 flex items-center justify-center p-4 group">
                         <div className="relative w-full h-full flex items-center justify-center">
                           <img 
-                            src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" 
+                            src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" 
                             alt="FitAnywhere" 
                             className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10" 
                             loading="lazy"
@@ -104,7 +104,7 @@ const BundleOffer = () => {
                       <div className="flex flex-col items-center w-full">
                         <div className="w-20 h-20 mb-1 flex-shrink-0 overflow-hidden">
                           <img 
-                            src={giftItems[0].image} 
+                            src={giftItems[0].image.replace('f_auto,q_auto', 'f_auto,q_auto,w_80')} 
                             alt={giftItems[0].name} 
                             className="w-full h-full object-contain transition-all duration-300 hover:scale-110" 
                             loading="lazy"
@@ -147,7 +147,7 @@ const BundleOffer = () => {
                   {/* Left side with product image */}
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
                     <img 
-                      src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" 
+                      src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_600/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" 
                       alt="FitAnywhere" 
                       className="max-h-96 object-contain mb-6" 
                       loading="lazy"
@@ -179,7 +179,7 @@ const BundleOffer = () => {
                           <div className="flex flex-col items-center">
                             <div className="w-40 h-40 mb-3 flex-shrink-0 overflow-hidden">
                               <img 
-                                src={giftItems[0].image} 
+                                src={giftItems[0].image.replace('f_auto,q_auto', 'f_auto,q_auto,w_160')} 
                                 alt={giftItems[0].name} 
                                 className="w-full h-full object-contain" 
                                 loading="lazy"

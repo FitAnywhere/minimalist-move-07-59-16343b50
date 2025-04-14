@@ -68,7 +68,7 @@ const TestimonialImage = memo(({ imageUrl }: { imageUrl: string }) => {
   return (
     <div className="relative w-full" style={{ paddingBottom: '150%' }}>
       <img 
-        src={imageUrl}
+        src={getResponsiveUrl(imageUrl, 400)}
         alt="Testimonial" 
         className="absolute inset-0 w-full h-full object-cover rounded-t-xl"
         loading="lazy"
