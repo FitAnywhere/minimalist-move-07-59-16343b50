@@ -252,10 +252,23 @@ const VideoPlayer = memo(({
 
       {showHeroVolumeControl && (
         <div 
-          className="absolute bottom-4 right-4 flex items-center gap-2"
+          className="absolute bottom-4 right-4 flex items-center gap-4"
           onMouseEnter={() => setShowVolumeSlider(true)}
           onMouseLeave={() => setShowVolumeSlider(false)}
         >
+          {showVolumeSlider && (
+            <div className="bg-black/50 px-3 py-4 rounded-lg">
+              <Slider
+                defaultValue={[volume]}
+                max={1}
+                step={0.1}
+                orientation="vertical"
+                className="h-24"
+                onValueChange={handleVolumeChange}
+              />
+            </div>
+          )}
+          
           <button
             onClick={toggleMute}
             className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center hover:bg-black/70 transition-colors"
@@ -267,19 +280,6 @@ const VideoPlayer = memo(({
               <Volume2 className="w-5 h-5 text-white" />
             )}
           </button>
-          
-          {showVolumeSlider && (
-            <div className="bg-black/50 px-3 py-4 rounded-lg ml-2">
-              <Slider
-                defaultValue={[volume]}
-                max={1}
-                step={0.1}
-                orientation="vertical"
-                className="h-24"
-                onValueChange={handleVolumeChange}
-              />
-            </div>
-          )}
         </div>
       )}
     </div>
