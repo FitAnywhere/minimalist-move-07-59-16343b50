@@ -51,7 +51,6 @@ const OptimizedVideo = ({
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [isInView, setIsInView] = useState(false);
   const [userInteracted, setUserInteracted] = useState(false);
-  const [hasBeenVisible, setHasBeenVisible] = useState(false);
 
   // Handle aspect ratio calculation
   const getAspectRatioPadding = () => {
@@ -64,25 +63,18 @@ const OptimizedVideo = ({
   };
 
   // Set up intersection observer to detect when video enters viewport
-  // with a large margin to start loading before it becomes visible
   useEffect(() => {
     if (!containerRef.current) return;
 
     const options = {
       root: null, // viewport
-      rootMargin: '200px', // start loading slightly before visible
+      rootMargin: '100px', // start loading slightly before visible
       threshold: 0.1 // trigger when 10% of element is visible
     };
 
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
-      const isNowInView = entry.isIntersecting;
-      setIsInView(isNowInView);
-      
-      // Once it's been visible, remember that
-      if (isNowInView && !hasBeenVisible) {
-        setHasBeenVisible(true);
-      }
+      setIsInView(entry.isIntersecting);
     };
 
     observerRef.current = new IntersectionObserver(handleIntersection, options);
@@ -93,20 +85,14 @@ const OptimizedVideo = ({
         observerRef.current.disconnect();
       }
     };
-  }, [hasBeenVisible]);
+  }, []);
 
-  // Only load video when user interacts OR element has been in view AND autoplay is true
-  useEffect(() => {
-    if ((userInteracted || (hasBeenVisible && autoplay)) && loadState === 'idle') {
-      loadVideo();
-    }
-  }, [userInteracted, hasBeenVisible, autoplay, loadState]);
-
-  // Initialize Vimeo player when conditions are met
+  // Initialize Vimeo player when user interacts and element is in view
   const loadVideo = () => {
     if (!containerRef.current || loadState === 'loading' || loadState === 'loaded') return;
     
     setLoadState('loading');
+    setUserInteracted(true);
     
     try {
       // Build URL with parameters
@@ -125,7 +111,6 @@ const OptimizedVideo = ({
       params.append('byline', '0');
       params.append('portrait', '0');
       params.append('dnt', '1');
-      params.append('preload', 'none'); // Prevent preloading
       
       url = `${url}?${params.toString()}`;
       
@@ -194,9 +179,9 @@ const OptimizedVideo = ({
   };
 
   const handlePlayClick = () => {
-    setUserInteracted(true);
-    
-    if (loadState === 'error') {
+    if (!userInteracted) {
+      loadVideo();
+    } else if (loadState === 'error') {
       handleRetry();
     }
   };
@@ -213,11 +198,7 @@ const OptimizedVideo = ({
 
   // Render different UI based on load state
   return (
-    <div 
-      className={cn("relative overflow-hidden", className)}
-      data-load-state={loadState}
-      data-in-view={isInView}
-    >
+    <div className={cn("relative overflow-hidden", className)}>
       {/* Aspect ratio container */}
       <div 
         style={{ paddingBottom: getAspectRatioPadding() }}
@@ -272,11 +253,10 @@ const OptimizedVideo = ({
                     src={placeholderImage} 
                     alt={title || "Video thumbnail"}
                     className="w-full h-full object-cover"
-                    loading="eager"
+                    loading="lazy"
                     decoding="async"
                     width="640" 
                     height="360"
-                    fetchpriority="high"
                   />
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                     <button 

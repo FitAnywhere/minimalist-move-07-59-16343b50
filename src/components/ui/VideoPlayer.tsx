@@ -32,12 +32,12 @@ const VideoPlayer = memo(({
   muted = true,
   loop = false,
   controls = false,
-  preload = 'none',
+  preload = 'metadata',
   priority = false,
   playMode = 'onView',
   width,
   height,
-  fetchpriority = 'auto',
+  fetchpriority,
   onPlay,
   onPause,
   onEnded,
@@ -46,7 +46,6 @@ const VideoPlayer = memo(({
   const [isPlaying, setIsPlaying] = useState(autoPlay && playMode === 'always');
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isSourceSet, setIsSourceSet] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -64,7 +63,7 @@ const VideoPlayer = memo(({
     if (!containerRef.current) return;
 
     const options = {
-      rootMargin: '200px',
+      rootMargin: '100px',
       threshold: 0.1
     };
 
@@ -84,28 +83,16 @@ const VideoPlayer = memo(({
   }, []);
 
   useEffect(() => {
-    if (!videoRef.current) return;
-    
-    if ((priority || isVisible) && !isSourceSet) {
-      const videoElement = videoRef.current;
-      
-      if (!videoElement.querySelector('source')) {
-        const source = document.createElement('source');
-        source.src = src;
-        source.type = 'video/mp4';
-        videoElement.appendChild(source);
+    if ((isVisible || priority) && videoRef.current && !isLoaded) {
+      if (preload !== 'none') {
+        videoRef.current.load();
       }
-      
-      if (priority || (isVisible && autoPlay)) {
-        videoElement.load();
-      }
-      
-      setIsSourceSet(true);
+      setIsLoaded(true);
     }
-  }, [isVisible, priority, src, isSourceSet, autoPlay]);
+  }, [isVisible, priority, isLoaded, preload]);
 
   useEffect(() => {
-    if (!videoRef.current || !isSourceSet) return;
+    if (!videoRef.current || !isLoaded) return;
 
     if (playMode === 'always' && autoPlay) {
       try {
@@ -115,7 +102,6 @@ const VideoPlayer = memo(({
             .then(() => {
               setIsPlaying(true);
               onPlay?.();
-              setIsLoaded(true);
             })
             .catch(error => {
               console.error('Auto-play failed:', error);
@@ -133,7 +119,6 @@ const VideoPlayer = memo(({
               .then(() => {
                 setIsPlaying(true);
                 onPlay?.();
-                setIsLoaded(true);
               })
               .catch(error => {
                 console.error('Play on view failed:', error);
@@ -148,23 +133,14 @@ const VideoPlayer = memo(({
         onPause?.();
       }
     }
-  }, [isVisible, isSourceSet, autoPlay, playMode, isPlaying, onPlay, onPause]);
+  }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPlay, onPause]);
 
   const handlePlayClick = () => {
     if (!videoRef.current) return;
 
-    if (!isSourceSet) {
-      const videoElement = videoRef.current;
-      
-      if (!videoElement.querySelector('source')) {
-        const source = document.createElement('source');
-        source.src = src;
-        source.type = 'video/mp4';
-        videoElement.appendChild(source);
-      }
-      
-      videoElement.load();
-      setIsSourceSet(true);
+    if (!isLoaded) {
+      videoRef.current.load();
+      setIsLoaded(true);
     }
 
     try {
@@ -174,7 +150,6 @@ const VideoPlayer = memo(({
           .then(() => {
             setIsPlaying(true);
             onPlay?.();
-            setIsLoaded(true);
           })
           .catch(error => {
             console.error('Play failed:', error);
@@ -201,21 +176,14 @@ const VideoPlayer = memo(({
       onPause?.();
     };
 
-    const handleLoadedMetadata = (event: any) => {
-      setIsLoaded(true);
-      onLoadedMetadata?.(event);
-    };
-
     videoElement.addEventListener('ended', handleEnded);
     videoElement.addEventListener('pause', handlePause);
-    videoElement.addEventListener('loadedmetadata', handleLoadedMetadata);
 
     return () => {
       videoElement.removeEventListener('ended', handleEnded);
       videoElement.removeEventListener('pause', handlePause);
-      videoElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
     };
-  }, [loop, onEnded, onPause, onLoadedMetadata]);
+  }, [loop, onEnded, onPause]);
 
   return (
     <div 
@@ -223,7 +191,6 @@ const VideoPlayer = memo(({
       className={cn("relative overflow-hidden", getAspectRatioClass(), className)}
       data-loaded={isLoaded}
       data-playing={isPlaying}
-      data-visible={isVisible}
     >
       <video
         ref={videoRef}
@@ -238,8 +205,12 @@ const VideoPlayer = memo(({
         width={width}
         height={height}
         fetchpriority={fetchpriority}
+        onLoadedMetadata={(event) => {
+          setIsLoaded(true);
+          onLoadedMetadata?.(event);
+        }}
       >
-        {priority && <source src={src} type="video/mp4" />}
+        <source src={src} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
