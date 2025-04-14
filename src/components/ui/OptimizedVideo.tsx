@@ -1,10 +1,7 @@
 
 import { useState, useRef, useEffect, memo } from 'react';
+import { Loader, Play, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import VideoContainer from './video/VideoContainer';
-import VideoLoadingIndicator from './video/VideoLoadingIndicator';
-import VideoErrorState from './video/VideoErrorState';
-import VideoPlayButton from './video/VideoPlayButton';
 
 interface OptimizedVideoProps {
   vimeoId: string;
@@ -54,6 +51,16 @@ const OptimizedVideo = ({
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [isInView, setIsInView] = useState(false);
   const [userInteracted, setUserInteracted] = useState(false);
+
+  // Handle aspect ratio calculation
+  const getAspectRatioPadding = () => {
+    if (!aspectRatio) return '56.25%'; // Default to 16:9
+    
+    const [width, height] = aspectRatio.split(':').map(Number);
+    if (!width || !height) return '56.25%';
+    
+    return `${(height / width) * 100}%`;
+  };
 
   // Set up intersection observer to detect when video enters viewport
   useEffect(() => {
@@ -191,26 +198,88 @@ const OptimizedVideo = ({
 
   // Render different UI based on load state
   return (
-    <VideoContainer className={cn(className)} aspectRatio={aspectRatio}>
-      {/* Loading state */}
-      {loadState === 'loading' && (
-        <VideoLoadingIndicator retryCount={retryCount} maxRetries={5} />
-      )}
+    <div className={cn("relative overflow-hidden", className)}>
+      {/* Aspect ratio container */}
+      <div 
+        style={{ paddingBottom: getAspectRatioPadding() }}
+        className="relative w-full"
+      >
+        {/* Video container */}
+        <div 
+          ref={containerRef} 
+          className="absolute inset-0 bg-black overflow-hidden"
+        >
+          {/* Loading state */}
+          {loadState === 'loading' && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-10">
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <div className="relative">
+                  <div className="w-16 h-16 rounded-full border-4 border-yellow/30 animate-pulse"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Loader className="w-8 h-8 text-yellow animate-spin" />
+                  </div>
+                </div>
+                <p className="text-white text-sm font-medium">Loading video...</p>
+              </div>
+            </div>
+          )}
 
-      {/* Error state */}
-      {loadState === 'error' && (
-        <VideoErrorState onRetry={handleRetry} />
-      )}
+          {/* Error state */}
+          {loadState === 'error' && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-10">
+              <div className="flex flex-col items-center justify-center space-y-3">
+                <p className="text-white text-center">Video could not be loaded</p>
+                <button
+                  onClick={handleRetry}
+                  className="flex items-center space-x-2 bg-yellow text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-yellow-500 transition-colors"
+                  aria-label="Retry loading video"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  <span>Retry Video</span>
+                </button>
+              </div>
+            </div>
+          )}
 
-      {/* Idle state with placeholder and play button */}
-      {loadState === 'idle' && (
-        <VideoPlayButton 
-          onClick={handlePlayClick} 
-          placeholderImage={placeholderImage} 
-          title={title} 
-        />
-      )}
-    </VideoContainer>
+          {/* Idle state with placeholder and play button */}
+          {loadState === 'idle' && (
+            <div 
+              className="absolute inset-0 flex items-center justify-center bg-black z-10 cursor-pointer"
+              onClick={handlePlayClick}
+            >
+              {placeholderImage ? (
+                <div className="absolute inset-0">
+                  <img 
+                    src={placeholderImage} 
+                    alt={title || "Video thumbnail"}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    width="640" 
+                    height="360"
+                  />
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <button 
+                      className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-colors"
+                      aria-label="Play video"
+                    >
+                      <Play className="w-8 h-8 text-black ml-1" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button 
+                  className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-colors"
+                  aria-label="Play video"
+                >
+                  <Play className="w-8 h-8 text-black ml-1" />
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
