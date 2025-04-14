@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, memo } from 'react';
 import { Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -15,6 +14,8 @@ interface VideoPlayerProps {
   preload?: 'none' | 'metadata' | 'auto';
   priority?: boolean;
   playMode?: 'always' | 'onView';
+  width?: number;
+  height?: number;
   onPlay?: () => void;
   onPause?: () => void;
   onEnded?: () => void;
@@ -33,6 +34,8 @@ const VideoPlayer = memo(({
   preload = 'metadata',
   priority = false,
   playMode = 'onView',
+  width,
+  height,
   onPlay,
   onPause,
   onEnded,
@@ -82,12 +85,14 @@ const VideoPlayer = memo(({
   // Load video when it becomes visible or if it has priority
   useEffect(() => {
     if ((isVisible || priority) && videoRef.current && !isLoaded) {
-      // If video is already in memory, this won't cause a network request
-      // If not, it will only load metadata due to preload="metadata"
-      videoRef.current.load();
+      // If preload is set to 'none', we'll only load the poster
+      // If not, it will load based on the preload attribute
+      if (preload !== 'none') {
+        videoRef.current.load();
+      }
       setIsLoaded(true);
     }
-  }, [isVisible, priority, isLoaded]);
+  }, [isVisible, priority, isLoaded, preload]);
 
   // Handle playback based on visibility and playMode
   useEffect(() => {
@@ -210,6 +215,8 @@ const VideoPlayer = memo(({
         poster={poster}
         className="w-full h-full object-cover"
         aria-label="Video player"
+        width={width}
+        height={height}
         onLoadedMetadata={(event) => {
           setIsLoaded(true);
           onLoadedMetadata?.(event);

@@ -1,15 +1,19 @@
+
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const LimitedOfferSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
+  
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
   };
+  
   return <section id="limited-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto">
@@ -24,7 +28,14 @@ const LimitedOfferSection = () => {
             
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <div className="p-6 flex flex-col items-center">
-                <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png" alt="BoxFun Offer" className="object-contain w-full rounded-2xl" />
+                <img 
+                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png" 
+                  alt="BoxFun Offer" 
+                  className="object-contain w-full rounded-2xl" 
+                  loading="lazy" 
+                  width="800" 
+                  height="600"
+                />
                 <h3 className="text-center mb-2 text-[#D4AF37] text-2xl font-bold">GIVEAWAY</h3>
               </div>
             </div>
@@ -41,4 +52,5 @@ const LimitedOfferSection = () => {
       </div>
     </section>;
 };
+
 export default LimitedOfferSection;
