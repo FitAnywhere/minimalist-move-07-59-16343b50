@@ -158,7 +158,7 @@ const TrainingVault = () => {
             }}>
                 <VideoPlayer 
                   src="/114 Setup (1080P).mp4" 
-                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_600/v1744097749/Screenshot_69_w6ixx7.png"
+                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco,w_640/v1744097749/Screenshot_69_w6ixx7.png"
                   aspectRatio="portrait"
                   autoPlay={true}
                   muted={true}

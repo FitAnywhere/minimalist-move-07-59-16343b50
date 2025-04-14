@@ -119,7 +119,7 @@ const ChampionSection = () => {
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-xl hover:scale-[1.02] group" ref={videoRef}>
                 <VideoPlayer 
                   src="/114 Librarytraining 1144.mp4" 
-                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_640/v1744095736/dZZFMFQ_oped40.png"
+                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco,w_640/v1744095736/dZZFMFQ_oped40.png"
                   aspectRatio="video"
                   className="rounded-2xl"
                   autoPlay={isInView}
@@ -152,7 +152,7 @@ const ChampionSection = () => {
             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden relative">
               <VideoPlayer 
                 src="/114 Librarytraining 1144.mp4" 
-                poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1744095736/dZZFMFQ_oped40.png"
+                poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco,w_640/v1744095736/dZZFMFQ_oped40.png"
                 aspectRatio="video"
                 autoPlay={false}
                 muted={false}

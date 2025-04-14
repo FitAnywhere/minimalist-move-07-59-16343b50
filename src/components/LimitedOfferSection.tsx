@@ -29,18 +29,17 @@ const LimitedOfferSection = () => {
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <div className="p-6 flex flex-col items-center">
                 <img 
-                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png" 
+                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco,w_640/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png" 
                   alt="BoxFun Offer" 
                   className="object-contain w-full rounded-2xl" 
                   loading="lazy" 
-                  width="800" 
-                  height="600"
+                  width="640" 
+                  height="480"
                   srcSet="
-                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png 400w,
-                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png 800w,
-                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_1200/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png 1200w
+                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco,w_280/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png 280w,
+                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco,w_640/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png 640w
                   "
-                  sizes="(max-width: 768px) 400px, 800px"
+                  sizes="(max-width: 768px) 100vw, 640px"
                 />
                 <h3 className="text-center mb-2 text-[#D4AF37] text-2xl font-bold">GIVEAWAY</h3>
               </div>
