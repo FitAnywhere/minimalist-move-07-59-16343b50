@@ -1,33 +1,36 @@
-
 /**
  * Centralized utility for video preloading
  */
+
+import { isSlowConnection } from './videoUtils';
 
 interface PreloadOptions {
   importance?: 'high' | 'low';
   type?: 'preload' | 'prefetch';
 }
 
-// Critical videos that should be preloaded as soon as possible
+// Only the critical hero video is high priority
 export const CRITICAL_VIDEOS = [
-  { id: '1067255623', importance: 'high' as const }, // Hero video
-  { id: '1067257145', importance: 'low' as const }, // TRX video
-  { id: '1067257124', importance: 'low' as const }, // Bands video 
-  { id: '1067256372', importance: 'low' as const }, // Testimonial videos
-  { id: '1067256325', importance: 'low' as const },
-  { id: '1067256399', importance: 'low' as const },
-  { id: '1073152410', importance: 'low' as const } // TrainingVault video
+  { id: 'hero', src: '/114 Intor Video Optt.mp4', importance: 'high' as const },
+  // Other videos are now low priority to save bandwidth
+  { id: 'training', src: '/114 Librarytraining 1144.mp4', importance: 'low' as const },
+  { id: 'setup', src: '/114 Setup (1080P).mp4', importance: 'low' as const },
+  { id: 'boxfun', src: '/114Bboxfun 104.mp4', importance: 'low' as const }
 ];
 
-// Check if the Vimeo API script is already loaded
-export const isVimeoApiLoaded = (): boolean => {
-  return !!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]');
-};
-
-// Load the Vimeo Player API
+// Load the Vimeo Player API - only if needed and connection is good
 export const loadVimeoApi = (): Promise<void> => {
   return new Promise((resolve, reject) => {
-    if (isVimeoApiLoaded()) {
+    // Skip on slow connections
+    if (isSlowConnection()) {
+      console.log("Skipping Vimeo API load on slow connection");
+      resolve();
+      return;
+    }
+    
+    // Skip if already loaded
+    if (document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
+      console.log("Vimeo Player API already loaded");
       resolve();
       return;
     }
@@ -51,49 +54,111 @@ export const loadVimeoApi = (): Promise<void> => {
   });
 };
 
-// Add preload hints for critical videos
-export const preloadVideos = (videoIds: Array<string | {id: string, importance?: 'high' | 'low'}>): void => {
-  videoIds.forEach((item, index) => {
-    const id = typeof item === 'string' ? item : item.id;
-    const importance = typeof item === 'string' ? (index === 0 ? 'high' : 'low') : (item.importance || 'low');
-    const existingLink = document.querySelector(`link[href*="${id}"]`);
-    
-    if (!existingLink) {
-      const link = document.createElement('link');
-      
-      if (importance === 'high') {
-        link.rel = 'preload';
-        link.as = 'fetch';
-        link.dataset.importance = 'high';
-      } else {
-        link.rel = 'prefetch';
-        link.as = 'fetch';
-        link.dataset.importance = 'low';
-      }
-      
-      link.href = `https://player.vimeo.com/video/${id}`;
-      link.crossOrigin = 'anonymous';
-      document.head.appendChild(link);
-      
-      console.log(`Preloaded video: ${id} with importance: ${importance}`);
+// Add preload hints for critical videos - but be conservative
+export const preloadVideos = (videos = CRITICAL_VIDEOS): void => {
+  // Skip preloading on slow connections
+  if (isSlowConnection()) {
+    console.log("Skipping video preloading on slow connection");
+    return;
+  }
+
+  // On mobile, only preload the hero video metadata
+  const isMobile = window.innerWidth < 768;
+  if (isMobile) {
+    // Only preload metadata for the hero video on mobile
+    const heroVideo = videos.find(v => v.importance === 'high');
+    if (heroVideo) {
+      preloadVideoMetadata(heroVideo.src);
     }
+    return;
+  }
+
+  // On desktop with good connection, proceed with normal preloading
+  videos.forEach((video) => {
+    const { src, importance } = video;
+    
+    // Check if already preloaded
+    const existingLink = document.querySelector(`link[href="${src}"]`);
+    if (existingLink) return;
+    
+    // For high importance, preload, for low importance, prefetch
+    const link = document.createElement('link');
+    
+    if (importance === 'high') {
+      link.rel = 'preload';
+      link.as = 'video';
+      link.type = 'video/mp4';
+    } else {
+      link.rel = 'prefetch';
+      link.as = 'video';
+      link.type = 'video/mp4';
+    }
+    
+    link.href = src;
+    link.dataset.importance = importance;
+    document.head.appendChild(link);
+    
+    console.log(`Preloaded video: ${src} with importance: ${importance}`);
   });
 };
 
-// Initialize video preloading
+// Preload just video metadata to make initial playback faster
+export const preloadVideoMetadata = (src: string): void => {
+  const video = document.createElement('video');
+  video.preload = 'metadata';
+  video.src = src;
+  video.style.display = 'none';
+  video.muted = true;
+  
+  // Remove after metadata is loaded
+  video.onloadedmetadata = () => {
+    console.log(`Preloaded metadata for ${src}`);
+    video.remove();
+  };
+  
+  // Remove after 3 seconds regardless (safety cleanup)
+  setTimeout(() => {
+    if (document.body.contains(video)) {
+      video.remove();
+    }
+  }, 3000);
+  
+  document.body.appendChild(video);
+};
+
+// Initialize video preloading - more conservative approach
 export const initVideoPreloading = (): void => {
+  // Do nothing on slow connections
+  if (isSlowConnection()) return;
+  
   if (window.requestIdleCallback) {
     requestIdleCallback(() => {
-      loadVimeoApi()
-        .then(() => preloadVideos(CRITICAL_VIDEOS))
-        .catch(error => console.error("Error in video preloading:", error));
+      // For mobile, only load metadata of hero video
+      if (window.innerWidth < 768) {
+        const heroVideo = CRITICAL_VIDEOS.find(v => v.importance === 'high');
+        if (heroVideo) {
+          preloadVideoMetadata(heroVideo.src);
+        }
+      } else {
+        // For desktop, load Vimeo API and preload videos
+        loadVimeoApi()
+          .then(() => preloadVideos())
+          .catch(error => console.error("Error in video preloading:", error));
+      }
     }, { timeout: 2000 });
   } else {
     // Fallback for browsers without requestIdleCallback
     setTimeout(() => {
-      loadVimeoApi()
-        .then(() => preloadVideos(CRITICAL_VIDEOS))
-        .catch(error => console.error("Error in video preloading:", error));
+      if (window.innerWidth < 768) {
+        const heroVideo = CRITICAL_VIDEOS.find(v => v.importance === 'high');
+        if (heroVideo) {
+          preloadVideoMetadata(heroVideo.src);
+        }
+      } else {
+        loadVimeoApi()
+          .then(() => preloadVideos())
+          .catch(error => console.error("Error in video preloading:", error));
+      }
     }, 100);
   }
 };

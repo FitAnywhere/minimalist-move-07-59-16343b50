@@ -94,7 +94,7 @@ const WorkoutAddictSection = () => {
           
           <VideoPlayer 
             src="/114Bboxfun 104.mp4" 
-            poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744294274/Screenshot_46_oimbqr.png"
+            poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_auto/v1744294274/Screenshot_46_oimbqr.png"
             aspectRatio="portrait"
             autoPlay={isInView}
             muted={true}
@@ -221,7 +221,7 @@ const WorkoutAddictSection = () => {
                 
                 <div className="w-full flex justify-center mt-4 mb-4">
                   <img 
-                    src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744101171/Screenshot_83_cupbkr.png" 
+                    src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,v1744101171/Screenshot_83_cupbkr.png" 
                     alt="BoxFun Product" 
                     className="max-w-[280px] w-full transition-all duration-500 hover:scale-105" 
                     loading="lazy"

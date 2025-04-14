@@ -95,8 +95,11 @@ const Index = () => {
     // Initialize styles
     initStyles();
     
-    // Initialize video preloading
-    initVideoPreloading();
+    // Initialize video preloading - but only for above-fold videos on desktop
+    // This ensures we don't waste bandwidth on mobile
+    if (window.innerWidth > 768) {
+      initVideoPreloading();
+    }
     
     // Set up anchor click handler
     const cleanupAnchorHandler = setupAnchorClickHandler();
