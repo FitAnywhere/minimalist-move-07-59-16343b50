@@ -17,6 +17,7 @@ interface VideoPlayerProps {
   width?: number;
   height?: number;
   fetchpriority?: 'high' | 'low' | 'auto';
+  posterPriority?: 'high' | 'low' | 'auto';
   onPlay?: () => void;
   onPause?: () => void;
   onEnded?: () => void;
@@ -38,6 +39,7 @@ const VideoPlayer = memo(({
   width,
   height,
   fetchpriority,
+  posterPriority = 'auto',
   onPlay,
   onPause,
   onEnded,
@@ -210,7 +212,11 @@ const VideoPlayer = memo(({
           onLoadedMetadata?.(event);
         }}
       >
-        <source src={src} type="video/mp4" />
+        <source 
+          src={src} 
+          type="video/mp4" 
+          fetchpriority={fetchpriority || 'low'}
+        />
         Your browser does not support the video tag.
       </video>
 

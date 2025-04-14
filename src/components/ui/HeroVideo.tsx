@@ -12,6 +12,7 @@ const HeroVideo = memo(() => {
       width={1280}
       height={720}
       fetchpriority="high"
+      posterPriority="high"  // New attribute to guide poster loading
     />
   );
 });
