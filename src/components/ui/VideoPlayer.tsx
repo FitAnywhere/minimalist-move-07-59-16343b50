@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect, memo } from 'react';
 import { Play, Volume2, VolumeX } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -98,9 +99,11 @@ const VideoPlayer = memo(({
     }
   }, [isVisible, priority, isLoaded, preload]);
 
+  // Modified effect to properly handle play and pause on scroll
   useEffect(() => {
-    if (!videoRef.current || !isLoaded || disableAutoplay) return;
+    if (!videoRef.current || !isLoaded) return;
 
+    // Auto-play logic (only if not manually controlled)
     if (playMode === 'always' && autoPlay && !disableAutoplay) {
       try {
         const playPromise = videoRef.current.play();
@@ -119,6 +122,7 @@ const VideoPlayer = memo(({
         console.error('Error during auto-play:', error);
       }
     } else if (playMode === 'onView') {
+      // PLAY logic - only if not manually controlled
       if (isVisible && autoPlay && !disableAutoplay) {
         try {
           const playPromise = videoRef.current.play();
@@ -135,7 +139,9 @@ const VideoPlayer = memo(({
         } catch (error) {
           console.error('Error playing video on view:', error);
         }
-      } else if (!isVisible && isPlaying) {
+      } 
+      // PAUSE logic - always pause when out of view, regardless of manual control
+      else if (!isVisible && isPlaying) {
         videoRef.current.pause();
         setIsPlaying(false);
         onPause?.();
