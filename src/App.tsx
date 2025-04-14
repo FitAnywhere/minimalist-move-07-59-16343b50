@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import TermsOfService from "./pages/TermsOfService";
 
+// TypeScript safe declarations
 declare global {
   interface Window {
     fbq: any;
@@ -21,12 +22,12 @@ const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
-    !(function (f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) {
-      if (f.fbq) return;
-      n = f.fbq = function () {
+    (function (f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) {
+      if ((f as any).fbq) return;
+      n = (f as any).fbq = function () {
         (n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments));
       };
-      if (!f._fbq) f._fbq = n;
+      if (!(f as any)._fbq) (f as any)._fbq = n;
       n.push = n;
       n.loaded = true;
       n.version = '2.0';
@@ -35,7 +36,7 @@ const App = () => {
       t.async = true;
       t.src = v;
       s = b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t, s);
+      s.parentNode!.insertBefore(t, s);
     })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
 
     if (typeof window.fbq === 'function') {
@@ -64,4 +65,3 @@ const App = () => {
 };
 
 export default App;
-
