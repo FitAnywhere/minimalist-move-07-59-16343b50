@@ -22,62 +22,64 @@ const testimonials: Testimonial[] = [{
   name: "Sarah M.",
   role: "Remote Worker",
   quote: "Used to blame Zoom for no workouts. Now I sneak in 15 min wins.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco/v1744099088/Screenshot_76_nkxmvr.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099088/Screenshot_76_nkxmvr.png"
 }, {
   name: "Jordan P.",
   role: "Calisthenics Enthusiast",
   quote: "Honestly shocked how fast this became my main workout.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco/v1744112883/Screenshot_85_xnvarx.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
 }, {
   name: "Chris L.",
   role: "Fitness Advocate",
   quote: "Modern, minimal, and our people love it.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco/v1744099090/Screenshot_73_tco9rh.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099090/Screenshot_73_tco9rh.png"
 }, {
   name: "Emily T.",
   role: "Fitness Beginner",
   quote: "One workout in and I realized. Bands are no joke.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco/v1744150914/Screenshot_89_mw00er.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744150914/Screenshot_89_mw00er.png"
 }, {
   name: "Alex G.",
   role: "Busy Professional",
   quote: "Minimal gear. Maximum gains. Just how I like it.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco/v1744097748/Screenshot_71_b7srzc.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_71_b7srzc.png"
 }, {
   name: "Tom S.",
   role: "Strength Seeker",
   quote: "No crowds, no pressure. Just me, music, and movement.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto:eco/v1744099087/Screenshot_77_jlxu5i.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
 }];
 
 const TestimonialImage = memo(({ imageUrl }: { imageUrl: string }) => {
-  const width = 640;
-  const height = 960;
+  const width = 400;
+  const height = 600;
   
   const getResponsiveUrl = (url: string, width: number) => {
     if (url.includes('f_auto,q_auto')) {
-      return url.replace('f_auto,q_auto', `f_auto,q_auto:eco,w_${width}`);
+      return url.replace('f_auto,q_auto', `f_auto,q_auto,w_${width}`);
     }
     return url;
   };
   
-  const smallUrl = getResponsiveUrl(imageUrl, 280);
-  const largeUrl = getResponsiveUrl(imageUrl, 640);
+  const smallUrl = getResponsiveUrl(imageUrl, 300);
+  const mediumUrl = getResponsiveUrl(imageUrl, 400);
+  const largeUrl = getResponsiveUrl(imageUrl, 600);
   
   return (
     <div className="relative w-full" style={{ paddingBottom: '150%' }}>
       <img 
-        src={getResponsiveUrl(imageUrl, 640)}
+        src={imageUrl}
         alt="Testimonial" 
         className="absolute inset-0 w-full h-full object-cover rounded-t-xl"
         loading="lazy"
         width={width}
         height={height}
         srcSet={`
-          ${smallUrl} 280w,
-          ${largeUrl} 640w
+          ${smallUrl} 300w,
+          ${mediumUrl} 400w,
+          ${largeUrl} 600w
         `}
-        sizes="(max-width: 768px) 100vw, 640px"
+        sizes="(max-width: 640px) 300px, (max-width: 768px) 400px, 600px"
       />
     </div>
   );

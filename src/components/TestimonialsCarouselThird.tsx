@@ -36,35 +36,35 @@ const testimonials: Testimonial[] = [{
 }];
 
 const TestimonialImage = memo(({ imageUrl }: { imageUrl: string }) => {
-  const width = 640;
-  const height = 960;
+  const width = 400;
+  const height = 600;
   
   const getResponsiveUrl = (url: string, width: number) => {
     if (url.includes('f_auto,q_auto')) {
-      return url.replace('f_auto,q_auto', `f_auto,q_auto:eco,w_${width}`);
+      return url.replace('f_auto,q_auto', `f_auto,q_auto,w_${width}`);
     }
-    const baseUrl = url.split('/upload/')[0];
-    const imagePath = url.split('/upload/')[1] || '';
-    return `${baseUrl}/upload/f_auto,q_auto:eco,w_${width}/${imagePath}`;
+    return url;
   };
   
-  const smallUrl = getResponsiveUrl(imageUrl, 280);
-  const largeUrl = getResponsiveUrl(imageUrl, 640);
+  const smallUrl = getResponsiveUrl(imageUrl, 300);
+  const mediumUrl = getResponsiveUrl(imageUrl, 400);
+  const largeUrl = getResponsiveUrl(imageUrl, 600);
   
   return (
     <div className="relative w-full" style={{ paddingBottom: '150%' }}>
       <img 
-        src={getResponsiveUrl(imageUrl, 640)}
+        src={imageUrl}
         alt="Testimonial" 
         className="absolute inset-0 w-full h-full object-cover rounded-t-xl"
         loading="lazy"
         width={width}
         height={height}
         srcSet={`
-          ${smallUrl} 280w,
-          ${largeUrl} 640w
+          ${smallUrl} 300w,
+          ${mediumUrl} 400w,
+          ${largeUrl} 600w
         `}
-        sizes="(max-width: 768px) 100vw, 640px"
+        sizes="(max-width: 640px) 300px, (max-width: 768px) 400px, 600px"
       />
     </div>
   );

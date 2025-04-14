@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, memo } from 'react';
 import { Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -186,11 +185,6 @@ const VideoPlayer = memo(({
     };
   }, [loop, onEnded, onPause]);
 
-  // Ensure poster uses proper Cloudinary URL format if it's from Cloudinary
-  const optimizedPoster = poster.includes('cloudinary.com') && !poster.includes('q_auto:eco') 
-    ? poster.replace('q_auto', 'q_auto:eco') 
-    : poster;
-
   return (
     <div 
       ref={containerRef}
@@ -205,7 +199,7 @@ const VideoPlayer = memo(({
         playsInline
         loop={loop}
         controls={controls && isPlaying}
-        poster={optimizedPoster}
+        poster={poster}
         className="w-full h-full object-cover"
         aria-label="Video player"
         width={width}
