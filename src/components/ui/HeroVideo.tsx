@@ -7,11 +7,10 @@ const HeroVideo = memo(() => {
     <VideoPlayer 
       src="/114 Intor Video Optt.mp4" 
       poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744102423/Screenshot_84_oi460p.png"
-      priority={true}
-      preload="auto"
+      priority={false}
+      preload="none"
       width={1280}
       height={720}
-      fetchpriority="high"
     />
   );
 });

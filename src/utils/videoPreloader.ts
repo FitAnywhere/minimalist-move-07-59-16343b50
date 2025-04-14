@@ -6,18 +6,17 @@
 interface PreloadOptions {
   importance?: 'high' | 'low';
   type?: 'preload' | 'prefetch';
-  fetchpriority?: 'high' | 'low' | 'auto';
 }
 
 // Critical videos that should be preloaded as soon as possible
 export const CRITICAL_VIDEOS = [
-  { id: '1067255623', importance: 'high' as const, fetchpriority: 'high' as const }, // Hero video
-  { id: '1067257145', importance: 'low' as const, fetchpriority: 'low' as const }, // TRX video
-  { id: '1067257124', importance: 'low' as const, fetchpriority: 'low' as const }, // Bands video 
-  { id: '1067256372', importance: 'low' as const, fetchpriority: 'low' as const }, // Testimonial videos
-  { id: '1067256325', importance: 'low' as const, fetchpriority: 'low' as const },
-  { id: '1067256399', importance: 'low' as const, fetchpriority: 'low' as const },
-  { id: '1073152410', importance: 'low' as const, fetchpriority: 'low' as const } // TrainingVault video
+  { id: '1067255623', importance: 'high' as const }, // Hero video
+  { id: '1067257145', importance: 'low' as const }, // TRX video
+  { id: '1067257124', importance: 'low' as const }, // Bands video 
+  { id: '1067256372', importance: 'low' as const }, // Testimonial videos
+  { id: '1067256325', importance: 'low' as const },
+  { id: '1067256399', importance: 'low' as const },
+  { id: '1073152410', importance: 'low' as const } // TrainingVault video
 ];
 
 // Check if the Vimeo API script is already loaded
@@ -53,12 +52,10 @@ export const loadVimeoApi = (): Promise<void> => {
 };
 
 // Add preload hints for critical videos
-export const preloadVideos = (videoIds: Array<string | {id: string, importance?: 'high' | 'low', fetchpriority?: 'high' | 'low' | 'auto'}>): void => {
+export const preloadVideos = (videoIds: Array<string | {id: string, importance?: 'high' | 'low'}>): void => {
   videoIds.forEach((item, index) => {
     const id = typeof item === 'string' ? item : item.id;
     const importance = typeof item === 'string' ? (index === 0 ? 'high' : 'low') : (item.importance || 'low');
-    const fetchpriority = typeof item === 'string' ? (index === 0 ? 'high' : 'low') : (item.fetchpriority || (importance === 'high' ? 'high' : 'low'));
-    
     const existingLink = document.querySelector(`link[href*="${id}"]`);
     
     if (!existingLink) {
@@ -74,16 +71,11 @@ export const preloadVideos = (videoIds: Array<string | {id: string, importance?:
         link.dataset.importance = 'low';
       }
       
-      // Set fetchpriority attribute to help the browser prioritize resources
-      if (fetchpriority) {
-        link.setAttribute('fetchpriority', fetchpriority);
-      }
-      
       link.href = `https://player.vimeo.com/video/${id}`;
       link.crossOrigin = 'anonymous';
       document.head.appendChild(link);
       
-      console.log(`Preloaded video: ${id} with importance: ${importance}, fetchpriority: ${fetchpriority}`);
+      console.log(`Preloaded video: ${id} with importance: ${importance}`);
     }
   });
 };
