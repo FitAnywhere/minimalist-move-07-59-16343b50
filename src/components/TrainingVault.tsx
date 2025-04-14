@@ -103,7 +103,7 @@ const TrainingVault = () => {
         <div className="flex flex-col md:flex-row md:gap-8 md:items-center md:justify-center">
           {/* Left column: Content */}
           <div className="md:w-1/2 flex flex-col items-center">
-            <p className="mb-10 text-white uppercase text-center text-5xl font-normal">CHOOSE YOURS</p>
+            <p className="mb-10 text-white uppercase text-center font-normal text-3xl">CHOOSE YOURS</p>
             
             {/* Buttons */}
             <div className="flex gap-4 justify-center mb-8">
