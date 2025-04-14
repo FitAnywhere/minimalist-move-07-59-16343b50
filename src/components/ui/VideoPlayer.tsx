@@ -52,6 +52,7 @@ const VideoPlayer = memo(({
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(muted);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+  const [disableAutoplay, setDisableAutoplay] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -98,7 +99,7 @@ const VideoPlayer = memo(({
   }, [isVisible, priority, isLoaded, preload]);
 
   useEffect(() => {
-    if (!videoRef.current || !isLoaded) return;
+    if (!videoRef.current || !isLoaded || disableAutoplay) return;
 
     if (playMode === 'always' && autoPlay) {
       try {
@@ -108,6 +109,7 @@ const VideoPlayer = memo(({
             .then(() => {
               setIsPlaying(true);
               onPlay?.();
+              setDisableAutoplay(true);
             })
             .catch(error => {
               console.error('Auto-play failed:', error);
@@ -116,7 +118,7 @@ const VideoPlayer = memo(({
       } catch (error) {
         console.error('Error during auto-play:', error);
       }
-    } else if (playMode === 'onView') {
+    } else if (playMode === 'onView' && !disableAutoplay) {
       if (isVisible && autoPlay) {
         try {
           const playPromise = videoRef.current.play();
@@ -139,7 +141,7 @@ const VideoPlayer = memo(({
         onPause?.();
       }
     }
-  }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPlay, onPause]);
+  }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPlay, onPause, disableAutoplay]);
 
   const handlePlayClick = () => {
     if (!videoRef.current) return;
@@ -149,20 +151,28 @@ const VideoPlayer = memo(({
       setIsLoaded(true);
     }
 
-    try {
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-            onPlay?.();
-          })
-          .catch(error => {
-            console.error('Play failed:', error);
-          });
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+      onPause?.();
+      setDisableAutoplay(true);
+    } else {
+      try {
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+              onPlay?.();
+              setDisableAutoplay(true);
+            })
+            .catch(error => {
+              console.error('Play failed:', error);
+            });
+        }
+      } catch (error) {
+        console.error('Error playing video:', error);
       }
-    } catch (error) {
-      console.error('Error playing video:', error);
     }
   };
 
@@ -221,11 +231,12 @@ const VideoPlayer = memo(({
         loop={loop}
         controls={controls && isPlaying}
         poster={poster}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover cursor-pointer"
         aria-label="Video player"
         width={width}
         height={height}
         fetchpriority={fetchpriority}
+        onClick={handlePlayClick}
         onLoadedMetadata={(event) => {
           setIsLoaded(true);
           onLoadedMetadata?.(event);
@@ -252,12 +263,12 @@ const VideoPlayer = memo(({
 
       {showHeroVolumeControl && (
         <div 
-          className="absolute bottom-4 right-4 flex items-center gap-4"
+          className="absolute bottom-4 right-4 flex flex-col items-end gap-4"
           onMouseEnter={() => setShowVolumeSlider(true)}
           onMouseLeave={() => setShowVolumeSlider(false)}
         >
           {showVolumeSlider && (
-            <div className="bg-black/50 px-3 py-4 rounded-lg">
+            <div className="bg-black/50 px-3 py-4 rounded-lg mb-2">
               <Slider
                 defaultValue={[volume]}
                 max={1}
@@ -268,7 +279,6 @@ const VideoPlayer = memo(({
               />
             </div>
           )}
-          
           <button
             onClick={toggleMute}
             className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center hover:bg-black/70 transition-colors"
