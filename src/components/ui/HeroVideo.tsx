@@ -12,10 +12,11 @@ const HeroVideo = memo(() => {
       width={1280}
       height={720}
       fetchpriority="high"
-      autoPlay={true}
+      autoPlay={false}
       playMode="onView"
       muted={true}
       showVolumeControl={true}
+      loop={false}
     />
   );
 });
