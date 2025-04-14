@@ -1,14 +1,42 @@
 
 import { useState, useEffect, useRef } from 'react';
-import { ChevronDown, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
 const ChatbotHelper = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [chatbotReady, setChatbotReady] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   
   useEffect(() => {
+    // Check if Voiceflow is loaded
+    const checkVoiceflowLoaded = () => {
+      if (window.voiceflow && window.voiceflow.chat) {
+        setChatbotReady(true);
+        return true;
+      }
+      return false;
+    };
+    
+    // If Voiceflow isn't immediately available, set up a checker
+    if (!checkVoiceflowLoaded()) {
+      const voiceflowChecker = setInterval(() => {
+        if (checkVoiceflowLoaded()) {
+          clearInterval(voiceflowChecker);
+        }
+      }, 1000);
+      
+      // Clean up interval
+      return () => clearInterval(voiceflowChecker);
+    }
+    
+    return undefined;
+  }, []);
+  
+  useEffect(() => {
+    // Only schedule popup if chatbot is ready
+    if (!chatbotReady) return undefined;
+    
     // Use requestIdleCallback to schedule non-critical initialization
     const schedulePopup = () => {
       // Show popup after 20 seconds (when user has had time to engage with the page)
@@ -37,10 +65,10 @@ const ChatbotHelper = () => {
         clearTimeout(timerRef.current);
       }
     };
-  }, []);
+  }, [chatbotReady]);
 
   const handleAskClick = () => {
-    if (window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
+    if (chatbotReady && window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
       window.voiceflow.chat.open();
     }
     setIsVisible(false);
