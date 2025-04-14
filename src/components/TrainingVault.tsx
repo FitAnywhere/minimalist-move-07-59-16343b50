@@ -1,11 +1,9 @@
-
 import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoPlayer from '@/components/ui/VideoPlayer';
-
 const TrainingVault = () => {
   const {
     toast
@@ -18,11 +16,9 @@ const TrainingVault = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const isMobile = useIsMobile();
-  
   const handleLevelSelect = (level: 'beginner' | 'expert') => {
     setSelectedLevel(level);
   };
-  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       name,
@@ -33,7 +29,6 @@ const TrainingVault = () => {
       [name]: value
     }));
   };
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -94,7 +89,6 @@ const TrainingVault = () => {
       setIsLoading(false);
     }
   };
-  
   return <section className="bg-black text-white py-16">
       <div className="container mx-auto px-6">
         {/* Heading */}
@@ -109,7 +103,7 @@ const TrainingVault = () => {
         <div className="flex flex-col md:flex-row md:gap-8 md:items-center md:justify-center">
           {/* Left column: Content */}
           <div className="md:w-1/2 flex flex-col items-center">
-            <p className="text-xl mb-10 text-white uppercase text-center">CHOOSE YOUR FREE WORKOUT SAMPLES</p>
+            <p className="mb-10 text-white uppercase text-center text-5xl font-normal">CHOOSE YOURS</p>
             
             {/* Buttons */}
             <div className="flex gap-4 justify-center mb-8">
@@ -156,16 +150,7 @@ const TrainingVault = () => {
               padding: '177.78% 0 0 0',
               position: 'relative'
             }}>
-                <VideoPlayer 
-                  src="/114 Setup (1080P).mp4" 
-                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097749/Screenshot_69_w6ixx7.png"
-                  aspectRatio="portrait"
-                  autoPlay={true}
-                  muted={true}
-                  loop={true}
-                  playMode="always"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
+                <VideoPlayer src="/114 Setup (1080P).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097749/Screenshot_69_w6ixx7.png" aspectRatio="portrait" autoPlay={true} muted={true} loop={true} playMode="always" className="absolute inset-0 w-full h-full object-cover" />
               </div>
             </div>
           </div>
