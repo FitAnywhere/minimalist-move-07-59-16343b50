@@ -1,8 +1,6 @@
-
 import { useState, useRef, useEffect, memo } from 'react';
 import { Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface VideoPlayerProps {
   src: string;
@@ -18,7 +16,6 @@ interface VideoPlayerProps {
   playMode?: 'always' | 'onView';
   width?: number;
   height?: number;
-  deferVideoLoadOnMobile?: boolean;
   onPlay?: () => void;
   onPause?: () => void;
   onEnded?: () => void;
@@ -39,7 +36,6 @@ const VideoPlayer = memo(({
   playMode = 'onView',
   width,
   height,
-  deferVideoLoadOnMobile = false,
   onPlay,
   onPause,
   onEnded,
@@ -48,20 +44,9 @@ const VideoPlayer = memo(({
   const [isPlaying, setIsPlaying] = useState(autoPlay && playMode === 'always');
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const isMobile = useIsMobile();
-  
-  // Determine if this is a hero/above-fold video
-  const isHeroVideo = priority === true;
-  
-  // Determine if video should be lazy loaded
-  const shouldLazyLoad = !isHeroVideo && !priority;
-  
-  // Determine if video loading should be deferred on mobile
-  const shouldDeferLoad = isMobile && deferVideoLoadOnMobile && !hasInteracted;
 
   // Get aspect ratio style
   const getAspectRatioClass = () => {
@@ -99,9 +84,6 @@ const VideoPlayer = memo(({
 
   // Load video when it becomes visible or if it has priority
   useEffect(() => {
-    // Skip loading if we're deferring on mobile
-    if (shouldDeferLoad) return;
-    
     if ((isVisible || priority) && videoRef.current && !isLoaded) {
       // If preload is set to 'none', we'll only load the poster
       // If not, it will load based on the preload attribute
@@ -110,11 +92,11 @@ const VideoPlayer = memo(({
       }
       setIsLoaded(true);
     }
-  }, [isVisible, priority, isLoaded, preload, shouldDeferLoad]);
+  }, [isVisible, priority, isLoaded, preload]);
 
   // Handle playback based on visibility and playMode
   useEffect(() => {
-    if (!videoRef.current || !isLoaded || shouldDeferLoad) return;
+    if (!videoRef.current || !isLoaded) return;
 
     // For "always" mode, play regardless of visibility once loaded
     if (playMode === 'always' && autoPlay) {
@@ -161,14 +143,11 @@ const VideoPlayer = memo(({
         onPause?.();
       }
     }
-  }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPlay, onPause, shouldDeferLoad]);
+  }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPlay, onPause]);
 
   // Handle play button click
   const handlePlayClick = () => {
     if (!videoRef.current) return;
-    
-    // Set that user has interacted to load video if it was deferred
-    setHasInteracted(true);
 
     // Ensure video is loaded before trying to play
     if (!isLoaded) {
@@ -228,7 +207,7 @@ const VideoPlayer = memo(({
     >
       <video
         ref={videoRef}
-        preload={shouldDeferLoad ? "none" : preload}
+        preload={preload}
         muted={muted}
         playsInline
         loop={loop}
@@ -238,16 +217,12 @@ const VideoPlayer = memo(({
         aria-label="Video player"
         width={width}
         height={height}
-        fetchpriority={isHeroVideo ? "high" : "auto"}
         onLoadedMetadata={(event) => {
           setIsLoaded(true);
           onLoadedMetadata?.(event);
         }}
       >
-        {/* Only add source if not deferring or user has interacted */}
-        {(!shouldDeferLoad || hasInteracted) && (
-          <source src={src} type="video/mp4" />
-        )}
+        <source src={src} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 

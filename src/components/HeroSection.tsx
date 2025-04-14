@@ -1,3 +1,4 @@
+
 import { useRef, useState, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -8,14 +9,17 @@ import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { debounce } from '@/utils/eventOptimizers';
 
+// Memoize the HeroSection component to prevent unnecessary rerenders
 const HeroSection = memo(() => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
+  // Use a higher threshold to ensure better animation control
   const isInView = useInView(heroRef, {
     threshold: 0.4
   });
 
+  // Memoize event handlers with debounce to improve performance
   const scrollToOwnBoth = useCallback(debounce((e: React.MouseEvent) => {
     e.preventDefault();
     const productSection = document.getElementById('product');
@@ -25,7 +29,7 @@ const HeroSection = memo(() => {
       });
     }
   }, 150), []);
-
+  
   return (
     <section 
       ref={heroRef} 
@@ -39,20 +43,23 @@ const HeroSection = memo(() => {
           {isMobile ? (
             <>
               <div className="text-center order-1 w-full space-y-6">
+                {/* Mobile layout with specific order */}
                 <HeroContent isInView={isInView} scrollToOwnBoth={scrollToOwnBoth} isMobile={true} />
                 
+                {/* Video container for mobile - Reserve exact space to prevent layout shifts */}
                 <div 
                   className={cn(
                     "mt-4 transition-all duration-1000 delay-300", 
                     isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                   )}
-                  style={{ minHeight: '56.25vw' }}
+                  style={{ minHeight: '56.25vw' }} // 16:9 aspect ratio placeholder
                 >
                   <div className="relative rounded-xl overflow-hidden shadow-lg aspect-video">
                     <HeroVideo />
                   </div>
                 </div>
                 
+                {/* CTA Button placed after content */}
                 <div 
                   className={cn(
                     "mt-4 transition-all duration-1000 delay-500", 
@@ -81,10 +88,11 @@ const HeroSection = memo(() => {
               
               <div 
                 className={`order-1 md:order-2 transition-all duration-1000 delay-300 w-full ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-                style={{ minHeight: '350px' }}
+                style={{ minHeight: '350px' }} // Reserve space to prevent layout shifts
               >
                 <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
                   <div className="w-full max-w-[95%] mx-auto">
+                    {/* Hero video component */}
                     <div className="aspect-video rounded-xl overflow-hidden">
                       <HeroVideo />
                     </div>
