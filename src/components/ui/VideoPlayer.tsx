@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, memo } from 'react';
-import { Play } from 'lucide-react';
+import { Play, Volume2, VolumeX } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Slider } from './slider';
 
 interface VideoPlayerProps {
   src: string;
@@ -21,6 +22,7 @@ interface VideoPlayerProps {
   onPause?: () => void;
   onEnded?: () => void;
   onLoadedMetadata?: (event: React.SyntheticEvent<HTMLVideoElement>) => void;
+  showHeroVolumeControl?: boolean;
 }
 
 const VideoPlayer = memo(({
@@ -41,11 +43,15 @@ const VideoPlayer = memo(({
   onPlay,
   onPause,
   onEnded,
-  onLoadedMetadata
+  onLoadedMetadata,
+  showHeroVolumeControl = false
 }: VideoPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(autoPlay && playMode === 'always');
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [volume, setVolume] = useState(1);
+  const [isMuted, setIsMuted] = useState(muted);
+  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -185,6 +191,21 @@ const VideoPlayer = memo(({
     };
   }, [loop, onEnded, onPause]);
 
+  const handleVolumeChange = (value: number[]) => {
+    if (!videoRef.current) return;
+    const newVolume = value[0];
+    setVolume(newVolume);
+    videoRef.current.volume = newVolume;
+    setIsMuted(newVolume === 0);
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    const newMutedState = !isMuted;
+    setIsMuted(newMutedState);
+    videoRef.current.muted = newMutedState;
+  };
+
   return (
     <div 
       ref={containerRef}
@@ -195,7 +216,7 @@ const VideoPlayer = memo(({
       <video
         ref={videoRef}
         preload={preload}
-        muted={muted}
+        muted={isMuted}
         playsInline
         loop={loop}
         controls={controls && isPlaying}
@@ -226,6 +247,39 @@ const VideoPlayer = memo(({
           >
             <Play className="w-8 h-8 text-black ml-1" />
           </button>
+        </div>
+      )}
+
+      {showHeroVolumeControl && (
+        <div 
+          className="absolute bottom-4 right-4 flex items-center gap-2"
+          onMouseEnter={() => setShowVolumeSlider(true)}
+          onMouseLeave={() => setShowVolumeSlider(false)}
+        >
+          <button
+            onClick={toggleMute}
+            className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center hover:bg-black/70 transition-colors"
+            aria-label={isMuted ? "Unmute video" : "Mute video"}
+          >
+            {isMuted ? (
+              <VolumeX className="w-5 h-5 text-white" />
+            ) : (
+              <Volume2 className="w-5 h-5 text-white" />
+            )}
+          </button>
+          
+          {showVolumeSlider && (
+            <div className="bg-black/50 px-3 py-4 rounded-lg">
+              <Slider
+                defaultValue={[volume]}
+                max={1}
+                step={0.1}
+                orientation="vertical"
+                className="h-24"
+                onValueChange={handleVolumeChange}
+              />
+            </div>
+          )}
         </div>
       )}
     </div>
