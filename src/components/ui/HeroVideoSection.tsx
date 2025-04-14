@@ -1,8 +1,7 @@
 
-import { memo, useState } from 'react';
+import { memo, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { useVideoOptimization } from '@/hooks/useVideoOptimization';
-import VideoPlayer from './VideoPlayer';
+import HeroVideo from './HeroVideo';
 
 interface HeroVideoSectionProps {
   isInView: boolean;
@@ -10,12 +9,7 @@ interface HeroVideoSectionProps {
 }
 
 const HeroVideoSection = memo(({ isInView, isMobile }: HeroVideoSectionProps) => {
-  const [containerRef, isVisible, isLoaded] = useVideoOptimization({
-    threshold: 0.2,
-    rootMargin: '200px',
-    priorityLoad: true, // Hero video is critical
-    lazyLoad: false // No lazy loading for hero video
-  });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <div 
@@ -30,14 +24,10 @@ const HeroVideoSection = memo(({ isInView, isMobile }: HeroVideoSectionProps) =>
       <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
         <div className={isMobile ? "w-full" : "w-full max-w-[95%] mx-auto"}>
           <div className="aspect-video rounded-xl overflow-hidden">
-            <VideoPlayer 
-              src="/114 Intor Video Optt.mp4" 
-              poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744102423/Screenshot_84_oi460p.png"
-              priority={true}
-              preload="auto"
-              width={1280}
-              height={720}
-              fetchpriority="high"
+            <HeroVideo 
+              loadImmediately={false}
+              playOnScroll={true}
+              scrollThreshold={0.3}
             />
           </div>
           
