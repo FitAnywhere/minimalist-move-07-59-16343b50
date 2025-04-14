@@ -4,9 +4,8 @@ import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ScrollIndicator from './ui/ScrollIndicator';
 import HeroContent from './ui/HeroContent';
-import HeroVideo from './ui/HeroVideo';
-import { ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import HeroVideoSection from './ui/HeroVideoSection';
+import HeroCallToAction from './ui/HeroCallToAction';
 import { debounce } from '@/utils/eventOptimizers';
 
 // Memoize the HeroSection component to prevent unnecessary rerenders
@@ -46,59 +45,20 @@ const HeroSection = memo(() => {
                 {/* Mobile layout with specific order */}
                 <HeroContent isInView={isInView} scrollToOwnBoth={scrollToOwnBoth} isMobile={true} />
                 
-                {/* Video container for mobile - Reserve exact space to prevent layout shifts */}
-                <div 
-                  className={cn(
-                    "mt-4 transition-all duration-1000 delay-300", 
-                    isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  )}
-                  style={{ minHeight: '56.25vw' }} // 16:9 aspect ratio placeholder
-                >
-                  <div className="relative rounded-xl overflow-hidden shadow-lg aspect-video">
-                    <HeroVideo />
-                  </div>
-                </div>
+                {/* Video container for mobile */}
+                <HeroVideoSection isInView={isInView} isMobile={true} />
                 
                 {/* CTA Button placed after content */}
-                <div 
-                  className={cn(
-                    "mt-4 transition-all duration-1000 delay-500", 
-                    isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  )}
-                >
-                  <div className="mt-4 space-y-1">
-                    <p className="text-gray-700 text-base font-semibold">On average, gym users lose:</p>
-                    <p className="text-gray-700 my-[9px] text-base font-semibold">€12,052 in fees + 2,080 hours in traffic</p>
-                  </div>
-                  
-                  <button 
-                    onClick={scrollToOwnBoth} 
-                    className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]"
-                    aria-label="Learn more about subscribing"
-                  >
-                    STOP SUBSCRIBING
-                    <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </button>
-                </div>
+                <HeroCallToAction isInView={isInView} isMobile={true} scrollToOwnBoth={scrollToOwnBoth} />
               </div>
             </> 
           ) : (
             <>
               <HeroContent isInView={isInView} scrollToOwnBoth={scrollToOwnBoth} />
               
-              <div 
-                className={`order-1 md:order-2 transition-all duration-1000 delay-300 w-full ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-                style={{ minHeight: '350px' }} // Reserve space to prevent layout shifts
-              >
-                <div className="relative rounded-xl overflow-hidden shadow-lg flex justify-center">
-                  <div className="w-full max-w-[95%] mx-auto">
-                    {/* Hero video component */}
-                    <div className="aspect-video rounded-xl overflow-hidden">
-                      <HeroVideo />
-                    </div>
-                    <p className="mt-3 text-sm text-gray-600 ml-1 text-center my-[6px] mx-[30px]">Launching Spring 2025. Reserve before we sell out.</p>
-                  </div>
-                </div>
+              <div className="order-1 md:order-2 w-full">
+                <HeroVideoSection isInView={isInView} isMobile={false} />
+                <HeroCallToAction isInView={isInView} isMobile={false} scrollToOwnBoth={scrollToOwnBoth} />
               </div>
             </>
           )}
