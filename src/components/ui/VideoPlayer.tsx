@@ -52,8 +52,7 @@ const VideoPlayer = memo(({
   const [isMuted, setIsMuted] = useState(muted);
   const [volume, setVolume] = useState(1);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
-  const [userInteracted, setUserInteracted] = useState(false);
-  const [hasAutoplayedOnce, setHasAutoplayedOnce] = useState(false);
+  const [hasManuallyControlled, setHasManuallyControlled] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -69,11 +68,11 @@ const VideoPlayer = memo(({
   };
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || priority) return;
 
     const options = {
-      rootMargin: '100px',
-      threshold: 0.1
+      rootMargin: '0px',
+      threshold: 0.6
     };
 
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -81,28 +80,23 @@ const VideoPlayer = memo(({
       const wasVisible = isVisible;
       setIsVisible(entry.isIntersecting);
       
-      if (wasVisible && !entry.isIntersecting && isPlaying) {
-        if (videoRef.current) {
-          videoRef.current.pause();
-          setIsPlaying(false);
-          onPause?.();
-        }
-      }
-      
-      if (!wasVisible && entry.isIntersecting && !userInteracted && !hasAutoplayedOnce && playMode === 'firstScroll') {
-        if (videoRef.current) {
+      if (!hasManuallyControlled) {
+        if (entry.isIntersecting && !wasVisible && playMode === 'firstScroll' && videoRef.current) {
           const playPromise = videoRef.current.play();
           if (playPromise !== undefined) {
             playPromise
               .then(() => {
                 setIsPlaying(true);
-                setHasAutoplayedOnce(true);
                 onPlay?.();
               })
               .catch(error => {
                 console.error('Play on view failed:', error);
               });
           }
+        } else if (!entry.isIntersecting && wasVisible && videoRef.current) {
+          videoRef.current.pause();
+          setIsPlaying(false);
+          onPause?.();
         }
       }
     };
@@ -115,17 +109,19 @@ const VideoPlayer = memo(({
         observerRef.current.disconnect();
       }
     };
-  }, [isVisible, isPlaying, onPlay, onPause, userInteracted, hasAutoplayedOnce, playMode]);
+  }, [isVisible, isPlaying, onPlay, onPause, hasManuallyControlled, playMode, priority]);
 
   const handlePlayClick = () => {
     if (!videoRef.current) return;
+
+    if (!hasManuallyControlled) {
+      setHasManuallyControlled(true);
+    }
 
     if (!isLoaded) {
       videoRef.current.load();
       setIsLoaded(true);
     }
-
-    setUserInteracted(true);
 
     if (isPlaying) {
       videoRef.current.pause();
