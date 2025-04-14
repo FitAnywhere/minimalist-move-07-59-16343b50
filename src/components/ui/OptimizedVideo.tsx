@@ -68,22 +68,13 @@ const OptimizedVideo = ({
 
     const options = {
       root: null, // viewport
-      rootMargin: '200px', // start loading slightly before visible
+      rootMargin: '100px', // start loading slightly before visible
       threshold: 0.1 // trigger when 10% of element is visible
     };
 
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
-      const wasInView = isInView;
-      const newInView = entry.isIntersecting;
-      
-      setIsInView(newInView);
-      
-      // If video becomes visible and user has interacted OR autoplay is true
-      // then start loading the video
-      if (!wasInView && newInView && (userInteracted || autoplay)) {
-        loadVideo();
-      }
+      setIsInView(entry.isIntersecting);
     };
 
     observerRef.current = new IntersectionObserver(handleIntersection, options);
@@ -94,13 +85,14 @@ const OptimizedVideo = ({
         observerRef.current.disconnect();
       }
     };
-  }, [autoplay, userInteracted]);
+  }, []);
 
   // Initialize Vimeo player when user interacts and element is in view
   const loadVideo = () => {
     if (!containerRef.current || loadState === 'loading' || loadState === 'loaded') return;
     
     setLoadState('loading');
+    setUserInteracted(true);
     
     try {
       // Build URL with parameters
@@ -120,9 +112,6 @@ const OptimizedVideo = ({
       params.append('portrait', '0');
       params.append('dnt', '1');
       
-      // Very important - don't preload anything
-      params.append('preload', 'none');
-      
       url = `${url}?${params.toString()}`;
       
       // Create iframe if it doesn't exist
@@ -139,7 +128,6 @@ const OptimizedVideo = ({
         iframe.style.border = 'none';
         iframe.title = title || `Vimeo video player: ${vimeoId}`;
         iframe.loading = 'lazy';
-        iframe.setAttribute('data-loaded', 'true');
         
         // Set up event listeners for iframe
         iframe.onload = handleVideoLoaded;
@@ -159,9 +147,6 @@ const OptimizedVideo = ({
 
   const handleVideoLoaded = () => {
     setLoadState('loaded');
-    if (containerRef.current) {
-      containerRef.current.setAttribute('data-loaded', 'true');
-    }
     onLoad?.();
   };
 
@@ -172,10 +157,6 @@ const OptimizedVideo = ({
     if (iframeRef.current && iframeRef.current.parentNode) {
       iframeRef.current.parentNode.removeChild(iframeRef.current);
       iframeRef.current = null;
-    }
-    
-    if (containerRef.current) {
-      containerRef.current.setAttribute('data-loaded', 'error');
     }
     
     onError?.();
@@ -198,9 +179,7 @@ const OptimizedVideo = ({
   };
 
   const handlePlayClick = () => {
-    setUserInteracted(true);
-    
-    if (isInView && loadState === 'idle') {
+    if (!userInteracted) {
       loadVideo();
     } else if (loadState === 'error') {
       handleRetry();
@@ -229,8 +208,6 @@ const OptimizedVideo = ({
         <div 
           ref={containerRef} 
           className="absolute inset-0 bg-black overflow-hidden"
-          data-loaded={loadState === 'loaded' ? 'true' : 'false'}
-          data-vimeo-id={vimeoId}
         >
           {/* Loading state */}
           {loadState === 'loading' && (

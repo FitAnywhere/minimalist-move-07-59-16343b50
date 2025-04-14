@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, memo } from 'react';
 import { Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -33,21 +32,20 @@ const VideoPlayer = memo(({
   muted = true,
   loop = false,
   controls = false,
-  preload = 'none', // Changed default to 'none' for true lazy loading
+  preload = 'metadata',
   priority = false,
   playMode = 'onView',
   width,
   height,
-  fetchpriority = 'low', // Default to low priority fetch
+  fetchpriority,
   onPlay,
   onPause,
   onEnded,
   onLoadedMetadata
 }: VideoPlayerProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(autoPlay && playMode === 'always');
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -61,26 +59,17 @@ const VideoPlayer = memo(({
     }
   };
 
-  // Setup intersection observer to detect when video enters viewport
   useEffect(() => {
     if (!containerRef.current) return;
 
     const options = {
-      rootMargin: '100px', // Start loading slightly before visible
-      threshold: 0.1 // Trigger when 10% of element is visible
+      rootMargin: '100px',
+      threshold: 0.1
     };
 
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
-      const wasVisible = isVisible;
       setIsVisible(entry.isIntersecting);
-      
-      // Only trigger video loading when it becomes visible for the first time
-      if (!wasVisible && entry.isIntersecting && !isLoaded && videoRef.current) {
-        if (priority || (playMode === 'onView' && autoPlay)) {
-          loadVideo();
-        }
-      }
     };
 
     observerRef.current = new IntersectionObserver(handleIntersection, options);
@@ -91,38 +80,67 @@ const VideoPlayer = memo(({
         observerRef.current.disconnect();
       }
     };
-  }, [isVisible, isLoaded, priority, autoPlay, playMode]);
+  }, []);
 
-  // Function to actually load the video
-  const loadVideo = () => {
-    if (!videoRef.current || isLoaded) return;
-    
-    // Set the source programmatically
-    if (!videoRef.current.src) {
-      videoRef.current.src = src;
+  useEffect(() => {
+    if ((isVisible || priority) && videoRef.current && !isLoaded) {
+      if (preload !== 'none') {
+        videoRef.current.load();
+      }
+      setIsLoaded(true);
     }
-    
-    // Explicitly call load() to start loading the video
-    videoRef.current.load();
-    setIsLoaded(true);
-    
-    // Update data attribute for debugging
-    containerRef.current?.setAttribute('data-loaded', 'true');
-    
-    // Auto-play if needed
-    if ((isVisible && autoPlay && playMode === 'onView') || 
-        (autoPlay && playMode === 'always') || 
-        hasUserInteracted) {
-      playVideo();
-    }
-  };
+  }, [isVisible, priority, isLoaded, preload]);
 
-  const playVideo = () => {
+  useEffect(() => {
+    if (!videoRef.current || !isLoaded) return;
+
+    if (playMode === 'always' && autoPlay) {
+      try {
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+              onPlay?.();
+            })
+            .catch(error => {
+              console.error('Auto-play failed:', error);
+            });
+        }
+      } catch (error) {
+        console.error('Error during auto-play:', error);
+      }
+    } else if (playMode === 'onView') {
+      if (isVisible && autoPlay) {
+        try {
+          const playPromise = videoRef.current.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                setIsPlaying(true);
+                onPlay?.();
+              })
+              .catch(error => {
+                console.error('Play on view failed:', error);
+              });
+          }
+        } catch (error) {
+          console.error('Error playing video on view:', error);
+        }
+      } else if (!isVisible && isPlaying) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+        onPause?.();
+      }
+    }
+  }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPlay, onPause]);
+
+  const handlePlayClick = () => {
     if (!videoRef.current) return;
-    
-    // Ensure video is loaded before attempting to play
+
     if (!isLoaded) {
-      loadVideo();
+      videoRef.current.load();
+      setIsLoaded(true);
     }
 
     try {
@@ -142,27 +160,6 @@ const VideoPlayer = memo(({
     }
   };
 
-  const handlePlayClick = () => {
-    setHasUserInteracted(true);
-    playVideo();
-  };
-
-  // Handle play/pause when visibility changes (for "onView" mode)
-  useEffect(() => {
-    if (!videoRef.current || !isLoaded) return;
-
-    if (playMode === 'onView') {
-      if (isVisible && autoPlay) {
-        playVideo();
-      } else if (!isVisible && isPlaying) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-        onPause?.();
-      }
-    }
-  }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPause]);
-
-  // Handle play/pause/ended events
   useEffect(() => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
@@ -188,20 +185,12 @@ const VideoPlayer = memo(({
     };
   }, [loop, onEnded, onPause]);
 
-  // Special case for priority videos that should load early
-  useEffect(() => {
-    if (priority && !isLoaded) {
-      loadVideo();
-    }
-  }, [priority, isLoaded]);
-
   return (
     <div 
       ref={containerRef}
       className={cn("relative overflow-hidden", getAspectRatioClass(), className)}
-      data-loaded={isLoaded ? "true" : "false"}
-      data-playing={isPlaying ? "true" : "false"}
-      data-visible={isVisible ? "true" : "false"}
+      data-loaded={isLoaded}
+      data-playing={isPlaying}
     >
       <video
         ref={videoRef}
@@ -216,14 +205,12 @@ const VideoPlayer = memo(({
         width={width}
         height={height}
         fetchpriority={fetchpriority}
-        // Removed the "loading" attribute since it's not valid for video elements
         onLoadedMetadata={(event) => {
           setIsLoaded(true);
           onLoadedMetadata?.(event);
         }}
       >
-        {/* Source is now set dynamically via JavaScript when in viewport */}
-        {isLoaded && <source src={src} type="video/mp4" />}
+        <source src={src} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
