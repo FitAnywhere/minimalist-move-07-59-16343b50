@@ -269,7 +269,7 @@ const VideoPlayer = memo(({
           </button>
           
           {showVolumeSlider && (
-            <div className="bg-black/50 px-3 py-4 rounded-lg">
+            <div className="bg-black/50 px-3 py-4 rounded-lg ml-2">
               <Slider
                 defaultValue={[volume]}
                 max={1}
