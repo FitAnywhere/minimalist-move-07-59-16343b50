@@ -14,7 +14,7 @@ import TrainingVault from '@/components/TrainingVault';
 // Import utilities
 import { useSectionObserver } from '@/hooks/useSectionObserver';
 import { setupAnchorClickHandler, handleExternalNavigation } from '@/utils/scrollUtils';
-import { initVideoPreloading } from '@/utils/videoPreloader';
+import { initVideoPreloading } from '@/utils/videoUtils';
 import { initStyles } from '@/utils/styleUtils';
 
 // Better loading fallback with reduced CLS (Cumulative Layout Shift)
