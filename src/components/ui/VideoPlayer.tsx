@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, memo } from 'react';
-import { Play, Volume2, VolumeX } from 'lucide-react';
+import { Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Slider } from './slider';
 
 interface VideoPlayerProps {
   src: string;
@@ -14,11 +13,10 @@ interface VideoPlayerProps {
   controls?: boolean;
   preload?: 'none' | 'metadata' | 'auto';
   priority?: boolean;
-  playMode?: 'always' | 'onView' | 'firstScroll';
+  playMode?: 'always' | 'onView';
   width?: number;
   height?: number;
   fetchpriority?: 'high' | 'low' | 'auto';
-  showVolumeControl?: boolean;
   onPlay?: () => void;
   onPause?: () => void;
   onEnded?: () => void;
@@ -40,23 +38,17 @@ const VideoPlayer = memo(({
   width,
   height,
   fetchpriority,
-  showVolumeControl = false,
   onPlay,
   onPause,
   onEnded,
   onLoadedMetadata
 }: VideoPlayerProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(autoPlay && playMode === 'always');
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isMuted, setIsMuted] = useState(muted);
-  const [volume, setVolume] = useState(1);
-  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
-  const [hasManuallyControlled, setHasManuallyControlled] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const volumeControlTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const getAspectRatioClass = () => {
     switch (aspectRatio) {
@@ -68,20 +60,59 @@ const VideoPlayer = memo(({
   };
 
   useEffect(() => {
-    if (!containerRef.current || priority) return;
+    if (!containerRef.current) return;
 
     const options = {
-      rootMargin: '0px',
-      threshold: 0.6
+      rootMargin: '100px',
+      threshold: 0.1
     };
 
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
-      const wasVisible = isVisible;
       setIsVisible(entry.isIntersecting);
-      
-      if (!hasManuallyControlled) {
-        if (entry.isIntersecting && !wasVisible && playMode === 'firstScroll' && videoRef.current) {
+    };
+
+    observerRef.current = new IntersectionObserver(handleIntersection, options);
+    observerRef.current.observe(containerRef.current);
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if ((isVisible || priority) && videoRef.current && !isLoaded) {
+      if (preload !== 'none') {
+        videoRef.current.load();
+      }
+      setIsLoaded(true);
+    }
+  }, [isVisible, priority, isLoaded, preload]);
+
+  useEffect(() => {
+    if (!videoRef.current || !isLoaded) return;
+
+    if (playMode === 'always' && autoPlay) {
+      try {
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+              onPlay?.();
+            })
+            .catch(error => {
+              console.error('Auto-play failed:', error);
+            });
+        }
+      } catch (error) {
+        console.error('Error during auto-play:', error);
+      }
+    } else if (playMode === 'onView') {
+      if (isVisible && autoPlay) {
+        try {
           const playPromise = videoRef.current.play();
           if (playPromise !== undefined) {
             playPromise
@@ -93,41 +124,26 @@ const VideoPlayer = memo(({
                 console.error('Play on view failed:', error);
               });
           }
-        } else if (!entry.isIntersecting && wasVisible && videoRef.current) {
-          videoRef.current.pause();
-          setIsPlaying(false);
-          onPause?.();
+        } catch (error) {
+          console.error('Error playing video on view:', error);
         }
+      } else if (!isVisible && isPlaying) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+        onPause?.();
       }
-    };
-
-    observerRef.current = new IntersectionObserver(handleIntersection, options);
-    observerRef.current.observe(containerRef.current);
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [isVisible, isPlaying, onPlay, onPause, hasManuallyControlled, playMode, priority]);
+    }
+  }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPlay, onPause]);
 
   const handlePlayClick = () => {
     if (!videoRef.current) return;
-
-    if (!hasManuallyControlled) {
-      setHasManuallyControlled(true);
-    }
 
     if (!isLoaded) {
       videoRef.current.load();
       setIsLoaded(true);
     }
 
-    if (isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-      onPause?.();
-    } else {
+    try {
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
         playPromise
@@ -139,50 +155,9 @@ const VideoPlayer = memo(({
             console.error('Play failed:', error);
           });
       }
+    } catch (error) {
+      console.error('Error playing video:', error);
     }
-  };
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    const newMutedState = !isMuted;
-    videoRef.current.muted = newMutedState;
-    setIsMuted(newMutedState);
-    
-    if (!newMutedState) {
-      setShowVolumeSlider(true);
-      
-      if (volumeControlTimeoutRef.current) {
-        clearTimeout(volumeControlTimeoutRef.current);
-      }
-      
-      volumeControlTimeoutRef.current = setTimeout(() => {
-        setShowVolumeSlider(false);
-      }, 3000);
-    }
-  };
-
-  const handleVolumeChange = (newVolume: number[]) => {
-    if (!videoRef.current) return;
-    
-    const volumeValue = newVolume[0];
-    setVolume(volumeValue);
-    videoRef.current.volume = volumeValue;
-    
-    if (volumeValue === 0) {
-      videoRef.current.muted = true;
-      setIsMuted(true);
-    } else if (isMuted) {
-      videoRef.current.muted = false;
-      setIsMuted(false);
-    }
-  };
-
-  const showVolumeControls = () => {
-    setShowVolumeSlider(true);
-  };
-
-  const hideVolumeControls = () => {
-    setShowVolumeSlider(false);
   };
 
   useEffect(() => {
@@ -210,14 +185,6 @@ const VideoPlayer = memo(({
     };
   }, [loop, onEnded, onPause]);
 
-  useEffect(() => {
-    return () => {
-      if (volumeControlTimeoutRef.current) {
-        clearTimeout(volumeControlTimeoutRef.current);
-      }
-    };
-  }, []);
-
   return (
     <div 
       ref={containerRef}
@@ -228,7 +195,7 @@ const VideoPlayer = memo(({
       <video
         ref={videoRef}
         preload={preload}
-        muted={isMuted}
+        muted={muted}
         playsInline
         loop={loop}
         controls={controls && isPlaying}
@@ -238,7 +205,10 @@ const VideoPlayer = memo(({
         width={width}
         height={height}
         fetchpriority={fetchpriority}
-        onLoadedMetadata={onLoadedMetadata}
+        onLoadedMetadata={(event) => {
+          setIsLoaded(true);
+          onLoadedMetadata?.(event);
+        }}
       >
         <source src={src} type="video/mp4" />
         Your browser does not support the video tag.
@@ -251,45 +221,10 @@ const VideoPlayer = memo(({
         >
           <button
             className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-colors"
-            aria-label={isPlaying ? "Pause video" : "Play video"}
+            aria-label="Play video"
             type="button"
           >
             <Play className="w-8 h-8 text-black ml-1" />
-          </button>
-        </div>
-      )}
-
-      {showVolumeControl && isPlaying && (
-        <div 
-          className="absolute bottom-4 right-4 flex items-center space-x-2"
-          onMouseEnter={showVolumeControls}
-          onMouseLeave={hideVolumeControls}
-        >
-          {showVolumeSlider && (
-            <div className="bg-black/50 rounded-full px-2 py-1 transition-all duration-200">
-              <Slider
-                defaultValue={[volume]}
-                value={[volume]}
-                max={1}
-                step={0.01}
-                onValueChange={handleVolumeChange}
-                className="w-20 h-1"
-                orientation="horizontal"
-              />
-            </div>
-          )}
-          
-          <button
-            onClick={toggleMute}
-            className="w-8 h-8 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-colors"
-            aria-label={isMuted ? "Unmute video" : "Mute video"}
-            type="button"
-          >
-            {isMuted ? (
-              <VolumeX className="w-4 h-4 text-white" />
-            ) : (
-              <Volume2 className="w-4 h-4 text-white" />
-            )}
           </button>
         </div>
       )}
