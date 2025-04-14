@@ -16,6 +16,7 @@ interface VideoPlayerProps {
   playMode?: 'always' | 'onView';
   width?: number;
   height?: number;
+  fetchpriority?: 'high' | 'low' | 'auto';
   onPlay?: () => void;
   onPause?: () => void;
   onEnded?: () => void;
@@ -36,6 +37,7 @@ const VideoPlayer = memo(({
   playMode = 'onView',
   width,
   height,
+  fetchpriority,
   onPlay,
   onPause,
   onEnded,
@@ -48,7 +50,6 @@ const VideoPlayer = memo(({
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Get aspect ratio style
   const getAspectRatioClass = () => {
     switch (aspectRatio) {
       case 'square': return 'aspect-square';
@@ -58,13 +59,12 @@ const VideoPlayer = memo(({
     }
   };
 
-  // Setup intersection observer to detect when video is in viewport
   useEffect(() => {
     if (!containerRef.current) return;
 
     const options = {
-      rootMargin: '100px', // Start loading slightly before video enters viewport
-      threshold: 0.1 // 10% visibility to trigger
+      rootMargin: '100px',
+      threshold: 0.1
     };
 
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -82,11 +82,8 @@ const VideoPlayer = memo(({
     };
   }, []);
 
-  // Load video when it becomes visible or if it has priority
   useEffect(() => {
     if ((isVisible || priority) && videoRef.current && !isLoaded) {
-      // If preload is set to 'none', we'll only load the poster
-      // If not, it will load based on the preload attribute
       if (preload !== 'none') {
         videoRef.current.load();
       }
@@ -94,11 +91,9 @@ const VideoPlayer = memo(({
     }
   }, [isVisible, priority, isLoaded, preload]);
 
-  // Handle playback based on visibility and playMode
   useEffect(() => {
     if (!videoRef.current || !isLoaded) return;
 
-    // For "always" mode, play regardless of visibility once loaded
     if (playMode === 'always' && autoPlay) {
       try {
         const playPromise = videoRef.current.play();
@@ -110,16 +105,12 @@ const VideoPlayer = memo(({
             })
             .catch(error => {
               console.error('Auto-play failed:', error);
-              // On mobile, especially Safari, we might need user interaction
-              // The play button will be shown in this case
             });
         }
       } catch (error) {
         console.error('Error during auto-play:', error);
       }
-    }
-    // For "onView" mode, play only when visible
-    else if (playMode === 'onView') {
+    } else if (playMode === 'onView') {
       if (isVisible && autoPlay) {
         try {
           const playPromise = videoRef.current.play();
@@ -137,7 +128,6 @@ const VideoPlayer = memo(({
           console.error('Error playing video on view:', error);
         }
       } else if (!isVisible && isPlaying) {
-        // Pause when out of view
         videoRef.current.pause();
         setIsPlaying(false);
         onPause?.();
@@ -145,11 +135,9 @@ const VideoPlayer = memo(({
     }
   }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPlay, onPause]);
 
-  // Handle play button click
   const handlePlayClick = () => {
     if (!videoRef.current) return;
 
-    // Ensure video is loaded before trying to play
     if (!isLoaded) {
       videoRef.current.load();
       setIsLoaded(true);
@@ -172,7 +160,6 @@ const VideoPlayer = memo(({
     }
   };
 
-  // Handle video ended event
   useEffect(() => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
@@ -217,6 +204,7 @@ const VideoPlayer = memo(({
         aria-label="Video player"
         width={width}
         height={height}
+        fetchpriority={fetchpriority}
         onLoadedMetadata={(event) => {
           setIsLoaded(true);
           onLoadedMetadata?.(event);
