@@ -161,7 +161,6 @@ const HeroVideo = memo(({
         className="w-full h-full object-cover"
         poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744102423/Screenshot_84_oi460p.png"
         aria-label="Introduction video"
-        loading="lazy"
       >
         <source src="/114 Intor Video Optt.mp4" type="video/mp4" />
         Your browser does not support the video tag.
