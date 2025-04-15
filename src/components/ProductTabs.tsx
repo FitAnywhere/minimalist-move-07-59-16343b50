@@ -8,15 +8,15 @@ import VideoPlayer from '@/components/ui/VideoPlayer';
 const bandsFeatures = [{
   title: "10x MORE EXERCISES",
   description: "Push past plateaus, and keep progressing.",
-  icon: Flame
+  icon: null  // Remove icon reference
 }, {
   title: "SUPPORT WHEN NEEDED",
   description: "Unfold, clip in, and train—whether at home or on the go.",
-  icon: Backpack
+  icon: null  // Remove icon reference
 }, {
   title: "CHALLENGE WHEN READY",
   description: "From first reps to peak performance—bands move with you.",
-  icon: Zap
+  icon: null  // Remove icon reference
 }];
 
 const ProductTabs = () => {
