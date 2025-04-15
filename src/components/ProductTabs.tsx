@@ -1,6 +1,6 @@
+
 import { useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame, Backpack, Zap } from 'lucide-react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoPlayer from '@/components/ui/VideoPlayer';

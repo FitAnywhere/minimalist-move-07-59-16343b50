@@ -52,7 +52,6 @@ const VideoPlayer = memo(({
   const [isLoaded, setIsLoaded] = useState(false);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(muted);
-  const [disableAutoplay, setDisableAutoplay] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -108,7 +107,7 @@ const VideoPlayer = memo(({
   useEffect(() => {
     if (!videoRef.current || !isLoaded) return;
 
-    if (playMode === 'always' && autoPlay && !disableAutoplay) {
+    if (playMode === 'always' && autoPlay) {
       try {
         const playPromise = videoRef.current.play();
         if (playPromise !== undefined) {
@@ -116,17 +115,20 @@ const VideoPlayer = memo(({
             .then(() => {
               setIsPlaying(true);
               onPlay?.();
-              setDisableAutoplay(true);
             })
             .catch(error => {
-              console.error('Auto-play failed:', error);
+              if (process.env.NODE_ENV === 'development') {
+                console.error('Auto-play failed:', error);
+              }
             });
         }
       } catch (error) {
-        console.error('Error during auto-play:', error);
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error during auto-play:', error);
+        }
       }
     } else if (playMode === 'onView') {
-      if (isVisible && autoPlay && !disableAutoplay) {
+      if (isVisible && autoPlay) {
         try {
           const playPromise = videoRef.current.play();
           if (playPromise !== undefined) {
@@ -148,7 +150,7 @@ const VideoPlayer = memo(({
         onPause?.();
       }
     }
-  }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPlay, onPause, disableAutoplay]);
+  }, [isVisible, isLoaded, autoPlay, playMode, isPlaying, onPlay, onPause]);
 
   const handlePlayClick = () => {
     if (!videoRef.current) return;
@@ -162,7 +164,6 @@ const VideoPlayer = memo(({
       videoRef.current.pause();
       setIsPlaying(false);
       onPause?.();
-      setDisableAutoplay(true);
     } else {
       try {
         const playPromise = videoRef.current.play();
@@ -171,14 +172,17 @@ const VideoPlayer = memo(({
             .then(() => {
               setIsPlaying(true);
               onPlay?.();
-              setDisableAutoplay(true);
             })
             .catch(error => {
-              console.error('Play failed:', error);
+              if (process.env.NODE_ENV === 'development') {
+                console.error('Play failed:', error);
+              }
             });
         }
       } catch (error) {
-        console.error('Error playing video:', error);
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error playing video:', error);
+        }
       }
     }
   };
