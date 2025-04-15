@@ -118,13 +118,27 @@ const NavBar = () => {
         </div>
 
         <div className="hidden md:block">
-          <a
-            href="https://buy.stripe.com/4gw7sS8Jn5m4dI43ck"
-            className="bg-black text-white px-6 py-2.5 rounded-full font-medium text-sm hover:bg-black/90 transition-all hover-lift"
-            onClick={handleCheckout}
-          >
-            ORDER NOW
-          </a>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://buy.stripe.com/4gw7sS8Jn5m4dI43ck"
+              className="bg-black text-white px-6 py-2.5 rounded-full font-medium text-sm hover:bg-black/90 transition-all hover-lift"
+              onClick={handleCheckout}
+            >
+              ORDER NOW
+            </a>
+            <a 
+              href="https://wa.me/38668154199" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center hover:opacity-80 transition-opacity"
+            >
+              <img 
+                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744737020/Screenshot_2-removebg-preview_1_zqxayk.png"
+                alt="Contact us on WhatsApp"
+                className="w-10 h-10 object-contain"
+              />
+            </a>
+          </div>
         </div>
 
         <button 
@@ -164,13 +178,25 @@ const NavBar = () => {
                 {link.name}
               </a>
             ))}
-            <div className="pt-4">
+            <div className="pt-4 space-y-4">
               <a
                 href="https://buy.stripe.com/4gw7sS8Jn5m4dI43ck"
                 className="block w-full bg-black text-white text-center px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-all"
                 onClick={handleCheckout}
               >
                 ORDER NOW
+              </a>
+              <a 
+                href="https://wa.me/38668154199" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-full"
+              >
+                <img 
+                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744737020/Screenshot_2-removebg-preview_1_zqxayk.png"
+                  alt="Contact us on WhatsApp"
+                  className="w-10 h-10 object-contain"
+                />
               </a>
             </div>
           </div>
