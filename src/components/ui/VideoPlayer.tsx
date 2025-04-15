@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, memo } from 'react';
 import { Play, Volume2, VolumeX } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -99,11 +98,9 @@ const VideoPlayer = memo(({
     }
   }, [isVisible, priority, isLoaded, preload]);
 
-  // Modified effect to properly handle play and pause on scroll
   useEffect(() => {
     if (!videoRef.current || !isLoaded) return;
 
-    // Auto-play logic (only if not manually controlled)
     if (playMode === 'always' && autoPlay && !disableAutoplay) {
       try {
         const playPromise = videoRef.current.play();
@@ -122,7 +119,6 @@ const VideoPlayer = memo(({
         console.error('Error during auto-play:', error);
       }
     } else if (playMode === 'onView') {
-      // PLAY logic - only if not manually controlled
       if (isVisible && autoPlay && !disableAutoplay) {
         try {
           const playPromise = videoRef.current.play();
@@ -139,9 +135,7 @@ const VideoPlayer = memo(({
         } catch (error) {
           console.error('Error playing video on view:', error);
         }
-      } 
-      // PAUSE logic - always pause when out of view, regardless of manual control
-      else if (!isVisible && isPlaying) {
+      } else if (!isVisible && isPlaying) {
         videoRef.current.pause();
         setIsPlaying(false);
         onPause?.();
@@ -207,6 +201,13 @@ const VideoPlayer = memo(({
     };
   }, [loop, onEnded, onPause]);
 
+  const { 
+    showVolumeSlider, 
+    handleVolumeToggle, 
+    handleMouseEnter, 
+    handleMouseLeave 
+  } = useVolumeSlider();
+
   const handleVolumeChange = (value: number[]) => {
     if (!videoRef.current) return;
     const newVolume = value[0];
@@ -270,8 +271,8 @@ const VideoPlayer = memo(({
       {showHeroVolumeControl && (
         <div 
           className="absolute bottom-4 right-4 flex flex-col items-end"
-          onMouseEnter={() => setShowVolumeSlider(true)}
-          onMouseLeave={() => setShowVolumeSlider(false)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           <div 
             className={cn(
@@ -289,7 +290,7 @@ const VideoPlayer = memo(({
             />
           </div>
           <button
-            onClick={toggleMute}
+            onClick={handleVolumeToggle}
             className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center hover:bg-black/70 transition-colors"
             aria-label={isMuted ? "Unmute video" : "Mute video"}
           >
