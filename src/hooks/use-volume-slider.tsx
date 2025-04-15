@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useIsMobile } from './use-mobile';
 
@@ -25,7 +24,7 @@ export function useVolumeSlider() {
       
       timeoutRef.current = setTimeout(() => {
         setShowVolumeSlider(false);
-      }, 1000);
+      }, 2000);
     }
   };
 

@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
@@ -42,7 +41,6 @@ const BundleOffer = () => {
 
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
-        {/* Modified div with responsive margins and padding */}
         <div className="max-w-5xl px-4 mx-auto md:px-[115px] md:mx-[174px] md:py-[14px]">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
@@ -60,16 +58,16 @@ const BundleOffer = () => {
                       <div className="h-72 md:h-80 flex items-center justify-center p-4 group">
                         <div className="relative w-full h-full flex items-center justify-center">
                           <img 
-                            src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" 
+                            src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png" 
                             alt="FitAnywhere" 
                             className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10" 
                             loading="lazy"
                             width="400"
                             height="400"
                             srcSet="
-                              https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_300/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png 300w,
-                              https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png 400w,
-                              https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_600/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png 600w
+                              https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_300/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 300w,
+                              https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 400w,
+                              https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_600/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 600w
                             "
                             sizes="(max-width: 768px) 300px, 400px"
                           />
@@ -95,7 +93,6 @@ const BundleOffer = () => {
                 </div>
               </div>
               
-              {/* Mobile view for TRAINING LIBRARY with adjusted margins */}
               <div className={cn("flex items-center justify-center mb-4 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <Plus className="h-8 w-8 text-green-600 -mr-2 flex-shrink-0" />
                 <div className="max-w-2xl mx-auto">
@@ -144,19 +141,18 @@ const BundleOffer = () => {
             </div> : <div className="mb-10 transition-all duration-1000">
               <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
-                  {/* Left side with product image */}
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
                     <img 
-                      src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png" 
+                      src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png" 
                       alt="FitAnywhere" 
                       className="max-h-96 object-contain mb-6" 
                       loading="lazy"
                       width="600"
                       height="600"
                       srcSet="
-                        https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png 400w,
-                        https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_600/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png 600w,
-                        https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1744095754/Izdelek_brez_naslova_-_2025-04-08T085942.318_q6cpim.png 800w
+                        https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 400w,
+                        https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_600/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 600w,
+                        https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 800w
                       "
                       sizes="(max-width: 768px) 400px, 600px"
                     />
@@ -168,10 +164,7 @@ const BundleOffer = () => {
                       </div>
                     </div>
                   </div>
-                  
-                  {/* Right side with TRAINING LIBRARY - centered in container */}
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
-                    {/* Updated desktop view - centered TRAINING LIBRARY with Plus icon */}
                     <div className="flex items-center justify-center w-full mb-8">
                       <Plus className="h-12 w-12 text-green-600 mr-4" />
                       <div className="rounded-lg bg-white p-6 border border-green-600">
@@ -200,8 +193,6 @@ const BundleOffer = () => {
                   </div>
                 </div>
               </div>
-              
-              {/* Pricing for desktop - moved inside the main bundle container above the text */}
               <div className="flex flex-col items-center justify-center mt-8 mb-8">
                 <div className="flex items-center gap-3 justify-center">
                   <span className="text-xl text-gray-700 line-through">
