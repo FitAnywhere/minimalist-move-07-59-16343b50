@@ -1,5 +1,4 @@
-
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -33,7 +32,7 @@ const ProductTabs = () => {
   });
   const isMobile = useIsMobile();
   
-  const renderBandsVideo = () => {
+  const renderBandsVideo = useCallback(() => {
     return (
       <div className="w-full h-full overflow-hidden relative" style={{
         maxWidth: '80%',
@@ -55,7 +54,7 @@ const ProductTabs = () => {
         </div>
       </div>
     );
-  };
+  }, [isBandsVideoInView]);
 
   return <section id="accessories" ref={sectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
