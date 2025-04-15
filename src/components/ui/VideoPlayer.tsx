@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, memo } from 'react';
 import { Play, Volume2, VolumeX } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Slider } from './slider';
+import { useVolumeSlider } from '@/hooks/use-volume-slider';
 
 interface VideoPlayerProps {
   src: string;
@@ -51,11 +52,17 @@ const VideoPlayer = memo(({
   const [isLoaded, setIsLoaded] = useState(false);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(muted);
-  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [disableAutoplay, setDisableAutoplay] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  const { 
+    showVolumeSlider, 
+    handleVolumeToggle, 
+    handleMouseEnter, 
+    handleMouseLeave 
+  } = useVolumeSlider();
 
   const getAspectRatioClass = () => {
     switch (aspectRatio) {
@@ -201,13 +208,6 @@ const VideoPlayer = memo(({
     };
   }, [loop, onEnded, onPause]);
 
-  const { 
-    showVolumeSlider, 
-    handleVolumeToggle, 
-    handleMouseEnter, 
-    handleMouseLeave 
-  } = useVolumeSlider();
-
   const handleVolumeChange = (value: number[]) => {
     if (!videoRef.current) return;
     const newVolume = value[0];
@@ -290,7 +290,10 @@ const VideoPlayer = memo(({
             />
           </div>
           <button
-            onClick={handleVolumeToggle}
+            onClick={() => {
+              toggleMute();
+              handleVolumeToggle();
+            }}
             className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center hover:bg-black/70 transition-colors"
             aria-label={isMuted ? "Unmute video" : "Mute video"}
           >
