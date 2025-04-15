@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Menu, X } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Logo } from './nav/Logo';
 import { NavLinks } from './nav/NavLinks';
 import { WhatsAppButton } from './nav/WhatsAppButton';
@@ -13,6 +13,7 @@ const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
 
   useEffect(() => {
