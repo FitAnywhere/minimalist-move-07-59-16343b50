@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
-import { Menu, X } from 'lucide-react';
+import { Menu, X, MessageCircle } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
@@ -129,13 +129,10 @@ const NavBar = () => {
               href="https://wa.me/38668154199" 
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-green-500 text-white px-6 py-2.5 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors"
+              className="bg-green-500 text-white px-6 py-2.5 rounded-full flex items-center justify-center gap-2 hover:bg-green-600 transition-colors"
+              aria-label="Contact us on WhatsApp"
             >
-              <img 
-                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744737020/Screenshot_2-removebg-preview_1_zqxayk.png"
-                alt="Contact us on WhatsApp"
-                className="w-6 h-6 object-contain"
-              />
+              <MessageCircle size={20} />
             </a>
           </div>
         </div>
@@ -189,13 +186,10 @@ const NavBar = () => {
                 href="https://wa.me/38668154199" 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full bg-green-500 text-white text-center px-6 py-3 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors"
+                className="block w-full bg-green-500 text-white text-center px-6 py-3 rounded-full flex items-center justify-center gap-2 hover:bg-green-600 transition-colors"
+                aria-label="Contact us on WhatsApp"
               >
-                <img 
-                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744737020/Screenshot_2-removebg-preview_1_zqxayk.png"
-                  alt="Contact us on WhatsApp"
-                  className="w-6 h-6 object-contain"
-                />
+                <MessageCircle size={20} />
               </a>
             </div>
           </div>
