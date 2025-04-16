@@ -295,6 +295,11 @@
   .preload-image {
     fetch-priority: high;
   }
+
+  .no-animation {
+    animation: none !important;
+    box-shadow: none !important;
+  }
 }
 
 #bundle, 

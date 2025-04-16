@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -104,10 +103,10 @@ const PersuasionSection = () => {
           <Button
             variant="yellow"
             size="xl"
-            className="font-bold text-xl shadow-lg hover:shadow-xl transition-all duration-300"
+            className="font-bold text-xl shadow-lg hover:shadow-xl transition-all duration-300 no-animation"
             onClick={handleCheckout}
           >
-            🛒 LAST CALL for €990!
+            🛒 MAKE YOUR MOVE
             <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Button>
         </div>
