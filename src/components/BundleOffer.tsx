@@ -4,24 +4,29 @@ import { Plus } from 'lucide-react';
 import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 interface GiftItem {
   name: string;
   image: string;
 }
+
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
-  image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
+  image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,v1744095736/dZZFMFQ_oped40.png"
 }];
+
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [animatedItem, setAnimatedItem] = useState(0);
   const productItems = ["1X PowerTower", "1X TRX", "4X Bands"];
+
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
+
   useEffect(() => {
     setIsVisible(true);
     const interval = setInterval(() => {
@@ -29,9 +34,11 @@ const BundleOffer = () => {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
+
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
+
   return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl px-4 mx-auto md:px-[115px] md:mx-[174px] md:py-[14px]">
@@ -43,7 +50,8 @@ const BundleOffer = () => {
             <p className="mt-4 text-gray-700 py-[13px] font-semibold text-lg">Everything you need for fitness and calisthenics trainings with guide as a GIFT.</p>
           </div>
           
-          {isMobile ? <div className="space-y-8">
+          {isMobile ? (
+            <div className="space-y-8">
               <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
                 <div className="max-w-2xl mx-auto">
                   <div className={cn("rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", "h-full relative bg-white", "hover:translate-y-[-5px]", "shadow border border-gray-200")}>
@@ -100,12 +108,12 @@ const BundleOffer = () => {
                 <div className="flex flex-col items-center justify-center my-0">
                   <span className="text-xl text-gray-700 line-through mb-1">
                     {isVisible ? <>
-                        €<CountUp start={0} end={originalPrice} duration={2} separator="," />
-                      </> : `€${originalPrice}`}
+                        {originalPrice}€
+                      </> : `${originalPrice}€`}
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-bold">
-                      €{isVisible ? <CountUp start={0} end={currentPrice} duration={2} separator="," /> : currentPrice}
+                      {isVisible ? <CountUp start={0} end={currentPrice} duration={2} suffix="€" /> : `${currentPrice}€`}
                     </span>
                     <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
                       {isVisible ? <CountUp start={0} end={discountPercentage} duration={2} suffix="% OFF" /> : `${discountPercentage}% OFF`}
@@ -113,7 +121,9 @@ const BundleOffer = () => {
                   </div>
                 </div>
               </div>
-            </div> : <div className="mb-10 transition-all duration-1000">
+            </div>
+          ) : (
+            <div className="mb-10 transition-all duration-1000">
               <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
@@ -153,7 +163,7 @@ const BundleOffer = () => {
               <div className="flex flex-col items-center justify-center mt-8 mb-8">
                 <div className="flex items-center gap-3 justify-center">
                   <span className="text-xl text-gray-700 line-through">
-                    €{originalPrice}
+                    {originalPrice}€
                   </span>
                   <div className="bg-green-600 px-3 py-1 rounded-full text-white text-xs font-bold">
                     {discountPercentage}% OFF
@@ -161,10 +171,11 @@ const BundleOffer = () => {
                 </div>
                 
                 <div className="text-3xl font-bold text-green-600 text-center mt-2">
-                  €{currentPrice}
+                  {currentPrice}€
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
           
           <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
             <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4 mb-6 mx-[16px] my-[34px]">
@@ -181,4 +192,5 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
+
 export default BundleOffer;
