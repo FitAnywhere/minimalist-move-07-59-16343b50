@@ -16,19 +16,6 @@ export const scrollToElement = (targetId: string, offset = 100): void => {
   }, 100);
 };
 
-// Dedicated function for scrolling to the bundle offer section
-export const scrollToBundleOffer = (): void => {
-  setTimeout(() => {
-    const targetElement = document.querySelector('.bundle-target');
-    const headerOffset = document.querySelector('header')?.offsetHeight || 80;
-    
-    if (targetElement) {
-      const y = targetElement.getBoundingClientRect().top + window.scrollY - headerOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  }, 100); // Slight delay to ensure DOM is painted
-};
-
 // Set up optimized event listener for anchor links
 export const setupAnchorClickHandler = (): () => void => {
   const handleAnchorClick = (e: MouseEvent) => {
