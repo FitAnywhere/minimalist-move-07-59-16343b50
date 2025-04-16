@@ -299,6 +299,37 @@
   .no-animation {
     animation: none !important;
     box-shadow: none !important;
+    transition: none !important;
+    filter: none !important;
+    text-shadow: none !important;
+    border: none !important;
+    outline: none !important;
+    transform: none !important;
+  }
+
+  .pulse-glow,
+  .button-glow,
+  .animate-glow,
+  .shadow-glow,
+  .shadow-yellow,
+  .shadow-yellow-400,
+  .animate-[pulse-glow] {
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  
+  button[class*="bg-yellow"].no-animation,
+  button[class*="yellow"].no-animation {
+    animation: none !important;
+    box-shadow: none !important;
+    transition: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .no-animation * {
+    animation: none !important;
+    transition: none !important;
   }
 }
 

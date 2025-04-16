@@ -95,19 +95,16 @@ const PersuasionSection = () => {
         </p>
         
         <div 
-          className={cn(
-            "mt-12 transition-all duration-1000 delay-500",
-            showCta ? "opacity-100 scale-100" : "opacity-0 scale-95"
-          )}
+          className="mt-12 opacity-100 scale-100"
         >
           <Button
             variant="yellow"
             size="xl"
-            className="font-bold text-xl shadow-lg hover:shadow-xl transition-all duration-300 no-animation"
+            className="no-animation font-bold text-xl shadow-none hover:shadow-none transition-none"
             onClick={handleCheckout}
           >
             🛒 MAKE YOUR MOVE
-            <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+            <ArrowRight className="ml-2 w-5 h-5 transition-none" />
           </Button>
         </div>
       </div>
