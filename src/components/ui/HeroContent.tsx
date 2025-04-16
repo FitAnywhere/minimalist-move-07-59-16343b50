@@ -19,15 +19,27 @@ const HeroContent = memo(({
   const [isDeleting, setIsDeleting] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
   const [isWaiting, setIsWaiting] = useState(false);
+  const [showTypewriter, setShowTypewriter] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Constants for the typewriter effect - updated for slower animation
-  const typingSpeed = 250; // Speed of typing in ms (increased from 150ms)
-  const deletingSpeed = 80; // Speed of deleting in ms (increased from 40ms)
-  const waitingTime = 1000; // Time to wait when word is fully typed in ms (increased from 300ms)
+  // Constants for the typewriter effect
+  const typingSpeed = 250;
+  const deletingSpeed = 80;
+  const waitingTime = 1000;
 
-  // More efficient typewriter implementation
+  // Initialize typewriter after delay, independent of viewport visibility
   useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowTypewriter(true);
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  // Typewriter effect logic
+  useEffect(() => {
+    if (!showTypewriter) return;
+
     const currentWord = words[wordIndex];
     
     if (timeoutRef.current) {
@@ -60,7 +72,7 @@ const HeroContent = memo(({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [displayText, isDeleting, wordIndex, isWaiting, words]);
+  }, [displayText, isDeleting, wordIndex, isWaiting, words, showTypewriter]);
   
   return (
     <div className="text-center md:text-left">
@@ -68,19 +80,31 @@ const HeroContent = memo(({
         "text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", 
         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       )}>
-        <span className="relative inline-block min-w-[300px] md:min-w-[400px]">
-          {displayText}
-          <span 
-            className={`${isWaiting ? 'opacity-0' : 'opacity-100'} inline-block w-[2px] h-[1em] bg-black ml-1 animate-pulse`}
-            aria-hidden="true"
-          ></span>
+        <span className="relative inline-block min-w-[300px] md:min-w-[400px] min-h-[1.2em]">
+          {showTypewriter ? (
+            <>
+              {displayText}
+              <span 
+                className={`${isWaiting ? 'opacity-0' : 'opacity-100'} inline-block w-[2px] h-[1em] bg-black ml-1 animate-pulse`}
+                aria-hidden="true"
+              />
+            </>
+          ) : (
+            <>
+              FITNESS
+              <span 
+                className="inline-block w-[2px] h-[1em] opacity-0 ml-1"
+                aria-hidden="true"
+              />
+            </>
+          )}
           <span 
             className={cn(
               "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
               isInView ? "scale-x-100" : "scale-x-0"
             )}
             aria-hidden="true"
-          ></span>
+          />
         </span>
       </h1>
       
@@ -114,6 +138,5 @@ const HeroContent = memo(({
   );
 });
 
-// Display name for React DevTools
 HeroContent.displayName = 'HeroContent';
 export default HeroContent;
