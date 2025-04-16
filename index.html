@@ -1,10 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FitAnywhere</title>
+    
+    <!-- Preload critical fonts -->
+    <link
+      rel="preload"
+      href="/path/to/inter-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/path/to/roboto-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    
     <meta name="description" content="Discover easy, minimalist workouts made to fit your lifestyle." />
     <meta name="author" content="Lovable" />
     <meta property="og:title" content="FitAnywhere – Fitness on the Go" />
@@ -12,17 +28,14 @@
     <meta property="og:image" content="https://i.imgur.com/MhpVrki.png" />
     <link rel="icon" href="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744638689/Screenshot_116-removebg-preview_2_h0lsbm.png" />
     
-    <!-- DNS prefetch for CDNs -->
+    <!-- DNS prefetch for critical domains -->
     <link rel="dns-prefetch" href="https://res.cloudinary.com">
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
     
     <!-- Preload critical assets with high priority -->
     <link rel="preload" as="image" fetchpriority="high" href="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744102423/Screenshot_84_oi460p.png">
     
-    <!-- Defer non-critical videos with low priority -->
-    <link rel="preload" fetchpriority="low" as="fetch" href="/114 Intor Video Optt.mp4" type="video/mp4">
-    
-    <!-- Critical CSS for above-the-fold content -->
+    <!-- Critical CSS -->
     <style>
       /* Tailwind base styles */
       *,::before,::after{box-sizing:border-box;border-width:0;border-style:solid;border-color:hsl(214.3 31.8% 91.4%)}
@@ -141,9 +154,16 @@
       }
     </style>
     
-    <!-- Defer the full CSS -->
-    <link rel="stylesheet" href="/src/index.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="/src/index.css"></noscript>
+    <!-- Defer non-critical CSS -->
+    <link 
+      rel="stylesheet" 
+      href="/src/index.css" 
+      media="print" 
+      onload="this.media='all'"
+    >
+    <noscript>
+      <link rel="stylesheet" href="/src/index.css">
+    </noscript>
   </head>
   <body>
     <div id="root"></div>
@@ -153,17 +173,24 @@
     
     <!-- Deferred third-party scripts loading -->
     <script type="text/javascript">
-      // Load scripts after the window has fully loaded to avoid blocking rendering
+      // Load all third-party scripts after window load
       window.addEventListener('load', function() {
-        // Load Mouseflow Tracking
+        // Defer Facebook Pixel loading
         setTimeout(function() {
-          window._mfq = window._mfq || [];
-          var mf = document.createElement("script");
-          mf.type = "text/javascript";
-          mf.async = true;
-          mf.src = "//cdn.mouseflow.com/projects/a1997416-33e6-483b-a3da-fff3c11f54e6.js";
-          document.head.appendChild(mf);
-        }, 100); // Short delay to prioritize initial interaction
+          (function(f,b,e,v,n,t,s) {
+            if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)})(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            
+            if (typeof window.fbq === 'function') {
+              window.fbq('init', '1271374844408612');
+              window.fbq('track', 'PageView');
+            }
+        }, 1000); // Load FB Pixel after 1 second
         
         // Load Voiceflow Chatbot with slight delay
         setTimeout(function() {
