@@ -56,12 +56,12 @@ const WorkoutAddictSection = () => {
   };
   
   const renderBoxFunVideo = () => {
-    const mobileVideoWidth = "80%"; // 20% smaller on mobile
+    const mobileVideoWidth = "80%";
 
     return (
       <div className={cn(
         "relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group", 
-        isMobile && "mx-auto" // Center on mobile
+        isMobile && "mx-auto"
       )} 
       style={isMobile ? { width: mobileVideoWidth } : undefined}
       ref={vimeoContainerRef}
@@ -93,7 +93,7 @@ const WorkoutAddictSection = () => {
           )}
           
           <VideoPlayer 
-            src="/114Bboxfun 104.mp4" 
+            src="/16444 Boxfun.mp4" 
             poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744294274/Screenshot_46_oimbqr.png"
             aspectRatio="portrait"
             autoPlay={isInView}

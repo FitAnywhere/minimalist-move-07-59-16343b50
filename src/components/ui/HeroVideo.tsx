@@ -5,7 +5,7 @@ import VideoPlayer from './VideoPlayer';
 const HeroVideo = memo(() => {
   return (
     <VideoPlayer 
-      src="/IntroSound.mp4" 
+      src="/Intorvideo Optimized 1644.mp4" 
       poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744102423/Screenshot_84_oi460p.png"
       priority={false}
       preload="none"

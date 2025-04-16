@@ -40,7 +40,7 @@ const ProductTabs = () => {
       }}>
         <div className="rounded-2xl overflow-hidden">
           <VideoPlayer 
-            src="/114 Trxbands 11044.mp4"
+            src="/Trxbands 1644).mp4"
             poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png"
             aspectRatio="portrait"
             autoPlay={isBandsVideoInView}
