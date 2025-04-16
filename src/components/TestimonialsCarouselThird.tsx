@@ -22,17 +22,17 @@ const testimonials: Testimonial[] = [{
   name: "Mason K.",
   role: "Outdoor Lover",
   quote: "BoxFun didn't just get me moving. It made me want to move.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/v1744097765/Izdelek_brez_naslova_-_2025-04-08T093354.537_ovbtbx.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097765/Izdelek_brez_naslova_-_2025-04-08T093354.537_ovbtbx.png"
 }, {
   name: "Blake H.",
   role: "Strength Seeker",
   quote: "Never thought working out could feel this fun.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/v1744097748/Screenshot_72_ggjdho.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_72_ggjdho.png"
 }, {
   name: "Tyler B.",
   role: "Calisthenics Enthusiast",
   quote: "Getting fit used to feel like work. Now it feels like play.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/v1744141492/Izdelek_brez_naslova_-_2025-04-08T214404.198_yb1jc0.png"
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744141492/Izdelek_brez_naslova_-_2025-04-08T214404.198_yb1jc0.png"
 }];
 
 const TestimonialImage = memo(({ imageUrl }: { imageUrl: string }) => {
