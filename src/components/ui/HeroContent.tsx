@@ -1,3 +1,4 @@
+
 import { memo, useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -19,11 +20,13 @@ const HeroContent = memo(({
   const [wordIndex, setWordIndex] = useState(0);
   const [isWaiting, setIsWaiting] = useState(false);
   const [showTypewriter, setShowTypewriter] = useState(false);
+  const [isBundleReady, setIsBundleReady] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const typingSpeed = 250;
   const deletingSpeed = 80;
   const waitingTime = 1000;
 
+  // Initialize typewriter effect with delay
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowTypewriter(true);
@@ -31,6 +34,35 @@ const HeroContent = memo(({
     return () => clearTimeout(timeout);
   }, []);
 
+  // Check for bundle-offer section availability
+  useEffect(() => {
+    if (isBundleReady) return; // Already found
+    
+    const checkInterval = 100; // ms
+    const maxCheckTime = 2000; // ms
+    let elapsed = 0;
+    
+    const checkExistence = () => {
+      const bundleElement = document.querySelector('#bundle-offer');
+      if (bundleElement) {
+        setIsBundleReady(true);
+        return;
+      }
+      
+      elapsed += checkInterval;
+      if (elapsed < maxCheckTime) {
+        timeoutId = setTimeout(checkExistence, checkInterval);
+      }
+    };
+    
+    let timeoutId = setTimeout(checkExistence, checkInterval);
+    
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [isBundleReady]);
+
+  // Typewriter effect logic
   useEffect(() => {
     if (!showTypewriter) return;
     const currentWord = words[wordIndex];
@@ -66,11 +98,16 @@ const HeroContent = memo(({
   const handleScrollToBundleOffer = (e: React.MouseEvent) => {
     e.preventDefault();
     
+    if (!isBundleReady) {
+      console.log('Bundle offer section not ready yet');
+      return;
+    }
+    
     const scrollWithRetry = (attempts = 0) => {
       const targetElement = document.querySelector('#bundle-offer');
       
       if (targetElement) {
-        const headerOffset = 100;
+        const headerOffset = document.querySelector('header')?.offsetHeight || 80;
         const elementPosition = targetElement.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.scrollY - headerOffset;
         
@@ -87,7 +124,7 @@ const HeroContent = memo(({
     
     scrollWithRetry();
     
-    scrollToOwnBoth(e);
+    // Removed call to scrollToOwnBoth to prevent duplicate scrolling
   };
 
   return <div className="text-center md:text-left">
@@ -114,7 +151,17 @@ const HeroContent = memo(({
             <p className="text-gray-700 px-0 py-[4px] font-bold text-lg">Build muscle at home in 20 mins a day.</p>
           </div>
           
-          <button onClick={handleScrollToBundleOffer} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px]">
+          <button 
+            id="scroll-launch-offer"
+            onClick={handleScrollToBundleOffer} 
+            disabled={!isBundleReady}
+            aria-disabled={!isBundleReady}
+            tabIndex={!isBundleReady ? -1 : undefined}
+            className={cn(
+              "inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px]",
+              !isBundleReady && "opacity-50 cursor-not-allowed"
+            )}
+          >
             40% OFF LAUNCH OFFER
             <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </button>

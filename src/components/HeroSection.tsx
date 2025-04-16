@@ -36,7 +36,12 @@ const HeroSection = memo(() => {
                     <p className="text-gray-700 my-[9px] text-base font-semibold">Build muscle at home in 20 mins a day.</p>
                   </div>
                   
-                  <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]" aria-label="Limited time offer">
+                  <button 
+                    id="scroll-launch-offer-mobile"
+                    onClick={scrollToOwnBoth} 
+                    className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]" 
+                    aria-label="Limited time offer"
+                  >
                     40% OFF LAUNCH OFFER
                     <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </button>
