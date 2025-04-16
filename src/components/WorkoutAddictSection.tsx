@@ -237,7 +237,7 @@ const WorkoutAddictSection = () => {
                 
                 <div className="flex flex-col items-center mt-2 flex-grow-0">
                   <Button onClick={handleStripeCheckout} className={cn("bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", "transition-all duration-300 transform hover:scale-105", "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", "w-auto max-w-fit text-center", "flex items-center justify-center space-x-2")}>
-                    <span className="my-0 mx-[6px] px-[14px] text-sm font-bold py-0">🛒 BUY BOXFUN NOW Only €69,99!</span>
+                    <span className="my-0 mx-[6px] px-[14px] text-sm font-bold py-0">🛒 BUY BOXFUN NOW Only € 69,99!</span>
                   </Button>
                   
                   <p className="text-sm text-gray-500 mt-2 text-center">An original creation in finest materials.</p>

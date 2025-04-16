@@ -1,11 +1,13 @@
-import { memo, useState, useEffect, useRef } from 'react';
+import { memo } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
 interface HeroContentProps {
   isInView: boolean;
   scrollToOwnBoth: (e: React.MouseEvent) => void;
   isMobile?: boolean;
 }
+
 const HeroContent = memo(({
   isInView,
   scrollToOwnBoth,
@@ -21,12 +23,14 @@ const HeroContent = memo(({
   const typingSpeed = 250;
   const deletingSpeed = 80;
   const waitingTime = 1000;
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowTypewriter(true);
     }, 2000);
     return () => clearTimeout(timeout);
   }, []);
+
   useEffect(() => {
     if (!showTypewriter) return;
     const currentWord = words[wordIndex];
@@ -58,6 +62,7 @@ const HeroContent = memo(({
       }
     };
   }, [displayText, isDeleting, wordIndex, isWaiting, words, showTypewriter]);
+
   return <div className="text-center md:text-left">
       <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
         <span className="relative inline-block min-w-[300px] md:min-w-[400px] min-h-[1.2em]">
@@ -83,11 +88,12 @@ const HeroContent = memo(({
           </div>
           
           <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px]">
-            STOP SUBSCRIBING
+            40% Off Launch Offer
             <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
         </div>}
     </div>;
 });
+
 HeroContent.displayName = 'HeroContent';
 export default HeroContent;
