@@ -42,7 +42,7 @@ const HeroSection = memo(() => {
                 
                 <div className={cn("transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <div className="mt-4 space-y-1">
-                    <p className="text-gray-700 font-bold text-lg">Cancel your gym membership.</p>
+                    <p className="text-gray-700 font-bold text-base">Cancel your gym membership.</p>
                     <p className="text-gray-700 px-0 py-[4px] font-bold text-base">Build muscle at home in 20 mins a day.</p>
                   </div>
                   
