@@ -1,39 +1,31 @@
-
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { formatPrice } from '@/utils/formatters';
 import { Plus } from 'lucide-react';
-
 interface GiftItem {
   name: string;
   image: string;
 }
-
 const DEFAULT_GIFT_IMAGE = "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png";
-
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
 }];
-
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [animatedItem, setAnimatedItem] = useState(0);
   const productItems = ["1X PowerTower", "1X TRX", "4X Bands"];
-
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
-
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
-
   return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
     <div className="container mx-auto px-4 relative z-10">
       <div className="max-w-5xl px-4 mx-auto md:px-[115px] md:mx-[174px] md:py-[14px]">
@@ -45,8 +37,7 @@ const BundleOffer = () => {
           <p className="mt-4 text-gray-700 py-[13px] font-semibold text-lg">Everything you need for fitness and calisthenics trainings with guide as a GIFT.</p>
         </div>
         
-        {isMobile ? (
-          <div className="space-y-8">
+        {isMobile ? <div className="space-y-8">
             <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
               <div className="max-w-2xl mx-auto">
                 <div className={cn("rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", "h-full relative bg-white", "hover:translate-y-[-5px]", "shadow border border-gray-200")}>
@@ -81,7 +72,7 @@ const BundleOffer = () => {
             </div>
             
             {/* Added mobile-only spacer for extra vertical spacing */}
-            <div className="h-12 md:hidden"></div>
+            <div className="h-[1px] md:hidden\n"></div>
               
             <div className={cn("flex items-center justify-center mb-4 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
               <Plus className="h-8 w-8 text-green-600 -mr-2 flex-shrink-0" />
@@ -93,11 +84,11 @@ const BundleOffer = () => {
                         <img src={giftItems[0]?.image || DEFAULT_GIFT_IMAGE} alt={giftItems[0]?.name || "Training Library"} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" loading="lazy" width="80" height="80" srcSet={`
                               ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_80') || DEFAULT_GIFT_IMAGE} 80w,
                               ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_160') || DEFAULT_GIFT_IMAGE} 160w
-                            `} sizes="80px" onError={(e) => {
-                              const imgElement = e.target as HTMLImageElement;
-                              imgElement.onerror = null;
-                              imgElement.src = DEFAULT_GIFT_IMAGE;
-                            }} />
+                            `} sizes="80px" onError={e => {
+                        const imgElement = e.target as HTMLImageElement;
+                        imgElement.onerror = null;
+                        imgElement.src = DEFAULT_GIFT_IMAGE;
+                      }} />
                       </div>
                       <h4 className="font-bold text-sm text-center">{giftItems[0]?.name || "TRAINING LIBRARY"}</h4>
                     </div>
@@ -121,9 +112,7 @@ const BundleOffer = () => {
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <div className="mb-10 transition-all duration-1000">
+          </div> : <div className="mb-10 transition-all duration-1000">
             <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="flex flex-col md:flex-row">
                 <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
@@ -150,11 +139,11 @@ const BundleOffer = () => {
                             <img src={giftItems[0]?.image || DEFAULT_GIFT_IMAGE} alt={giftItems[0]?.name || "Training Library"} className="w-full h-full object-contain" loading="lazy" width="160" height="160" srcSet={`
                                 ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_160') || DEFAULT_GIFT_IMAGE} 160w,
                                 ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_320') || DEFAULT_GIFT_IMAGE} 320w
-                              `} sizes="160px" onError={(e) => {
-                                const imgElement = e.target as HTMLImageElement;
-                                imgElement.onerror = null;
-                                imgElement.src = DEFAULT_GIFT_IMAGE;
-                              }} />
+                              `} sizes="160px" onError={e => {
+                            const imgElement = e.target as HTMLImageElement;
+                            imgElement.onerror = null;
+                            imgElement.src = DEFAULT_GIFT_IMAGE;
+                          }} />
                           </div>
                           <h4 className="font-bold text-lg text-center">{giftItems[0]?.name || "TRAINING LIBRARY"}</h4>
                         </div>
@@ -178,8 +167,7 @@ const BundleOffer = () => {
                 {formatPrice(currentPrice)}
               </div>
             </div>
-          </div>
-        )}
+          </div>}
         
         <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", isVisible ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
           <p className="text-lg md:text-xl font-medium text-gray-800 leading-relaxed px-4 mb-6 mx-[16px] my-[34px]">
@@ -196,5 +184,4 @@ const BundleOffer = () => {
     </div>
   </section>;
 };
-
 export default BundleOffer;
