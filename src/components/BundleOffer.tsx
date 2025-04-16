@@ -46,7 +46,7 @@ const BundleOffer = () => {
         
         {isMobile ? (
           <div className="space-y-8">
-            <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
+            <div className={cn("mb-8 sm:mb-8 mb-12 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
               <div className="max-w-2xl mx-auto">
                 <div className={cn("rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", "h-full relative bg-white", "hover:translate-y-[-5px]", "shadow border border-gray-200")}>
                   <div className="relative z-10">
