@@ -1,5 +1,4 @@
-
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -34,7 +33,15 @@ const BundleOffer = () => {
   const currentPrice = 990;
   const discountPercentage = 40;
   
-  return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAnimatedItem((prev) => (prev + 1) % productItems.length);
+    }, 2000); // Change animation every 2 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return <section id="bundle-offer" ref={sectionRef} className="bundle-target relative overflow-hidden py-16 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
     <div className="container mx-auto px-4 relative z-10">
       <div className="max-w-5xl px-4 mx-auto md:px-[115px] md:mx-[174px] md:py-[14px]">
         <div className={cn("text-center transition-all duration-1000 transform mb-10", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
@@ -62,9 +69,19 @@ const BundleOffer = () => {
                     
                     <div className="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-white/90 to-white/20 py-3 px-2">
                       <div className="flex justify-center items-center gap-2">
-                        {productItems.map((item, index) => <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110" : "text-gray-500 scale-90")}>
+                        {productItems.map((item, index) => (
+                          <span 
+                            key={item} 
+                            className={cn(
+                              "font-bold transition-all duration-500", 
+                              animatedItem === index 
+                                ? "text-black scale-120" 
+                                : "text-gray-500 scale-90"
+                            )}
+                          >
                             {item}
-                          </span>)}
+                          </span>
+                        ))}
                       </div>
                     </div>
                     
@@ -131,9 +148,19 @@ const BundleOffer = () => {
                     " sizes="(max-width: 768px) 400px, 600px" />
                   <div className="w-full text-center mb-4">
                     <div className="flex justify-center items-center gap-3">
-                      {productItems.map((item, index) => <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-110 text-xl" : "text-gray-500 scale-95")}>
+                      {productItems.map((item, index) => (
+                        <span 
+                          key={item} 
+                          className={cn(
+                            "font-bold transition-all duration-500", 
+                            animatedItem === index 
+                              ? "text-black scale-120 text-xl" 
+                              : "text-gray-500 scale-95"
+                          )}
+                        >
                           {item}
-                        </span>)}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
