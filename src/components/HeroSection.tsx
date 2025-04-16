@@ -15,9 +15,9 @@ const HeroSection = memo(() => {
   });
   const scrollToOwnBoth = useCallback(debounce((e: React.MouseEvent) => {
     e.preventDefault();
-    const productSection = document.getElementById('product');
-    if (productSection) {
-      productSection.scrollIntoView({
+    const bundleSection = document.getElementById('bundle-offer');
+    if (bundleSection) {
+      bundleSection.scrollIntoView({
         behavior: 'smooth'
       });
     }
@@ -37,8 +37,8 @@ const HeroSection = memo(() => {
                     <p className="text-gray-700 my-[9px] text-base font-semibold">Build Muscle at Home in 20 Mins a Day.</p>
                   </div>
                   
-                  <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]" aria-label="Learn more about subscribing">
-                    STOP SUBSCRIBING
+                  <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]" aria-label="Limited time offer">
+                    40% OFF LAUNCH OFFER
                     <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </button>
                 </div>
@@ -56,5 +56,6 @@ const HeroSection = memo(() => {
       <ScrollIndicator />
     </section>;
 });
+
 HeroSection.displayName = 'HeroSection';
 export default HeroSection;

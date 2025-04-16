@@ -83,11 +83,12 @@ const HeroContent = memo(({
           </div>
           
           <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px]">
-            STOP SUBSCRIBING
+            40% OFF LAUNCH OFFER
             <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
         </div>}
     </div>;
 });
+
 HeroContent.displayName = 'HeroContent';
 export default HeroContent;

@@ -1,10 +1,13 @@
-
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { Plus } from 'lucide-react';
-import CountUp from 'react-countup';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { formatPrice } from '@/utils/formatters';
+import { Plus } from 'lucide-react';
+import CountUp from 'react-countup';
+
+// Add fallback image constant
+const DEFAULT_GIFT_IMAGE = 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png';
 
 interface GiftItem {
   name: string;
@@ -28,7 +31,11 @@ const BundleOffer = () => {
     window.open('https://buy.stripe.com/00g8wWgbP7uc5by7sC', '_blank');
   };
 
-  useEffect(() => {
+  const originalPrice = 1650;
+  const currentPrice = 990;
+  const discountPercentage = 40;
+
+  useState(() => {
     setIsVisible(true);
     const interval = setInterval(() => {
       setAnimatedItem(prev => (prev + 1) % productItems.length);
@@ -36,11 +43,7 @@ const BundleOffer = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const originalPrice = 1650;
-  const currentPrice = 990;
-  const discountPercentage = 40;
-
-  return <section id="bundle" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
+  return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl px-4 mx-auto md:px-[115px] md:mx-[174px] md:py-[14px]">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
@@ -108,13 +111,11 @@ const BundleOffer = () => {
               <div className={cn("mb-8 transition-all duration-1000 delay-500", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="flex flex-col items-center justify-center my-0">
                   <span className="text-xl text-gray-700 line-through mb-1">
-                    {isVisible ? <>
-                        {originalPrice}€
-                      </> : `${originalPrice}€`}
+                    {isVisible ? <CountUp start={0} end={originalPrice} duration={2} prefix="€ " decimals={0} /> : formatPrice(originalPrice)}
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-bold">
-                      {isVisible ? <CountUp start={0} end={currentPrice} duration={2} suffix="€" /> : `${currentPrice}€`}
+                      {isVisible ? <CountUp start={0} end={currentPrice} duration={2} prefix="€ " decimals={0} /> : formatPrice(currentPrice)}
                     </span>
                     <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
                       {isVisible ? <CountUp start={0} end={discountPercentage} duration={2} suffix="% OFF" /> : `${discountPercentage}% OFF`}
@@ -185,7 +186,7 @@ const BundleOffer = () => {
             
             <div className="flex justify-center">
               <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
-                🛒 BUY FITANYWHERE
+                🛒 BUY BOXFUN NOW Only € 69,99!
               </Button>
             </div>
           </div>
