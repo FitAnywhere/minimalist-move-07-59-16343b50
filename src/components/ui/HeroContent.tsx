@@ -1,11 +1,14 @@
+
 import { memo, useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
 interface HeroContentProps {
   isInView: boolean;
   scrollToOwnBoth: (e: React.MouseEvent) => void;
   isMobile?: boolean;
 }
+
 const HeroContent = memo(({
   isInView,
   scrollToOwnBoth,
@@ -18,27 +21,34 @@ const HeroContent = memo(({
   const [isWaiting, setIsWaiting] = useState(false);
   const [showTypewriter, setShowTypewriter] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
   const typingSpeed = 250;
   const deletingSpeed = 80;
   const waitingTime = 1000;
+  
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowTypewriter(true);
     }, 2000);
     return () => clearTimeout(timeout);
   }, []);
+  
   useEffect(() => {
     if (!showTypewriter) return;
+    
     const currentWord = words[wordIndex];
+    
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
+    
     timeoutRef.current = setTimeout(() => {
       if (isWaiting) {
         setIsWaiting(false);
         setIsDeleting(true);
         return;
       }
+      
       if (isDeleting) {
         setDisplayText(currentWord.substring(0, displayText.length - 1));
         if (displayText.length === 1) {
@@ -52,12 +62,14 @@ const HeroContent = memo(({
         }
       }
     }, isWaiting ? waitingTime : isDeleting ? deletingSpeed : typingSpeed);
+    
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
   }, [displayText, isDeleting, wordIndex, isWaiting, words, showTypewriter]);
+  
   return <div className="text-center md:text-left">
       <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
         <span className="relative inline-block min-w-[300px] md:min-w-[400px] min-h-[1.2em]">
@@ -89,5 +101,6 @@ const HeroContent = memo(({
         </div>}
     </div>;
 });
+
 HeroContent.displayName = 'HeroContent';
 export default HeroContent;
