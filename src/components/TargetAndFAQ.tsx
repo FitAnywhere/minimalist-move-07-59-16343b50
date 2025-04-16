@@ -69,7 +69,7 @@ const TargetAndFAQ = () => {
   
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
+    window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
   };
   
   return <>
