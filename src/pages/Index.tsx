@@ -143,7 +143,7 @@ const Index = () => {
       </div>
       
       <Suspense fallback={<SectionLoader />}>
-        <div id="bundle" className="content-visibility-auto">
+        <div id="bundle">
           <BundleOffer />
         </div>
         
