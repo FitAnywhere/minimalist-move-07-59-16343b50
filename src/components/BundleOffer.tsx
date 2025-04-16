@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -41,7 +42,7 @@ const BundleOffer = () => {
       setAnimatedItem(prev => (prev + 1) % productItems.length);
     }, 2000);
     return () => clearInterval(interval);
-  }, []);
+  });
 
   return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
       <div className="container mx-auto px-4 relative z-10">
@@ -96,12 +97,16 @@ const BundleOffer = () => {
                     <div className="flex items-center justify-center">
                       <div className="flex flex-col items-center w-full">
                         <div className="w-20 h-20 mb-1 flex-shrink-0 overflow-hidden">
-                          <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" loading="lazy" width="80" height="80" srcSet={`
-                              ${giftItems[0].image.replace('f_auto,q_auto', 'f_auto,q_auto,w_80')} 80w,
-                              ${giftItems[0].image.replace('f_auto,q_auto', 'f_auto,q_auto,w_160')} 160w
-                            `} sizes="80px" />
+                          <img src={giftItems[0]?.image || DEFAULT_GIFT_IMAGE} alt={giftItems[0]?.name || "Training Library"} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" loading="lazy" width="80" height="80" srcSet={`
+                              ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_80') || DEFAULT_GIFT_IMAGE} 80w,
+                              ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_160') || DEFAULT_GIFT_IMAGE} 160w
+                            `} sizes="80px" onError={(e) => {
+                              const imgElement = e.target as HTMLImageElement;
+                              imgElement.onerror = null;
+                              imgElement.src = DEFAULT_GIFT_IMAGE;
+                            }} />
                         </div>
-                        <h4 className="font-bold text-sm text-center">{giftItems[0].name}</h4>
+                        <h4 className="font-bold text-sm text-center">{giftItems[0]?.name || "TRAINING LIBRARY"}</h4>
                       </div>
                     </div>
                   </div>
@@ -149,12 +154,16 @@ const BundleOffer = () => {
                         <div className="flex items-center justify-center">
                           <div className="flex flex-col items-center">
                             <div className="w-40 h-40 mb-3 flex-shrink-0 overflow-hidden">
-                              <img src={giftItems[0].image} alt={giftItems[0].name} className="w-full h-full object-contain" loading="lazy" width="160" height="160" srcSet={`
-                                  ${giftItems[0].image.replace('f_auto,q_auto', 'f_auto,q_auto,w_160')} 160w,
-                                  ${giftItems[0].image.replace('f_auto,q_auto', 'f_auto,q_auto,w_320')} 320w
-                                `} sizes="160px" />
+                              <img src={giftItems[0]?.image || DEFAULT_GIFT_IMAGE} alt={giftItems[0]?.name || "Training Library"} className="w-full h-full object-contain" loading="lazy" width="160" height="160" srcSet={`
+                                  ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_160') || DEFAULT_GIFT_IMAGE} 160w,
+                                  ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_320') || DEFAULT_GIFT_IMAGE} 320w
+                                `} sizes="160px" onError={(e) => {
+                                  const imgElement = e.target as HTMLImageElement;
+                                  imgElement.onerror = null;
+                                  imgElement.src = DEFAULT_GIFT_IMAGE;
+                                }} />
                             </div>
-                            <h4 className="font-bold text-lg text-center">{giftItems[0].name}</h4>
+                            <h4 className="font-bold text-lg text-center">{giftItems[0]?.name || "TRAINING LIBRARY"}</h4>
                           </div>
                         </div>
                       </div>
@@ -186,7 +195,7 @@ const BundleOffer = () => {
             
             <div className="flex justify-center">
               <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
-                🛒 BUY BOXFUN NOW Only € 69,99!
+                🛒 BUY FITANYWHERE
               </Button>
             </div>
           </div>
