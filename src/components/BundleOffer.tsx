@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -46,7 +47,7 @@ const BundleOffer = () => {
         
         {isMobile ? (
           <div className="space-y-8">
-            <div className={cn("mb-8 sm:mb-8 mb-12 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
+            <div className={cn("mb-8 transition-all duration-1000", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
               <div className="max-w-2xl mx-auto">
                 <div className={cn("rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg", "h-full relative bg-white", "hover:translate-y-[-5px]", "shadow border border-gray-200")}>
                   <div className="relative z-10">
@@ -77,15 +78,19 @@ const BundleOffer = () => {
                   </div>
                 </div>
               </div>
+            </div>
+            
+            {/* Added mobile-only spacer for extra vertical spacing */}
+            <div className="h-12 md:hidden"></div>
               
-              <div className={cn("flex items-center justify-center mb-4 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
-                <Plus className="h-8 w-8 text-green-600 -mr-2 flex-shrink-0" />
-                <div className="max-w-2xl mx-auto">
-                  <div className="rounded-lg bg-white p-3 border border-green-600 flex flex-col items-center">
-                    <div className="flex items-center justify-center">
-                      <div className="flex flex-col items-center w-full">
-                        <div className="w-20 h-20 mb-1 flex-shrink-0 overflow-hidden">
-                          <img src={giftItems[0]?.image || DEFAULT_GIFT_IMAGE} alt={giftItems[0]?.name || "Training Library"} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" loading="lazy" width="80" height="80" srcSet={`
+            <div className={cn("flex items-center justify-center mb-4 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
+              <Plus className="h-8 w-8 text-green-600 -mr-2 flex-shrink-0" />
+              <div className="max-w-2xl mx-auto">
+                <div className="rounded-lg bg-white p-3 border border-green-600 flex flex-col items-center">
+                  <div className="flex items-center justify-center">
+                    <div className="flex flex-col items-center w-full">
+                      <div className="w-20 h-20 mb-1 flex-shrink-0 overflow-hidden">
+                        <img src={giftItems[0]?.image || DEFAULT_GIFT_IMAGE} alt={giftItems[0]?.name || "Training Library"} className="w-full h-full object-contain transition-all duration-300 hover:scale-110" loading="lazy" width="80" height="80" srcSet={`
                               ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_80') || DEFAULT_GIFT_IMAGE} 80w,
                               ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_160') || DEFAULT_GIFT_IMAGE} 160w
                             `} sizes="80px" onError={(e) => {
@@ -93,26 +98,25 @@ const BundleOffer = () => {
                               imgElement.onerror = null;
                               imgElement.src = DEFAULT_GIFT_IMAGE;
                             }} />
-                        </div>
-                        <h4 className="font-bold text-sm text-center">{giftItems[0]?.name || "TRAINING LIBRARY"}</h4>
                       </div>
+                      <h4 className="font-bold text-sm text-center">{giftItems[0]?.name || "TRAINING LIBRARY"}</h4>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
               
-              <div className={cn("mb-8 transition-all duration-1000 delay-500", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="flex flex-col items-center justify-center my-0">
-                  <span className="text-xl text-gray-700 line-through mb-1">
-                    {formatPrice(originalPrice)}
+            <div className={cn("mb-8 transition-all duration-1000 delay-500", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+              <div className="flex flex-col items-center justify-center my-0">
+                <span className="text-xl text-gray-700 line-through mb-1">
+                  {formatPrice(originalPrice)}
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl font-bold">
+                    {formatPrice(currentPrice)}
                   </span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl font-bold">
-                      {formatPrice(currentPrice)}
-                    </span>
-                    <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
-                      {`${discountPercentage}% OFF`}
-                    </div>
+                  <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
+                    {`${discountPercentage}% OFF`}
                   </div>
                 </div>
               </div>
