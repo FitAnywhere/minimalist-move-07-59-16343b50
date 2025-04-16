@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -7,7 +6,6 @@ import { formatPrice } from '@/utils/formatters';
 import { Plus } from 'lucide-react';
 import CountUp from 'react-countup';
 
-// Add fallback image constant
 const DEFAULT_GIFT_IMAGE = 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png';
 
 interface GiftItem {
@@ -174,7 +172,7 @@ const BundleOffer = () => {
               <div className="flex flex-col items-center justify-center mt-8 mb-8">
                 <div className="flex items-center gap-3 justify-center">
                   <span className="text-xl text-gray-700 line-through">
-                    {originalPrice}€
+                    {formatPrice(originalPrice)}
                   </span>
                   <div className="bg-green-600 px-3 py-1 rounded-full text-white text-xs font-bold">
                     {discountPercentage}% OFF
@@ -182,7 +180,7 @@ const BundleOffer = () => {
                 </div>
                 
                 <div className="text-3xl font-bold text-green-600 text-center mt-2">
-                  {currentPrice}€
+                  {formatPrice(currentPrice)}
                 </div>
               </div>
             </div>
