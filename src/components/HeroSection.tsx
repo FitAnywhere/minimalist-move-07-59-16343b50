@@ -15,7 +15,7 @@ const HeroSection = memo(() => {
     threshold: 0.4
   });
 
-  const scrollToBundle = (e: React.MouseEvent) => {
+  const scrollToBundleOffer = (e: React.MouseEvent) => {
     e.preventDefault();
     
     const MAX_ATTEMPTS = 50;
@@ -23,7 +23,7 @@ const HeroSection = memo(() => {
     let attempts = 0;
     
     const tryScroll = () => {
-      const target = document.querySelector('#bundle');
+      const target = document.querySelector('#bundle-offer');
       const headerOffset = document.querySelector('header')?.offsetHeight || 80;
       
       if (target && target.getBoundingClientRect().height > 0) {
@@ -34,7 +34,7 @@ const HeroSection = memo(() => {
       }
       
       if (++attempts >= MAX_ATTEMPTS) {
-        console.warn('Failed to scroll to #bundle after max attempts');
+        console.warn('Failed to scroll to #bundle-offer after max attempts');
         return true;
       }
       
@@ -62,7 +62,7 @@ const HeroSection = memo(() => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {isMobile ? <>
               <div className="text-center order-1 w-full space-y-6">
-                <HeroContent isInView={isInView} scrollToOwnBoth={scrollToBundle} isMobile={true} />
+                <HeroContent isInView={isInView} scrollToOwnBoth={scrollToBundleOffer} isMobile={true} />
                 <OptimizedHeroVideo />
                 <div className={cn("mt-4 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <div className="mt-4 space-y-1">
@@ -70,14 +70,14 @@ const HeroSection = memo(() => {
                     <p className="text-gray-700 my-[9px] text-base font-semibold">Build muscle at home in 20 mins a day.</p>
                   </div>
                   
-                  <button onClick={scrollToBundle} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]" aria-label="Limited time offer">
+                  <button onClick={scrollToBundleOffer} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]" aria-label="Limited time offer">
                     40% OFF LAUNCH OFFER
                     <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </button>
                 </div>
               </div>
             </> : <>
-              <HeroContent isInView={isInView} scrollToOwnBoth={scrollToBundle} />
+              <HeroContent isInView={isInView} scrollToOwnBoth={scrollToBundleOffer} />
               <div className="order-1 md:order-2 w-full">
                 <OptimizedHeroVideo />
                 <p className="mt-3 text-sm text-gray-600 ml-1 text-center my-[6px] mx-[30px]">Launching Spring 2025. Reserve before we sell out.</p>
