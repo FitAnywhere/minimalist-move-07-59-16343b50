@@ -3,9 +3,6 @@
  * Utility functions for handling scrolling behavior
  */
 
-// Prevent double scrolling
-let scrollHandled = false;
-
 // Handle smooth scrolling to a target element
 export const scrollToElement = (targetId: string, offset = 100): void => {
   setTimeout(() => {
@@ -49,17 +46,13 @@ export const scrollToTop = (): void => {
 
 // Handle navigation from external pages with targets
 export const handleExternalNavigation = (location: any): void => {
-  if (scrollHandled) return;
-  
   if (location.state?.fromExternalPage) {
-    scrollHandled = true;
     if (location.state.targetSection) {
       scrollToElement(`#${location.state.targetSection}`);
     } else {
       scrollToTop();
     }
   } else if (window.location.hash) {
-    scrollHandled = true;
     scrollToElement(window.location.hash);
   }
 };
