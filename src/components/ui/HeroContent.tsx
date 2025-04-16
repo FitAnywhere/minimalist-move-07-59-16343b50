@@ -1,5 +1,5 @@
 
-import { memo } from 'react';
+import { memo, useState, useRef, useEffect } from 'react';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
