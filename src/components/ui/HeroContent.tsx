@@ -1,14 +1,11 @@
-
 import { memo, useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 interface HeroContentProps {
   isInView: boolean;
   scrollToOwnBoth: (e: React.MouseEvent) => void;
   isMobile?: boolean;
 }
-
 const HeroContent = memo(({
   isInView,
   scrollToOwnBoth,
@@ -20,49 +17,16 @@ const HeroContent = memo(({
   const [wordIndex, setWordIndex] = useState(0);
   const [isWaiting, setIsWaiting] = useState(false);
   const [showTypewriter, setShowTypewriter] = useState(false);
-  const [isBundleReady, setIsBundleReady] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const typingSpeed = 250;
   const deletingSpeed = 80;
   const waitingTime = 1000;
-
-  // Initialize typewriter effect with delay
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowTypewriter(true);
     }, 2000);
     return () => clearTimeout(timeout);
   }, []);
-
-  // Check for bundle-offer section availability
-  useEffect(() => {
-    if (isBundleReady) return; // Already found
-    
-    const checkInterval = 100; // ms
-    const maxCheckTime = 2000; // ms
-    let elapsed = 0;
-    
-    const checkExistence = () => {
-      const bundleElement = document.querySelector('#bundle-offer');
-      if (bundleElement) {
-        setIsBundleReady(true);
-        return;
-      }
-      
-      elapsed += checkInterval;
-      if (elapsed < maxCheckTime) {
-        timeoutId = setTimeout(checkExistence, checkInterval);
-      }
-    };
-    
-    let timeoutId = setTimeout(checkExistence, checkInterval);
-    
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-  }, [isBundleReady]);
-
-  // Typewriter effect logic
   useEffect(() => {
     if (!showTypewriter) return;
     const currentWord = words[wordIndex];
@@ -94,39 +58,6 @@ const HeroContent = memo(({
       }
     };
   }, [displayText, isDeleting, wordIndex, isWaiting, words, showTypewriter]);
-
-  const handleScrollToBundleOffer = (e: React.MouseEvent) => {
-    e.preventDefault();
-    
-    if (!isBundleReady) {
-      console.log('Bundle offer section not ready yet');
-      return;
-    }
-    
-    const scrollWithRetry = (attempts = 0) => {
-      const targetElement = document.querySelector('#bundle-offer');
-      
-      if (targetElement) {
-        const headerOffset = document.querySelector('header')?.offsetHeight || 80;
-        const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.scrollY - headerOffset;
-        
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      } else if (attempts < 5) {
-        setTimeout(() => {
-          scrollWithRetry(attempts + 1);
-        }, 200 * Math.pow(2, attempts));
-      }
-    };
-    
-    scrollWithRetry();
-    
-    // Removed call to scrollToOwnBoth to prevent duplicate scrolling
-  };
-
   return <div className="text-center md:text-left">
       <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
         <span className="relative inline-block min-w-[300px] md:min-w-[400px] min-h-[1.2em]">
@@ -151,23 +82,12 @@ const HeroContent = memo(({
             <p className="text-gray-700 px-0 py-[4px] font-bold text-lg">Build muscle at home in 20 mins a day.</p>
           </div>
           
-          <button 
-            id="scroll-launch-offer"
-            onClick={handleScrollToBundleOffer} 
-            disabled={!isBundleReady}
-            aria-disabled={!isBundleReady}
-            tabIndex={!isBundleReady ? -1 : undefined}
-            className={cn(
-              "inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px]",
-              !isBundleReady && "opacity-50 cursor-not-allowed"
-            )}
-          >
+          <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px]">
             40% OFF LAUNCH OFFER
             <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
         </div>}
     </div>;
 });
-
 HeroContent.displayName = 'HeroContent';
 export default HeroContent;

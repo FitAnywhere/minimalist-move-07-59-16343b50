@@ -1,4 +1,3 @@
-
 import { useRef, useState, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -7,20 +6,22 @@ import HeroContent from './ui/HeroContent';
 import OptimizedHeroVideo from './ui/OptimizedHeroVideo';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { scrollToElement } from '@/utils/scrollUtils';
-
+import { debounce } from '@/utils/eventOptimizers';
 const HeroSection = memo(() => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const isInView = useInView(heroRef, {
     threshold: 0.4
   });
-  
-  const scrollToOwnBoth = useCallback((e: React.MouseEvent) => {
+  const scrollToOwnBoth = useCallback(debounce((e: React.MouseEvent) => {
     e.preventDefault();
-    scrollToElement('#bundle-offer', 100); // With 100px offset to account for header
-  }, []);
-
+    const bundleSection = document.getElementById('bundle-offer');
+    if (bundleSection) {
+      bundleSection.scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+  }, 150), []);
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white" aria-label="Introduction to FitAnywhere">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
       
@@ -36,12 +37,7 @@ const HeroSection = memo(() => {
                     <p className="text-gray-700 my-[9px] text-base font-semibold">Build muscle at home in 20 mins a day.</p>
                   </div>
                   
-                  <button 
-                    id="scroll-launch-offer-mobile"
-                    onClick={scrollToOwnBoth} 
-                    className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]" 
-                    aria-label="Limited time offer"
-                  >
+                  <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]" aria-label="Limited time offer">
                     40% OFF LAUNCH OFFER
                     <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </button>
