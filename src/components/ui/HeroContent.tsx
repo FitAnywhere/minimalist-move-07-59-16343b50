@@ -94,9 +94,9 @@ const HeroContent = memo(({
             className={cn(
               "inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow",
               isMobile 
-                ? "py-[8px] px-[25px]" 
+                ? "py-[10px] px-[25px]" 
                 : "py-[15px] px-[58px]",
-              "my-[20px] cursor-not-allowed opacity-50"
+              "my-[20px] cursor-not-allowed"
             )}
           >
             40% OFF LAUNCH OFFER
@@ -108,4 +108,3 @@ const HeroContent = memo(({
 
 HeroContent.displayName = 'HeroContent';
 export default HeroContent;
-
