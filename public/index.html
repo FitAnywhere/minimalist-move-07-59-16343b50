@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -173,10 +174,9 @@
     
     <!-- Deferred third-party scripts loading -->
     <script type="text/javascript">
-      // Wait for window load to ensure core content displays first
+      // Use requestIdleCallback for non-critical initialization
       window.addEventListener('load', function() {
-        // Load Voiceflow Chatbot with delay
-        setTimeout(function() {
+        const loadVoiceflow = () => {
           (function(d, t) {
             var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
             v.onload = function() {
@@ -194,7 +194,31 @@
             v.async = true;
             s.parentNode.insertBefore(v, s);
           })(document, 'script');
-        }, 500);
+        };
+
+        // Use requestIdleCallback with a fallback
+        const idleCallback = window.requestIdleCallback || 
+          ((cb) => setTimeout(cb, 3000));
+        
+        // Load Voiceflow when the browser is idle
+        idleCallback(loadVoiceflow, { timeout: 5000 });
+
+        // Load Facebook Pixel with delay
+        setTimeout(function() {
+          (function(f,b,e,v,n,t,s) {
+            if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)})(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            
+            if (typeof window.fbq === 'function') {
+              window.fbq('init', '1271374844408612');
+              window.fbq('track', 'PageView');
+            }
+        }, 1000);
       });
     </script>
   </body>

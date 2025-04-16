@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,7 +8,7 @@ const ChatbotHelper = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   
   useEffect(() => {
-    // Check if Voiceflow is loaded
+    // Enhanced Voiceflow check with retry mechanism
     const checkVoiceflowLoaded = () => {
       if (window.voiceflow && window.voiceflow.chat) {
         setChatbotReady(true);
@@ -18,13 +17,13 @@ const ChatbotHelper = () => {
       return false;
     };
     
-    // If Voiceflow isn't immediately available, set up a checker
+    // If Voiceflow isn't immediately available, set up a checker with increased interval
     if (!checkVoiceflowLoaded()) {
       const voiceflowChecker = setInterval(() => {
         if (checkVoiceflowLoaded()) {
           clearInterval(voiceflowChecker);
         }
-      }, 1000);
+      }, 2000); // Increased interval to reduce checks
       
       // Clean up interval
       return () => clearInterval(voiceflowChecker);
@@ -68,12 +67,11 @@ const ChatbotHelper = () => {
   }, [chatbotReady]);
 
   const handleAskClick = () => {
-    if (chatbotReady && window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
+    if (chatbotReady && window.voiceflow?.chat?.open) {
       window.voiceflow.chat.open();
     }
     setIsVisible(false);
     
-    // Clear any pending timers
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
