@@ -175,17 +175,7 @@
     <script type="text/javascript">
       // Wait for window load to ensure core content displays first
       window.addEventListener('load', function() {
-        // Load Mouseflow Analytics with slight delay
-        setTimeout(function() {
-          window._mfq = window._mfq || [];
-          var mf = document.createElement("script");
-          mf.type = "text/javascript";
-          mf.async = true;
-          mf.src = "//cdn.mouseflow.com/projects/a1997416-33e6-483b-a3da-fff3c11f54e6.js";
-          document.head.appendChild(mf);
-        }, 100);
-        
-        // Load Voiceflow Chatbot with longer delay
+        // Load Voiceflow Chatbot with delay
         setTimeout(function() {
           (function(d, t) {
             var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
