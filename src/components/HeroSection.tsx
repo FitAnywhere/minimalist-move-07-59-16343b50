@@ -33,7 +33,7 @@ const HeroSection = memo(() => {
                 <OptimizedHeroVideo />
                 <div className={cn("mt-4 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <div className="mt-4 space-y-1">
-                    <p className="text-gray-700 text-base font-semibold">On average, gym users lose:</p>
+                    <p className="text-gray-700 text-base font-semibold">Cancel Your Gym Membership.</p>
                     <p className="text-gray-700 my-[9px] text-base font-semibold">Build Muscle at Home in 20 Mins a Day.</p>
                   </div>
                   
