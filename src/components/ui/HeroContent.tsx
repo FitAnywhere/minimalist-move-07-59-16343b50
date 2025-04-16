@@ -1,6 +1,6 @@
 
-import { memo, useState, useEffect, useRef } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { memo } from 'react';
+import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface HeroContentProps {
@@ -90,11 +90,11 @@ const HeroContent = memo(({
           
           <button 
             onClick={(e) => e.preventDefault()} 
-            className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px] cursor-not-allowed opacity-50"
             disabled
+            className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px] cursor-not-allowed opacity-50"
           >
-            40% OFF LAUNCH OFFER
-            <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+            40% OFF LAUNCH OFFER ↓
+            <ArrowDown className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
         </div>}
     </div>;
