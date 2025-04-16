@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
@@ -12,7 +13,7 @@ interface GiftItem {
 
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
-  image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,v1744095736/dZZFMFQ_oped40.png"
+  image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
 }];
 
 const BundleOffer = () => {
