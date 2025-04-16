@@ -9,10 +9,16 @@ const OptimizedHeroVideo = memo(() => {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    let observerTriggered = false;
+
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          setShowVideo(true);
+        if (entries[0].isIntersecting && !observerTriggered) {
+          observerTriggered = true;
+          // Add delay to ensure LCP paints image, not video
+          setTimeout(() => {
+            setShowVideo(true);
+          }, 3000); // 3 second delay to ensure image becomes LCP
           observer.disconnect();
         }
       },
@@ -47,3 +53,4 @@ const OptimizedHeroVideo = memo(() => {
 
 OptimizedHeroVideo.displayName = 'OptimizedHeroVideo';
 export default OptimizedHeroVideo;
+
