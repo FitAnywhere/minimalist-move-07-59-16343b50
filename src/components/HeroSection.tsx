@@ -30,8 +30,6 @@ const HeroSection = memo(() => {
               <div className="text-center order-1 w-full space-y-6">
                 <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} isMobile={true} />
                 
-                <OptimizedHeroVideo />
-                
                 <p className="mt-3 text-sm text-gray-600 ml-1 text-center my-[6px] mx-[30px]">
                   Launching Spring 2025. Reserve before we sell out.
                 </p>

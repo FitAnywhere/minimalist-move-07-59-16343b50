@@ -2,6 +2,7 @@
 import { memo, useState, useRef, useEffect } from 'react';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import OptimizedHeroVideo from './OptimizedHeroVideo';
 
 interface HeroContentProps {
   isInView: boolean;
@@ -87,6 +88,10 @@ const HeroContent = memo(({
         3 IN 1 PORTABLE GYM
       </p>
       
+      <div className={cn("mt-4", isInView ? "opacity-100" : "opacity-0")}>
+        <OptimizedHeroVideo />
+      </div>
+      
       {(isMobile) && (
         <div className={cn("transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
           <div className="mt-4 space-y-1">
@@ -110,7 +115,7 @@ const HeroContent = memo(({
       )}
       
       {(!isMobile) && (
-        <div className={cn("mt-10 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+        <div className={cn("mt-4 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
           <div className="mt-4 space-y-1">
             <p className="text-gray-700 font-bold text-lg">Cancel your gym membership.</p>
             <p className="text-gray-700 px-0 py-[4px] font-bold text-lg">Build muscle at home in 20 mins a day.</p>
