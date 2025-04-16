@@ -30,6 +30,10 @@ const HeroSection = memo(() => {
         // Element exists and has height, scroll to it
         const top = target.getBoundingClientRect().top + window.scrollY - headerOffset;
         window.scrollTo({ top, behavior: 'smooth' });
+        
+        // 🔥 Immediately clear hash to prevent secondary scroll
+        history.replaceState(null, '', window.location.pathname);
+        
         return true;
       }
       
@@ -92,3 +96,4 @@ const HeroSection = memo(() => {
 
 HeroSection.displayName = 'HeroSection';
 export default HeroSection;
+
