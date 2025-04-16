@@ -1,3 +1,4 @@
+
 import { useRef, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -6,12 +7,14 @@ import HeroContent from './ui/HeroContent';
 import OptimizedHeroVideo from './ui/OptimizedHeroVideo';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
 const HeroSection = memo(() => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const isInView = useInView(heroRef, {
     threshold: 0.4
   });
+  
   const scrollToBundleOffer = (e: React.MouseEvent) => {
     e.preventDefault();
     const MAX_ATTEMPTS = 50;
@@ -29,7 +32,7 @@ const HeroSection = memo(() => {
         });
 
         // 🔥 Immediately clear hash to prevent secondary scroll
-        history.replaceState(null, '', window.location.pathname);
+        history.replaceState({}, '', window.location.pathname);
         return true;
       }
       if (++attempts >= MAX_ATTEMPTS) {
@@ -52,6 +55,7 @@ const HeroSection = memo(() => {
       setTimeout(() => clearInterval(interval), MAX_ATTEMPTS * INTERVAL);
     }
   };
+  
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white" aria-label="Introduction to FitAnywhere">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
       
@@ -67,7 +71,10 @@ const HeroSection = memo(() => {
                     <p className="text-gray-700 my-[9px] text-base font-semibold">Build muscle at home in 20 mins a day.</p>
                   </div>
                   
-                  
+                  <button onClick={scrollToBundleOffer} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px]">
+                    40% OFF LAUNCH OFFER
+                    <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </button>
                 </div>
               </div>
             </> : <>
@@ -83,5 +90,6 @@ const HeroSection = memo(() => {
       <ScrollIndicator />
     </section>;
 });
+
 HeroSection.displayName = 'HeroSection';
 export default HeroSection;
