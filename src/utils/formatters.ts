@@ -1,2 +1,4 @@
 
-export const formatPrice = (amount: number) => `€ ${amount.toLocaleString('de-DE')}`;
+export const formatPrice = (amount: number) => {
+  return `€ ${amount.toLocaleString('de-DE').replace(',', '.')}`;
+};
