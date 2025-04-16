@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -20,6 +21,7 @@ const giftItems: GiftItem[] = [{
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
+  const [showBundle, setShowBundle] = useState(false);
   const isMobile = useIsMobile();
   const [animatedItem, setAnimatedItem] = useState(0);
   const productItems = ["1X PowerTower", "1X TRX", "4X Bands"];
@@ -33,6 +35,15 @@ const BundleOffer = () => {
   const currentPrice = 990;
   const discountPercentage = 40;
   
+  // Delay showing the bundle section for 4 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowBundle(true);
+    }, 4000);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setAnimatedItem((prev) => (prev + 1) % productItems.length);
@@ -40,6 +51,17 @@ const BundleOffer = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  // If not ready to show, render an empty placeholder with the same height
+  if (!showBundle) {
+    return (
+      <section id="bundle-offer" className="bundle-target relative py-16 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
+        <div className="container mx-auto px-4 h-[600px] flex items-center justify-center">
+          <div className="animate-pulse bg-gray-100 rounded-lg w-full max-w-5xl h-4/5"></div>
+        </div>
+      </section>
+    );
+  }
 
   return <section id="bundle-offer" ref={sectionRef} className="bundle-target relative overflow-hidden py-16 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
     <div className="container mx-auto px-4 relative z-10">
