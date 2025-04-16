@@ -11,7 +11,7 @@ const LimitedOfferSection = () => {
   
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/dR600qaRv29ScE05kt', '_blank');
+    window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
   };
   
   return <section id="limited-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">

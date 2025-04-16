@@ -44,7 +44,7 @@ const WorkoutAddictSection = () => {
   
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/7sI3eC1dB7zvcFy3cr', '_blank');
+    window.open('https://buy.stripe.com/7sIdTg8G31b720U14k', '_blank');
   };
 
   const handleVideoPlay = () => {
