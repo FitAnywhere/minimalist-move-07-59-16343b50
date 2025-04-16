@@ -1,3 +1,4 @@
+
 import { useRef, useState, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -19,24 +20,7 @@ const HeroSection = memo(() => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {isMobile ? <>
               <div className="text-center order-1 w-full space-y-6">
-                <div className="text-center">
-                  <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                    <span className="relative inline-block min-w-[300px] md:min-w-[400px] min-h-[1.2em]">
-                      {true ? <>
-                          FITNESS
-                          <span className="inline-block w-[2px] h-[1em] opacity-0 ml-1" aria-hidden="true" />
-                        </> : <>
-                          FITNESS
-                          <span className="inline-block w-[2px] h-[1em] opacity-0 ml-1" aria-hidden="true" />
-                        </>}
-                      <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")} aria-hidden="true" />
-                    </span>
-                  </h1>
-                  
-                  <p className={cn("mt-6 text-xl md:text-2xl text-gray-800 transition-all duration-1000 delay-200", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                    3 IN 1 PORTABLE GYM
-                  </p>
-                </div>
+                <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} isMobile={true} />
                 
                 <OptimizedHeroVideo />
                 
