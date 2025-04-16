@@ -7,7 +7,6 @@ import HeroContent from './ui/HeroContent';
 import OptimizedHeroVideo from './ui/OptimizedHeroVideo';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { debounce } from '@/utils/eventOptimizers';
 
 const HeroSection = memo(() => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -29,22 +28,6 @@ const HeroSection = memo(() => {
                   isMobile={true} 
                 />
                 <OptimizedHeroVideo />
-                <div className={cn("mt-4 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <div className="mt-4 space-y-1">
-                    <p className="text-gray-700 text-base font-semibold">Cancel your gym membership.</p>
-                    <p className="text-gray-700 my-[9px] text-base font-semibold">Build muscle at home in 20 mins a day.</p>
-                  </div>
-                  
-                  <button 
-                    onClick={(e) => e.preventDefault()} 
-                    disabled 
-                    className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]" 
-                    aria-label="Limited time offer"
-                  >
-                    40% OFF LAUNCH OFFER ↓
-                    <ArrowDown className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </button>
-                </div>
               </div>
             </> : <>
               <HeroContent 
@@ -64,3 +47,4 @@ const HeroSection = memo(() => {
 });
 HeroSection.displayName = 'HeroSection';
 export default HeroSection;
+

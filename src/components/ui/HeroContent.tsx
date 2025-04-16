@@ -82,7 +82,7 @@ const HeroContent = memo(({
         3 IN 1 PORTABLE GYM
       </p>
       
-      {!isMobile && <div className={cn("mt-10 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+      {(!isMobile || isMobile) && <div className={cn("mt-10 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
           <div className="mt-4 space-y-1">
             <p className="text-gray-700 font-bold text-lg">Cancel your gym membership.</p>
             <p className="text-gray-700 px-0 py-[4px] font-bold text-lg">Build muscle at home in 20 mins a day.</p>
@@ -91,10 +91,16 @@ const HeroContent = memo(({
           <button 
             onClick={(e) => e.preventDefault()} 
             disabled
-            className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px] cursor-not-allowed opacity-50"
+            className={cn(
+              "inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow",
+              isMobile 
+                ? "py-[8px] px-[25px]" 
+                : "py-[15px] px-[58px]",
+              "my-[20px] cursor-not-allowed opacity-50"
+            )}
           >
-            40% OFF LAUNCH OFFER ↓
-            <ArrowDown className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+            40% OFF LAUNCH OFFER
+            <ArrowDown className="ml-2 w-6 h-6 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
         </div>}
     </div>;
@@ -102,3 +108,4 @@ const HeroContent = memo(({
 
 HeroContent.displayName = 'HeroContent';
 export default HeroContent;
+
