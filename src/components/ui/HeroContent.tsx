@@ -1,13 +1,11 @@
 import { memo, useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 interface HeroContentProps {
   isInView: boolean;
   scrollToOwnBoth: (e: React.MouseEvent) => void;
   isMobile?: boolean;
 }
-
 const HeroContent = memo(({
   isInView,
   scrollToOwnBoth,
@@ -19,34 +17,16 @@ const HeroContent = memo(({
   const [wordIndex, setWordIndex] = useState(0);
   const [isWaiting, setIsWaiting] = useState(false);
   const [showTypewriter, setShowTypewriter] = useState(false);
-  const [bundleReady, setBundleReady] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
   const typingSpeed = 250;
   const deletingSpeed = 80;
   const waitingTime = 1000;
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const el = document.querySelector('.bundle-target');
-      const visible = el && el.getBoundingClientRect().height > 0;
-
-      if (visible) {
-        setBundleReady(true);
-        clearInterval(interval);
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowTypewriter(true);
     }, 2000);
     return () => clearTimeout(timeout);
   }, []);
-
   useEffect(() => {
     if (!showTypewriter) return;
     const currentWord = words[wordIndex];
@@ -78,7 +58,6 @@ const HeroContent = memo(({
       }
     };
   }, [displayText, isDeleting, wordIndex, isWaiting, words, showTypewriter]);
-
   return <div className="text-center md:text-left">
       <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
         <span className="relative inline-block min-w-[300px] md:min-w-[400px] min-h-[1.2em]">
@@ -103,41 +82,12 @@ const HeroContent = memo(({
             <p className="text-gray-700 px-0 py-[4px] font-bold text-lg">Build muscle at home in 20 mins a day.</p>
           </div>
           
-          <button 
-            onClick={bundleReady ? scrollToOwnBoth : undefined}
-            disabled={!bundleReady}
-            aria-disabled={!bundleReady}
-            className={cn(
-              "inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px]",
-              !bundleReady && "opacity-70 cursor-not-allowed hover:transform-none"
-            )}
-          >
-            40% OFF LAUNCH OFFER
-            <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
-        </div>}
-
-      {isMobile && <div className={cn("mt-4 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-          <div className="mt-4 space-y-1">
-            <p className="text-gray-700 text-base font-semibold">Cancel your gym membership.</p>
-            <p className="text-gray-700 my-[9px] text-base font-semibold">Build muscle at home in 20 mins a day.</p>
-          </div>
-          
-          <button 
-            onClick={bundleReady ? scrollToOwnBoth : undefined}
-            disabled={!bundleReady}
-            aria-disabled={!bundleReady}
-            className={cn(
-              "inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow px-[25px] mx-0 py-[4px] my-[27px]",
-              !bundleReady && "opacity-70 cursor-not-allowed hover:transform-none"
-            )}
-          >
+          <button onClick={scrollToOwnBoth} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow py-[15px] px-[58px] my-[20px]">
             40% OFF LAUNCH OFFER
             <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
         </div>}
     </div>;
 });
-
 HeroContent.displayName = 'HeroContent';
 export default HeroContent;
