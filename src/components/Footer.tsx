@@ -37,22 +37,23 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-4 md:gap-6 text-sm">
-            <button 
-              onClick={openChatbot}
-              className="flex items-center hover:text-yellow transition-colors"
-            >
-              <Mail className="w-4 h-4 mr-2" />
-              Contact
-            </button>
-            
-            <a 
-              href="https://www.facebook.com/FitAnywhereandBoxFun/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center hover:text-[#1877F2] transition-colors"
-            >
-              <Facebook className="w-4 h-4" />
-            </a>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={openChatbot}
+                className="flex items-center hover:text-yellow transition-colors"
+              >
+                <Mail className="w-4 h-4 mr-2" />
+                Contact
+              </button>
+              <a 
+                href="https://www.facebook.com/FitAnywhereandBoxFun/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center hover:text-[#1877F2] transition-colors ml-2"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+            </div>
             
             <div className="text-gray-500 order-last md:order-none">
               © 2025 FitAnywhere. All rights reserved.
