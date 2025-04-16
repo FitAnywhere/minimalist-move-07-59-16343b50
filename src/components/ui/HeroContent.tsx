@@ -1,4 +1,3 @@
-
 import { memo, useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -14,7 +13,7 @@ const HeroContent = memo(({
   scrollToOwnBoth,
   isMobile = false
 }: HeroContentProps) => {
-  const words = ["CALISTHENICS", "FITNESS", "BOX"];
+  const words = ["CALISTHENICS", "BOX", "FITNESS"];
   const [displayText, setDisplayText] = useState(words[0].substring(0, 1));
   const [isDeleting, setIsDeleting] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
@@ -22,12 +21,10 @@ const HeroContent = memo(({
   const [showTypewriter, setShowTypewriter] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Constants for the typewriter effect
   const typingSpeed = 250;
   const deletingSpeed = 80;
   const waitingTime = 1000;
 
-  // Initialize typewriter after delay, independent of viewport visibility
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowTypewriter(true);
@@ -36,7 +33,6 @@ const HeroContent = memo(({
     return () => clearTimeout(timeout);
   }, []);
 
-  // Typewriter effect logic
   useEffect(() => {
     if (!showTypewriter) return;
 
