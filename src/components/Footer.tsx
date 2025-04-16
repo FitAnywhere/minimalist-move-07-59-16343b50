@@ -1,6 +1,5 @@
-
 import { useState } from 'react';
-import { Mail, Copy, Check } from 'lucide-react';
+import { Mail, Copy, Check, Facebook } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -25,11 +24,9 @@ const Footer = () => {
   };
   
   const openChatbot = () => {
-    // Check if voiceflow exists and has chat method
     if (window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
       window.voiceflow.chat.open();
     } else {
-      // Fallback to dialog if chatbot is not available
       setDialogOpen(true);
       console.error("Voiceflow chatbot not available");
     }
@@ -48,6 +45,15 @@ const Footer = () => {
               Contact
             </button>
             
+            <a 
+              href="https://www.facebook.com/FitAnywhereandBoxFun/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center hover:text-[#1877F2] transition-colors"
+            >
+              <Facebook className="w-4 h-4" />
+            </a>
+            
             <div className="text-gray-500 order-last md:order-none">
               © 2025 FitAnywhere. All rights reserved.
             </div>
@@ -59,7 +65,6 @@ const Footer = () => {
         </div>
       </div>
       
-      {/* Contact Dialog - only shown as fallback if chatbot fails */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
