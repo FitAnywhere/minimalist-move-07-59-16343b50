@@ -34,6 +34,10 @@ const BundleOffer = () => {
   const currentPrice = 990;
   const discountPercentage = 40;
 
+  const formatCountUpValue = (value: number) => {
+    return value.toLocaleString('de-DE').replace(',', '.');
+  };
+
   useState(() => {
     setIsVisible(true);
     const interval = setInterval(() => {
@@ -114,14 +118,39 @@ const BundleOffer = () => {
               <div className={cn("mb-8 transition-all duration-1000 delay-500", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="flex flex-col items-center justify-center my-0">
                   <span className="text-xl text-gray-700 line-through mb-1">
-                    {isVisible ? <CountUp start={0} end={originalPrice} duration={2} prefix="€ " decimals={0} /> : formatPrice(originalPrice)}
+                    {isVisible ? (
+                      <CountUp
+                        start={0}
+                        end={originalPrice}
+                        duration={2}
+                        prefix="€ "
+                        decimals={0}
+                        formattingFn={formatCountUpValue}
+                      />
+                    ) : formatPrice(originalPrice)}
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-bold">
-                      {isVisible ? <CountUp start={0} end={currentPrice} duration={2} prefix="€ " decimals={0} /> : formatPrice(currentPrice)}
+                      {isVisible ? (
+                        <CountUp
+                          start={0}
+                          end={currentPrice}
+                          duration={2}
+                          prefix="€ "
+                          decimals={0}
+                          formattingFn={formatCountUpValue}
+                        />
+                      ) : formatPrice(currentPrice)}
                     </span>
                     <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold">
-                      {isVisible ? <CountUp start={0} end={discountPercentage} duration={2} suffix="% OFF" /> : `${discountPercentage}% OFF`}
+                      {isVisible ? (
+                        <CountUp
+                          start={0}
+                          end={discountPercentage}
+                          duration={2}
+                          suffix="% OFF"
+                        />
+                      ) : `${discountPercentage}% OFF`}
                     </div>
                   </div>
                 </div>
