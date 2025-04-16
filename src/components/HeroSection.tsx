@@ -22,12 +22,12 @@ const HeroSection = memo(() => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {isMobile ? <>
               <div className="text-center order-1 w-full space-y-6">
-                <OptimizedHeroVideo />
                 <HeroContent 
                   isInView={isInView} 
                   scrollToOwnBoth={() => {}} 
                   isMobile={true} 
                 />
+                <OptimizedHeroVideo />
               </div>
             </> : <>
               <HeroContent 
