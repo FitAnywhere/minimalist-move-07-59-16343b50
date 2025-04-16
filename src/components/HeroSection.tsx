@@ -17,12 +17,17 @@ const HeroSection = memo(() => {
 
   const scrollToBundle = (e: React.MouseEvent) => {
     e.preventDefault();
-    const headerOffset = document.querySelector('header')?.offsetHeight || 80;
-    const target = document.querySelector('#bundle');
-    if (target) {
-      const top = target.getBoundingClientRect().top + window.scrollY - headerOffset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const headerOffset = document.querySelector('header')?.offsetHeight || 80;
+        const target = document.querySelector('#bundle');
+        if (target) {
+          const top = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      }, 100);
+    });
   };
 
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white" aria-label="Introduction to FitAnywhere">
