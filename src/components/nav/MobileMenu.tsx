@@ -30,7 +30,7 @@ export const MobileMenu = ({ isOpen, links, onNavLinkClick }: MobileMenuProps) =
         <NavLinks
           links={links}
           onNavLinkClick={onNavLinkClick}
-          className="flex flex-col space-y-4"
+          className="flex flex-col space-y-6 items-center text-lg"
         />
         <div className="pt-4 space-y-4">
           <OrderButton className="block w-full text-center" />
