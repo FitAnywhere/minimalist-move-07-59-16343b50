@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -34,7 +33,7 @@ const BundleOffer = () => {
   const currentPrice = 990;
   const discountPercentage = 40;
   
-  return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
+  return <section id="bundle-offer" ref={sectionRef} className="bundle-target relative overflow-hidden py-16 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
     <div className="container mx-auto px-4 relative z-10">
       <div className="max-w-5xl px-4 mx-auto md:px-[115px] md:mx-[174px] md:py-[14px]">
         <div className={cn("text-center transition-all duration-1000 transform mb-10", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
