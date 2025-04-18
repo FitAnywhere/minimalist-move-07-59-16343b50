@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Menu, X } from 'lucide-react';
@@ -14,7 +13,6 @@ const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,35 +35,29 @@ const NavBar = () => {
     };
   }, [isOpen]);
 
-  const handleNavLinkClick = (href: string) => {
+  const handleNavLinkClick = (href: string, type: string) => {
     setIsOpen(false);
 
-    if (isHomePage) {
-      const element = document.querySelector(href);
-      if (element) {
-        setTimeout(() => {
-          window.scrollTo({
-            top: element.getBoundingClientRect().top + window.scrollY - 100,
-            behavior: 'smooth'
-          });
-          
-          history.pushState(null, '', href);
-        }, 100);
-      }
-    } else {
-      navigate('/', { 
-        state: { 
-          fromExternalPage: true,
-          targetSection: href.substring(1)
-        }
+    if (type === 'page') {
+      navigate(href);
+      return;
+    }
+
+    // Only handle section scrolling if we're on the right page
+    const element = document.querySelector(href);
+    if (element) {
+      const offsetTop = element.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
       });
     }
   };
 
   const navLinks = [
-    { name: "GYM", href: "#bundle", section: "LAST GYM YOU WILL EVER NEED" },
-    { name: "BOX", href: "#workout-addict", section: "BOXFUN" },
-    { name: "FAQ", href: "#faq", section: "FREQUENTLY ASKED QUESTIONS" }
+    { name: "GYM", href: "/", type: "page" as const },
+    { name: "BOX", href: "/box", type: "page" as const },
+    { name: "FAQ", href: "#faq", type: "section" as const }
   ];
 
   return (
@@ -76,7 +68,7 @@ const NavBar = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Logo isHomePage={isHomePage} onNavigate={() => setIsOpen(false)} />
+        <Logo onNavigate={() => setIsOpen(false)} />
 
         <NavLinks
           links={navLinks}
