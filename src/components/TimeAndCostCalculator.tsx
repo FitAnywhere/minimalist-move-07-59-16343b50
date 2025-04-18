@@ -8,7 +8,6 @@ import CountUp from 'react-countup';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -81,7 +80,6 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
-
   return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
@@ -92,7 +90,7 @@ const TimeAndCostCalculator = () => {
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
               
-              <p className={cn("text-lg md:text-xl font-medium text-gray-700 mt-4", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5")}>Turn wasted fees into real freedom.</p>
+              <p className={cn("text-lg md:text-xl font-medium text-gray-700 mt-4", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5")}>What's the difference between Calisthenic Park and FitAnywhere?</p>
               
               <div className={cn("mt-4 flex justify-center items-center", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5")}>
                 <div className="flex items-center gap-3 text-yellow-400">
@@ -216,5 +214,4 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
-
 export default TimeAndCostCalculator;
