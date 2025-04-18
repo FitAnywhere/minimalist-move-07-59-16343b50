@@ -22,7 +22,7 @@ const BundleOffer = () => {
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [animatedItem, setAnimatedItem] = useState(0);
-  const productItems = ["1X PowerTower", "1X TRX", "4X Bands"];
+  const productItems = ["1X PowerTower", "4X Bands"];
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -59,10 +59,10 @@ const BundleOffer = () => {
                   <div className="relative z-10">
                     <div className="h-72 md:h-80 flex items-center justify-center p-4 group">
                       <div className="relative w-full h-full flex items-center justify-center">
-                        <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png" alt="FitAnywhere" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10" loading="lazy" width="400" height="400" srcSet="
-                            https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_300/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 300w,
-                            https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 400w,
-                            https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_600/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 600w
+                        <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png" alt="FitAnywhere" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 relative z-10" loading="lazy" width="400" height="400" srcSet="
+                            https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_300/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png 300w,
+                            https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png 400w,
+                            https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_600/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png 600w
                           " sizes="(max-width: 768px) 300px, 400px" />
                       </div>
                     </div>
@@ -96,8 +96,7 @@ const BundleOffer = () => {
               </div>
             </div>
             
-            {/* Added mobile-only spacer for extra vertical spacing */}
-            <div className="h-[1px] md:hidden\n"></div>
+            <div className="h-[1px] md:hidden"></div>
               
             <div className={cn("flex items-center justify-center mb-4 transition-all duration-1000 delay-300", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
               <Plus className="h-8 w-8 text-green-600 -mr-2 flex-shrink-0" />
@@ -141,10 +140,10 @@ const BundleOffer = () => {
             <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="flex flex-col md:flex-row">
                 <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
-                  <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" loading="lazy" width="600" height="600" srcSet="
-                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 400w,
-                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_600/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 600w,
-                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1744741487/Izdelek_brez_naslova_-_2025-04-15T202213.135_vvhhbi.png 800w
+                  <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" loading="lazy" width="600" height="600" srcSet="
+                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png 400w,
+                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_600/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png 600w,
+                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png 800w
                     " sizes="(max-width: 768px) 400px, 600px" />
                   <div className="w-full text-center mb-4">
                     <div className="flex justify-center items-center gap-3">
