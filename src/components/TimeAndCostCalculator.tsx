@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
-import { ArrowRight, Clock, Banknote, CheckCircle } from 'lucide-react';
+import { ArrowRight, Clock, Banknote } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,8 @@ import CountUp from 'react-countup';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
+import ComparisonTable from './ComparisonTable';
+
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -90,16 +92,12 @@ const TimeAndCostCalculator = () => {
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
               
-              <p className={cn("text-lg md:text-xl font-medium text-gray-700 mt-4", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5")}>What's the difference between Calisthenic Park and FitAnywhere?</p>
-              
-              <div className={cn("mt-4 flex justify-center items-center", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5")}>
-                <div className="flex items-center gap-3 text-yellow-400">
-                  
-                  
-                </div>
-              </div>
-              
+              <p className="text-lg md:text-xl font-medium text-gray-700 mt-4">
+                What's the difference between Calisthenic Park and FitAnywhere?
+              </p>
             </div>
+
+            <ComparisonTable />
             
             {/* Main content area */}
             <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
@@ -214,4 +212,5 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
+
 export default TimeAndCostCalculator;
