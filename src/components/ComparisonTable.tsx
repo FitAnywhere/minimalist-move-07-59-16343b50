@@ -1,16 +1,21 @@
 
 import { Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const ComparisonTable = () => {
+  const isMobile = useIsMobile();
+  
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
   };
 
+  const borderClass = isMobile ? "border-2" : "border";
+
   return (
     <div className="w-full max-w-5xl mx-auto mb-16">
-      <div className="border-2 border-black rounded-xl overflow-hidden shadow-md">
+      <div className={`${borderClass} border-black rounded-xl overflow-hidden shadow-md`}>
         {/* Header */}
         <div className="grid grid-cols-2 bg-gray-50 border-b-2 border-black">
           <div className="py-4 px-6 text-center font-bold">
@@ -39,7 +44,7 @@ const ComparisonTable = () => {
           <div className="grid grid-cols-2">
             <div className="flex items-center justify-center gap-2 p-4">
               <Check className="w-5 h-5 text-green-500 shrink-0" />
-              <span className="text-sm md:text-base whitespace-nowrap">2 minutes</span>
+              <span className="text-sm md:text-base whitespace-nowrap">2-min setup</span>
             </div>
             <div className="flex items-center justify-center gap-2 p-4 border-l-2 border-black">
               <X className="w-5 h-5 text-red-500 shrink-0" />
@@ -51,11 +56,11 @@ const ComparisonTable = () => {
           <div className="grid grid-cols-2">
             <div className="flex items-center justify-center gap-2 p-4">
               <Check className="w-5 h-5 text-green-500 shrink-0" />
-              <span className="text-sm md:text-base whitespace-nowrap">0.5m²</span>
+              <span className="text-sm md:text-base whitespace-nowrap">1m² needed</span>
             </div>
             <div className="flex items-center justify-center gap-2 p-4 border-l-2 border-black">
               <X className="w-5 h-5 text-red-500 shrink-0" />
-              <span className="text-sm md:text-base whitespace-nowrap">20m²+</span>
+              <span className="text-sm md:text-base whitespace-nowrap">9m²+ needed</span>
             </div>
           </div>
         </div>
