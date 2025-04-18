@@ -2,12 +2,13 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
 interface LogoProps {
-  isHomePage: boolean;
   onNavigate?: () => void;
 }
 
-export const Logo = ({ isHomePage, onNavigate }: LogoProps) => {
+export const Logo = ({ onNavigate }: LogoProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   const navigateToHome = (e: React.MouseEvent) => {
     e.preventDefault();

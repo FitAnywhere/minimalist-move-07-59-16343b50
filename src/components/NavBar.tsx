@@ -1,9 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Menu, X } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Logo } from './nav/Logo';
-import { NavLinks } from './nav/NavLinks';
+import { NavLinks, NavLink } from './nav/NavLinks';
 import { WhatsAppButton } from './nav/WhatsAppButton';
 import { OrderButton } from './nav/OrderButton';
 import { MobileMenu } from './nav/MobileMenu';
@@ -54,10 +55,10 @@ const NavBar = () => {
     }
   };
 
-  const navLinks = [
-    { name: "GYM", href: "/", type: "page" as const },
-    { name: "BOX", href: "/box", type: "page" as const },
-    { name: "FAQ", href: "#faq", type: "section" as const }
+  const navLinks: NavLink[] = [
+    { name: "GYM", href: "/", type: "page" },
+    { name: "BOX", href: "/box", type: "page" },
+    { name: "FAQ", href: "#faq", type: "section" }
   ];
 
   return (

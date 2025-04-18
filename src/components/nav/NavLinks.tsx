@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom';
 
-interface NavLink {
+export interface NavLink {
   name: string;
   href: string;
   type: 'page' | 'section';

@@ -1,12 +1,12 @@
 
-import { NavLinks } from './NavLinks';
+import { NavLinks, NavLink } from './NavLinks';
 import { WhatsAppButton } from './WhatsAppButton';
 import { OrderButton } from './OrderButton';
 
 interface MobileMenuProps {
   isOpen: boolean;
-  links: Array<{ name: string; href: string; section: string; }>;
-  onNavLinkClick: (href: string) => void;
+  links: NavLink[];
+  onNavLinkClick: (href: string, type: string) => void;
 }
 
 export const MobileMenu = ({ isOpen, links, onNavLinkClick }: MobileMenuProps) => {
