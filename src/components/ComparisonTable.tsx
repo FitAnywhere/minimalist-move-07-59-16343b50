@@ -62,7 +62,7 @@ const ComparisonTable = () => {
 
       {/* CTA Section */}
       <div className="text-center mt-8">
-        <p className="text-gray-700 mb-4 text-lg font-medium">Why FitAnywhere Makes More Sense Than a Gym Membership?</p>
+        <p className="text-gray-700 mb-4 text-lg font-medium">Why FitAnywhere makes more sense than a gym membership?</p>
         <Button variant="yellow" size="lg" onClick={handleCTAClick} className="w-full max-w-[300px] mx-auto hover:scale-105 transition-transform duration-300">
           🛒 INVEST IN YOURSELF
         </Button>
