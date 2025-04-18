@@ -1,20 +1,14 @@
-
 import { Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const ComparisonTable = () => {
   const isMobile = useIsMobile();
-  
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
   };
-
   const borderClass = isMobile ? "border-2" : "border";
-
-  return (
-    <div className="w-full max-w-5xl mx-auto mb-16">
+  return <div className="w-full max-w-5xl mx-auto mb-16">
       <div className={`${borderClass} border-black rounded-xl overflow-hidden shadow-md`}>
         {/* Header */}
         <div className="grid grid-cols-2 bg-gray-50 border-b-2 border-black">
@@ -68,18 +62,11 @@ const ComparisonTable = () => {
 
       {/* CTA Section */}
       <div className="text-center mt-8">
-        <p className="text-gray-700 mb-4 text-lg">Would you rather sacrifice entire yard or...?</p>
-        <Button
-          variant="yellow"
-          size="lg"
-          onClick={handleCTAClick}
-          className="w-full max-w-[300px] mx-auto hover:scale-105 transition-transform duration-300"
-        >
+        <p className="text-gray-700 mb-4 text-lg font-medium">Why FitAnywhere Makes More Sense Than a Gym Membership?</p>
+        <Button variant="yellow" size="lg" onClick={handleCTAClick} className="w-full max-w-[300px] mx-auto hover:scale-105 transition-transform duration-300">
           🛒 INVEST IN YOURSELF
         </Button>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default ComparisonTable;
