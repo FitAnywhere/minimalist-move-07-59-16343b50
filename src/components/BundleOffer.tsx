@@ -4,43 +4,35 @@ import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { formatPrice } from '@/utils/formatters';
 import { Plus } from 'lucide-react';
-
 interface GiftItem {
   name: string;
   image: string;
 }
-
 const DEFAULT_GIFT_IMAGE = "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png";
-
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
 }];
-
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [animatedItem, setAnimatedItem] = useState(0);
   const productItems = ["1X PowerTower", "4X Bands"];
-  
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/5kA28y7FjaGo0ViaES', '_blank');
   };
-  
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
-  
   useEffect(() => {
     const interval = setInterval(() => {
-      setAnimatedItem((prev) => (prev + 1) % productItems.length);
+      setAnimatedItem(prev => (prev + 1) % productItems.length);
     }, 2000); // Change animation every 2 seconds
 
     return () => clearInterval(interval);
   }, []);
-
   return <section id="bundle-offer" ref={sectionRef} className="bundle-target relative overflow-hidden py-16 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
     <div className="container mx-auto px-4 relative z-10">
       <div className="max-w-5xl px-4 mx-auto md:px-[115px] md:mx-[174px] md:py-[14px]">
@@ -49,7 +41,7 @@ const BundleOffer = () => {
             LAST GYM YOU WILL EVER NEED
             <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
           </h2>
-          <p className="mt-4 text-gray-700 py-[13px] font-semibold text-lg">Everything you need for fitness and calisthenics trainings with guide as a GIFT.</p>
+          <p className="mt-4 text-gray-700 py-[13px] font-semibold text-lg">Everything you need for 27+ exercises with guide as a GIFT.</p>
         </div>
         
         {isMobile ? <div className="space-y-8">
@@ -69,19 +61,9 @@ const BundleOffer = () => {
                     
                     <div className="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-white/90 to-white/20 py-3 px-2">
                       <div className="flex justify-center items-center gap-2">
-                        {productItems.map((item, index) => (
-                          <span 
-                            key={item} 
-                            className={cn(
-                              "font-bold transition-all duration-500", 
-                              animatedItem === index 
-                                ? "text-black scale-120" 
-                                : "text-gray-500 scale-90"
-                            )}
-                          >
+                        {productItems.map((item, index) => <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-120" : "text-gray-500 scale-90")}>
                             {item}
-                          </span>
-                        ))}
+                          </span>)}
                       </div>
                     </div>
                     
@@ -147,19 +129,9 @@ const BundleOffer = () => {
                     " sizes="(max-width: 768px) 400px, 600px" />
                   <div className="w-full text-center mb-4">
                     <div className="flex justify-center items-center gap-3">
-                      {productItems.map((item, index) => (
-                        <span 
-                          key={item} 
-                          className={cn(
-                            "font-bold transition-all duration-500", 
-                            animatedItem === index 
-                              ? "text-black scale-120 text-xl" 
-                              : "text-gray-500 scale-95"
-                          )}
-                        >
+                      {productItems.map((item, index) => <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-120 text-xl" : "text-gray-500 scale-95")}>
                           {item}
-                        </span>
-                      ))}
+                        </span>)}
                     </div>
                   </div>
                 </div>
@@ -218,5 +190,4 @@ const BundleOffer = () => {
     </div>
   </section>;
 };
-
 export default BundleOffer;
