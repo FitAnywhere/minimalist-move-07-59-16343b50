@@ -27,7 +27,9 @@ const HeroSection = memo(() => {
                   <div className="mt-4 space-y-1">
                     <p className="text-gray-700 font-bold text-base">No strength? No problem.
                 </p>
-                    <p className="text-gray-700 px-0 py-[4px] font-bold text-base">Build muscle at home in 20 mins a day.</p>
+                    <p className="text-gray-700 px-0 py-[4px] font-bold text-base">You don’t need it to begin.
+
+                </p>
                   </div>
                   
                   <button onClick={e => e.preventDefault()} disabled className={cn("inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow", "py-[10px] px-[25px]", "my-[20px] cursor-not-allowed")}>
