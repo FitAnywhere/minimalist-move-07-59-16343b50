@@ -111,7 +111,7 @@ const ChampionSection = () => {
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
               
-              <p className="text-lg text-gray-700 italic font-medium leading-relaxed mt-4 md:hidden block text-center">Training that fits your lifestyle</p>
+              
             </div>
           </div>
         </div>
