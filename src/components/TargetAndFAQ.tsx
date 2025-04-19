@@ -19,7 +19,7 @@ interface TargetAudience {
 const targetAudiences: TargetAudience[] = [{
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
   title: "TOTAL BEGINNERS",
-  description: "For anyone who's never done a single workout."
+  description: "Elastics make it possible for everyone."
 }, {
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078482/nik_v2extf.jpg",
   title: "PRIVACY LOVERS",
