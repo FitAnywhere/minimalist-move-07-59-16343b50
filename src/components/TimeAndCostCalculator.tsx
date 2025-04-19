@@ -99,50 +99,57 @@ const TimeAndCostCalculator = () => {
             
             {/* Main content area */}
             <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-              {/* Desktop & Mobile Layout */}
-              <div className="flex flex-col gap-8">
-                {/* Money Cost Box - Moved to the top */}
-                <Card className="rounded-xl shadow-md border-2 border-black overflow-hidden w-full">
-                  <CardContent className="p-0">
-                    {/* For mobile: stack vertically, for desktop: horizontal layout */}
-                    <div className="flex flex-col md:flex-row">
-                      {/* Input section - Left side on desktop, top on mobile */}
-                      <div className="bg-white p-6 md:p-8 md:w-1/2">
-                        <p className="mb-3 text-left font-bold text-sm">How much is your gym membership?</p>
-                        
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-gray-600">€0</span>
-                          <div className="flex items-center bg-gray-100 rounded-md overflow-hidden">
-                            <span className="px-2 py-1 bg-gray-200 text-gray-800">€</span>
-                            <Input type="text" value={gymMonthlyCost} onChange={handleCostInputChange} className="w-16 text-center border-0 bg-transparent" />
+              {/* Calculator section with new spacing and introductory text */}
+              <div className="mt-16">
+                <p className="text-lg md:text-xl font-medium text-gray-700 mb-4 text-center">
+                  Why make more sense than a gym membership?
+                </p>
+                
+                {/* Desktop & Mobile Layout */}
+                <div className="flex flex-col gap-8">
+                  {/* Money Cost Box */}
+                  <Card className="rounded-xl shadow-md border-2 border-black overflow-hidden w-full">
+                    <CardContent className="p-0">
+                      {/* For mobile: stack vertically, for desktop: horizontal layout */}
+                      <div className="flex flex-col md:flex-row">
+                        {/* Input section - Left side on desktop, top on mobile */}
+                        <div className="bg-white p-6 md:p-8 md:w-1/2">
+                          <p className="mb-3 text-left font-bold text-sm">How much is your gym membership?</p>
+                          
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-gray-600">€0</span>
+                            <div className="flex items-center bg-gray-100 rounded-md overflow-hidden">
+                              <span className="px-2 py-1 bg-gray-200 text-gray-800">€</span>
+                              <Input type="text" value={gymMonthlyCost} onChange={handleCostInputChange} className="w-16 text-center border-0 bg-transparent" />
+                            </div>
+                            <span className="text-gray-600">€150</span>
                           </div>
-                          <span className="text-gray-600">€150</span>
+                          
+                          <div className="py-4 md:py-6">
+                            <Slider value={[gymMonthlyCost]} min={0} max={150} step={5} className="w-full" onValueChange={value => setGymMonthlyCost(value[0])} />
+                          </div>
+                          
+                          {gymMonthlyCost > 0 && <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center mt-4">
+                              <p className="text-md font-bold text-black">
+                                With FitAnywhere you can start saving €{annualSavings} every year.
+                              </p>
+                            </div>}
                         </div>
                         
-                        <div className="py-4 md:py-6">
-                          <Slider value={[gymMonthlyCost]} min={0} max={150} step={5} className="w-full" onValueChange={value => setGymMonthlyCost(value[0])} />
-                        </div>
-                        
-                        {gymMonthlyCost > 0 && <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center mt-4">
-                            <p className="text-md font-bold text-black">
-                              With FitAnywhere you can start saving €{annualSavings} every year.
+                        {/* Money Result - Right side on desktop, bottom on mobile - NOW CONDITIONALLY RENDERED */}
+                        {gymMonthlyCost > 0 && <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
+                            <div className="flex items-center justify-center mb-2">
+                              <Banknote className="w-5 h-5 text-yellow mr-2" />
+                              <h3 className="text-lg font-bold">MONEY SAVED - 20 YEARS</h3>
+                            </div>
+                            <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
+                              {shouldAnimate ? <CountUp start={previousMoneyCost} end={moneySpentInYears} duration={1} separator="," prefix="€" suffix="+" useEasing /> : "€0+"}
                             </p>
                           </div>}
                       </div>
-                      
-                      {/* Money Result - Right side on desktop, bottom on mobile - NOW CONDITIONALLY RENDERED */}
-                      {gymMonthlyCost > 0 && <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
-                          <div className="flex items-center justify-center mb-2">
-                            <Banknote className="w-5 h-5 text-yellow mr-2" />
-                            <h3 className="text-lg font-bold">MONEY SAVED - 20 YEARS</h3>
-                          </div>
-                          <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
-                            {shouldAnimate ? <CountUp start={previousMoneyCost} end={moneySpentInYears} duration={1} separator="," prefix="€" suffix="+" useEasing /> : "€0+"}
-                          </p>
-                        </div>}
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
               
               {/* "What could you do" text and CTA - centered for both mobile and desktop */}
@@ -166,4 +173,5 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
+
 export default TimeAndCostCalculator;
