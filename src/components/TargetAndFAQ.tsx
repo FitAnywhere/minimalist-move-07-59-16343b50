@@ -15,18 +15,19 @@ interface TargetAudience {
   title: string;
   description: string;
 }
+
 const targetAudiences: TargetAudience[] = [{
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095735/tscnNiG_oldfpq.jpg",
-  title: "DRIVEN ACHIEVERS",
-  description: "For busy schedules and exceptional standards."
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
+  title: "TOTAL BEGINNERS",
+  description: "For anyone who's never done a single workout."
 }, {
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095735/j9K9GFk_mnmckb.jpg",
-  title: "CITY HUSTLERS",
-  description: "For those who cherish and honor their space."
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078482/nik_v2extf.jpg",
+  title: "PRIVACY LOVERS",
+  description: "For those uncomfortable exercising in public."
 }, {
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095735/zEAA8nc_iydck6.jpg",
-  title: "WELLNESS SEEKERS",
-  description: "For those who embrace a life of constant positive energy."
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074862/spa_qpav0e.png",
+  title: "SPACE-SAVING FANS",
+  description: "For anyone looking to maximize workouts in small spaces."
 }];
 
 const faqItems: FAQItem[] = [{
@@ -63,10 +64,6 @@ const TargetAndFAQ = () => {
   const isFaqInView = useInView(faqSectionRef);
   const isMobile = useIsMobile();
   
-  const toggleAudience = (index: number) => {
-    setActiveAudience(activeAudience === index ? null : index);
-  };
-  
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
@@ -84,25 +81,27 @@ const TargetAndFAQ = () => {
               </h2>
               
               <div className="grid md:grid-cols-3 gap-8">
-                {targetAudiences.map((audience, index) => <div key={index} className={cn("rounded-2xl p-8 text-center group cursor-pointer transition-all duration-500", "bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl", "transform hover:-translate-y-2", isTargetInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12", activeAudience === index ? "border-yellow shadow-xl shadow-yellow/20" : "")} onClick={() => toggleAudience(index)} style={{
-                transitionDelay: `${index * 150}ms`,
-                minHeight: activeAudience === index ? 'auto' : '230px'
-              }}>
-                    <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-all duration-500">
+                {targetAudiences.map((audience, index) => (
+                  <div 
+                    key={index} 
+                    className={cn(
+                      "rounded-2xl p-8 text-center group cursor-pointer transition-all duration-500",
+                      "bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl",
+                      "transform hover:-translate-y-2",
+                      isTargetInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
+                    )}
+                    style={{ transitionDelay: `${index * 150}ms` }}
+                  >
+                    <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-all duration-500">
                       <img src={audience.imageUrl} alt={audience.title} className="w-full h-full object-cover" />
                     </div>
                     
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                      <h3 className="text-xl md:text-2xl font-bold text-black">{audience.title}</h3>
-                      <ChevronRight className={cn("w-5 h-5 text-yellow transition-transform duration-300", activeAudience === index ? "rotate-90" : "")} />
-                    </div>
-                    
-                    <div className={cn("overflow-hidden transition-all duration-500", activeAudience === index ? "opacity-100 max-h-20" : "opacity-0 max-h-0")}>
-                      <p className="text-gray-700 transition-all duration-500 text-base md:text-lg">
-                        {audience.description}
-                      </p>
-                    </div>
-                  </div>)}
+                    <h3 className="text-xl md:text-2xl font-bold text-black mb-4">{audience.title}</h3>
+                    <p className="text-gray-700 text-base md:text-lg">
+                      {audience.description}
+                    </p>
+                  </div>
+                ))}
               </div>
               
               <p className={cn("mt-12 text-xl md:text-2xl font-semibold text-gray-700 transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-8")}>
@@ -159,4 +158,5 @@ const TargetAndFAQ = () => {
       </section>
     </>;
 };
+
 export default TargetAndFAQ;
