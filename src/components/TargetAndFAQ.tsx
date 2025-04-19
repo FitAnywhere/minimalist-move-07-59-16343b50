@@ -5,18 +5,15 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
-
 interface FAQItem {
   question: string;
   answer: string;
 }
-
 interface TargetAudience {
   imageUrl: string;
   title: string;
   description: string;
 }
-
 const targetAudiences: TargetAudience[] = [{
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
   title: "TOTAL BEGINNERS",
@@ -30,7 +27,6 @@ const targetAudiences: TargetAudience[] = [{
   title: "SPACE-SAVING FANS",
   description: "For anyone looking to maximize workouts in small spaces."
 }];
-
 const faqItems: FAQItem[] = [{
   question: "How easy is FitAnywhere to set up?",
   answer: "Unfold, lock, and start training. Under two minutes, with no tools or drilling required."
@@ -56,7 +52,6 @@ const faqItems: FAQItem[] = [{
   question: "Are there any guarantees?",
   answer: "Yes. We don't just sell gear, we stand by it. If you're not satisfied for any reason, we'll take it back without hesitation."
 }];
-
 const TargetAndFAQ = () => {
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
   const targetSectionRef = useRef<HTMLElement>(null);
@@ -64,12 +59,10 @@ const TargetAndFAQ = () => {
   const isTargetInView = useInView(targetSectionRef);
   const isFaqInView = useInView(faqSectionRef);
   const isMobile = useIsMobile();
-
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
   };
-
   return <>
     {/* Target Audience Section */}
     <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
@@ -82,14 +75,9 @@ const TargetAndFAQ = () => {
             </h2>
             
             <div className="grid md:grid-cols-3 gap-8">
-              {targetAudiences.map((audience, index) => (
-                <div key={index} className={cn("rounded-2xl p-8 text-center group cursor-pointer transition-all duration-500", 
-                  "bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl",
-                  "transform hover:-translate-y-2", 
-                  isTargetInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
-                )} style={{
-                  transitionDelay: `${index * 150}ms`
-                }}>
+              {targetAudiences.map((audience, index) => <div key={index} className={cn("rounded-2xl p-8 text-center group cursor-pointer transition-all duration-500", "bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl", "transform hover:-translate-y-2", isTargetInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12")} style={{
+                transitionDelay: `${index * 150}ms`
+              }}>
                   <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-all duration-500">
                     <img src={audience.imageUrl} alt={audience.title} className="w-full h-full object-cover" />
                   </div>
@@ -98,11 +86,10 @@ const TargetAndFAQ = () => {
                   <p className="text-gray-700 text-base md:text-lg">
                     {audience.description}
                   </p>
-                </div>
-              ))}
+                </div>)}
             </div>
 
-            <p className="mt-8 text-lg text-gray-700 text-center">
+            <p className="mt-8 text-lg text-gray-700 text-center font-semibold my-[53px]">
               Join hundreds now building the strength they once only dreamed of.
             </p>
             
@@ -149,5 +136,4 @@ const TargetAndFAQ = () => {
     </section>
   </>;
 };
-
 export default TargetAndFAQ;
