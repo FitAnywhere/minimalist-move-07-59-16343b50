@@ -13,39 +13,32 @@ import {
 
 interface Testimonial {
   name: string;
-  role: string;
   quote: string;
   imageUrl: string;
 }
 
 const testimonials: Testimonial[] = [{
-  name: "Sarah M.",
-  role: "Remote Worker",
-  quote: "Used to blame Zoom for no workouts. Now I sneak in 15 min wins.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099088/Screenshot_76_nkxmvr.png"
-}, {
-  name: "Jordan P.",
-  role: "Calisthenics Enthusiast",
-  quote: "Honestly shocked how fast this became my main workout.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
-}, {
-  name: "Chris L.",
-  role: "Fitness Advocate",
-  quote: "Modern, minimal, and our people love it.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099090/Screenshot_73_tco9rh.png"
-}, {
   name: "Emily T.",
-  role: "Fitness Beginner",
   quote: "One workout in and I realized. Bands are no joke.",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744150914/Screenshot_89_mw00er.png"
 }, {
-  name: "Alex G.",
-  role: "Busy Professional",
-  quote: "Minimal gear. Maximum gains. Just how I like it.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_71_b7srzc.png"
+  name: "Jordan P.",
+  quote: "Honestly shocked how fast this became my main workout.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
+}, {
+  name: "Laura G.",
+  quote: "Finally exercising with confidence. Elastics changed everything for me.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078371/Screenshot_13_wp6ih6.png"
+}, {
+  name: "Chris L.",
+  quote: "Modern, minimal, and our people love it.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099090/Screenshot_73_tco9rh.png"
+}, {
+  name: "Sarah M.",
+  quote: "Used to blame Zoom for no workouts. Now I sneak in 15 min wins.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099088/Screenshot_76_nkxmvr.png"
 }, {
   name: "Tom S.",
-  role: "Strength Seeker",
   quote: "No crowds, no pressure. Just me, music, and movement.",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
 }];
@@ -105,7 +98,6 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
         <div className="flex items-center">
           <div>
             <p className="font-semibold text-gray-800 text-xs">{testimonial.name}</p>
-            <p className="text-gray-500 text-xs">{testimonial.role}</p>
           </div>
         </div>
       </div>
