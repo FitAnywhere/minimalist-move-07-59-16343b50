@@ -7,17 +7,20 @@ import { X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 
-// Updated features with new text
 const features = [{
-  title: "MONEY",
-  description: "Saves you 602,6€ every year"
+  title: "✅ PRIVATE & JUDGMENT-FREE",
+  description: "Train comfortably in your home."
 }, {
-  title: "TIME",
-  description: "Gains you 104 hours every year"
+  title: "✅ BEGINNER-FRIENDLY",
+  description: "Elastics give gentle support from day one."
 }, {
-  title: "SPACE",
-  description: "Folds away in 2 minutes."
+  title: "✅ QUICK SETUP",
+  description: "Ready in just 2 minutes."
+}, {
+  title: "✅ COMPACT & PORTABLE",
+  description: "Requires only 1m² and easily folds away."
 }];
+
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -26,10 +29,11 @@ const ProductIntro = () => {
     title: false,
     subtitle: false,
     paragraph: false,
-    features: [false, false, false],
+    features: [false, false, false, false],
     finalLine: false
   });
   const [showSpecs, setShowSpecs] = useState(false);
+
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -62,6 +66,7 @@ const ProductIntro = () => {
       })), 1200);
     }
   }, [isInView]);
+
   return <section id="product" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
@@ -69,11 +74,11 @@ const ProductIntro = () => {
             <div className="space-y-8 order-last md:order-first">
               <div className="space-y-4">
                 <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", isMobile ? "text-center mx-auto block w-full" : "")}>
-                  RARE LUXURIES
+                  WHY CHOOSE US?
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
                 
-                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", isMobile ? "text-center mx-auto" : "")}>Build dream body while gaining money, time and space.</p>
+                <p className={cn("text-2xl text-gray-800 font-medium transition-all duration-700 transform", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", isMobile ? "text-center mx-auto" : "")}>Elastics: Your Pathway to Strength & Confidence</p>
               </div>
               
               {isMobile && <div className={cn("flex justify-center items-center transition-all duration-700 h-full md:hidden", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
@@ -87,10 +92,9 @@ const ProductIntro = () => {
               
               <div className="space-y-5 my-[9px] mx-0 px-0 py-0 rounded-none">
                 {features.map((feature, index) => <div key={index} className={cn("px-6 py-3 rounded-full", "transition-all duration-300 ease-in-out", "shadow-md", "transform", "border-2 border-yellow bg-white",
-              // Changed to white background with yellow border
-              animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
-                transitionDelay: `${(index + 1) * 100}ms`
-              }}>
+                animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
+                  transitionDelay: `${(index + 1) * 100}ms`
+                }}>
                   <div className="flex justify-between items-center">
                     <h4 className="text-lg font-bold">
                       {feature.title}
