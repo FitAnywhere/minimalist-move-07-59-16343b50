@@ -81,9 +81,7 @@ const ChampionSection = () => {
                     <Dumbbell className="h-5 w-5 text-yellow" />
                   </div>
                   <div>
-                    <p className="text-lg font-bold">
-                      ADAPTS TO YOU
-                    </p>
+                    <p className="text-lg font-bold">BEGINNER FRIENDLY GUIDES</p>
                   </div>
                 </div>
                 
