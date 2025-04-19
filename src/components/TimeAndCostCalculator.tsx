@@ -146,46 +146,7 @@ const TimeAndCostCalculator = () => {
                 {/* Removed the standalone payoff timeframe display that showed when gymMonthlyCost >= 5 */}
                 
                 {/* Time Cost Box - Moved below */}
-                <Card className="rounded-xl shadow-md border-2 border-black overflow-hidden w-full">
-                  <CardContent className="p-0">
-                    {/* For mobile: stack vertically, for desktop: horizontal layout */}
-                    <div className="flex flex-col md:flex-row">
-                      {/* Input section - Left side on desktop, top on mobile */}
-                      <div className="bg-white p-6 md:p-8 md:w-1/2">
-                        <p className="mb-3 text-left font-bold text-sm">How much time do you spend on the way to the gym?</p>
-                        
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-gray-600">0 min</span>
-                          <span className="text-lg font-bold bg-gray-100 px-3 py-1 rounded-md">
-                            {timeWastedPerVisit} min
-                          </span>
-                          <span className="text-gray-600">120 min</span>
-                        </div>
-                        
-                        <div className="py-4 md:py-6">
-                          <Slider value={[timeWastedPerVisit]} min={0} max={120} step={5} className="w-full" onValueChange={value => setTimeWastedPerVisit(value[0])} />
-                        </div>
-                        
-                        {timeWastedPerVisit > 0 && <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center mt-4">
-                            <p className="text-md font-bold text-black">
-                              With FitAnywhere you can start gaining {timeWastedPerYear} hours every year.
-                            </p>
-                          </div>}
-                      </div>
-                      
-                      {/* Time Result - Right side on desktop, bottom on mobile - NOW CONDITIONALLY RENDERED */}
-                      {timeWastedPerVisit > 0 && <div className="bg-gray-50 p-6 md:p-8 border-t md:border-t-0 md:border-l border-gray-100 md:w-1/2 flex flex-col justify-center">
-                          <div className="flex items-center justify-center mb-2">
-                            <Clock className="w-5 h-5 text-yellow mr-2" />
-                            <h3 className="text-lg font-bold">TIME GAINED - 20 YEARS</h3>
-                          </div>
-                          <p className="text-2xl md:text-3xl font-bold text-yellow pulse-glow text-center">
-                            {shouldAnimate ? <CountUp start={previousTimeWasted} end={timeWastedInYears} duration={1} separator="," suffix=" hours" useEasing /> : "0 hours"}
-                          </p>
-                        </div>}
-                    </div>
-                  </CardContent>
-                </Card>
+                
               </div>
               
               {/* "What could you do" text and CTA - centered for both mobile and desktop */}
