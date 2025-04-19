@@ -91,7 +91,7 @@ const TimeAndCostCalculator = () => {
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
               
-              <p className="text-lg md:text-xl font-medium text-gray-700 mt-4">Why FitAnywhere is the best way to start calisthenics?</p>
+              <p className="text-lg md:text-xl font-medium text-gray-700 mt-4">Why is FitAnywhere the best way to start?</p>
             </div>
 
             <ComparisonTable />
