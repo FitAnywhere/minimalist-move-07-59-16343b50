@@ -5,15 +5,18 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
+
 interface FAQItem {
   question: string;
   answer: string;
 }
+
 interface TargetAudience {
   imageUrl: string;
   title: string;
   description: string;
 }
+
 const targetAudiences: TargetAudience[] = [{
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
   title: "TOTAL BEGINNERS",
@@ -27,31 +30,39 @@ const targetAudiences: TargetAudience[] = [{
   title: "SPACE-SAVING FANS",
   description: "For anyone looking to maximize workouts in small spaces."
 }];
+
 const faqItems: FAQItem[] = [{
-  question: "How easy is FitAnywhere to set up?",
-  answer: "Unfold, lock, and start training. Under two minutes, with no tools or drilling required."
+  question: "How do I set up FitAnywhere?",
+  answer: "Slide, click, and train. It takes under 2 minutes—no tools or drilling needed."
 }, {
-  question: "Is FitAnywhere suitable for beginners?",
-  answer: "Absolutely. Our band system offers adjustable resistance and support, making every workout scalable. It's perfect for all levels."
+  question: "I'm a total beginner. Will I really be able to use it?",
+  answer: "Yes. The colour‑coded bands lighten your body‑weight, so you can do every move on day one and reduce assistance as you get stronger."
 }, {
-  question: "When will my FitAnywhere be delivered?",
-  answer: "We dispatch weekly, but if a unit is temporarily out of stock, there may be a short delay until we manufacture more. In a hurry? Don't hesitate to get in touch. We'll always try to make it work."
+  question: "Will it fit in my flat with low ceilings?",
+  answer: "The height is fully adjustable (195-235 cm), making it ideal for apartments with lower ceilings."
 }, {
-  question: "Is it true that your production is limited?",
-  answer: "Yes and proudly so. As a family business, we are committed to craftsmanship and lifetime durability over mass production. In 2025, that means 100 units per country."
+  question: "What's inside the box?",
+  answer: " • PowerTower frame\n • 4 colour‑coded assistance bands (15–45 kg)\n • Quick‑start setup card\n • Lifetime access to the video Training Library"
 }, {
-  question: "Can I use FitAnywhere inside the apartment with low ceilings?",
-  answer: "The height is fully adjustable, making it ideal for apartments with lower ceilings. The exact dimensions are in the product specifications."
+  question: "How long does delivery take?",
+  answer: "We ship weekly, but if a unit is temporarily out of stock, there may be a short delay until we manufacture more. In a hurry? Don't hesitate to get in touch. We'll always try to make it work."
 }, {
-  question: "What's inside the FitAnywhere gym?",
-  answer: "Your entire workout system for calisthenics, strength, and cardio.\n- PowerTower\n- TRX\n- 4x Bands\n- Training Library\n- BoxFun"
+  question: "Why is production limited to 100 units per country?",
+  answer: "Every PowerTower is hand‑welded, hand‑powder‑coated, and individually tested. This careful, manual process guarantees top quality—but it also limits how many we can make."
 }, {
-  question: "Can BoxFun elastic break?",
-  answer: "It never happened. Every piece is handmade from the most premium materials to ensure it lasts a lifetime."
+  question: "How much weight can it hold?",
+  answer: "Stress‑tested to 200 kg (440 lb)—plenty for weighted calisthenics."
 }, {
-  question: "Are there any guarantees?",
-  answer: "Yes. We don't just sell gear, we stand by it. If you're not satisfied for any reason, we'll take it back without hesitation."
+  question: "Will it scratch my floors?",
+  answer: "No. The built‑in rubber feet protect hardwood, tile, and laminate—no extra mats needed."
+}, {
+  question: "What if I change my mind?",
+  answer: "Try it for 30 days. If it's not the perfect fit, return it for a full refund—no questions asked."
+}, {
+  question: "Is there a warranty?",
+  answer: "2‑year warranty on PowerTower and bands."
 }];
+
 const TargetAndFAQ = () => {
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
   const targetSectionRef = useRef<HTMLElement>(null);
@@ -59,10 +70,12 @@ const TargetAndFAQ = () => {
   const isTargetInView = useInView(targetSectionRef);
   const isFaqInView = useInView(faqSectionRef);
   const isMobile = useIsMobile();
+
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
   };
+
   return <>
     {/* Target Audience Section */}
     <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
@@ -136,4 +149,5 @@ const TargetAndFAQ = () => {
     </section>
   </>;
 };
+
 export default TargetAndFAQ;
