@@ -1,17 +1,24 @@
 
+import { useLocation } from 'react-router-dom';
+
 interface OrderButtonProps {
   className?: string;
 }
 
 export const OrderButton = ({ className = "" }: OrderButtonProps) => {
+  const location = useLocation();
+  
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
+    const url = location.pathname === '/box' 
+      ? 'https://dashboard.stripe.com/payment-links/plink_1RESS8LIKUEU9atv6DQfAD5h'
+      : 'https://buy.stripe.com/dR65kKbVz15O5bybIZ';
+    window.open(url, '_blank');
   };
 
   return (
     <a
-      href="https://buy.stripe.com/eVa28y4t7cOw33qeVa"
+      href="#"
       className={`bg-black text-white px-6 py-2.5 rounded-full font-medium text-sm hover:bg-black/90 transition-all hover-lift ${className}`}
       onClick={handleCheckout}
     >

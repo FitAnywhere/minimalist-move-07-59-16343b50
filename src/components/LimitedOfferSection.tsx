@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -11,7 +10,7 @@ const LimitedOfferSection = () => {
   
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
+    window.open('https://buy.stripe.com/5kA8yW1dBaLH8pi28p', '_blank');
   };
   
   return <section id="limited-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
@@ -29,7 +28,7 @@ const LimitedOfferSection = () => {
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <div className="p-6 flex flex-col items-center">
                 <img 
-                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png" 
+                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png" 
                   alt="BoxFun Offer" 
                   className="object-contain w-full rounded-2xl" 
                   loading="lazy" 

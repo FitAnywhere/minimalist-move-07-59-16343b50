@@ -5,15 +5,18 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
+
 interface FAQItem {
   question: string;
   answer: string;
 }
+
 interface TargetAudience {
   imageUrl: string;
   title: string;
   description: string;
 }
+
 const targetAudiences: TargetAudience[] = [{
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
   title: "TOTAL BEGINNERS",
@@ -27,6 +30,7 @@ const targetAudiences: TargetAudience[] = [{
   title: "SPACE-SAVING FANS",
   description: "For anyone looking to maximize workouts in small spaces."
 }];
+
 const faqItems: FAQItem[] = [{
   question: "How do I set up FitAnywhere?",
   answer: "Slide, click, and train. It takes under 2 minutes—no tools or drilling needed."
@@ -58,6 +62,7 @@ const faqItems: FAQItem[] = [{
   question: "Is there a warranty?",
   answer: "2‑year warranty on PowerTower and bands."
 }];
+
 const TargetAndFAQ = () => {
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
   const targetSectionRef = useRef<HTMLElement>(null);
@@ -65,10 +70,12 @@ const TargetAndFAQ = () => {
   const isTargetInView = useInView(targetSectionRef);
   const isFaqInView = useInView(faqSectionRef);
   const isMobile = useIsMobile();
+
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
+    window.open('https://buy.stripe.com/dR65kKbVz15O5bybIZ', '_blank');
   };
+
   return <>
     {/* Target Audience Section */}
     <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
@@ -140,4 +147,5 @@ const TargetAndFAQ = () => {
     </section>
   </>;
 };
+
 export default TargetAndFAQ;

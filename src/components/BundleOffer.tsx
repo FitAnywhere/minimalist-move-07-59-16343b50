@@ -4,35 +4,43 @@ import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { formatPrice } from '@/utils/formatters';
 import { Plus } from 'lucide-react';
+
 interface GiftItem {
   name: string;
   image: string;
 }
+
 const DEFAULT_GIFT_IMAGE = "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png";
+
 const giftItems: GiftItem[] = [{
   name: "TRAINING LIBRARY",
   image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
 }];
+
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [animatedItem, setAnimatedItem] = useState(0);
   const productItems = ["1X PowerTower", "4X Bands"];
+
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/5kA28y7FjaGo0ViaES', '_blank');
+    window.open('https://buy.stripe.com/dR65kKbVz15O5bybIZ', '_blank');
   };
+
   const originalPrice = 1650;
   const currentPrice = 990;
   const discountPercentage = 40;
+
   useEffect(() => {
     const interval = setInterval(() => {
       setAnimatedItem(prev => (prev + 1) % productItems.length);
-    }, 2000); // Change animation every 2 seconds
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);
+
   return <section id="bundle-offer" ref={sectionRef} className="bundle-target relative overflow-hidden py-16 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
     <div className="container mx-auto px-4 relative z-10">
       <div className="max-w-5xl px-4 mx-auto md:px-[115px] md:mx-[174px] md:py-[14px]">
@@ -188,4 +196,5 @@ const BundleOffer = () => {
     </div>
   </section>;
 };
+
 export default BundleOffer;
