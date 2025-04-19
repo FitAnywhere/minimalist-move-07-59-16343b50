@@ -83,7 +83,7 @@ const BoxTargetAndFAQ = () => {
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center mb-20 transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-12")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-16 relative inline-block">
-              WHO WE BUILT THIS FOR
+              WHO WE BUILT PORTABLE GYM FOR
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isTargetInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
