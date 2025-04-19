@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ComparisonTable from './ComparisonTable';
+
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -85,13 +86,13 @@ const TimeAndCostCalculator = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
-            <div className="text-center mb-16">
+            <div className="text-center mb-8 md:mb-12">
               <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
                 YOUR LIFETIME INVESTMENT
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
               
-              <p className="text-lg md:text-xl font-medium text-gray-700 mt-4">Why is FitAnywhere the best way to start?</p>
+              <p className="text-lg md:text-xl font-medium text-gray-700 mt-8 mb-4">Why is FitAnywhere the best way to start calisthenics?</p>
             </div>
 
             <ComparisonTable />
@@ -142,11 +143,6 @@ const TimeAndCostCalculator = () => {
                     </div>
                   </CardContent>
                 </Card>
-                
-                {/* Removed the standalone payoff timeframe display that showed when gymMonthlyCost >= 5 */}
-                
-                {/* Time Cost Box - Moved below */}
-                
               </div>
               
               {/* "What could you do" text and CTA - centered for both mobile and desktop */}
