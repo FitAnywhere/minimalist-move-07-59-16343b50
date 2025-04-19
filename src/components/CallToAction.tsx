@@ -1,9 +1,7 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 const CallToAction = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
@@ -29,7 +27,8 @@ const CallToAction = () => {
         <div className="max-w-5xl mx-auto text-center">
           <div className="space-y-4 md:space-y-2">
             {/* Promotional text above CTA button */}
-            <p className={cn("font-semibold text-lg md:text-xl text-yellow transition-all duration-1000 mb-4", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>Get FitAnywhere now and save 40% + get BoxFun FREE</p>
+            <p className={cn("font-semibold text-lg md:text-xl text-yellow transition-all duration-1000 mb-4", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>Ready to feel proud in your own skin?
+          </p>
             
             {/* CTA Button - reduced spacing */}
             <div className={cn("transition-all duration-1000 mt-4 md:mt-6", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
@@ -45,5 +44,4 @@ const CallToAction = () => {
       </div>
     </section>;
 };
-
 export default CallToAction;
