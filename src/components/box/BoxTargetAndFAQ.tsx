@@ -32,35 +32,35 @@ const targetAudiences: TargetAudience[] = [{
 }];
 
 const faqItems: FAQItem[] = [{
-  question: "How do I set up FitAnywhere?",
-  answer: "Slide, click, and train. It takes under 2 minutes—no tools or drilling needed."
+  question: "How do I set it up?",
+  answer: "Just adjust the cap size and put it on. That's it — you're ready to play, move, and punch."
 }, {
-  question: "I'm a total beginner. Will I really be able to use it?",
-  answer: "Yes. The colour‑coded bands lighten your body‑weight, so you can do every move on day one and reduce assistance as you get stronger."
+  question: "Do I need boxing experience?",
+  answer: "Not at all. BoxFun is made for complete beginners. No gloves, no gym — just fun movement that makes you feel alive."
 }, {
-  question: "Will it fit in my flat with low ceilings?",
-  answer: "The height is fully adjustable (195-235 cm), making it ideal for apartments with lower ceilings."
+  question: "What's included in the package?",
+  answer: " • The custom-designed BoxFun cap\n • Premium elastic \n • High-quality rebound ball\n • Guaranteed smiles "
 }, {
-  question: "What's inside the box?",
-  answer: " • PowerTower frame\n • 4 colour‑coded assistance bands (15–45 kg)\n • Quick‑start setup card\n • Lifetime access to the video Training Library"
+  question: "Is this an actual workout or just fun?",
+  answer: "Both! You'll be sweating and smiling at the same time. It boosts coordination, sharpens reflexes, and burns calories — all without it feeling like exercise."
 }, {
-  question: "How long does delivery take?",
-  answer: "We ship weekly, but if a unit is temporarily out of stock, there may be a short delay until we manufacture more. In a hurry? Don't hesitate to get in touch. We'll always try to make it work."
+  question: "Is it safe to use indoors?",
+  answer: "Yes — just make sure there's a little space around you. The elastic is designed for controlled rebound."
 }, {
-  question: "Why is production limited?",
-  answer: "Every PowerTower is hand‑welded, hand‑powder‑coated, and individually tested. This careful, manual process guarantees top quality—but it also limits how many we can make."
+  question: "What ages is BoxFun for?",
+  answer: "Teens, adults, even grandparents — as long as you're ready to move and have fun, it's for you. We've seen smiles from ages 12 to 70+."
 }, {
-  question: "How much weight can it hold?",
-  answer: "Stress‑tested to 200 kg (440 lb)—plenty for weighted calisthenics."
+  question: "Does it fit all head sizes?",
+  answer: "Yes! The cap is adjustable and fits most head shapes comfortably."
 }, {
-  question: "Will it scratch my floors?",
-  answer: "No. The built‑in rubber feet protect hardwood, tile, and laminate—no extra mats needed."
+  question: "How long until I get my order?",
+  answer: "We ship every week. Most orders arrive within 3–7 business days (depending on your location)."
 }, {
-  question: "What if I change my mind?",
-  answer: "Try it for 30 days. If it's not the perfect fit, return it for a full refund—no questions asked."
+  question: "What if I don't like it?",
+  answer: "Try it for 30 days. If it doesn't bring you joy or movement, send it back — no hard feelings."
 }, {
-  question: "Is there a warranty?",
-  answer: "2‑year warranty on PowerTower and bands."
+  question: "Can it help with coordination or focus?",
+  answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
 }];
 
 const BoxTargetAndFAQ = () => {
