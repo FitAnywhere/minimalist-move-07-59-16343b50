@@ -47,7 +47,7 @@ const faqItems: FAQItem[] = [{
   question: "How long does delivery take?",
   answer: "We ship weekly, but if a unit is temporarily out of stock, there may be a short delay until we manufacture more. In a hurry? Don't hesitate to get in touch. We'll always try to make it work."
 }, {
-  question: "Why is production limited to 100 units per country?",
+  question: "Why is production limited?",
   answer: "Every PowerTower is hand‑welded, hand‑powder‑coated, and individually tested. This careful, manual process guarantees top quality—but it also limits how many we can make."
 }, {
   question: "How much weight can it hold?",
