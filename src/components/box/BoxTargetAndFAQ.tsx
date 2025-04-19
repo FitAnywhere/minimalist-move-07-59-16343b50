@@ -72,7 +72,7 @@ const BoxTargetAndFAQ = () => {
 
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/dR65kKbVz15O5bybIZ', '_blank');
+    window.open('https://fitanywhere.today/', '_blank');
   };
 
   return <>
@@ -113,7 +113,7 @@ const BoxTargetAndFAQ = () => {
                 onClick={handleCTAClick}
                 className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]"
               >
-                🛒 DISCOVER PORTABLE GYM
+                DISCOVER MORE
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             </div>
