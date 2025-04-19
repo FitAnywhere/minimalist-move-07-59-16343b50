@@ -62,7 +62,7 @@ const ComparisonTable = () => {
 
       {/* CTA Section */}
       <div className="text-center mt-12 mb-4">
-        <p className="text-gray-700 mb-4 text-lg font-medium">Why make more sense than a gym membership?</p>
+        
         
         <div className="flex justify-center">
           
