@@ -5,7 +5,6 @@ import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogFooter } from '@/components/ui/dialog';
 import VideoPlayer from '@/components/ui/VideoPlayer';
-
 const ChampionSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
@@ -18,7 +17,6 @@ const ChampionSection = () => {
     name: '',
     email: ''
   });
-
   useEffect(() => {
     if (isInView && titleRef.current) {
       setTimeout(() => {
@@ -26,7 +24,6 @@ const ChampionSection = () => {
       }, 300);
     }
   }, [isInView]);
-
   useEffect(() => {
     if (!document.getElementById('vimeo-player-script')) {
       const script = document.createElement('script');
@@ -36,7 +33,6 @@ const ChampionSection = () => {
       document.head.appendChild(script);
     }
   }, []);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       name,
@@ -47,14 +43,12 @@ const ChampionSection = () => {
       [name]: value
     }));
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     setShowLibraryAccess(false);
     alert("Thank you! Access to the video library will be sent to your email.");
   };
-
   return <section id="video-library" ref={sectionRef} className="py-16">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
@@ -76,9 +70,7 @@ const ChampionSection = () => {
                     <Clock className="h-5 w-5 text-yellow" />
                   </div>
                   <div>
-                    <p className="text-lg font-bold">
-                      20 MINUTE SESSIONS
-                    </p>
+                    <p className="text-lg font-bold">ADAPTIVE 20‑MIN SESSIONS</p>
                   </div>
                 </div>
                 
@@ -116,19 +108,7 @@ const ChampionSection = () => {
             
             <div className="relative perspective">
               <div className="relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-xl hover:scale-[1.02] group" ref={videoRef}>
-                <VideoPlayer 
-                  src="/114 Librarytraining 1144.mp4" 
-                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
-                  aspectRatio="video"
-                  className="rounded-2xl"
-                  autoPlay={isInView}
-                  muted={true}
-                  loop={true}
-                  playMode="onView"
-                  preload="metadata"
-                  width={640}
-                  height={360}
-                />
+                <VideoPlayer src="/114 Librarytraining 1144.mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png" aspectRatio="video" className="rounded-2xl" autoPlay={isInView} muted={true} loop={true} playMode="onView" preload="metadata" width={640} height={360} />
                 
                 <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
               </div>
@@ -149,16 +129,7 @@ const ChampionSection = () => {
 
           <div className="grid gap-8 md:grid-cols-2 mt-4">
             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden relative">
-              <VideoPlayer 
-                src="/114 Librarytraining 1144.mp4" 
-                poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png"
-                aspectRatio="video"
-                autoPlay={false}
-                muted={false}
-                loop={false}
-                controls={true}
-                className="rounded-lg"
-              />
+              <VideoPlayer src="/114 Librarytraining 1144.mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744095736/dZZFMFQ_oped40.png" aspectRatio="video" autoPlay={false} muted={false} loop={false} controls={true} className="rounded-lg" />
             </div>
 
             <div>
