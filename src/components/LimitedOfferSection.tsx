@@ -33,7 +33,7 @@ const LimitedOfferSection = () => {
               </div>
             </div>
             
-            <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">The upgrade your lifestyle deserves.</p>
+            <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">Get rewarded for upgrading your life.</p>
             
             <div className="flex justify-center">
               <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105")} onClick={handleGetBoxFunFree}>🛒  BoxFun + BONUS!</Button>
