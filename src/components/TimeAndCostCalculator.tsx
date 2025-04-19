@@ -91,7 +91,7 @@ const TimeAndCostCalculator = () => {
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
               
-              <p className="text-lg md:text-xl font-medium text-gray-700 mt-8 mb-4">Why is it the best way to start?</p>
+              <p className="text-lg md:text-xl text-gray-700 mt-8 mb-4 font-semibold">WHY IS IT THE BEST WAY TO START?</p>
             </div>
 
             <ComparisonTable />
