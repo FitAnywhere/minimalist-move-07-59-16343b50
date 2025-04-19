@@ -151,7 +151,7 @@ const TimeAndCostCalculator = () => {
               
               {/* "What could you do" text and CTA - centered for both mobile and desktop */}
               <div className="mt-12 text-center">
-                <p className="text-lg font-medium mb-8">What can you do with that extra time and money?</p>
+                <p className="text-lg font-medium mb-8">What can you do with all that extra money?</p>
                 
                 {/* Updated CTA button text and animation */}
                 <div className="flex justify-center mb-8">
