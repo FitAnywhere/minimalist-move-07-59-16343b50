@@ -11,7 +11,7 @@ export const OrderButton = ({ className = "" }: OrderButtonProps) => {
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     const url = location.pathname === '/box' 
-      ? 'https://dashboard.stripe.com/payment-links/plink_1RESS8LIKUEU9atv6DQfAD5h'
+      ? 'https://buy.stripe.com/7sIdTg8G31b720U14k'
       : 'https://buy.stripe.com/dR65kKbVz15O5bybIZ';
     window.open(url, '_blank');
   };
