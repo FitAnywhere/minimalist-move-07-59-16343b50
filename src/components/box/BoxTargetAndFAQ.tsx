@@ -79,9 +79,7 @@ const BoxTargetAndFAQ = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isTargetInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            <p className="text-lg md:text-xl text-gray-700 mt-6 mb-16">
-              A home gym designed to help you do what you thought was impossible.
-            </p>
+            <p className="text-lg md:text-xl text-gray-700 mt-6 mb-16">A home setup that helps you do what you thought was impossible.</p>
             
             <div className="grid md:grid-cols-3 gap-8">
               {targetAudiences.map((audience, index) => <div key={index} className={cn("rounded-2xl p-8 text-center group cursor-pointer transition-all duration-500", "bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl", "transform hover:-translate-y-2", isTargetInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12")} style={{
