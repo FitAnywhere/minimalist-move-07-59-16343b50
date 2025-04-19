@@ -7,8 +7,8 @@ import ChatbotHelper from '@/components/ChatbotHelper';
 const WorkoutAddictSection = lazy(() => import('@/components/WorkoutAddictSection'));
 const TestimonialsCarouselThird = lazy(() => import('@/components/TestimonialsCarouselThird'));
 const LimitedOfferSection = lazy(() => import('@/components/LimitedOfferSection'));
-const TargetAndFAQ = lazy(() => import('@/components/TargetAndFAQ'));
-const CallToAction = lazy(() => import('@/components/CallToAction'));
+const BoxTargetAndFAQ = lazy(() => import('@/components/box/BoxTargetAndFAQ'));
+const BoxCallToAction = lazy(() => import('@/components/box/BoxCallToAction'));
 const Footer = lazy(() => import('@/components/Footer'));
 
 // Better loading fallback with reduced CLS (Cumulative Layout Shift)
@@ -43,13 +43,13 @@ const Box = () => {
       
       <div id="target-faq" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
-          <TargetAndFAQ />
+          <BoxTargetAndFAQ />
         </Suspense>
       </div>
       
       <div id="cta">
         <Suspense fallback={<SectionLoader />}>
-          <CallToAction />
+          <BoxCallToAction />
         </Suspense>
       </div>
       

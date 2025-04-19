@@ -1,4 +1,3 @@
-
 import { lazy, Suspense } from 'react';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
@@ -12,8 +11,8 @@ const ProductTabs = lazy(() => import('@/components/ProductTabs'));
 const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
 const BundleOffer = lazy(() => import('@/components/BundleOffer'));
 const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalculator'));
-const TargetAndFAQ = lazy(() => import('@/components/TargetAndFAQ'));
-const CallToAction = lazy(() => import('@/components/CallToAction'));
+const GymTargetAndFAQ = lazy(() => import('@/components/gym/GymTargetAndFAQ'));
+const GymCallToAction = lazy(() => import('@/components/gym/GymCallToAction'));
 const Footer = lazy(() => import('@/components/Footer'));
 
 // Loading fallback component
@@ -65,13 +64,13 @@ const Index = () => {
       
       <div id="target-faq" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
-          <TargetAndFAQ />
+          <GymTargetAndFAQ />
         </Suspense>
       </div>
       
       <div id="cta">
         <Suspense fallback={<SectionLoader />}>
-          <CallToAction />
+          <GymCallToAction />
         </Suspense>
       </div>
       
