@@ -4,15 +4,18 @@ import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
+
 interface FAQItem {
   question: string;
   answer: string;
 }
+
 interface TargetAudience {
   imageUrl: string;
   title: string;
   description: string;
 }
+
 const targetAudiences: TargetAudience[] = [{
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
   title: "TOTAL BEGINNERS",
@@ -26,6 +29,7 @@ const targetAudiences: TargetAudience[] = [{
   title: "SPACE-SAVING FANS",
   description: "For anyone looking to maximize workouts in small spaces."
 }];
+
 const faqItems: FAQItem[] = [{
   question: "How do I set it up?",
   answer: "Just adjust the cap size and put it on. That's it — you're ready to play, move, and punch."
@@ -57,6 +61,7 @@ const faqItems: FAQItem[] = [{
   question: "Can it help with coordination or focus?",
   answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
 }];
+
 const BoxTargetAndFAQ = () => {
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
   const targetSectionRef = useRef<HTMLElement>(null);
@@ -64,10 +69,12 @@ const BoxTargetAndFAQ = () => {
   const isTargetInView = useInView(targetSectionRef);
   const isFaqInView = useInView(faqSectionRef);
   const isMobile = useIsMobile();
+
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://fitanywhere.today/', '_blank');
   };
+
   return <>
     {/* Target Audience Section */}
     <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
@@ -75,11 +82,15 @@ const BoxTargetAndFAQ = () => {
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center mb-20 transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-12")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
-              WHO WE BUILT PORTABLE GYM FOR
+              WHAT IS PORTABLE GYM?
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isTargetInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
             <p className="text-lg md:text-xl text-gray-700 mt-6 mb-16">A home setup that helps you do what you thought was impossible.</p>
+            
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-black">IDEAL FOR:</h3>
+            </div>
             
             <div className="grid md:grid-cols-3 gap-8">
               {targetAudiences.map((audience, index) => <div key={index} className={cn("rounded-2xl p-8 text-center group cursor-pointer transition-all duration-500", "bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl", "transform hover:-translate-y-2", isTargetInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12")} style={{
@@ -96,8 +107,6 @@ const BoxTargetAndFAQ = () => {
                 </div>)}
             </div>
 
-            
-            
             <div className="flex justify-center mt-8">
               <a href="#" onClick={handleCTAClick} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]">
                 DISCOVER MORE
@@ -144,4 +153,5 @@ const BoxTargetAndFAQ = () => {
     </section>
   </>;
 };
+
 export default BoxTargetAndFAQ;
