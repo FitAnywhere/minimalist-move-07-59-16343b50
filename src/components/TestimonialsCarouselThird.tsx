@@ -19,18 +19,23 @@ interface Testimonial {
 }
 
 const testimonials: Testimonial[] = [{
+  name: "Laura G.",
+  role: "",
+  quote: "When I'm overwhelmed, this is the one thing that resets me instantly.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078301/evbox_hplqap.png"
+}, {
   name: "Mason K.",
-  role: "Outdoor Lover",
+  role: "",
   quote: "BoxFun didn't just get me moving. It made me want to move.",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097765/Izdelek_brez_naslova_-_2025-04-08T093354.537_ovbtbx.png"
 }, {
   name: "Blake H.",
-  role: "Strength Seeker",
+  role: "",
   quote: "Never thought working out could feel this fun.",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_72_ggjdho.png"
 }, {
   name: "Tyler B.",
-  role: "Calisthenics Enthusiast",
+  role: "",
   quote: "Getting fit used to feel like work. Now it feels like play.",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744141492/Izdelek_brez_naslova_-_2025-04-08T214404.198_yb1jc0.png"
 }];
@@ -90,7 +95,6 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
         <div className="flex items-center">
           <div>
             <p className="font-semibold text-gray-800 text-xs">{testimonial.name}</p>
-            <p className="text-gray-500 text-xs">{testimonial.role}</p>
           </div>
         </div>
       </div>
