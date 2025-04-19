@@ -6,12 +6,10 @@ import { ChevronRight, ChevronDown, X, Loader } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import VideoPlayer from '@/components/ui/VideoPlayer';
-
 interface LifestyleFeature {
   title: string;
   description: string;
 }
-
 const lifestyleFeatures: LifestyleFeature[] = [{
   title: "FEEL UNSTOPPABLE",
   description: "Tap into boundless energy to train like never before."
@@ -22,7 +20,6 @@ const lifestyleFeatures: LifestyleFeature[] = [{
   title: "WORKOUT YOU'LL ACTUALLY LOVE",
   description: "It's addictive in the best way possible."
 }];
-
 const WorkoutAddictSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -33,42 +30,31 @@ const WorkoutAddictSection = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [showSpecs, setShowSpecs] = useState(false);
   const isMobile = useIsMobile();
-  
   const isInView = useInView(sectionRef, {
     threshold: 0.2
   }, false);
-
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
-  
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/7sIdTg8G31b720U14k', '_blank');
   };
-
   const handleVideoPlay = () => {
     setIsVideoPlaying(true);
   };
-
   const handleVideoLoad = () => {
     setIsVideoLoaded(true);
   };
-  
   const renderBoxFunVideo = () => {
     const mobileVideoWidth = "80%";
-
-    return (
-      <div className={cn(
-        "relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group", 
-        isMobile && "mx-auto"
-      )} 
-      style={isMobile ? { width: mobileVideoWidth } : undefined}
-      ref={vimeoContainerRef}
-      >
-        <div className="relative w-full h-0 overflow-hidden bg-black" style={{ paddingBottom: '133.33%' }}>
-          {!isVideoLoaded && !isVideoPlaying && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-2xl">
+    return <div className={cn("relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group", isMobile && "mx-auto")} style={isMobile ? {
+      width: mobileVideoWidth
+    } : undefined} ref={vimeoContainerRef}>
+        <div className="relative w-full h-0 overflow-hidden bg-black" style={{
+        paddingBottom: '133.33%'
+      }}>
+          {!isVideoLoaded && !isVideoPlaying && <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10 rounded-2xl">
               <div className="flex flex-col items-center justify-center space-y-4">
                 <div className="relative">
                   <div className="w-20 h-20 rounded-full border-4 border-yellow/30 animate-pulse" />
@@ -89,31 +75,14 @@ const WorkoutAddictSection = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
           
-          <VideoPlayer 
-            src="/16444 Boxfun.mp4" 
-            poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744294274/Screenshot_46_oimbqr.png"
-            aspectRatio="portrait"
-            autoPlay={isInView}
-            muted={true}
-            loop={true}
-            playMode="onView"
-            className={cn(
-              "absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105 bg-black", 
-              isVideoLoaded ? "opacity-100" : "opacity-0"
-            )}
-            onPlay={handleVideoPlay}
-            onLoadedMetadata={handleVideoLoad}
-          />
+          <VideoPlayer src="/16444 Boxfun.mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744294274/Screenshot_46_oimbqr.png" aspectRatio="portrait" autoPlay={isInView} muted={true} loop={true} playMode="onView" className={cn("absolute inset-0 w-full h-full transition-all duration-700 group-hover:scale-105 bg-black", isVideoLoaded ? "opacity-100" : "opacity-0")} onPlay={handleVideoPlay} onLoadedMetadata={handleVideoLoad} />
           
           <div className="absolute inset-0 border-2 border-yellow rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
         </div>
-      </div>
-    );
+      </div>;
   };
-
   return <section ref={sectionRef} className="py-20 relative overflow-hidden" id="workout-addict">
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         {Array.from({
@@ -139,7 +108,7 @@ const WorkoutAddictSection = () => {
                     BOXFUN
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                   </h2>
-                  <p className="text-gray-700 mt-2 font-medium text-base py-[9px]">FREEDOM, STRENGHT, AND FUN.</p>
+                  <p className="text-gray-700 mt-2 font-medium text-base py-[9px]">FREEDOM, STRENGTH, AND FUN.</p>
                 </div>
                 
                 {isMobile && <div className="w-full flex flex-col items-center my-6">
@@ -220,19 +189,10 @@ const WorkoutAddictSection = () => {
                 </div>
                 
                 <div className="w-full flex justify-center mt-4 mb-4">
-                  <img 
-                    src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744101171/Screenshot_83_cupbkr.png" 
-                    alt="BoxFun Product" 
-                    className="max-w-[280px] w-full transition-all duration-500 hover:scale-105" 
-                    loading="lazy"
-                    width="280"
-                    height="280"
-                    srcSet="
+                  <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744101171/Screenshot_83_cupbkr.png" alt="BoxFun Product" className="max-w-[280px] w-full transition-all duration-500 hover:scale-105" loading="lazy" width="280" height="280" srcSet="
                       https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_280/v1744101171/Screenshot_83_cupbkr.png 280w,
                       https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744101171/Screenshot_83_cupbkr.png 400w
-                    "
-                    sizes="(max-width: 768px) 280px, 280px"
-                  />
+                    " sizes="(max-width: 768px) 280px, 280px" />
                 </div>
                 
                 <div className="flex flex-col items-center mt-2 flex-grow-0">
@@ -319,5 +279,4 @@ const WorkoutAddictSection = () => {
       </Dialog>
     </section>;
 };
-
 export default WorkoutAddictSection;
