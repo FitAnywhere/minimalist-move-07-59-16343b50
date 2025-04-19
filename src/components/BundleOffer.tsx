@@ -41,7 +41,7 @@ const BundleOffer = () => {
             LAST GYM YOU WILL EVER NEED
             <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
           </h2>
-          <p className="mt-4 text-gray-700 py-[13px] font-semibold text-lg">Everything you need for +36 exercises with guide as a GIFT.</p>
+          <p className="mt-4 text-gray-700 py-[13px] font-semibold text-lg">Everything you need for +24 exercises with guide as a GIFT.</p>
         </div>
         
         {isMobile ? <div className="space-y-8">
