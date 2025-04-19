@@ -100,9 +100,7 @@ const TimeAndCostCalculator = () => {
             <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
               {/* Calculator section with new spacing and introductory text */}
               <div className="mt-16">
-                <p className="text-lg md:text-xl font-medium text-gray-700 mb-4 text-center">
-                  Why make more sense than a gym membership?
-                </p>
+                <p className="md:text-xl font-medium text-gray-700 mb-4 text-center text-base">WHY IT MAKES MORE SENSE THAN A GYM</p>
                 
                 {/* Desktop & Mobile Layout */}
                 <div className="flex flex-col gap-8">
