@@ -2,7 +2,6 @@ import { useRef, useEffect, useState } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 const BoxCallToAction = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
@@ -12,12 +11,10 @@ const BoxCallToAction = () => {
 
   // Set up parallax effect
   useParallax(backgroundRef, 0.05);
-
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR65kKbVz15O5bybIZ', '_blank');
   };
-
   return <section id="order" ref={sectionRef} className="relative py-8 md:py-12 overflow-hidden min-h-[auto] md:min-h-[40vh] flex items-center" style={{
     background: 'linear-gradient(to bottom, #8A898C 0%, #555555 40%, #333333 70%, #222222 85%, black 100%)'
   }}>
@@ -30,8 +27,7 @@ const BoxCallToAction = () => {
         <div className="max-w-5xl mx-auto text-center">
           <div className="space-y-4 md:space-y-2">
             {/* Promotional text above CTA button */}
-            <p className={cn("font-semibold text-lg md:text-xl text-yellow transition-all duration-1000 mb-4", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>Ready to feel proud in your own skin?
-          </p>
+            <p className={cn("font-semibold text-lg md:text-xl text-yellow transition-all duration-1000 mb-4", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>Ready to reconnect with your body — and actually enjoy it?</p>
             
             {/* CTA Button - reduced spacing */}
             <div className={cn("transition-all duration-1000 mt-4 md:mt-6", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
@@ -47,5 +43,4 @@ const BoxCallToAction = () => {
       </div>
     </section>;
 };
-
 export default BoxCallToAction;
