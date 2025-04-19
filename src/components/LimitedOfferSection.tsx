@@ -29,7 +29,7 @@ const LimitedOfferSection = () => {
                     https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1745092806/Screenshot_16_qqtwbf.png 800w,
                     https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_1200/v1745092806/Screenshot_16_qqtwbf.png 1200w
                   " sizes="(max-width: 768px) 400px, 800px" />
-                <h3 className="text-center mb-2 text-[#D4AF37] text-2xl font-bold">GIVEAWAY</h3>
+                <h3 className="text-center mb-2 font-bold text-[#3a3a10] text-lg">A REWARD FOR UPGRADING YOUR LIFE</h3>
               </div>
             </div>
             
