@@ -1,10 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Button } from '@/components/ui/button';
 
 interface FAQItem {
   question: string;
@@ -82,10 +81,14 @@ const BoxTargetAndFAQ = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center mb-20 transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-12")}>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-16 relative inline-block">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
               WHO WE BUILT PORTABLE GYM FOR
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isTargetInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
+            
+            <p className="text-lg md:text-xl text-gray-700 mt-6 mb-16">
+              A home gym designed to help you do what you thought was impossible.
+            </p>
             
             <div className="grid md:grid-cols-3 gap-8">
               {targetAudiences.map((audience, index) => <div key={index} className={cn("rounded-2xl p-8 text-center group cursor-pointer transition-all duration-500", "bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl", "transform hover:-translate-y-2", isTargetInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12")} style={{
@@ -105,7 +108,14 @@ const BoxTargetAndFAQ = () => {
             <p className="mt-8 text-gray-700 text-center my-[53px] text-base font-bold">Join hundreds building the strength and confidence they only dreamed of.</p>
             
             <div className="flex justify-center mt-8">
-              
+              <a
+                href="#"
+                onClick={handleCTAClick}
+                className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]"
+              >
+                🛒 DISCOVER PORTABLE GYM
+                <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
             </div>
           </div>
         </div>
