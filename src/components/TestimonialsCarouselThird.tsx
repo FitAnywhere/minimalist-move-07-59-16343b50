@@ -150,6 +150,31 @@ const TestimonialsCarouselThird = () => {
               <CarouselNext />
             </Carousel>
           </div>
+          
+          <div className={cn(
+            "mt-16 text-center transition-all duration-500",
+            isInView ? "opacity-100" : "opacity-0 translate-y-4"
+          )}>
+            <h3 className="text-2xl md:text-3xl font-bold text-black mb-6">
+              BoxFun is perfect if…
+            </h3>
+            
+            <ul className="max-w-md mx-auto space-y-4 text-left">
+              {[
+                "You hate boring workouts",
+                "You struggle with motivation",
+                "You want to feel good while moving"
+              ].map((point, index) => (
+                <li 
+                  key={index} 
+                  className="flex items-center space-x-3 text-gray-800 text-base md:text-lg"
+                >
+                  <span className="text-yellow-400 text-xl">•</span>
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
