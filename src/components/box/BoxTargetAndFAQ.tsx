@@ -4,18 +4,15 @@ import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
-
 interface FAQItem {
   question: string;
   answer: string;
 }
-
 interface TargetAudience {
   imageUrl: string;
   title: string;
   description: string;
 }
-
 const targetAudiences: TargetAudience[] = [{
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
   title: "TOTAL BEGINNERS",
@@ -29,7 +26,6 @@ const targetAudiences: TargetAudience[] = [{
   title: "SPACE-SAVING FANS",
   description: "For anyone looking to maximize workouts in small spaces."
 }];
-
 const faqItems: FAQItem[] = [{
   question: "How do I set it up?",
   answer: "Just adjust the cap size and put it on. That's it — you're ready to play, move, and punch."
@@ -61,7 +57,6 @@ const faqItems: FAQItem[] = [{
   question: "Can it help with coordination or focus?",
   answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
 }];
-
 const BoxTargetAndFAQ = () => {
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
   const targetSectionRef = useRef<HTMLElement>(null);
@@ -69,12 +64,10 @@ const BoxTargetAndFAQ = () => {
   const isTargetInView = useInView(targetSectionRef);
   const isFaqInView = useInView(faqSectionRef);
   const isMobile = useIsMobile();
-
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://fitanywhere.today/', '_blank');
   };
-
   return <>
     {/* Target Audience Section */}
     <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
@@ -105,14 +98,10 @@ const BoxTargetAndFAQ = () => {
                 </div>)}
             </div>
 
-            <p className="mt-8 text-gray-700 text-center my-[53px] text-base font-bold">Join hundreds building the strength and confidence they only dreamed of.</p>
+            
             
             <div className="flex justify-center mt-8">
-              <a
-                href="#"
-                onClick={handleCTAClick}
-                className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]"
-              >
+              <a href="#" onClick={handleCTAClick} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]">
                 DISCOVER MORE
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
@@ -157,5 +146,4 @@ const BoxTargetAndFAQ = () => {
     </section>
   </>;
 };
-
 export default BoxTargetAndFAQ;
