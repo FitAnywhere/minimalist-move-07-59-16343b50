@@ -1,15 +1,12 @@
-
 import { memo } from 'react';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 interface HeroContentProps {
   isInView: boolean;
   scrollToOwnBoth: (e: React.MouseEvent) => void;
   isMobile?: boolean;
   overrideTitle?: string;
 }
-
 const HeroContent = memo(({
   isInView,
   scrollToOwnBoth,
@@ -17,7 +14,6 @@ const HeroContent = memo(({
   overrideTitle
 }: HeroContentProps) => {
   const title = overrideTitle || "ZERO TO STRONG";
-
   return <div className="text-center md:text-left">
       <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
         <span className="relative inline-block min-w-[300px] md:min-w-[400px] min-h-[1.2em]">
@@ -26,7 +22,7 @@ const HeroContent = memo(({
         </span>
       </h1>
       
-      <p className={cn("mt-6 text-xl md:text-2xl text-gray-800 transition-all duration-1000 delay-200", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>YOUR PRIVATE CALISTHENICS JOURNEY BEGINS TODAY</p>
+      <p className={cn("mt-6 text-xl md:text-2xl text-gray-800 transition-all duration-1000 delay-200", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>YOUR PRIVATE JOURNEY BEGINS TODAY</p>
       
       {!isMobile && <div className={cn("mt-10 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
           <div className="mt-4 space-y-1">
@@ -41,6 +37,5 @@ const HeroContent = memo(({
         </div>}
     </div>;
 });
-
 HeroContent.displayName = 'HeroContent';
 export default HeroContent;
