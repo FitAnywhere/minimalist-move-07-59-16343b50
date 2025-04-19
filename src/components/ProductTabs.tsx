@@ -3,19 +3,21 @@ import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoPlayer from '@/components/ui/VideoPlayer';
+
 const bandsFeatures = [{
-  title: "10x MORE EXERCISES",
-  description: "Push past plateaus, and keep progressing.",
-  icon: null // Remove icon reference
+  title: "7X MORE EXERCISES",
+  description: "With elastic bands for optimal progression.",
+  icon: null
 }, {
   title: "SUPPORT WHEN NEEDED",
-  description: "Unfold, clip in, and train—whether at home or on the go.",
-  icon: null // Remove icon reference
+  description: "Never feel stuck or overwhelmed.",
+  icon: null
 }, {
   title: "CHALLENGE WHEN READY",
-  description: "From first reps to peak performance—bands move with you.",
-  icon: null // Remove icon reference
+  description: "Move forward at your pace.",
+  icon: null
 }];
+
 const ProductTabs = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
@@ -28,6 +30,7 @@ const ProductTabs = () => {
     threshold: 0.2
   });
   const isMobile = useIsMobile();
+
   const renderBandsVideo = useCallback(() => {
     return <div className="w-full h-full overflow-hidden relative" style={{
       maxWidth: '80%',
@@ -38,6 +41,7 @@ const ProductTabs = () => {
         </div>
       </div>;
   }, [isBandsVideoInView]);
+
   return <section id="accessories" ref={sectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
@@ -53,30 +57,34 @@ const ProductTabs = () => {
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className={cn("space-y-6", isMobile ? "order-2" : "order-1")}>
                 <div ref={bandsTextRef} className="relative space-y-2 mb-6">
-                  <h3 className="text-xl md:text-2xl font-bold mb-6 leading-tight tracking-wider" style={{
-                  background: 'linear-gradient(to bottom, #E6B800, #000000)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  color: 'transparent',
-                  letterSpacing: "1.5px"
-                }}>
-                    ADAPTIVE FOR EVERY LEVEL
-                  </h3>
                 </div>
                 
                 <div className="space-y-8 mb-6 relative z-10 my-[69px] py-[35px] px-0 mx-0">
-                  {bandsFeatures.map((feature, index) => <div key={index} className="flex items-start gap-3">
-                      <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{
-                    letterSpacing: "1px"
-                  }}>-</span>
-                      <p className="text-gray-800 text-lg font-medium tracking-wide" style={{
-                    letterSpacing: "1.2px",
-                    color: "#333333"
-                  }}>
-                        {feature.title}
+                  {bandsFeatures.map((feature, index) => (
+                    <div key={index} className="flex flex-col gap-2">
+                      <div className="flex items-start gap-3">
+                        <span className="text-transparent bg-gradient-to-b from-yellow-dark to-black bg-clip-text font-medium" style={{
+                          letterSpacing: "1px"
+                        }}>-</span>
+                        <p className="text-xl md:text-2xl font-bold leading-tight tracking-wider" style={{
+                          background: 'linear-gradient(to bottom, #E6B800, #000000)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          backgroundClip: 'text',
+                          color: 'transparent',
+                          letterSpacing: "1.5px"
+                        }}>
+                          {feature.title}
+                        </p>
+                      </div>
+                      <p className="text-gray-800 text-lg font-medium tracking-wide ml-6" style={{
+                        letterSpacing: "1.2px",
+                        color: "#333333"
+                      }}>
+                        {feature.description}
                       </p>
-                    </div>)}
+                    </div>
+                  ))}
                 </div>
               </div>
               
@@ -89,4 +97,5 @@ const ProductTabs = () => {
       </div>
     </section>;
 };
+
 export default ProductTabs;
