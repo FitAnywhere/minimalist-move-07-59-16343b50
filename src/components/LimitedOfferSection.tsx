@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -28,16 +29,16 @@ const LimitedOfferSection = () => {
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <div className="p-6 flex flex-col items-center">
                 <img 
-                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png" 
+                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745092806/Screenshot_16_qqtwbf.png" 
                   alt="BoxFun Offer" 
                   className="object-contain w-full rounded-2xl" 
                   loading="lazy" 
                   width="800" 
                   height="600"
                   srcSet="
-                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png 400w,
-                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png 800w,
-                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_1200/v1744398860/ChatGPT_Image_11._apr._2025_21_13_45_jkarvs.png 1200w
+                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1745092806/Screenshot_16_qqtwbf.png 400w,
+                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1745092806/Screenshot_16_qqtwbf.png 800w,
+                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_1200/v1745092806/Screenshot_16_qqtwbf.png 1200w
                   "
                   sizes="(max-width: 768px) 400px, 800px"
                 />
