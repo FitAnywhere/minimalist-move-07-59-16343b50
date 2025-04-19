@@ -26,7 +26,7 @@ const HeroContent = memo(({
       
       {!isMobile && <div className={cn("mt-10 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
           <div className="mt-4 space-y-1">
-            <p className="text-gray-700 font-bold text-lg">Never done a pull-up? Can’t hold a dip?</p>
+            <p className="text-gray-700 font-bold text-lg">No strength? No experience?</p>
             <p className="text-gray-700 px-0 py-[4px] font-bold text-lg">You’re exactly who FitAnywhere was built for.</p>
           </div>
           
