@@ -19,8 +19,7 @@ const HeroContent = memo(({
         </span>
       </h1>
       
-      <p className={cn("mt-6 text-xl md:text-2xl text-gray-800 transition-all duration-1000 delay-200", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>From I CAN’T to WATCH THIS
-    </p>
+      <p className={cn("mt-6 text-xl md:text-2xl text-gray-800 transition-all duration-1000 delay-200", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>YOUR PRIVATE CALISTHENICS JOURNEY BEGINS TODAY</p>
       
       {!isMobile && <div className={cn("mt-10 transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
           <div className="mt-4 space-y-1">
