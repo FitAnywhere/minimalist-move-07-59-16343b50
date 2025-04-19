@@ -20,7 +20,7 @@ const LimitedOfferSection = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            <p className="text-gray-700 mb-6 max-w-xl mx-auto font-medium py-[16px] my-[12px] text-xl">Order portable GYM to get BoxFun as a GIFT.</p>
+            <p className="text-gray-700 mb-6 max-w-xl mx-auto font-medium py-[16px] my-[12px] text-xl">Get €100 discount bonus for Portable Gym.</p>
             
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <div className="p-6 flex flex-col items-center">
