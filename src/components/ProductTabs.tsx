@@ -3,26 +3,23 @@ import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoPlayer from '@/components/ui/VideoPlayer';
-
 const bandsFeatures = [{
   title: "10x MORE EXERCISES",
   description: "Push past plateaus, and keep progressing.",
-  icon: null  // Remove icon reference
+  icon: null // Remove icon reference
 }, {
   title: "SUPPORT WHEN NEEDED",
   description: "Unfold, clip in, and train—whether at home or on the go.",
-  icon: null  // Remove icon reference
+  icon: null // Remove icon reference
 }, {
   title: "CHALLENGE WHEN READY",
   description: "From first reps to peak performance—bands move with you.",
-  icon: null  // Remove icon reference
+  icon: null // Remove icon reference
 }];
-
 const ProductTabs = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const bandsVideoRef = useRef<HTMLDivElement>(null);
   const bandsTextRef = useRef<HTMLDivElement>(null);
-  
   const isInView = useInView(sectionRef);
   const isBandsVideoInView = useInView(bandsVideoRef, {
     threshold: 0.3
@@ -31,31 +28,16 @@ const ProductTabs = () => {
     threshold: 0.2
   });
   const isMobile = useIsMobile();
-  
   const renderBandsVideo = useCallback(() => {
-    return (
-      <div className="w-full h-full overflow-hidden relative" style={{
-        maxWidth: '80%',
-        margin: '0 auto'
-      }}>
+    return <div className="w-full h-full overflow-hidden relative" style={{
+      maxWidth: '80%',
+      margin: '0 auto'
+    }}>
         <div className="rounded-2xl overflow-hidden">
-          <VideoPlayer 
-            src="/Trxbands 1644).mp4"
-            poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png"
-            aspectRatio="portrait"
-            autoPlay={isBandsVideoInView}
-            muted={true}
-            loop={true}
-            playMode="onView"
-            width={400}
-            height={720}
-            preload="none"
-          />
+          <VideoPlayer src="/Trxbands 1644).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png" aspectRatio="portrait" autoPlay={isBandsVideoInView} muted={true} loop={true} playMode="onView" width={400} height={720} preload="none" />
         </div>
-      </div>
-    );
+      </div>;
   }, [isBandsVideoInView]);
-
   return <section id="accessories" ref={sectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
@@ -64,7 +46,7 @@ const ProductTabs = () => {
               MAXIMIZE YOUR EXPERIENCE
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
-            <p className="mt-4 text-gray-700 font-medium text-xl py-[13px]">More exercises for beginners and pros - with TRX & BANDS</p>
+            <p className="mt-4 text-gray-700 font-medium text-xl py-[13px]">ADAPTS TO YOUR FITNESS LEVEL</p>
           </div>
           
           <div className="opacity-100 translate-x-0">
@@ -107,5 +89,4 @@ const ProductTabs = () => {
       </div>
     </section>;
 };
-
 export default ProductTabs;
