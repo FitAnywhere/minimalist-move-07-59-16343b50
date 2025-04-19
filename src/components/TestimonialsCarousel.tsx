@@ -17,31 +17,38 @@ interface Testimonial {
   imageUrl: string;
 }
 
-const testimonials: Testimonial[] = [{
-  name: "Emily T.",
-  quote: "One workout in and I realized. Bands are no joke.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744150914/Screenshot_89_mw00er.png"
-}, {
-  name: "Jordan P.",
-  quote: "Honestly shocked how fast this became my main workout.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
-}, {
-  name: "Laura G.",
-  quote: "Finally exercising with confidence. Elastics changed everything for me.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078371/Screenshot_13_wp6ih6.png"
-}, {
-  name: "Chris L.",
-  quote: "Modern, minimal, and our people love it.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099090/Screenshot_73_tco9rh.png"
-}, {
-  name: "Sarah M.",
-  quote: "Used to blame Zoom for no workouts. Now I sneak in 15 min wins.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099088/Screenshot_76_nkxmvr.png"
-}, {
-  name: "Tom S.",
-  quote: "No crowds, no pressure. Just me, music, and movement.",
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
-}];
+const testimonials: Testimonial[] = [
+  {
+    name: "Emily T.",
+    quote: "I was scared to try but with elastics workout feels amazing.",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744150914/Screenshot_89_mw00er.png"
+  }, 
+  {
+    name: "Jordan P.",
+    quote: "Taking it to the seaside for trainings on the beach.",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
+  }, 
+  {
+    name: "Laura G.",
+    quote: "Crazy to do 15 push ups with elastics, before I couldn't do even one.",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078371/Screenshot_13_wp6ih6.png"
+  }, 
+  {
+    name: "Chris L.",
+    quote: "Members in our training studios adore it.",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099090/Screenshot_73_tco9rh.png"
+  }, 
+  {
+    name: "Sarah M.",
+    quote: "Training privately feels fantastic, people are not staring at me anymore.",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099088/Screenshot_76_nkxmvr.png"
+  }, 
+  {
+    name: "Tom S.",
+    quote: "I turn on speaker and grow muscle on my terrace.",
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
+  }
+];
 
 const TestimonialImage = memo(({ imageUrl }: { imageUrl: string }) => {
   const width = 400;
@@ -119,7 +126,7 @@ const TestimonialsCarousel = () => {
             isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
           )}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-              WHY THEY LOVE FITANYWHERE?
+              WHY THEY LOVE IT?
               <span className={cn(
                 "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
                 isInView ? "scale-x-100" : "scale-x-0"
