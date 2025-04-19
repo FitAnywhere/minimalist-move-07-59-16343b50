@@ -92,8 +92,12 @@ const TargetAndFAQ = () => {
                     )}
                     style={{ transitionDelay: `${index * 150}ms` }}
                   >
-                    <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-all duration-500">
-                      <img src={audience.imageUrl} alt={audience.title} className="w-full h-full object-cover" />
+                    <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-all duration-500">
+                      <img 
+                        src={audience.imageUrl} 
+                        alt={audience.title} 
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     
                     <h3 className="text-xl md:text-2xl font-bold text-black mb-4">{audience.title}</h3>
