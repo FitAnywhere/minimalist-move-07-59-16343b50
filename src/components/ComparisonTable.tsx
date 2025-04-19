@@ -62,7 +62,7 @@ const ComparisonTable = () => {
 
       {/* CTA Section */}
       <div className="text-center mt-8">
-        <p className="text-gray-700 mb-4 text-lg font-medium">Why FitAnywhere makes more sense than a gym membership?</p>
+        <p className="text-gray-700 mb-4 text-lg font-medium">Why make more sense than a gym membership?</p>
         
       </div>
     </div>;
