@@ -26,9 +26,7 @@ const HeroSection = memo(() => {
                 <div className={cn("transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <div className="mt-4 space-y-1">
                     <p className="text-gray-700 font-bold text-base">Never done a pull-up? Can’t hold a dip? </p>
-                    <p className="text-gray-700 px-0 py-[4px] font-bold text-base">You don’t need it to begin.
-
-                </p>
+                    <p className="text-gray-700 px-0 py-[4px] font-bold text-base">You’re exactly who FitAnywhere was built for.</p>
                   </div>
                   
                   <button onClick={e => e.preventDefault()} disabled className={cn("inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow", "py-[10px] px-[25px]", "my-[20px] cursor-not-allowed")}>
