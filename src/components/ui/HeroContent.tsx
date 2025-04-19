@@ -1,20 +1,27 @@
+
 import { memo } from 'react';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
 interface HeroContentProps {
   isInView: boolean;
   scrollToOwnBoth: (e: React.MouseEvent) => void;
   isMobile?: boolean;
+  overrideTitle?: string;
 }
+
 const HeroContent = memo(({
   isInView,
   scrollToOwnBoth,
-  isMobile = false
+  isMobile = false,
+  overrideTitle
 }: HeroContentProps) => {
+  const title = overrideTitle || "ZERO TO STRONG";
+
   return <div className="text-center md:text-left">
       <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
         <span className="relative inline-block min-w-[300px] md:min-w-[400px] min-h-[1.2em]">
-          ZERO TO STRONG
+          {title}
           <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")} aria-hidden="true" />
         </span>
       </h1>
@@ -34,5 +41,6 @@ const HeroContent = memo(({
         </div>}
     </div>;
 });
+
 HeroContent.displayName = 'HeroContent';
 export default HeroContent;

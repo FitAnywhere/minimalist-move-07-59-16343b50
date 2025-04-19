@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
+
 const features = [{
   title: "✅ PRIVATE & JUDGMENT-FREE",
   description: "Train comfortably in your home."
@@ -15,10 +16,8 @@ const features = [{
 }, {
   title: "✅ QUICK SETUP",
   description: "Ready in just 2 minutes."
-}, {
-  title: "✅ COMPACT & PORTABLE",
-  description: "Requires only 1m² and easily folds away."
 }];
+
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -27,10 +26,11 @@ const ProductIntro = () => {
     title: false,
     subtitle: false,
     paragraph: false,
-    features: [false, false, false, false],
+    features: [false, false, false],
     finalLine: false
   });
   const [showSpecs, setShowSpecs] = useState(false);
+
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -63,6 +63,7 @@ const ProductIntro = () => {
       })), 1200);
     }
   }, [isInView]);
+
   return <section id="product" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
@@ -73,8 +74,6 @@ const ProductIntro = () => {
                   WHY CHOOSE US?
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
-                
-                
               </div>
               
               {isMobile && <div className={cn("flex justify-center items-center transition-all duration-700 h-full md:hidden", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
@@ -105,8 +104,6 @@ const ProductIntro = () => {
               </div>
               
               <div className="space-y-4">
-                
-                
                 <div className={cn("transition-all duration-700 transform", animationState.finalLine ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
                   <Button variant="outline" size="sm" className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1" onClick={() => setShowSpecs(true)}>
                     Specifications
@@ -195,4 +192,5 @@ const ProductIntro = () => {
       </Dialog>
     </section>;
 };
+
 export default ProductIntro;
