@@ -31,6 +31,9 @@ const targetAudiences: TargetAudience[] = [{
 }];
 
 const faqItems: FAQItem[] = [{
+  question: "How do I claim my €100 bonus?",
+  answer: "Just ordered BoxFun? Send us your purchase confirmation on Facebook or WhatsApp, and we'll send you a €100 discount for the portable gym."
+}, {
   question: "How do I set it up?",
   answer: "Just adjust the cap size and put it on. That's it — you're ready to play, move, and punch."
 }, {
@@ -60,6 +63,33 @@ const faqItems: FAQItem[] = [{
 }, {
   question: "Can it help with coordination or focus?",
   answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
+}];
+
+const testimonials = [{
+  name: "Laura G.",
+  role: "",
+  quote: "When I'm overwhelmed, this is the one thing that resets me instantly.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078301/evbox_hplqap.png"
+}, {
+  name: "Mason K.",
+  role: "",
+  quote: "BoxFun didn't just get me moving. It made me want to move.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097765/Izdelek_brez_naslova_-_2025-04-08T093354.537_ovbtbx.png"
+}, {
+  name: "Blake H.",
+  role: "",
+  quote: "Never thought working out could feel this fun.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097748/Screenshot_72_ggjdho.png"
+}, {
+  name: "TOM S.",
+  role: "",
+  quote: "I needed something that made me smile after a long day.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745311903/Izdelek_brez_naslova_-_2025-04-22T105027.125_mx9mhg.png"
+}, {
+  name: "Tyler B.",
+  role: "",
+  quote: "Getting fit used to feel like work. Now it feels like play.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744141492/Izdelek_brez_naslova_-_2025-04-08T214404.198_yb1jc0.png"
 }];
 
 const BoxTargetAndFAQ = () => {
