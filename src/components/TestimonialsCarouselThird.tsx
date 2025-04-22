@@ -29,6 +29,11 @@ const testimonials: Testimonial[] = [{
   quote: "BoxFun didn't just get me moving. It made me want to move.",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097765/Izdelek_brez_naslova_-_2025-04-08T093354.537_ovbtbx.png"
 }, {
+  name: "TOM S.",
+  role: "",
+  quote: "I needed something that make me smile after a long day.",
+  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745311903/Izdelek_brez_naslova_-_2025-04-22T105027.125_mx9mhg.png"
+}, {
   name: "Blake H.",
   role: "",
   quote: "Never thought working out could feel this fun.",
