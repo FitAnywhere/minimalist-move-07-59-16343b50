@@ -1,6 +1,7 @@
 import { Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const ComparisonTable = () => {
   const isMobile = useIsMobile();
   const handleCTAClick = (e: React.MouseEvent) => {
@@ -22,6 +23,18 @@ const ComparisonTable = () => {
 
         {/* Comparison Rows */}
         <div className="divide-y-2 divide-black">
+          {/* Beginner Usage Row */}
+          <div className="grid grid-cols-2">
+            <div className="flex items-center justify-center gap-2 p-4">
+              <Check className="w-5 h-5 text-green-500 shrink-0" />
+              <span className="text-sm md:text-base whitespace-nowrap">Beginner-friendly</span>
+            </div>
+            <div className="flex items-center justify-center gap-2 p-4 border-l-2 border-black">
+              <X className="w-5 h-5 text-red-500 shrink-0" />
+              <span className="text-sm md:text-base whitespace-nowrap">Intimidating</span>
+            </div>
+          </div>
+
           {/* Built For Row */}
           <div className="grid grid-cols-2">
             <div className="flex items-center justify-center gap-2 p-4">
@@ -62,10 +75,7 @@ const ComparisonTable = () => {
 
       {/* CTA Section */}
       <div className="text-center mt-12 mb-4">
-        
-        
         <div className="flex justify-center">
-          
         </div>
       </div>
     </div>;

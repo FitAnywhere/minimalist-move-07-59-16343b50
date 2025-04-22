@@ -5,59 +5,83 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
+
 interface FAQItem {
   question: string;
   answer: string;
 }
+
 interface TargetAudience {
   imageUrl: string;
   title: string;
   description: string;
 }
-const targetAudiences: TargetAudience[] = [{
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
-  title: "TOTAL BEGINNERS",
-  description: "Elastics make it possible for everyone."
-}, {
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078482/nik_v2extf.jpg",
-  title: "PRIVACY LOVERS",
-  description: "For those uncomfortable exercising in public."
-}, {
-  imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074862/spa_qpav0e.png",
-  title: "SPACE-SAVING FANS",
-  description: "For anyone looking to maximize workouts in small spaces."
-}];
-const faqItems: FAQItem[] = [{
-  question: "How do I set up FitAnywhere?",
-  answer: "Slide, click, and train. It takes under 2 minutes—no tools or drilling needed."
-}, {
-  question: "I'm a total beginner. Will I really be able to use it?",
-  answer: "Yes. The colour‑coded bands lighten your body‑weight, so you can do every move on day one and reduce assistance as you get stronger."
-}, {
-  question: "Will it fit in my flat with low ceilings?",
-  answer: "The height is fully adjustable (195-235 cm), making it ideal for apartments with lower ceilings."
-}, {
-  question: "What's inside the box?",
-  answer: " • PowerTower frame\n • 4 colour‑coded assistance bands (15–45 kg)\n • Quick‑start setup card\n • Lifetime access to the video Training Library"
-}, {
-  question: "How long does delivery take?",
-  answer: "We ship weekly, but if a unit is temporarily out of stock, there may be a short delay until we manufacture more. In a hurry? Don't hesitate to get in touch. We'll always try to make it work."
-}, {
-  question: "Why is production limited?",
-  answer: "Every PowerTower is hand‑welded, hand‑powder‑coated, and individually tested. This careful, manual process guarantees top quality—but it also limits how many we can make."
-}, {
-  question: "How much weight can it hold?",
-  answer: "Stress‑tested to 200 kg (440 lb)—plenty for weighted calisthenics."
-}, {
-  question: "Will it scratch my floors?",
-  answer: "No. The built‑in rubber feet protect hardwood, tile, and laminate—no extra mats needed."
-}, {
-  question: "What if I change my mind?",
-  answer: "Try it for 30 days. If it's not the perfect fit, return it for a full refund—no questions asked."
-}, {
-  question: "Is there a warranty?",
-  answer: "2‑year warranty on PowerTower and bands."
-}];
+
+const targetAudiences: TargetAudience[] = [
+  {
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
+    title: "TOTAL BEGINNERS",
+    description: "Elastics make it possible for everyone."
+  },
+  {
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078482/nik_v2extf.jpg",
+    title: "PRIVACY LOVERS",
+    description: "For those uncomfortable exercising in public."
+  },
+  {
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074862/spa_qpav0e.png",
+    title: "SPACE-SAVING FANS",
+    description: "For anyone looking to maximize workouts in small spaces."
+  }
+];
+
+const faqItems: FAQItem[] = [
+  {
+    question: "How do I set up FitAnywhere?",
+    answer: "Slide, click, and train. It takes under 2 minutes—no tools or drilling needed."
+  },
+  {
+    question: "I'm a total beginner. Will I really be able to use it?",
+    answer: "Yes. The colour‑coded bands lighten your body‑weight, so you can do every move on day one and reduce assistance as you get stronger."
+  },
+  {
+    question: "Will it fit in my flat with low ceilings?",
+    answer: "The height is fully adjustable (195-235 cm), making it ideal for apartments with lower ceilings."
+  },
+  {
+    question: "What's inside the box?",
+    answer: " • PowerTower frame\n • 4 colour‑coded assistance bands (15–45 kg)\n • Quick‑start setup card\n • Lifetime access to the video Training Library"
+  },
+  {
+    question: "How long does delivery take?",
+    answer: "We ship weekly, but if a unit is temporarily out of stock, there may be a short delay until we manufacture more. In a hurry? Don't hesitate to get in touch. We'll always try to make it work."
+  },
+  {
+    question: "Why is production limited?",
+    answer: "Every PowerTower is hand‑welded, hand‑powder‑coated, and individually tested. This careful, manual process guarantees top quality—but it also limits how many we can make."
+  },
+  {
+    question: "How much weight can it hold?",
+    answer: "Stress‑tested to 200 kg (440 lb)—plenty for weighted calisthenics."
+  },
+  {
+    question: "Will it scratch my floors?",
+    answer: "No. The built‑in rubber feet protect hardwood, tile, and laminate—no extra mats needed."
+  },
+  {
+    question: "What if I change my mind?",
+    answer: "Try it for 30 days. If it's not the perfect fit, return it for a full refund—no questions asked."
+  },
+  {
+    question: "Is there a warranty?",
+    answer: "2‑year warranty on PowerTower and bands."
+  },
+  {
+    question: "What if I want to start but don't have the full budget?",
+    answer: "Reach out to us. We're happy to explore flexible payment options or solutions that fit your current situation."
+  }
+];
+
 const GymTargetAndFAQ = () => {
   const [activeAudience, setActiveAudience] = useState<number | null>(null);
   const targetSectionRef = useRef<HTMLElement>(null);
@@ -65,10 +89,12 @@ const GymTargetAndFAQ = () => {
   const isTargetInView = useInView(targetSectionRef);
   const isFaqInView = useInView(faqSectionRef);
   const isMobile = useIsMobile();
+
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR65kKbVz15O5bybIZ', '_blank');
   };
+
   return <>
     {/* Target Audience Section */}
     <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
@@ -140,4 +166,5 @@ const GymTargetAndFAQ = () => {
     </section>
   </>;
 };
+
 export default GymTargetAndFAQ;
