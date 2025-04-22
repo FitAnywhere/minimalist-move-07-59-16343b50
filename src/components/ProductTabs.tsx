@@ -1,3 +1,4 @@
+
 import { useRef, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -37,7 +38,18 @@ const ProductTabs = () => {
       margin: '0 auto'
     }}>
         <div className="rounded-2xl overflow-hidden">
-          <VideoPlayer src="/Trxbands 1644).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png" aspectRatio="portrait" autoPlay={isBandsVideoInView} muted={true} loop={true} playMode="onView" width={400} height={720} preload="none" />
+          <VideoPlayer 
+            src="/bands224.mp4" 
+            poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112763/bandds_u9bzkl.png" 
+            aspectRatio="portrait" 
+            autoPlay={isBandsVideoInView} 
+            muted={true} 
+            loop={true} 
+            playMode="onView" 
+            width={400} 
+            height={720} 
+            preload="none" 
+          />
         </div>
       </div>;
   }, [isBandsVideoInView]);
