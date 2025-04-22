@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -158,8 +157,8 @@ const TrainingVault = () => {
             >
               <div style={{ padding: '177.78% 0 0 0', position: 'relative' }}>
                 <VideoPlayer 
-                  src="/114 Setup (1080P).mp4" 
-                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744097749/Screenshot_69_w6ixx7.png"
+                  src="/leadc.mp4" 
+                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745302307/Screenshot_20_z1knrb.png"
                   aspectRatio="portrait"
                   autoPlay={true}
                   muted={true}
