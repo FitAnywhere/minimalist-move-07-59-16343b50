@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -8,10 +7,10 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 const features = [{
   title: "PRIVATE",
-  description: "Train comfortably in your home"
+  description: "Comfort at home"
 }, {
-  title: "BEGINNER-FRIENDLY",
-  description: "Elastics give support from day one"
+  title: "EASY",
+  description: "Support from day one"
 }, {
   title: "FAST",
   description: "Ready in 2 minutes"
@@ -74,14 +73,12 @@ const ProductIntro = () => {
                 </h2>
               </div>
               
-              {isMobile && <div className={cn("flex justify-center items-center transition-all duration-700 h-full md:hidden", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
-                  <div className="w-full max-w-[64%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
-                    <video autoPlay muted loop playsInline className="w-full h-auto object-contain py-[2px] my-[8px]">
-                      <source src="/intro women.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                </div>}
+              {isMobile && (
+                <video autoPlay muted loop playsInline className="w-full max-w-[64%] mx-auto rounded-xl h-auto object-contain py-[2px] my-[8px]">
+                  <source src="/intro women.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )}
               
               <div className="space-y-5 my-[9px] mx-0 px-0 py-0 rounded-none">
                 {features.map((feature, index) => <div key={index} className={cn("px-6 py-3 rounded-full", "transition-all duration-300 ease-in-out", "shadow-md", "transform", "border-2 border-yellow bg-white", animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
