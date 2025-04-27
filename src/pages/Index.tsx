@@ -1,3 +1,4 @@
+
 import { lazy, Suspense } from 'react';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
@@ -6,6 +7,7 @@ import ChampionSection from '@/components/ChampionSection';
 import ChatbotHelper from '@/components/ChatbotHelper';
 
 // Lazy load non-critical sections
+const ProductTabs = lazy(() => import('@/components/ProductTabs'));
 const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
 const BundleOffer = lazy(() => import('@/components/BundleOffer'));
 const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalculator'));
@@ -31,6 +33,9 @@ const Index = () => {
       
       <div id="product">
         <ProductIntro />
+        <Suspense fallback={<SectionLoader />}>
+          <ProductTabs />
+        </Suspense>
       </div>
       
       <ChampionSection />
