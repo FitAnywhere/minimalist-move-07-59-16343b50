@@ -1,32 +1,7 @@
-
 import { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
-
-interface TargetAudience {
-  imageUrl: string;
-  title: string;
-  description: string;
-}
-
-const targetAudiences: TargetAudience[] = [
-  {
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
-    title: "TOTAL BEGINNERS",
-    description: "Elastics make it possible for everyone."
-  },
-  {
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078482/nik_v2extf.jpg",
-    title: "PRIVACY LOVERS",
-    description: "For those uncomfortable exercising in public."
-  },
-  {
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074862/spa_qpav0e.png",
-    title: "SPACE-SAVING FANS",
-    description: "For anyone looking to maximize workouts in small spaces."
-  }
-];
 
 const GymTarget = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,7 +15,7 @@ const GymTarget = () => {
           <div className={cn("text-center mb-20 transition-all duration-1000", 
             isInView ? "opacity-100" : "opacity-0 translate-y-12")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-16 relative inline-block">
-              WHO WE BUILT THIS FOR
+              MADE TO MOVE
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
                 isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>

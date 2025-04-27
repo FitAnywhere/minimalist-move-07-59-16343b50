@@ -46,7 +46,7 @@ const BundleOffer = () => {
       <div className="max-w-5xl px-4 mx-auto md:px-[115px] md:mx-[174px] md:py-[14px]">
         <div className={cn("text-center transition-all duration-1000 transform mb-10", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
           <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-            LAST GYM YOU WILL EVER NEED
+            PRIVATE GYM
             <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
           </h2>
           <p className="mt-4 text-gray-700 py-[13px] font-semibold text-lg">Everything you need for +24 exercises with guide as a GIFT.</p>

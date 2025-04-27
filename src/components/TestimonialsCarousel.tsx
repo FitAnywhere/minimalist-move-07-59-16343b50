@@ -126,7 +126,7 @@ const TestimonialsCarousel = () => {
             isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
           )}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-              WHY THEY LOVE IT?
+              LOVED BY
               <span className={cn(
                 "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
                 isInView ? "scale-x-100" : "scale-x-0"

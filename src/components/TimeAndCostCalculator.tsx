@@ -88,7 +88,7 @@ const TimeAndCostCalculator = () => {
           <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
             <div className="text-center mb-8 md:mb-12">
               <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
-                YOUR LIFETIME INVESTMENT
+                FOREVER YOURS
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
               
