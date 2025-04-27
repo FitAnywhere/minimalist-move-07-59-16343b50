@@ -14,17 +14,17 @@ const targetAudiences: TargetAudience[] = [
   {
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
     title: "TOTAL BEGINNERS",
-    description: "The easiest start to something life-changing."
+    description: "Easy start to a stronger life."
   },
   {
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078482/nik_v2extf.jpg",
     title: "PRIVACY LOVERS",
-    description: "Win quietly today, earn respect forever."
+    description: "Win quietly, earn respect forever."
   },
   {
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074862/spa_qpav0e.png",
     title: "SPACE-SAVING FANS",
-    description: "Turn small spaces into full-body power zones."
+    description: "Turn your space into strength."
   }
 ];
 
