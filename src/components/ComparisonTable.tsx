@@ -1,6 +1,8 @@
+
 import { Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const ComparisonTable = () => {
   const isMobile = useIsMobile();
   const handleCTAClick = (e: React.MouseEvent) => {
@@ -8,6 +10,7 @@ const ComparisonTable = () => {
     window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
   };
   const borderClass = isMobile ? "border-2" : "border";
+  
   return <div className="w-full max-w-5xl mx-auto mb-16">
       <div className={`${borderClass} border-black rounded-xl overflow-hidden shadow-md`}>
         {/* Header */}
@@ -30,9 +33,7 @@ const ComparisonTable = () => {
             </div>
             <div className="flex items-center justify-center gap-2 p-4 border-l-2 border-black">
               <X className="w-5 h-5 text-red-500 shrink-0" />
-              <span className="text-sm md:text-base whitespace-nowrap">Overwhelming
-
-            </span>
+              <span className="text-sm md:text-base whitespace-nowrap">Overwhelming</span>
             </div>
           </div>
 
@@ -45,18 +46,6 @@ const ComparisonTable = () => {
             <div className="flex items-center justify-center gap-2 p-4 border-l-2 border-black">
               <X className="w-5 h-5 text-red-500 shrink-0" />
               <span className="text-sm md:text-base whitespace-nowrap">Outdoor only</span>
-            </div>
-          </div>
-
-          {/* Setup Time Row */}
-          <div className="grid grid-cols-2">
-            <div className="flex items-center justify-center gap-2 p-4">
-              <Check className="w-5 h-5 text-green-500 shrink-0" />
-              <span className="text-sm md:text-base whitespace-nowrap">2-min setup</span>
-            </div>
-            <div className="flex items-center justify-center gap-2 p-4 border-l-2 border-black">
-              <X className="w-5 h-5 text-red-500 shrink-0" />
-              <span className="text-sm md:text-base whitespace-nowrap">Days to weeks</span>
             </div>
           </div>
 
@@ -81,4 +70,5 @@ const ComparisonTable = () => {
       </div>
     </div>;
 };
+
 export default ComparisonTable;
