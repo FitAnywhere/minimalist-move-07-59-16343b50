@@ -1,3 +1,4 @@
+
 import { lazy, Suspense } from 'react';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
@@ -5,10 +6,11 @@ import ProductIntro from '@/components/ProductIntro';
 import ChatbotHelper from '@/components/ChatbotHelper';
 
 // Lazy load non-critical sections
-const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
 const BundleOffer = lazy(() => import('@/components/BundleOffer'));
+const GymTarget = lazy(() => import('@/components/gym/GymTarget'));
+const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
 const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalculator'));
-const GymTargetAndFAQ = lazy(() => import('@/components/gym/GymTargetAndFAQ'));
+const GymFAQ = lazy(() => import('@/components/gym/GymFAQ'));
 const GymCallToAction = lazy(() => import('@/components/gym/GymCallToAction'));
 const Footer = lazy(() => import('@/components/Footer'));
 
@@ -32,15 +34,21 @@ const Index = () => {
         <ProductIntro />
       </div>
       
-      <div id="reviews" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <TestimonialsCarousel />
-        </Suspense>
-      </div>
-      
       <div id="bundle" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <BundleOffer />
+        </Suspense>
+      </div>
+      
+      <div id="target" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <GymTarget />
+        </Suspense>
+      </div>
+      
+      <div id="reviews" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <TestimonialsCarousel />
         </Suspense>
       </div>
       
@@ -50,9 +58,9 @@ const Index = () => {
         </Suspense>
       </div>
       
-      <div id="target-faq" className="content-visibility-auto">
+      <div id="faq" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
-          <GymTargetAndFAQ />
+          <GymFAQ />
         </Suspense>
       </div>
       
