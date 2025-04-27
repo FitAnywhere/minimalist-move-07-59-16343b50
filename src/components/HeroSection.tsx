@@ -1,4 +1,3 @@
-
 import { useRef, useState, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -7,14 +6,12 @@ import HeroContent from './ui/HeroContent';
 import HeroCarousel from './ui/HeroCarousel';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 const HeroSection = memo(() => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const isInView = useInView(heroRef, {
     threshold: 0.4
   });
-
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white" aria-label="Introduction to FitAnywhere">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
       
@@ -24,7 +21,6 @@ const HeroSection = memo(() => {
               <div className="text-center order-1 w-full space-y-6">
                 <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} isMobile={true} overrideTitle="START STRONG" />
                 
-                <p className="text-sm text-gray-600 ml-1 text-center mb-2">THE FIRST LUXURY PRIVATE GYM</p>
                 <HeroCarousel />
                 
                 <div className={cn("transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
@@ -42,8 +38,8 @@ const HeroSection = memo(() => {
             </> : <>
               <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} overrideTitle="START STRONG" />
               <div className="order-1 md:order-2 w-full">
-                <p className="mt-3 text-sm text-gray-600 ml-1 text-center mb-2">THE FIRST LUXURY PRIVATE GYM</p>
                 <HeroCarousel />
+                <p className="mt-3 text-sm text-gray-600 ml-1 text-center my-[6px] mx-[30px]">THE FIRST LUXURY PRIVATE GYM BUILT FOR BEGINNERS</p>
               </div>
             </>}
         </div>
@@ -52,6 +48,5 @@ const HeroSection = memo(() => {
       <ScrollIndicator />
     </section>;
 });
-
 HeroSection.displayName = 'HeroSection';
 export default HeroSection;
