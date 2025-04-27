@@ -14,17 +14,17 @@ const targetAudiences: TargetAudience[] = [
   {
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
     title: "TOTAL BEGINNERS",
-    description: "Elastics make it possible for everyone."
+    description: "The easiest start to something life-changing."
   },
   {
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078482/nik_v2extf.jpg",
     title: "PRIVACY LOVERS",
-    description: "For those uncomfortable exercising in public."
+    description: "Win quietly today, earn respect forever."
   },
   {
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074862/spa_qpav0e.png",
     title: "SPACE-SAVING FANS",
-    description: "For anyone looking to maximize workouts in small spaces."
+    description: "Turn small spaces into full-body power zones."
   }
 ];
 
