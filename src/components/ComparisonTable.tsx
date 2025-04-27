@@ -1,7 +1,6 @@
 import { Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const ComparisonTable = () => {
   const isMobile = useIsMobile();
   const handleCTAClick = (e: React.MouseEvent) => {
@@ -31,7 +30,9 @@ const ComparisonTable = () => {
             </div>
             <div className="flex items-center justify-center gap-2 p-4 border-l-2 border-black">
               <X className="w-5 h-5 text-red-500 shrink-0" />
-              <span className="text-sm md:text-base whitespace-nowrap">Intimidating</span>
+              <span className="text-sm md:text-base whitespace-nowrap">Overwhelming
+
+            </span>
             </div>
           </div>
 
