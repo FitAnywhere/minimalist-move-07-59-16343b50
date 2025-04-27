@@ -11,8 +11,8 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import ComparisonTable from './ComparisonTable';
 
 const TimeAndCostCalculator = () => {
-  const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
-  const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
+  const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0);
+  const [gymMonthlyCost, setGymMonthlyCost] = useState(50); // Changed from 0 to 50
   const [previousTimeWasted, setPreviousTimeWasted] = useState(0);
   const [previousMoneyCost, setPreviousMoneyCost] = useState(0);
   const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -171,4 +171,5 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
+
 export default TimeAndCostCalculator;
