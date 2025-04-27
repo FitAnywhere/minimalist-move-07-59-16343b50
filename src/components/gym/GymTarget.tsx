@@ -1,7 +1,32 @@
+
 import { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+
+interface TargetAudience {
+  imageUrl: string;
+  title: string;
+  description: string;
+}
+
+const targetAudiences: TargetAudience[] = [
+  {
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
+    title: "TOTAL BEGINNERS",
+    description: "Elastics make it possible for everyone."
+  },
+  {
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078482/nik_v2extf.jpg",
+    title: "PRIVACY LOVERS",
+    description: "For those uncomfortable exercising in public."
+  },
+  {
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074862/spa_qpav0e.png",
+    title: "SPACE-SAVING FANS",
+    description: "For anyone looking to maximize workouts in small spaces."
+  }
+];
 
 const GymTarget = () => {
   const containerRef = useRef<HTMLDivElement>(null);
