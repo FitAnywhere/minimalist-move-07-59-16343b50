@@ -1,3 +1,4 @@
+
 import { useRef, useState, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -36,17 +37,19 @@ const HeroSection = memo(() => {
                     <p className="text-gray-700 px-0 py-[4px] font-bold text-base">We built this for you.</p>
                   </div>
                   
-                  <button onClick={e => e.preventDefault()} disabled className={cn("inline-flex items-center bg-yellow text-black hover:bg-yellow-dark rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group button-glow", "py-[10px] px-[25px]", "my-[20px] cursor-not-allowed")}>
-                    40% OFF LAUNCH OFFER
-                    <ArrowDown className="ml-2 w-6 h-6 transition-transform duration-300 group-hover:translate-x-1" />
-                  </button>
+                  <div className="mt-6 flex flex-col items-center">
+                    <span className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm">
+                      NOW 40% OFF
+                    </span>
+                    <ArrowDown className="mt-4 w-6 h-6 animate-bounce text-yellow" />
+                  </div>
                 </div>
               </div>
             </>
           ) : (
             <>
               <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} overrideTitle="START STRONG" />
-              <div className="order-1 md:order-2 w-full flex flex-col items-center">
+              <div className="order-1 md:order-2 w-full flex flex-col items-center md:-ml-6">
                 <HeroCarousel />
                 <p className="mt-3 text-sm text-gray-600 text-center">THE FIRST LUXURY PRIVATE GYM BUILT FOR BEGINNERS</p>
               </div>

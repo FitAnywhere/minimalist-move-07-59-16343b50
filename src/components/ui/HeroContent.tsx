@@ -18,7 +18,7 @@ const HeroContent = memo(({
 }: HeroContentProps) => {
   const title = overrideTitle || "ZERO TO STRONG";
   
-  return <div className={cn("text-center md:text-left", !isMobile && "md:pl-24")}>
+  return <div className={cn("text-center md:text-left", !isMobile && "lg:pl-20 xl:pl-32 2xl:pl-40")}>
       <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
         <span className="relative inline-block min-w-[300px] md:min-w-[400px] min-h-[1.2em]">
           {title}
