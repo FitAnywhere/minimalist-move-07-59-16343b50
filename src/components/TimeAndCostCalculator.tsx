@@ -9,10 +9,9 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ComparisonTable from './ComparisonTable';
-
 const TimeAndCostCalculator = () => {
-  const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0);
-  const [gymMonthlyCost, setGymMonthlyCost] = useState(50); // Changed from 0 to 50
+  const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
+  const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
   const [previousTimeWasted, setPreviousTimeWasted] = useState(0);
   const [previousMoneyCost, setPreviousMoneyCost] = useState(0);
   const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -152,7 +151,7 @@ const TimeAndCostCalculator = () => {
               
               {/* "What could you do" text and CTA - centered for both mobile and desktop */}
               <div className="mt-12 text-center">
-                <p className="text-lg font-medium mb-8">What can you do with all that extra money?</p>
+                <p className="text-lg font-medium mb-8">Invest once for a lifetime of pride and freedom.</p>
                 
                 {/* Updated CTA button text and animation */}
                 <div className="flex justify-center mb-8">
@@ -171,5 +170,4 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
-
 export default TimeAndCostCalculator;
