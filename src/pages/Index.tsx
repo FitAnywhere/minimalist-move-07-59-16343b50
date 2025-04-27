@@ -3,7 +3,6 @@ import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
 import ProductIntro from '@/components/ProductIntro';
 import ChampionSection from '@/components/ChampionSection';
-import TrainingVault from '@/components/TrainingVault';
 import ChatbotHelper from '@/components/ChatbotHelper';
 
 // Lazy load non-critical sections
@@ -39,10 +38,6 @@ const Index = () => {
       </div>
       
       <ChampionSection />
-      
-      <div id="training-vault">
-        <TrainingVault />
-      </div>
       
       <div id="reviews" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
