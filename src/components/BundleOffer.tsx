@@ -40,7 +40,7 @@ const BundleOffer = () => {
             PRIVATE GYM
             <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
           </h2>
-          <p className="mt-4 text-gray-700 py-[13px] font-semibold text-lg">Win your day. Change your life.</p>
+          <p className="mt-4 text-gray-700 py-[13px] font-semibold text-lg">CREATE THE LIFE YOU DREAM OF</p>
         </div>
         
         {isMobile ? <div className="space-y-8">
