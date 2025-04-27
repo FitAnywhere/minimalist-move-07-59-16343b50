@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const images = [
   "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745755066/1_doj-Photoroom_9_-Photoroom_7_y2vlxo.jpg",
@@ -10,6 +11,7 @@ const images = [
 
 const HeroCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -20,7 +22,10 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <div className="relative w-full aspect-square rounded-xl overflow-hidden">
+    <div className={cn(
+      "relative w-full overflow-hidden rounded-xl",
+      isMobile ? "aspect-square" : "max-w-[400px] aspect-square mx-auto" // Desktop size reduced
+    )}>
       {images.map((image, index) => (
         <div
           key={image}
