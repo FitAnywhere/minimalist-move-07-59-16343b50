@@ -1,3 +1,4 @@
+
 import { useRef, useState, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -6,22 +7,29 @@ import HeroContent from './ui/HeroContent';
 import HeroCarousel from './ui/HeroCarousel';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
 const HeroSection = memo(() => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const isInView = useInView(heroRef, {
     threshold: 0.4
   });
-  return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white" aria-label="Introduction to FitAnywhere">
+
+  return (
+    <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white" aria-label="Introduction to FitAnywhere">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
       
       <div className="container relative z-20 px-6 py-10 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          {isMobile ? <>
+          {isMobile ? (
+            <>
               <div className="text-center order-1 w-full space-y-6">
                 <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} isMobile={true} overrideTitle="START STRONG" />
                 
-                <HeroCarousel />
+                <div className="relative">
+                  <p className="text-sm text-gray-600 mb-2 font-medium">THE FIRST LUXURY PRIVATE GYM</p>
+                  <HeroCarousel />
+                </div>
                 
                 <div className={cn("transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <div className="mt-4 space-y-1">
@@ -35,18 +43,23 @@ const HeroSection = memo(() => {
                   </button>
                 </div>
               </div>
-            </> : <>
+            </>
+          ) : (
+            <>
               <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} overrideTitle="START STRONG" />
               <div className="order-1 md:order-2 w-full">
                 <HeroCarousel />
                 <p className="mt-3 text-sm text-gray-600 ml-1 text-center my-[6px] mx-[30px]">THE FIRST LUXURY PRIVATE GYM BUILT FOR BEGINNERS</p>
               </div>
-            </>}
+            </>
+          )}
         </div>
       </div>
       
       <ScrollIndicator />
-    </section>;
+    </section>
+  );
 });
+
 HeroSection.displayName = 'HeroSection';
 export default HeroSection;
