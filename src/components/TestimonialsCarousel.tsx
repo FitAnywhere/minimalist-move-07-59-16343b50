@@ -20,17 +20,17 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     name: "Emily T.",
-    quote: "I was scared to try but with elastics workout feels amazing.",
+    quote: "I doubted myself, now I love every workout",
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744150914/Screenshot_89_mw00er.png"
   }, 
   {
     name: "Jordan P.",
-    quote: "Taking it to the seaside for trainings on the beach.",
+    quote: "Loving results I got after following your training guides",
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
   }, 
   {
     name: "Laura G.",
-    quote: "Crazy to do 15 push ups with elastics, before I couldn't do even one.",
+    quote: "Over night I can do everything that was impossible before",
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078371/Screenshot_13_wp6ih6.png"
   }, 
   {
