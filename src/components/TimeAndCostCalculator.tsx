@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ComparisonTable from './ComparisonTable';
+
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(0); // Default €0/month
@@ -128,7 +129,7 @@ const TimeAndCostCalculator = () => {
                           
                           {gymMonthlyCost > 0 && <div className="bg-yellow-50 border-2 border-yellow rounded-xl p-4 text-center mt-4">
                               <p className="text-md font-bold text-black">
-                                With FitAnywhere you can start saving €{annualSavings} every year.
+                                Start saving €{annualSavings} every year.
                               </p>
                             </div>}
                         </div>
