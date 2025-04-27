@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -18,6 +19,11 @@ const TimeAndCostCalculator = () => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const isMobile = useIsMobile();
+  
+  // Add back the isInView variable using the useInView hook
+  const isInView = useInView(sectionRef, {
+    threshold: 0.3
+  });
 
   // Constants for calculations
   const VISITS_PER_WEEK = 4;
@@ -56,7 +62,7 @@ const TimeAndCostCalculator = () => {
     if (isInView && !shouldAnimate) {
       setShouldAnimate(true);
     }
-  }, [isInView]);
+  }, [isInView, shouldAnimate]);
 
   // Update previous values for animations
   useEffect(() => {
