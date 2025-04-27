@@ -18,7 +18,7 @@ const HeroContent = memo(({
 }: HeroContentProps) => {
   const title = overrideTitle || "ZERO TO STRONG";
   
-  return <div className={cn("text-center md:text-left", !isMobile && "md:pl-12")}>
+  return <div className={cn("text-center md:text-left", !isMobile && "md:pl-24")}>
       <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
         <span className="relative inline-block min-w-[300px] md:min-w-[400px] min-h-[1.2em]">
           {title}
@@ -32,11 +32,11 @@ const HeroContent = memo(({
             <p className="text-gray-700 px-0 py-[4px] font-bold text-lg">We built this for you.</p>
           </div>
           
-          <div className="text-center mt-6">
-            <span className="inline-block text-lg font-semibold px-6 py-2 bg-gradient-to-r from-yellow/20 to-yellow-400/20 rounded-full text-gray-800 shadow-sm">
+          <div className="text-center mt-6 flex flex-col items-center">
+            <span className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm">
               NOW 40% OFF
-              <span className="ml-1 inline-block">✨</span>
             </span>
+            <ArrowDown className="mt-4 w-6 h-6 animate-bounce text-yellow" />
           </div>
         </div>}
     </div>;
