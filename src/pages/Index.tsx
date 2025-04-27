@@ -1,18 +1,18 @@
-
 import { lazy, Suspense } from 'react';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
 import ProductIntro from '@/components/ProductIntro';
-import ProductTabs from '@/components/ProductTabs';
+import ChampionSection from '@/components/ChampionSection';
+import TrainingVault from '@/components/TrainingVault';
 import ChatbotHelper from '@/components/ChatbotHelper';
 
 // Lazy load non-critical sections
+const ProductTabs = lazy(() => import('@/components/ProductTabs'));
+const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
+const BundleOffer = lazy(() => import('@/components/BundleOffer'));
 const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalculator'));
 const GymTargetAndFAQ = lazy(() => import('@/components/gym/GymTargetAndFAQ'));
-const BundleOffer = lazy(() => import('@/components/BundleOffer'));
-const TargetAndFAQ = lazy(() => import('@/components/TargetAndFAQ'));
-const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
-const LimitedOfferSection = lazy(() => import('@/components/LimitedOfferSection'));
+const GymCallToAction = lazy(() => import('@/components/gym/GymCallToAction'));
 const Footer = lazy(() => import('@/components/Footer'));
 
 // Loading fallback component
@@ -33,7 +33,27 @@ const Index = () => {
       
       <div id="product">
         <ProductIntro />
-        <ProductTabs />
+        <Suspense fallback={<SectionLoader />}>
+          <ProductTabs />
+        </Suspense>
+      </div>
+      
+      <ChampionSection />
+      
+      <div id="training-vault">
+        <TrainingVault />
+      </div>
+      
+      <div id="reviews" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <TestimonialsCarousel />
+        </Suspense>
+      </div>
+      
+      <div id="bundle" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <BundleOffer />
+        </Suspense>
       </div>
       
       <div id="calculator" className="content-visibility-auto">
@@ -48,27 +68,9 @@ const Index = () => {
         </Suspense>
       </div>
       
-      <div id="bundle" className="content-visibility-auto">
+      <div id="cta">
         <Suspense fallback={<SectionLoader />}>
-          <BundleOffer />
-        </Suspense>
-      </div>
-      
-      <div id="investment" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <TargetAndFAQ />
-        </Suspense>
-      </div>
-      
-      <div id="training-library" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <LimitedOfferSection />
-        </Suspense>
-      </div>
-      
-      <div id="reviews" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <TestimonialsCarousel />
+          <GymCallToAction />
         </Suspense>
       </div>
       
