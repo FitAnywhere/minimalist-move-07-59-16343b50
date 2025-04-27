@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -85,12 +86,14 @@ const ProductIntro = () => {
                   <div 
                     key={index} 
                     className={cn(
-                      "px-6 py-2 md:py-3 rounded-full", 
+                      isMobile ? "px-[18px] py-3 space-y-1" : "px-6 py-2 md:py-3", 
+                      "rounded-full", 
                       "transition-all duration-300 ease-in-out",
                       "shadow-md",
                       "transform",
                       "border-2 border-yellow bg-white",
-                      "text-center md:text-center",
+                      isMobile ? "text-center" : "text-center md:text-center",
+                      !isMobile && "max-w-[90%] mx-auto",
                       animationState.features[index] ? "opacity-100" : "opacity-0"
                     )} 
                     style={{
@@ -98,12 +101,21 @@ const ProductIntro = () => {
                     }}
                   >
                     <div className="flex flex-col items-center md:items-center justify-center">
-                      <h4 className="text-lg font-bold mb-1">
+                      <h4 className={cn(
+                        "text-lg font-bold", 
+                        isMobile ? "m-0 p-0" : "mb-1"
+                      )}>
                         {feature.title}
                       </h4>
                     
-                      <div className="mt-0.5 opacity-100">
-                        <p className="text-gray-600 py-0 font-medium">
+                      <div className={cn(
+                        "opacity-100",
+                        isMobile ? "mt-0" : "mt-0.5"
+                      )}>
+                        <p className={cn(
+                          "text-gray-600 font-medium",
+                          isMobile ? "text-sm m-0 p-0" : "py-0"
+                        )}>
                           {feature.description}
                         </p>
                       </div>
