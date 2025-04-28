@@ -60,10 +60,13 @@ const BundleOffer = () => {
           <div className={cn(
             isMobile 
               ? "flex flex-col items-center" 
-              : "flex flex-row items-center justify-between gap-6"
+              : "flex flex-row items-center justify-between gap-3" // Reduced gap for desktop
           )}>
             {!isMobile && (
               <div className="flex flex-col items-center space-y-4">
+                <p className="text-center font-medium text-gray-800 mb-1">
+                  OWN THE STRENGHT AND FREEDOM YOU DESERVE
+                </p>
                 <div className="flex items-center gap-3 justify-center">
                   <span className="text-xl text-gray-700 line-through">
                     {formatPrice(originalPrice)}
@@ -87,7 +90,7 @@ const BundleOffer = () => {
               </div>
             )}
 
-            <div className="w-full max-w-[400px] relative" style={{height: "280px"}}>
+            <div className="w-full max-w-[400px] relative" style={{height: "300px"}}>
               {carouselImages.map((src, index) => (
                 <div
                   key={index}
@@ -107,7 +110,7 @@ const BundleOffer = () => {
             </div>
 
             {isMobile && (
-              <div className="flex flex-col items-center space-y-4 mt-6">
+              <div className="flex flex-col items-center space-y-4 mt-8">
                 <div className="flex items-center gap-3 justify-center">
                   <span className="text-xl text-gray-700 line-through">
                     {formatPrice(originalPrice)}
@@ -128,6 +131,10 @@ const BundleOffer = () => {
                 >
                   <ShoppingCart className="w-5 h-5" /> NOW €990
                 </Button>
+                
+                <p className="text-center font-medium text-gray-800 mt-2">
+                  OWN THE STRENGHT AND FREEDOM YOU DESERVE
+                </p>
               </div>
             )}
           </div>
