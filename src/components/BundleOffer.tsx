@@ -29,10 +29,12 @@ const BundleOffer = () => {
   };
 
   useEffect(() => {
+    // Set up interval for image rotation
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselImages.length);
     }, 2000);
 
+    // Clean up the interval when component unmounts
     return () => clearInterval(interval);
   }, []);
 
@@ -61,28 +63,24 @@ const BundleOffer = () => {
           </div>
 
           <div className="flex justify-center mx-auto max-w-md">
-            <Carousel 
-              className="w-full max-w-[400px]"
-              opts={{
-                align: "center",
-                loop: true
-              }}
-            >
-              <CarouselContent>
-                {carouselImages.map((src, index) => (
-                  <CarouselItem key={index} className={cn(
-                    "flex items-center justify-center",
-                    index === currentSlide ? "opacity-100" : "opacity-0"
-                  )}>
-                    <img 
-                      src={src} 
-                      alt={`Product image ${index + 1}`}
-                      className="w-full h-auto object-contain max-w-[300px] md:max-w-[400px]"
-                    />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
+            <div className="w-full max-w-[400px] relative">
+              {carouselImages.map((src, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "absolute top-0 left-0 transition-opacity duration-1000 w-full flex justify-center",
+                    index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+                  )}
+                >
+                  <img 
+                    src={src} 
+                    alt={`Product image ${index + 1}`}
+                    className="w-full h-auto object-contain max-w-[300px] md:max-w-[400px]"
+                    loading="eager"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="flex flex-col items-center space-y-4">
