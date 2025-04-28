@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -6,7 +7,7 @@ import { formatPrice } from '@/utils/formatters';
 import { ShoppingCart } from 'lucide-react';
 
 const carouselImages = [
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745834671/284_tower-Photoroom_2_fpc8h0.jpg",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745834932/PRIVATE_GYM_1_vcyki4.png",
   "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828736/2284_training_obtekg.png",
   "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828745/2284_supp_bh0dtd.png"
 ];
