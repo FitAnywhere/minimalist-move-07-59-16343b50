@@ -63,7 +63,7 @@ const BundleOffer = () => {
           </div>
 
           <div className="flex justify-center mx-auto max-w-md">
-            <div className="w-full max-w-[400px] relative">
+            <div className="w-full max-w-[400px] relative" style={{height: "280px"}}>
               {carouselImages.map((src, index) => (
                 <div
                   key={index}
