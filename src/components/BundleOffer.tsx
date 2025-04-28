@@ -4,7 +4,13 @@ import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { formatPrice } from '@/utils/formatters';
 import { ShoppingCart } from 'lucide-react';
-const carouselImages = ["https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828730/2284_gym_yndpzj.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828736/2284_training_obtekg.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828745/2284_supp_bh0dtd.png"];
+
+const carouselImages = [
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745834671/284_tower-Photoroom_2_fpc8h0.jpg",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828736/2284_training_obtekg.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828745/2284_supp_bh0dtd.png"
+];
+
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
@@ -15,12 +21,10 @@ const BundleOffer = () => {
     window.open('https://buy.stripe.com/dR65kKbVz15O5bybIZ', '_blank');
   };
   useEffect(() => {
-    // Set up interval for image rotation
     const interval = setInterval(() => {
       setCurrentSlide(prevSlide => (prevSlide + 1) % carouselImages.length);
     }, 2000);
 
-    // Clean up the interval when component unmounts
     return () => clearInterval(interval);
   }, []);
   const originalPrice = 1650;
@@ -86,4 +90,5 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
+
 export default BundleOffer;
