@@ -5,11 +5,6 @@ import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { formatPrice } from '@/utils/formatters';
 import { ShoppingCart } from 'lucide-react';
-import { 
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
 
 const carouselImages = [
   "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828730/2284_gym_yndpzj.png",
@@ -62,7 +57,36 @@ const BundleOffer = () => {
             <p className="mt-2 text-gray-700 font-semibold text-lg">3 in 1</p>
           </div>
 
-          <div className="flex justify-center mx-auto max-w-md">
+          <div className={cn(
+            isMobile 
+              ? "flex flex-col items-center" 
+              : "flex flex-row items-center justify-between gap-6"
+          )}>
+            {!isMobile && (
+              <div className="flex flex-col items-center space-y-4">
+                <div className="flex items-center gap-3 justify-center">
+                  <span className="text-xl text-gray-700 line-through">
+                    {formatPrice(originalPrice)}
+                  </span>
+                  <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold text-sm">
+                    40% OFF
+                  </div>
+                </div>
+
+                <Button 
+                  size="lg"
+                  className={cn(
+                    "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide",
+                    "transition-all duration-300 hover:shadow-md hover:scale-105",
+                    "flex items-center gap-2"
+                  )}
+                  onClick={handleCheckout}
+                >
+                  <ShoppingCart className="w-5 h-5" /> NOW €990
+                </Button>
+              </div>
+            )}
+
             <div className="w-full max-w-[400px] relative" style={{height: "280px"}}>
               {carouselImages.map((src, index) => (
                 <div
@@ -75,35 +99,37 @@ const BundleOffer = () => {
                   <img 
                     src={src} 
                     alt={`Product image ${index + 1}`}
-                    className="w-full h-auto object-contain max-w-[300px] md:max-w-[400px]"
+                    className="w-full h-auto object-contain max-w-[300px] md:max-w-[400px] rounded-lg"
                     loading="eager"
                   />
                 </div>
               ))}
             </div>
-          </div>
 
-          <div className="flex flex-col items-center space-y-4">
-            <div className="flex items-center gap-3 justify-center">
-              <span className="text-xl text-gray-700 line-through">
-                {formatPrice(originalPrice)}
-              </span>
-              <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold text-sm">
-                40% OFF
+            {isMobile && (
+              <div className="flex flex-col items-center space-y-4 mt-6">
+                <div className="flex items-center gap-3 justify-center">
+                  <span className="text-xl text-gray-700 line-through">
+                    {formatPrice(originalPrice)}
+                  </span>
+                  <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold text-sm">
+                    40% OFF
+                  </div>
+                </div>
+
+                <Button 
+                  size="lg"
+                  className={cn(
+                    "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide",
+                    "transition-all duration-300 hover:shadow-md hover:scale-105",
+                    "flex items-center gap-2"
+                  )}
+                  onClick={handleCheckout}
+                >
+                  <ShoppingCart className="w-5 h-5" /> NOW €990
+                </Button>
               </div>
-            </div>
-
-            <Button 
-              size="lg"
-              className={cn(
-                "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide",
-                "transition-all duration-300 hover:shadow-md hover:scale-105",
-                "flex items-center gap-2"
-              )}
-              onClick={handleCheckout}
-            >
-              <ShoppingCart className="w-5 h-5" /> NOW €990
-            </Button>
+            )}
           </div>
         </div>
       </div>
