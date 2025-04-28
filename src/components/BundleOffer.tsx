@@ -24,7 +24,7 @@ const BundleOffer = () => {
     return () => clearInterval(interval);
   }, []);
   const originalPrice = 1650;
-  return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden py-8 bg-white scroll-mt-[60px] md:scroll-mt-[80px]">
+  return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden bg-white scroll-mt-[60px] md:scroll-mt-[80px] py-[184px]">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
           <div className={cn("text-center transition-all duration-1000 transform", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
