@@ -69,44 +69,7 @@ const BundleOffer = () => {
             </div>
           </div> : <div className="mb-10 transition-all duration-1000">
             <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="flex flex-col md:flex-row">
-                <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
-                  <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png" alt="FitAnywhere" className="max-h-96 object-contain mb-6" loading="lazy" width="600" height="600" srcSet="
-                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png 400w,
-                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_600/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png 600w,
-                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1745000028/Izdelek_brez_naslova_-_2025-04-18T201339.666_c9ajaa.png 800w
-                    " sizes="(max-width: 768px) 400px, 600px" />
-                  <div className="w-full text-center mb-4">
-                    <div className="flex justify-center items-center gap-3">
-                      {productItems.map((item, index) => <span key={item} className={cn("font-bold transition-all duration-500", animatedItem === index ? "text-black scale-120 text-xl" : "text-gray-500 scale-95")}>
-                          {item}
-                        </span>)}
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center w-full mb-8">
-                    <Plus className="h-12 w-12 text-green-600 mr-4" />
-                    <div className="rounded-lg bg-white p-6 border border-green-600">
-                      <div className="flex items-center justify-center">
-                        <div className="flex flex-col items-center">
-                          <div className="w-40 h-40 mb-3 flex-shrink-0 overflow-hidden">
-                            <img src={giftItems[0]?.image || DEFAULT_GIFT_IMAGE} alt={giftItems[0]?.name || "Training Library"} className="w-full h-full object-contain" loading="lazy" width="160" height="160" srcSet={`
-                                ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_160') || DEFAULT_GIFT_IMAGE} 160w,
-                                ${giftItems[0]?.image.replace('f_auto,q_auto', 'f_auto,q_auto,w_320') || DEFAULT_GIFT_IMAGE} 320w
-                              `} sizes="160px" onError={e => {
-                            const imgElement = e.target as HTMLImageElement;
-                            imgElement.onerror = null;
-                            imgElement.src = DEFAULT_GIFT_IMAGE;
-                          }} />
-                          </div>
-                          <h4 className="font-bold text-lg text-center">{giftItems[0]?.name || "TRAINING LIBRARY"}</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
             </div>
             <div className="flex flex-col items-center justify-center mt-8 mb-8">
               <div className="flex items-center gap-3 justify-center">
@@ -118,9 +81,7 @@ const BundleOffer = () => {
                 </div>
               </div>
               
-              <div className="text-3xl font-bold text-green-600 text-center mt-2">
-                {formatPrice(currentPrice)}
-              </div>
+              
             </div>
           </div>}
         
