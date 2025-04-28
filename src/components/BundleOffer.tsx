@@ -63,7 +63,7 @@ const BundleOffer = () => {
                 </div>)}
             </div>
 
-            {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 my-[65px]">
+            {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
                 <div className="flex items-center gap-3 justify-center">
                   <span className="text-xl text-gray-700 line-through">
                     {formatPrice(originalPrice)}
