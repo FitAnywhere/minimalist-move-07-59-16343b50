@@ -42,10 +42,7 @@ const BundleOffer = () => {
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row items-center justify-between gap-3" // Reduced gap for desktop
         )}>
-            {!isMobile && <div className="flex flex-col items-center space-y-4">
-                <p className="text-center font-medium text-gray-800 mb-1">
-                  OWN THE STRENGHT AND FREEDOM YOU DESERVE
-                </p>
+            {!isMobile && <div className="flex flex-col items-center space-y-6">
                 <div className="flex items-center gap-3 justify-center">
                   <span className="text-xl text-gray-700 line-through">
                     {formatPrice(originalPrice)}
@@ -58,13 +55,17 @@ const BundleOffer = () => {
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
                   <ShoppingCart className="w-5 h-5" /> NOW €990
                 </Button>
+                
+                <p className="text-center font-medium text-gray-800 mt-4 text-lg">
+                  OWN THE STRENGHT AND FREEDOM YOU DESERVE
+                </p>
               </div>}
 
-            <div className="w-full max-w-[400px] relative" style={{
-            height: "300px"
+            <div className="w-full max-w-[350px] relative" style={{
+            height: isMobile ? "300px" : "260px"
           }}>
               {carouselImages.map((src, index) => <div key={index} className={cn("absolute top-0 left-0 transition-opacity duration-1000 w-full flex justify-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
-                  <img src={src} alt={`Product image ${index + 1}`} className="w-full h-auto object-contain max-w-[300px] md:max-w-[400px] rounded-lg" loading="eager" />
+                  <img src={src} alt={`Product image ${index + 1}`} className="w-full h-auto object-contain max-w-[250px] md:max-w-[280px] rounded-lg" loading="eager" />
                 </div>)}
             </div>
 
