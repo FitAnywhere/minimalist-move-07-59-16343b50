@@ -56,28 +56,28 @@ const GymTarget = () => {
                 <div 
                   key={index} 
                   className={cn(
-                    "rounded-2xl p-8 text-center group cursor-pointer transition-all duration-500",
-                    "bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl",
+                    "text-center group cursor-pointer transition-all duration-500",
+                    isMobile ? "p-3" : "rounded-2xl p-8 bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl",
                     "transform hover:-translate-y-2",
                     isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
                   )}
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
                   <div className={cn(
-                    "relative w-full aspect-[2/3] rounded-2xl overflow-hidden flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-all duration-500",
-                    isMobile && "h-[200px]" // Smaller height on mobile
+                    "relative w-full overflow-hidden flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-all duration-500",
+                    isMobile ? "h-[200px] max-h-[200px]" : "aspect-[2/3] rounded-2xl"
                   )}>
                     <img 
                       src={audience.imageUrl} 
                       alt={audience.title}
                       className={cn(
-                        "w-full h-full object-cover rounded-2xl",
-                        isMobile && "object-contain max-h-[200px]" // Adjust image display on mobile
+                        "w-full h-full object-cover",
+                        isMobile ? "rounded-xl object-contain max-h-[200px]" : "rounded-2xl"
                       )}
                     />
                   </div>
                   
-                  <h3 className="text-xl md:text-2xl font-bold text-black mb-4">
+                  <h3 className="text-xl md:text-2xl font-bold text-black mb-2">
                     {audience.title}
                   </h3>
                   <p className="text-gray-700 text-base md:text-lg">
