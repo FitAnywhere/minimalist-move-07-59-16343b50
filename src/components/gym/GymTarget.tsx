@@ -3,6 +3,8 @@ import { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
+import { ShoppingCart } from 'lucide-react';
 
 interface TargetAudience {
   imageUrl: string;
@@ -33,6 +35,11 @@ const GymTarget = () => {
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
 
+  const handleCheckout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.open('https://buy.stripe.com/dR65kKbVz15O5bybIZ', '_blank');
+  };
+
   return (
     <section id="target" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -57,11 +64,17 @@ const GymTarget = () => {
                   )}
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
-                  <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-all duration-500">
+                  <div className={cn(
+                    "relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-all duration-500",
+                    isMobile && "h-[200px]" // Smaller height on mobile
+                  )}>
                     <img 
                       src={audience.imageUrl} 
                       alt={audience.title}
-                      className="w-full h-full object-cover"
+                      className={cn(
+                        "w-full h-full object-cover",
+                        isMobile && "object-contain max-h-[200px]" // Adjust image display on mobile
+                      )}
                     />
                   </div>
                   
@@ -73,6 +86,21 @@ const GymTarget = () => {
                   </p>
                 </div>
               ))}
+            </div>
+            
+            {/* CTA Button */}
+            <div className="mt-12">
+              <Button 
+                onClick={handleCheckout} 
+                className={cn(
+                  "bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", 
+                  "transition-all duration-300 hover:shadow-md hover:scale-105",
+                  "flex items-center gap-2"
+                )}
+                size="lg"
+              >
+                <ShoppingCart className="w-5 h-5" /> 🛒 GET YOURS
+              </Button>
             </div>
           </div>
         </div>
