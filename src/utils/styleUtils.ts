@@ -36,6 +36,16 @@ export const addScaleKeyframes = (): void => {
       .animate-fade-in {
         animation: fade-in 0.5s ease-out forwards;
       }
+      
+      @keyframes slide-down {
+        from { max-height: 0; opacity: 0; }
+        to { max-height: 1000px; opacity: 1; }
+      }
+      
+      .animate-slide-down {
+        animation: slide-down 0.4s ease-out forwards;
+        overflow: hidden;
+      }
     `;
     document.head.appendChild(styleSheet);
   }

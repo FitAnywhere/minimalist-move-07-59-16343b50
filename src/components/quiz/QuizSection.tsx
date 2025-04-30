@@ -163,7 +163,7 @@ const QuizSection = () => {
   
   const q2Options = [
     { icon: '📈', text: 'Progress tracking' },
-    { icon: '🧑‍🏫', text: 'A personal plan' },
+    { icon: isMobile ? '🧑‍🏫' : '🧑', text: 'A personal plan' },
     { icon: '🎮', text: 'Fun workouts' },
     { icon: '🧑‍🤝‍🧑', text: 'Group challenges' },
     { icon: '🏠', text: 'A setup I enjoy using' },
@@ -353,7 +353,7 @@ const QuizSection = () => {
               {state.currentStep === 4 && (
                 <div className="animate-fade-in">
                   <h3 className="text-xl font-bold mb-4">
-                    Almost done! Enter your email to get your €100 OFF Private Gym link.
+                    Almost done! Enter your email to get €100 OFF your Private Gym.
                   </h3>
                   <div className="mb-6">
                     <Input
