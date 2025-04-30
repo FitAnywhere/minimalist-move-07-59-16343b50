@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -6,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Separator } from '@/components/ui/separator';
 
 // Types for our quiz state
 type QuizState = {
@@ -176,12 +178,13 @@ const QuizSection = () => {
     >
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
-          {/* Header */}
+          {/* Section Title */}
           <div className={cn(
             "text-center mb-12 transition-all duration-1000",
             isInView ? "opacity-100" : "opacity-0 translate-y-8"
           )}>
             <h2 className="text-3xl md:text-5xl font-extrabold text-black relative inline-block">
+              YOUR OPINION MATTERS
               <span className={cn(
                 "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
                 isInView ? "scale-x-100" : "scale-x-0"
@@ -212,7 +215,7 @@ const QuizSection = () => {
                 </div>
               )}
               
-              {/* Introduction - Updated with new design */}
+              {/* Introduction - Updated design */}
               {state.currentStep === 0 && (
                 <div className={cn(
                   "py-4 md:py-6",
@@ -228,7 +231,7 @@ const QuizSection = () => {
                       isMobile ? "items-center text-center w-full" : "items-start text-left w-1/2"
                     )}>
                       <h3 className="text-2xl md:text-3xl font-bold mb-3">
-                        🎁 €100 For Your Voice
+                        €100 for your voice
                       </h3>
                       
                       {isMobile && (
@@ -241,16 +244,18 @@ const QuizSection = () => {
                         </div>
                       )}
                       
+                      <p className="text-gray-700 mb-2">
+                        Help us improve.
+                      </p>
                       <p className="text-gray-700 mb-6">
-                        We're building the world's smartest Private Gym.<br />
-                        Share your opinion — get €100 OFF. No spam, no BS.
+                        Share your opinion, get <span className="font-bold">€100 OFF</span>.
                       </p>
                       
                       <Button
                         onClick={nextStep}
                         variant="yellow" 
                         size="lg"
-                        className="rounded-full font-bold"
+                        className="rounded-full font-bold uppercase"
                       >
                         Start Now
                       </Button>
