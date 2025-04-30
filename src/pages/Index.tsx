@@ -11,6 +11,7 @@ const GymTarget = lazy(() => import('@/components/gym/GymTarget'));
 const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
 const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalculator'));
 const GymFAQ = lazy(() => import('@/components/gym/GymFAQ'));
+const QuizSection = lazy(() => import('@/components/quiz/QuizSection'));
 const GymCallToAction = lazy(() => import('@/components/gym/GymCallToAction'));
 const Footer = lazy(() => import('@/components/Footer'));
 
@@ -61,6 +62,12 @@ const Index = () => {
       <div id="faq" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <GymFAQ />
+        </Suspense>
+      </div>
+      
+      <div id="quiz" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <QuizSection />
         </Suspense>
       </div>
       
