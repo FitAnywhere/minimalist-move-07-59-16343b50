@@ -4,34 +4,25 @@ import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { formatPrice } from '@/utils/formatters';
 import { ShoppingCart } from 'lucide-react';
-
 const carouselImages = ["https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745834932/PRIVATE_GYM_1_vcyki4.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828736/2284_training_obtekg.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828745/2284_supp_bh0dtd.png"];
-
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [currentSlide, setCurrentSlide] = useState(0);
-
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR65kKbVz15O5bybIZ', '_blank');
   };
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide(prevSlide => (prevSlide + 1) % carouselImages.length);
     }, 2000);
     return () => clearInterval(interval);
   }, []);
-
   const originalPrice = 1650;
-
   return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden bg-white scroll-mt-[60px] md:scroll-mt-[80px] py-0">
-      <div className={cn(
-        "container mx-auto relative z-10",
-        isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]"
-      )}>
+      <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
           <div className={cn("text-center transition-all duration-1000 transform", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
@@ -57,9 +48,7 @@ const BundleOffer = () => {
                   <ShoppingCart className="w-5 h-5" /> NOW €990
                 </Button>
                 
-                <p className="text-center font-medium text-gray-800 mt-4 text-lg">
-                  OWN THE STRENGHT AND FREEDOM YOU DESERVE
-                </p>
+                <p className="text-center font-medium text-gray-800 mt-4 text-lg">OWN THE STRENGTH AND FREEDOM YOU DESERVE</p>
               </div>}
 
             <div className="w-full max-w-[350px] relative" style={{
@@ -93,5 +82,4 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
-
 export default BundleOffer;
