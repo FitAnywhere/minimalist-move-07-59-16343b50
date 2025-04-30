@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -173,7 +172,7 @@ const QuizSection = () => {
     <section 
       ref={sectionRef} 
       id="quiz-section" 
-      className="py-24 bg-white relative overflow-hidden"
+      className="py-16 md:py-20 bg-white relative overflow-hidden"
     >
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
@@ -182,8 +181,7 @@ const QuizSection = () => {
             "text-center mb-12 transition-all duration-1000",
             isInView ? "opacity-100" : "opacity-0 translate-y-8"
           )}>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-              YOUR OPINION MATTERS
+            <h2 className="text-3xl md:text-5xl font-extrabold text-black relative inline-block">
               <span className={cn(
                 "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", 
                 isInView ? "scale-x-100" : "scale-x-0"
@@ -192,7 +190,7 @@ const QuizSection = () => {
           </div>
           
           {/* Quiz Container */}
-          <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+          <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
             <div ref={scrollToRef} className="min-h-[300px]">
               {/* Progress indicator */}
               {state.currentStep > 0 && state.currentStep < 5 && (
@@ -214,27 +212,60 @@ const QuizSection = () => {
                 </div>
               )}
               
-              {/* Introduction */}
+              {/* Introduction - Updated with new design */}
               {state.currentStep === 0 && (
                 <div className={cn(
-                  "text-center py-8",
+                  "py-4 md:py-6",
                   isInView ? "animate-fade-in" : ""
                 )}>
-                  <h3 className="text-2xl font-bold mb-4">
-                    🧠 Your Opinion = €100 Gift
-                  </h3>
-                  <p className="text-gray-700 mb-8 max-w-md mx-auto">
-                    Help us improve the FitAnywhere experience and get €100 OFF the PowerTower™. 
-                    It takes 45 seconds. No spam, no BS — just real rewards.
-                  </p>
-                  <Button
-                    onClick={nextStep}
-                    variant="yellow" 
-                    size="lg"
-                    className="rounded-full font-bold"
-                  >
-                    Start Quiz
-                  </Button>
+                  <div className={cn(
+                    isMobile 
+                      ? "flex flex-col items-center" 
+                      : "flex flex-row items-center justify-between gap-6"
+                  )}>
+                    <div className={cn(
+                      "flex flex-col",
+                      isMobile ? "items-center text-center w-full" : "items-start text-left w-1/2"
+                    )}>
+                      <h3 className="text-2xl md:text-3xl font-bold mb-3">
+                        🎁 €100 For Your Voice
+                      </h3>
+                      
+                      {isMobile && (
+                        <div className="w-full mb-4 px-4">
+                          <img 
+                            src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746005144/Screenshot_10_dzmyl1.png" 
+                            alt="FitAnywhere Quiz" 
+                            className="w-full h-auto rounded-lg"
+                          />
+                        </div>
+                      )}
+                      
+                      <p className="text-gray-700 mb-6">
+                        We're building the world's smartest Private Gym.<br />
+                        Share your opinion — get €100 OFF. No spam, no BS.
+                      </p>
+                      
+                      <Button
+                        onClick={nextStep}
+                        variant="yellow" 
+                        size="lg"
+                        className="rounded-full font-bold"
+                      >
+                        Start Now
+                      </Button>
+                    </div>
+                    
+                    {!isMobile && (
+                      <div className="w-5/12">
+                        <img 
+                          src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746005144/Screenshot_10_dzmyl1.png" 
+                          alt="FitAnywhere Quiz" 
+                          className="w-full h-auto rounded-lg"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
               

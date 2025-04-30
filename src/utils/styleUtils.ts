@@ -27,6 +27,15 @@ export const addScaleKeyframes = (): void => {
       .button-retry-pulse {
         animation: pulse-yellow 2s infinite;
       }
+      
+      @keyframes fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .animate-fade-in {
+        animation: fade-in 0.5s ease-out forwards;
+      }
     `;
     document.head.appendChild(styleSheet);
   }
@@ -72,3 +81,4 @@ export const initStyles = (): void => {
   addScaleKeyframes();
   addTargetSectionStyles();
 };
+
