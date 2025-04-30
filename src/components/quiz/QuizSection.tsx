@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -324,11 +323,11 @@ const QuizSection = () => {
                 </div>
               )}
               
-              {/* Question 3 */}
+              {/* Question 3 - UPDATED TEXT */}
               {state.currentStep === 3 && (
                 <div className="animate-fade-in">
                   <h3 className="text-xl font-bold mb-6">
-                    If you could wave a magic wand and instantly fix one thing about home training, what would it be?
+                    What's stopping you from loving your home fitness routine?
                   </h3>
                   <div className="mb-6">
                     <Textarea 
@@ -350,11 +349,11 @@ const QuizSection = () => {
                 </div>
               )}
               
-              {/* Email Collection */}
+              {/* Email Collection - UPDATED TEXT */}
               {state.currentStep === 4 && (
                 <div className="animate-fade-in">
                   <h3 className="text-xl font-bold mb-4">
-                    Almost done! Enter your email to get your €100 OFF PowerTower™ link.
+                    Almost done! Enter your email to get your €100 OFF Private Gym link.
                   </h3>
                   <div className="mb-6">
                     <Input
@@ -373,20 +372,20 @@ const QuizSection = () => {
                       className="rounded-full font-bold"
                       disabled={state.isSubmitting || !validateEmail(state.answers.email)}
                     >
-                      {state.isSubmitting ? 'Submitting...' : 'Get My €100 Gift'}
+                      {state.isSubmitting ? 'Submitting...' : 'GET MY €100 GIFT'}
                     </Button>
                   </div>
                 </div>
               )}
               
-              {/* Thank You */}
+              {/* Thank You - UPDATED TEXT */}
               {state.currentStep === 5 && state.isCompleted && (
                 <div className="animate-fade-in text-center py-6">
                   <h3 className="text-2xl font-bold mb-4">
-                    🎉 Thanks, Legend.
+                    Thanks, Legend.
                   </h3>
                   <p className="text-gray-700 mb-8">
-                    Your exclusive €100 OFF link is below 👇
+                    Your exclusive link is below 👇
                   </p>
                   
                   <a 
@@ -395,7 +394,7 @@ const QuizSection = () => {
                     rel="noopener noreferrer"
                     className="inline-block bg-yellow text-black px-6 py-3 rounded-full font-bold hover:bg-yellow-dark transition-all"
                   >
-                    Claim Your €100 Discount
+                    GET €100 OFF
                   </a>
                   
                   <p className="text-sm text-gray-500 mt-4">
