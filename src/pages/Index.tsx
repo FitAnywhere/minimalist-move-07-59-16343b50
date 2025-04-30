@@ -59,15 +59,15 @@ const Index = () => {
         </Suspense>
       </div>
       
-      <div id="faq" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <GymFAQ />
-        </Suspense>
-      </div>
-      
       <div id="quiz" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <QuizSection />
+        </Suspense>
+      </div>
+      
+      <div id="faq" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <GymFAQ />
         </Suspense>
       </div>
       

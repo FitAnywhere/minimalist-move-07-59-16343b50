@@ -230,7 +230,7 @@ const QuizSection = () => {
                       isMobile ? "items-center text-center w-full" : "items-start text-left w-1/2"
                     )}>
                       <h3 className="text-2xl md:text-3xl font-bold mb-3">
-                        €100 for your voice
+                        €100 to help us improve
                       </h3>
                       
                       {isMobile && (
@@ -243,9 +243,6 @@ const QuizSection = () => {
                         </div>
                       )}
                       
-                      <p className="text-gray-700 mb-2">
-                        Help us improve.
-                      </p>
                       <p className="text-gray-700 mb-6">
                         Share your opinion, get <span className="font-bold">€100 OFF</span>.
                       </p>
