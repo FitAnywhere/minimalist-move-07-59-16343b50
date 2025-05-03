@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -32,25 +33,21 @@ const BundleOffer = () => {
             <p className="mt-2 text-gray-700 font-semibold text-2xl">3 in 1</p>
           </div>
 
-          <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row items-center justify-between gap-3" // Adjusted gap for desktop
+          <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-3" // Changed flex-row to flex-row-reverse for desktop
         )}>
             {!isMobile && <div className="flex flex-col items-center space-y-2"> {/* Reduced space-y from 6 to 2 */}
                 <div className="flex items-center gap-3 justify-center">
-                  <span className="text-xl text-gray-700 line-through">
+                  <span className="text-2xl text-gray-700 line-through">
                     {formatPrice(originalPrice)}
                   </span>
-                  <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold text-sm">
+                  <div className="bg-green-600 px-4 py-1 rounded-full text-white font-bold text-lg">
                     40% OFF
                   </div>
                 </div>
 
-                <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
-                  <ShoppingCart className="w-5 h-5" /> NOW €990
+                <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-8 py-5 rounded-full text-xl font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
+                  <ShoppingCart className="w-6 h-6" /> NOW €990
                 </Button>
-                
-                <p className="text-center font-medium text-gray-800 mt-8 text-lg px-0 my-0 py-[15px]"> {/* Increased mt from 4 to 8 */}
-                  OWN THE STRENGTH AND FREEDOM YOU DESERVE
-                </p>
               </div>}
 
             <div className="w-full max-w-[350px] relative" style={{
@@ -81,6 +78,11 @@ const BundleOffer = () => {
                 </p>
               </div>}
           </div>
+          
+          {/* Added centered tagline for desktop view */}
+          {!isMobile && <p className="text-center font-medium text-gray-800 mt-8 text-xl w-full">
+            OWN THE STRENGTH AND FREEDOM YOU DESERVE
+          </p>}
         </div>
       </div>
     </section>;
