@@ -23,8 +23,10 @@ const HeroCarousel = () => {
 
   return (
     <div className={cn(
-      "relative w-full overflow-hidden rounded-xl",
-      isMobile ? "aspect-square" : "max-w-[400px] aspect-square mx-auto" // Desktop size reduced
+      "relative overflow-hidden rounded-xl",
+      isMobile 
+        ? "aspect-square w-full" 
+        : "max-w-[480px] w-full aspect-square mx-auto md:ml-0 md:mr-8" // 20-30% larger than 400px and shifted left
     )}>
       {images.map((image, index) => (
         <div
