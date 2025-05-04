@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ComparisonTable from './ComparisonTable';
+import VideoPlayer from './ui/VideoPlayer';
 
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
@@ -17,13 +18,25 @@ const TimeAndCostCalculator = () => {
   const [previousTimeWasted, setPreviousTimeWasted] = useState(0);
   const [previousMoneyCost, setPreviousMoneyCost] = useState(0);
   const [shouldAnimate, setShouldAnimate] = useState(false);
+  const [isVideoInView, setIsVideoInView] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   
   // Add back the isInView variable using the useInView hook
   const isInView = useInView(sectionRef, {
     threshold: 0.3
   });
+  
+  // Add video in view detection
+  const videoInView = useInView(videoRef, {
+    threshold: 0.3
+  });
+  
+  // Update video visibility state when it comes into view
+  useEffect(() => {
+    setIsVideoInView(videoInView);
+  }, [videoInView]);
 
   // Constants for calculations
   const VISITS_PER_WEEK = 4;
@@ -100,6 +113,27 @@ const TimeAndCostCalculator = () => {
             </div>
 
             <ComparisonTable />
+            
+            {/* Add video player section */}
+            <div 
+              ref={videoRef} 
+              className="w-full max-w-5xl mx-auto my-16"
+              aria-label="Demonstration video"
+            >
+              <div className="aspect-video overflow-hidden rounded-xl shadow-md">
+                <VideoPlayer
+                  src="/452025 Akcija.mp4"
+                  poster="/bgg.png"
+                  autoPlay={isVideoInView}
+                  loop={true}
+                  muted={true}
+                  controls={false}
+                  aspectRatio="video"
+                  className="w-full"
+                  playMode="onView"
+                />
+              </div>
+            </div>
             
             <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
               <div className="mt-16">
