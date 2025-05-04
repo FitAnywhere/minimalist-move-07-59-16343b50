@@ -73,9 +73,7 @@ const BundleOffer = () => {
                   <ShoppingCart className="w-5 h-5" /> NOW €990
                 </Button>
                 
-                <p className="text-center font-medium text-gray-800 mt-2 py-[46px] my-[24px] mx-0 px-[12px]">
-                  OWN THE STRENGHT AND FREEDOM YOU DESERVE
-                </p>
+                
               </div>}
           </div>
           
