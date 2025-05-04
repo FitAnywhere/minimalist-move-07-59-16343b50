@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -11,7 +10,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ComparisonTable from './ComparisonTable';
 import VideoPlayer from './ui/VideoPlayer';
-
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(50); // Changed default to 50€/month
@@ -22,17 +20,17 @@ const TimeAndCostCalculator = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  
+
   // Add back the isInView variable using the useInView hook
   const isInView = useInView(sectionRef, {
     threshold: 0.3
   });
-  
+
   // Add video in view detection
   const videoInView = useInView(videoRef, {
     threshold: 0.3
   });
-  
+
   // Update video visibility state when it comes into view
   useEffect(() => {
     setIsVideoInView(videoInView);
@@ -98,7 +96,6 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
-
   return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
@@ -115,28 +112,15 @@ const TimeAndCostCalculator = () => {
             <ComparisonTable />
             
             {/* Add video player section - modified to be smaller on desktop */}
-            <div 
-              ref={videoRef} 
-              className="w-full mx-auto my-16 md:w-[65%]" // Added md:w-[65%] to make it ~35% smaller on desktop
-              aria-label="Demonstration video"
-            >
+            <div ref={videoRef} className="w-full mx-auto my-16 md:w-[65%]" // Added md:w-[65%] to make it ~35% smaller on desktop
+          aria-label="Demonstration video">
               <div className="aspect-video overflow-hidden rounded-xl shadow-md">
-                <VideoPlayer
-                  src="/452025 Akcija.mp4"
-                  poster="/bgg.png"
-                  autoPlay={isVideoInView}
-                  loop={true}
-                  muted={true}
-                  controls={false}
-                  aspectRatio="video"
-                  className="w-full"
-                  playMode="onView"
-                />
+                <VideoPlayer src="/452025 Akcija.mp4" poster="/bgg.png" autoPlay={isVideoInView} loop={true} muted={true} controls={false} aspectRatio="video" className="w-full" playMode="onView" />
               </div>
             </div>
             
             <div className={cn("transition-all duration-1000 delay-300", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-              <div className="mt-16">
+              <div className="mt-16 py-[89px]">
                 <p className="md:text-xl text-gray-700 mb-4 text-center text-lg font-semibold">WHY IT MAKES MORE SENSE THAN A GYM</p>
                 
                 <div className="flex flex-col gap-8">
@@ -200,5 +184,4 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
-
 export default TimeAndCostCalculator;
