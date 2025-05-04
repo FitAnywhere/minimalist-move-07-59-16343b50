@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ComparisonTable from './ComparisonTable';
 import VideoPlayer from './ui/VideoPlayer';
+
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(50); // Changed default to 50€/month
@@ -111,11 +112,21 @@ const TimeAndCostCalculator = () => {
 
             <ComparisonTable />
             
-            {/* Add video player section - modified to be smaller on desktop */}
-            <div ref={videoRef} className="w-full mx-auto my-16 md:w-[65%]" // Added md:w-[65%] to make it ~35% smaller on desktop
+            {/* Video player section with updated poster image */}
+            <div ref={videoRef} className="w-full mx-auto my-16 md:w-[65%]" 
           aria-label="Demonstration video">
               <div className="aspect-video overflow-hidden rounded-xl shadow-md">
-                <VideoPlayer src="/452025 Akcija.mp4" poster="/bgg.png" autoPlay={isVideoInView} loop={true} muted={true} controls={false} aspectRatio="video" className="w-full" playMode="onView" />
+                <VideoPlayer 
+                  src="/452025 Akcija.mp4" 
+                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746366944/poster_dgzet0.jpg" 
+                  autoPlay={isVideoInView} 
+                  loop={true} 
+                  muted={true} 
+                  controls={false} 
+                  aspectRatio="video" 
+                  className="w-full" 
+                  playMode="onView" 
+                />
               </div>
             </div>
             
@@ -184,4 +195,5 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
+
 export default TimeAndCostCalculator;
