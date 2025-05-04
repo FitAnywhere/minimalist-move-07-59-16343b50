@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Box from "./pages/Box";
 import NotFound from "./pages/NotFound";
 import TermsOfService from "./pages/TermsOfService";
+import FloatingWhatsAppButton from "./components/FloatingWhatsAppButton";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <ScrollToTopOnRefresh />
+          <FloatingWhatsAppButton />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/box" element={<Box />} />

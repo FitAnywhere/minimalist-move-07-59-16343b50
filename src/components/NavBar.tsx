@@ -5,7 +5,6 @@ import { Menu, X } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Logo } from './nav/Logo';
 import { NavLinks, NavLink } from './nav/NavLinks';
-import { WhatsAppButton } from './nav/WhatsAppButton';
 import { OrderButton } from './nav/OrderButton';
 import { MobileMenu } from './nav/MobileMenu';
 
@@ -78,10 +77,7 @@ const NavBar = () => {
         />
 
         <div className="hidden md:block">
-          <div className="flex items-center gap-4">
-            <OrderButton />
-            <WhatsAppButton />
-          </div>
+          <OrderButton />
         </div>
 
         <button 

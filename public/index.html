@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -176,33 +175,6 @@
     <script type="text/javascript">
       // Use requestIdleCallback for non-critical initialization
       window.addEventListener('load', function() {
-        const loadVoiceflow = () => {
-          (function(d, t) {
-            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-            v.onload = function() {
-              window.voiceflow.chat.load({
-                verify: { projectID: '67eb8f96dd5fb1db6bcdae42' },
-                url: 'https://general-runtime.voiceflow.com',
-                versionID: 'production',
-                voice: {
-                  url: "https://runtime-api.voiceflow.com"
-                }
-              });
-            }
-            v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
-            v.type = "text/javascript";
-            v.async = true;
-            s.parentNode.insertBefore(v, s);
-          })(document, 'script');
-        };
-
-        // Use requestIdleCallback with a fallback
-        const idleCallback = window.requestIdleCallback || 
-          ((cb) => setTimeout(cb, 3000));
-        
-        // Load Voiceflow when the browser is idle
-        idleCallback(loadVoiceflow, { timeout: 5000 });
-
         // Load Facebook Pixel with delay
         setTimeout(function() {
           (function(f,b,e,v,n,t,s) {
