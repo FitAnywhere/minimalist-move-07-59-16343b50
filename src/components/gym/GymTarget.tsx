@@ -97,8 +97,8 @@ const GymTarget = () => {
                   </div>
                   
                   {/* Carousel indicators */}
-                  <div className="flex justify-center mt-6 gap-2 py-[172px]">
-                    {targetAudiences.map((_, index) => <span key={index} className={cn("w-2 h-2 rounded-full transition-all duration-300", index === activeIndex ? "bg-yellow w-4" : "bg-gray-300")} />)}
+                  <div className="flex justify-center mt-6 gap-2 py-[172px] my-[36px]">
+                    {targetAudiences.map((_, index) => {})}
                   </div>
                 </div>
               </div>}
