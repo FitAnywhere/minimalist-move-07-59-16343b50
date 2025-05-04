@@ -1,5 +1,5 @@
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -11,17 +11,16 @@ interface TargetAudience {
   description: string;
 }
 
-// Reordered as requested: Privacy Lovers, Total Beginners, Space-Saving Fans
 const targetAudiences: TargetAudience[] = [
-  {
-    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078482/nik_v2extf.jpg",
-    title: "PRIVACY LOVERS",
-    description: "Win quietly, earn respect forever."
-  },
   {
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
     title: "TOTAL BEGINNERS",
     description: "Easy start to a stronger life."
+  },
+  {
+    imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745078482/nik_v2extf.jpg",
+    title: "PRIVACY LOVERS",
+    description: "Win quietly, earn respect forever."
   },
   {
     imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074862/spa_qpav0e.png",
@@ -34,23 +33,11 @@ const GymTarget = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Auto-rotate images every 2 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % targetAudiences.length);
-    }, 2000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/dR65kKbVz15O5bybIZ', '_blank');
   };
-
-  const currentAudience = targetAudiences[currentIndex];
 
   return (
     <section id="target" ref={containerRef} className="py-16 bg-white">
@@ -64,44 +51,40 @@ const GymTarget = () => {
                 isInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            {/* Carousel Container */}
-            <div className="relative mx-auto mb-8">
-              {/* Carousel Image Container - Made 20-30% larger */}
-              <div className={cn(
-                "relative overflow-hidden mx-auto",
-                isMobile 
-                  ? "w-[90%] h-[240px]" // Increased size on mobile 
-                  : "w-[500px] h-[600px]" // Increased size on desktop by ~25%
-              )}>
-                {targetAudiences.map((audience, index) => (
-                  <div
-                    key={index}
-                    className={cn(
-                      "absolute inset-0 w-full h-full transition-opacity duration-1000",
-                      currentIndex === index ? "opacity-100 z-10" : "opacity-0 z-0"
-                    )}
-                  >
+            <div className="grid md:grid-cols-3 gap-8">
+              {targetAudiences.map((audience, index) => (
+                <div 
+                  key={index} 
+                  className={cn(
+                    "text-center group cursor-pointer transition-all duration-500",
+                    isMobile ? "p-3" : "rounded-2xl p-8 bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl",
+                    "transform hover:-translate-y-2",
+                    isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
+                  )}
+                  style={{ transitionDelay: `${index * 150}ms` }}
+                >
+                  <div className={cn(
+                    "relative w-full overflow-hidden flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-all duration-500",
+                    isMobile ? "h-[200px] max-h-[200px]" : "aspect-[2/3] rounded-2xl"
+                  )}>
                     <img 
                       src={audience.imageUrl} 
                       alt={audience.title}
                       className={cn(
-                        "w-full h-full",
-                        isMobile ? "object-contain" : "object-cover"
+                        "w-full h-full object-cover",
+                        isMobile ? "rounded-xl object-contain max-h-[200px]" : "rounded-2xl"
                       )}
                     />
                   </div>
-                ))}
-              </div>
-              
-              {/* Text for current slide */}
-              <div className="mt-6 text-center">
-                <h3 className="text-xl md:text-2xl font-bold text-black mb-2">
-                  {currentAudience.title}
-                </h3>
-                <p className="text-gray-700 text-base md:text-lg">
-                  {currentAudience.description}
-                </p>
-              </div>
+                  
+                  <h3 className="text-xl md:text-2xl font-bold text-black mb-2">
+                    {audience.title}
+                  </h3>
+                  <p className="text-gray-700 text-base md:text-lg">
+                    {audience.description}
+                  </p>
+                </div>
+              ))}
             </div>
             
             {/* CTA Button - Centered */}
