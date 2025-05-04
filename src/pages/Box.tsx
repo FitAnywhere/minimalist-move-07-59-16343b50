@@ -1,7 +1,6 @@
 
 import { useEffect, lazy, Suspense } from 'react';
 import NavBar from '@/components/NavBar';
-import ChatbotHelper from '@/components/ChatbotHelper';
 
 // Lazy load sections
 const WorkoutAddictSection = lazy(() => import('@/components/WorkoutAddictSection'));
@@ -56,8 +55,6 @@ const Box = () => {
       <Suspense fallback={<SectionLoader />}>
         <Footer />
       </Suspense>
-      
-      <ChatbotHelper />
     </div>
   );
 };

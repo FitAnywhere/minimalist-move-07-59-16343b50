@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Mail, Copy, Check, Facebook } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -23,13 +24,8 @@ const Footer = () => {
     }, 2000);
   };
   
-  const openChatbot = () => {
-    if (window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
-      window.voiceflow.chat.open();
-    } else {
-      setDialogOpen(true);
-      console.error("Voiceflow chatbot not available");
-    }
+  const openContactDialog = () => {
+    setDialogOpen(true);
   };
   
   return (
@@ -39,7 +35,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-4 md:gap-6 text-sm">
             <div className="flex items-center gap-2">
               <button 
-                onClick={openChatbot}
+                onClick={openContactDialog}
                 className="flex items-center hover:text-yellow transition-colors"
               >
                 <Mail className="w-4 h-4 mr-2" />
