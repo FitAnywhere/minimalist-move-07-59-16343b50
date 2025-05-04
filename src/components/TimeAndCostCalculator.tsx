@@ -114,10 +114,10 @@ const TimeAndCostCalculator = () => {
 
             <ComparisonTable />
             
-            {/* Add video player section */}
+            {/* Add video player section - modified to be smaller on desktop */}
             <div 
               ref={videoRef} 
-              className="w-full max-w-5xl mx-auto my-16"
+              className="w-full mx-auto my-16 md:w-[65%]" // Added md:w-[65%] to make it ~35% smaller on desktop
               aria-label="Demonstration video"
             >
               <div className="aspect-video overflow-hidden rounded-xl shadow-md">
