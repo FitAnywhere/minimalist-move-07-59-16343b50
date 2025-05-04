@@ -386,17 +386,13 @@ const QuizSection = () => {
                   </p>
                   
                   <a 
-                    href="https://buy.stripe.com/dR65kKbVz15O5bybIZ" 
+                    href="https://buy.stripe.com/3cs00q0cR3dW9rO5kD" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-block bg-yellow text-black px-6 py-3 rounded-full font-bold hover:bg-yellow-dark transition-all"
                   >
                     GET €100 OFF
                   </a>
-                  
-                  <p className="text-sm text-gray-500 mt-4">
-                    (Also sent to your email)
-                  </p>
                 </div>
               )}
             </div>

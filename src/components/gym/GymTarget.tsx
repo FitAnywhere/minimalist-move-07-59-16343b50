@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -40,7 +41,7 @@ const GymTarget = () => {
   }, [isMobile]);
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/dR65kKbVz15O5bybIZ', '_blank');
+    window.open('https://buy.stripe.com/3cs00q0cR3dW9rO5kD', '_blank');
   };
   return <section id="target" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
