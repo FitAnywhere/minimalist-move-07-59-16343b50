@@ -24,6 +24,7 @@ const targetAudiences: TargetAudience[] = [{
   title: "SPACE-SAVING FANS",
   description: "Turn your space into strength."
 }];
+
 const GymTarget = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -39,10 +40,12 @@ const GymTarget = () => {
 
     return () => clearInterval(interval);
   }, [isMobile]);
+  
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/3cs00q0cR3dW9rO5kD', '_blank');
+    window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
   };
+  
   return <section id="target" ref={containerRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
@@ -99,7 +102,10 @@ const GymTarget = () => {
                   
                   {/* Carousel indicators */}
                   <div className="flex justify-center mt-6 gap-2 py-[172px] my-[36px]">
-                    {targetAudiences.map((_, index) => {})}
+                    {/* Fixed - wasn't returning any ReactNode */}
+                    {targetAudiences.map((_audience, index) => (
+                      <span key={index} className={`w-2 h-2 rounded-full ${index === activeIndex ? 'bg-yellow-500' : 'bg-gray-300'}`}></span>
+                    ))}
                   </div>
                 </div>
               </div>}
@@ -115,4 +121,5 @@ const GymTarget = () => {
       </div>
     </section>;
 };
+
 export default GymTarget;

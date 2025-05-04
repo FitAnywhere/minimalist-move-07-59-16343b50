@@ -12,7 +12,7 @@ export const OrderButton = ({ className = "" }: OrderButtonProps) => {
     e.preventDefault();
     const url = location.pathname === '/box' 
       ? 'https://buy.stripe.com/7sIdTg8G31b720U14k'
-      : 'https://buy.stripe.com/3cs00q0cR3dW9rO5kD';
+      : 'https://buy.stripe.com/00gaF43p38yg0Vi7sM';
     window.open(url, '_blank');
   };
 

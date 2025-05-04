@@ -9,7 +9,7 @@ const LimitedOfferSection = () => {
   const isMobile = useIsMobile();
   const handleGetBoxFunFree = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/5kA8yW1dBaLH8pi28p', '_blank');
+    window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
   };
   return <section id="limited-offer" ref={sectionRef} className="relative overflow-hidden py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">

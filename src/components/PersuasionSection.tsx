@@ -47,7 +47,7 @@ const PersuasionSection = () => {
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
+    window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
   };
   
   return (

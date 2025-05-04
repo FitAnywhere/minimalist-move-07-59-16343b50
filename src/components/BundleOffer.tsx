@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,7 @@ const BundleOffer = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/dR65kKbVz15O5bybIZ', '_blank');
+    window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
   };
   useEffect(() => {
     const interval = setInterval(() => {
