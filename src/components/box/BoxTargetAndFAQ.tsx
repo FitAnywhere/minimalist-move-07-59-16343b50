@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -135,11 +136,23 @@ const BoxTargetAndFAQ = () => {
             </ul>
             
             <div className="max-w-md mx-auto">
-              {/* Reduced video size by ~20% and set to proper aspect ratio */}
-              <div style={{
-                aspectRatio: '9/16'
-              }} className="relative w-3/5 mx-auto overflow-hidden shadow-md rounded-md py-0">
-                <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isVisible} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full" width={360} height={640} />
+              {/* Fixed video container - remove extra space */}
+              <div className="relative w-3/5 mx-auto overflow-hidden shadow-md rounded-md">
+                <div className="aspect-[9/16] w-full">
+                  <VideoPlayer 
+                    src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
+                    poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
+                    autoPlay={isVisible} 
+                    muted={true} 
+                    loop={true} 
+                    controls={false} 
+                    playMode="onView" 
+                    aspectRatio="portrait" 
+                    className="w-full h-full" 
+                    width={360} 
+                    height={640} 
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -160,11 +173,23 @@ const BoxTargetAndFAQ = () => {
             </div>
             
             <div className="w-full h-full flex items-center justify-center">
-              {/* Reduced video size by ~20% */}
-              <div style={{
-                aspectRatio: '9/16'
-              }} className="relative w-3/5 overflow-hidden shadow-md py-0 rounded-sm">
-                <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isVisible} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full" width={360} height={640} />
+              {/* Fixed video container - remove extra space */}
+              <div className="relative w-3/5 overflow-hidden shadow-md rounded-sm">
+                <div className="aspect-[9/16] w-full">
+                  <VideoPlayer 
+                    src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
+                    poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
+                    autoPlay={isVisible} 
+                    muted={true} 
+                    loop={true} 
+                    controls={false} 
+                    playMode="onView" 
+                    aspectRatio="portrait" 
+                    className="w-full h-full" 
+                    width={360} 
+                    height={640} 
+                  />
+                </div>
               </div>
             </div>
           </div>
