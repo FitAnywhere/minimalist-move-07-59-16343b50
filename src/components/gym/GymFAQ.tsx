@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
+import VideoPlayer from "@/components/ui/VideoPlayer";
 
 const faqItems = [
   {
@@ -55,7 +56,9 @@ const faqItems = [
 
 const GymFAQ = () => {
   const faqSectionRef = useRef<HTMLDivElement>(null);
+  const videoSectionRef = useRef<HTMLDivElement>(null);
   const isFaqInView = useInView(faqSectionRef);
+  const isVideoInView = useInView(videoSectionRef);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -111,6 +114,34 @@ const GymFAQ = () => {
               </div>
             </CollapsibleContent>
           </Collapsible>
+          
+          {/* Video Section */}
+          <div 
+            ref={videoSectionRef}
+            className={cn(
+              "mt-20 transition-all duration-700",
+              isVideoInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            )}
+          >
+            <h3 className="text-center text-xl md:text-2xl font-medium text-gray-800 mb-6">
+              Achieve remarkable results without leaving your home—it's simpler than you think.
+            </h3>
+            <div className="max-w-4xl mx-auto">
+              <VideoPlayer
+                src="/Results.mp4"
+                poster="/placeholder.svg"
+                aspectRatio="video"
+                autoPlay={false}
+                muted={true}
+                loop={false}
+                controls={true}
+                preload="metadata"
+                playMode="onView"
+                showHeroVolumeControl={true}
+                className="rounded-lg overflow-hidden shadow-xl"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
