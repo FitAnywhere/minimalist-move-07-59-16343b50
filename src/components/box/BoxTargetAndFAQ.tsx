@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -7,7 +6,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { useVideoOptimization } from '@/hooks/useVideoOptimization';
-
 interface FAQItem {
   question: string;
   answer: string;
@@ -77,12 +75,10 @@ const BoxTargetAndFAQ = () => {
     priorityLoad: false
   });
   const isMobile = useIsMobile();
-  
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://fitanywhere.today/', '_blank');
   };
-  
   return <>
     {/* Target Audience Section */}
     <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
@@ -94,21 +90,12 @@ const BoxTargetAndFAQ = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isTargetInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            <p className="text-lg md:text-xl text-gray-700 mt-6 mb-8">A home setup that helps you do what you thought was impossible.</p>
+            <p className="text-lg md:text-xl text-gray-700 mt-6 mb-8">A beginner's home setup that helps you do what you thought was impossible.</p>
             
             {/* Video Player */}
             <div ref={videoContainerRef2} className="max-w-4xl mx-auto mb-8">
               <div className="relative w-full rounded-2xl overflow-hidden shadow-xl">
-                <VideoPlayer 
-                  src="/452025 Akcija.mp4" 
-                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746366944/poster_dgzet0.jpg"
-                  autoPlay={isVisible}
-                  muted={true}
-                  loop={true}
-                  playMode="onView"
-                  aspectRatio="video"
-                  className="w-full"
-                />
+                <VideoPlayer src="/452025 Akcija.mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746366944/poster_dgzet0.jpg" autoPlay={isVisible} muted={true} loop={true} playMode="onView" aspectRatio="video" className="w-full" />
               </div>
             </div>
 
