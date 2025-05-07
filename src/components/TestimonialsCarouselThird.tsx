@@ -165,6 +165,9 @@ const TestimonialsCarouselThird = () => {
             </Carousel>
           </div>
           
+          {/* Added empty space container for more spacing */}
+          <div className="h-12 md:h-16"></div>
+          
           <div className={cn(
             "mt-16 text-center md:text-left transition-all duration-500",
             isInView ? "opacity-100" : "opacity-0 translate-y-4"
@@ -192,7 +195,8 @@ const TestimonialsCarouselThird = () => {
               </ul>
               
               <div ref={videoContainerRef} className="max-w-md mx-auto mb-8">
-                <div className="relative w-full rounded-xl overflow-hidden shadow-md">
+                {/* Reduced video size by ~15-20% and set to 9:16 aspect ratio */}
+                <div className="relative w-4/5 mx-auto rounded-xl overflow-hidden shadow-md" style={{ aspectRatio: '9/16' }}>
                   <VideoPlayer 
                     src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
                     poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
@@ -201,10 +205,10 @@ const TestimonialsCarouselThird = () => {
                     loop={true} 
                     controls={false}
                     playMode="onView"
-                    aspectRatio="video"
+                    aspectRatio="portrait"
                     className="w-full"
-                    width={640}
-                    height={360}
+                    width={360}
+                    height={640}
                   />
                 </div>
               </div>
@@ -212,8 +216,8 @@ const TestimonialsCarouselThird = () => {
             
             {/* Desktop layout (two column) */}
             <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-start">
-              <div className="text-left">
-                <h3 className="text-2xl md:text-3xl font-bold text-black mb-6">
+              <div className="text-left flex flex-col justify-center h-full">
+                <h3 className="text-2xl md:text-3xl font-bold text-black mb-6 self-center">
                   IT'S PERFECT IF...
                 </h3>
                 
@@ -235,7 +239,8 @@ const TestimonialsCarouselThird = () => {
               </div>
               
               <div ref={videoContainerRef} className="w-full h-full flex items-center">
-                <div className="relative w-full rounded-xl overflow-hidden shadow-md">
+                {/* Reduced video size by ~15-20% and set to 9:16 aspect ratio */}
+                <div className="relative w-4/5 mx-auto rounded-xl overflow-hidden shadow-md" style={{ aspectRatio: '9/16' }}>
                   <VideoPlayer 
                     src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
                     poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
@@ -244,10 +249,10 @@ const TestimonialsCarouselThird = () => {
                     loop={true} 
                     controls={false}
                     playMode="onView"
-                    aspectRatio="video"
+                    aspectRatio="portrait"
                     className="w-full"
-                    width={640}
-                    height={360}
+                    width={360}
+                    height={640}
                   />
                 </div>
               </div>
