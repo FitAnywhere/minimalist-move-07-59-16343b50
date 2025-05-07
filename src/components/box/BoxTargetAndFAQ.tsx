@@ -90,7 +90,7 @@ const BoxTargetAndFAQ = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isTargetInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            <p className="text-lg md:text-xl text-gray-700 mt-6 mb-8">Where beginners do what once felt impossible</p>
+            
             
             {/* Video Player */}
             <div ref={videoContainerRef2} className="max-w-4xl mx-auto mb-8">
