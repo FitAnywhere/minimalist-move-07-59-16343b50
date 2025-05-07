@@ -139,7 +139,7 @@ const BoxTargetAndFAQ = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isSpecialOfferInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            <p className="text-gray-700 mb-8 max-w-xl mx-auto font-medium text-xl">ORDER BOXFUN NOW TO GET A GIFT</p>
+            
             
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <div className="p-6 flex flex-col items-center py-[35px]">
