@@ -1,3 +1,4 @@
+
 import { useState, useRef, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -10,6 +11,8 @@ import {
   CarouselNext,
   CarouselPrevious
 } from "@/components/ui/carousel";
+import VideoPlayer from '@/components/ui/VideoPlayer';
+import { useVideoOptimization } from '@/hooks/useVideoOptimization';
 
 interface Testimonial {
   name: string;
@@ -111,6 +114,12 @@ const TestimonialsCarouselThird = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
+  const [videoContainerRef, isVisible, isLoaded] = useVideoOptimization({
+    threshold: 0.1,
+    rootMargin: '200px',
+    lazyLoad: true,
+    priorityLoad: false
+  });
 
   return (
     <section ref={containerRef} id="testimonials-third" className="py-16 bg-white">
@@ -161,24 +170,80 @@ const TestimonialsCarouselThird = () => {
             isInView ? "opacity-100" : "opacity-0 translate-y-4"
           )}>
             <h3 className="text-2xl md:text-3xl font-bold text-black mb-6">
-              BoxFun is perfect if…
+              IT'S PERFECT IF...
             </h3>
             
-            <ul className="max-w-md mx-auto space-y-4 text-left">
-              {[
-                "You hate boring workouts",
-                "You struggle with motivation",
-                "You want to feel good while moving"
-              ].map((point, index) => (
-                <li 
-                  key={index} 
-                  className="flex items-center space-x-3 text-gray-800 text-base md:text-lg"
-                >
-                  <span className="text-yellow-400 text-xl">•</span>
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
+            {/* Mobile layout (bullet points + video stacked) */}
+            <div className="md:hidden">
+              <ul className="max-w-md mx-auto space-y-4 text-center mb-8">
+                {[
+                  "You hate boring workouts",
+                  "You struggle with motivation",
+                  "You want to feel good while moving"
+                ].map((point, index) => (
+                  <li 
+                    key={index} 
+                    className="flex items-center justify-center space-x-3 text-gray-800 text-base"
+                  >
+                    <span className="text-yellow-400 text-xl">•</span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              
+              <div ref={videoContainerRef} className="max-w-md mx-auto mb-8">
+                <div className="relative w-full rounded-xl overflow-hidden shadow-md">
+                  <VideoPlayer 
+                    src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
+                    poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
+                    autoPlay={isVisible} 
+                    muted={true} 
+                    loop={true} 
+                    controls={false}
+                    playMode="onView"
+                    aspectRatio="video"
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* Desktop layout (two column) */}
+            <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-center">
+              <div className="text-left">
+                <ul className="space-y-4">
+                  {[
+                    "You hate boring workouts",
+                    "You struggle with motivation",
+                    "You want to feel good while moving"
+                  ].map((point, index) => (
+                    <li 
+                      key={index} 
+                      className="flex items-center space-x-3 text-gray-800 text-lg"
+                    >
+                      <span className="text-yellow-400 text-xl">•</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div ref={videoContainerRef} className="w-full">
+                <div className="relative w-full rounded-xl overflow-hidden shadow-md">
+                  <VideoPlayer 
+                    src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
+                    poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
+                    autoPlay={isVisible} 
+                    muted={true} 
+                    loop={true} 
+                    controls={false}
+                    playMode="onView"
+                    aspectRatio="video"
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -187,3 +252,4 @@ const TestimonialsCarouselThird = () => {
 };
 
 export default TestimonialsCarouselThird;
+
