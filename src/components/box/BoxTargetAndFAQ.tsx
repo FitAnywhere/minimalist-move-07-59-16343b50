@@ -128,18 +128,18 @@ const BoxTargetAndFAQ = () => {
       </div>
     </section>
 
-    {/* 4. SPECIAL OFFER Section */}
+    {/* 4. SPECIAL OFFER Section - Updated to LIMITED OFFER */}
     <section id="special-offer" ref={specialOfferSectionRef} className="py-16 bg-white">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto">
           <div className={cn("text-center py-6 max-w-3xl mx-auto transition-all duration-300 mb-8", isSpecialOfferInView ? "opacity-100 translate-y-0 animate-fade-in" : "opacity-0 translate-y-4")}>
             
             <h2 className="text-3xl md:text-5xl font-extrabold text-black mb-4 relative inline-block">
-              SPECIAL OFFER
+              LIMITED OFFER
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isSpecialOfferInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            
+            <p className="text-gray-700 mb-8 max-w-xl mx-auto font-medium text-xl">ORDER BOXFUN NOW TO GET A GIFT</p>
             
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <div className="p-6 flex flex-col items-center py-[35px]">
