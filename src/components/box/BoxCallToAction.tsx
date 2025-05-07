@@ -27,7 +27,7 @@ const BoxCallToAction = () => {
         <div className="max-w-5xl mx-auto text-center">
           <div className="space-y-4 md:space-y-2">
             {/* Promotional text above CTA button */}
-            <p className={cn("font-semibold text-lg md:text-xl text-yellow transition-all duration-1000 mb-4", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>Ready to get fit — and actually enjoy it?</p>
+            <p className={cn("font-semibold text-lg md:text-xl text-yellow transition-all duration-1000 mb-4", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>Ready to get fit and actually enjoy it?</p>
             
             {/* CTA Button - reduced spacing */}
             <div className={cn("transition-all duration-1000 mt-4 md:mt-6", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
