@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -7,12 +6,10 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { useVideoOptimization } from '@/hooks/useVideoOptimization';
-
 interface FAQItem {
   question: string;
   answer: string;
 }
-
 const faqItems: FAQItem[] = [{
   question: "How do I claim my €100 bonus?",
   answer: "Just ordered BoxFun? Send us your purchase confirmation on Facebook or WhatsApp, and we'll send you a €100 discount for the portable gym."
@@ -47,7 +44,6 @@ const faqItems: FAQItem[] = [{
   question: "Can it help with coordination or focus?",
   answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
 }];
-
 const BoxTargetAndFAQ = () => {
   const perfectIfSectionRef = useRef<HTMLDivElement>(null);
   const specialOfferSectionRef = useRef<HTMLDivElement>(null);
@@ -60,31 +56,26 @@ const BoxTargetAndFAQ = () => {
     priorityLoad: false
   });
   const isMobile = useIsMobile();
-
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://fitanywhere.today/', '_blank');
   };
-
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
   };
-
   return <>
     {/* 3. IT'S PERFECT IF... Section */}
     <section id="perfect-if" ref={perfectIfSectionRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           {/* Mobile layout title */}
-          {isMobile && (
-            <div className={cn("text-center mb-12 transition-all duration-1000", isPerfectIfInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
+          {isMobile && <div className={cn("text-center mb-12 transition-all duration-1000", isPerfectIfInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
               <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
                 IT'S PERFECT IF
                 <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isPerfectIfInView ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
-            </div>
-          )}
+            </div>}
           
           {/* Mobile layout (bullet points + video stacked) */}
           <div className="md:hidden">
@@ -116,7 +107,7 @@ const BoxTargetAndFAQ = () => {
                 </h2>
               </div>
               
-              <ul className="space-y-4 px-[74px] py-0 my-[16px] mx-0">
+              <ul className="space-y-4 py-0 my-[16px] mx-0 px-0">
                 {["YOU HATE BORING WORKOUTS", "YOU STRUGGLE WITH MOTIVATION", "YOU WANT TO FEEL GOOD WHILE MOVING"].map((point, index) => <li key={index} className="flex items-center space-x-4 text-gray-800 text-xl font-medium">
                     <span className="text-yellow-400 text-2xl flex-shrink-0">•</span>
                     <span className="text-xl font-semibold px-[5px] mx-0 my-[10px] py-[6px]">{point}</span>
@@ -173,5 +164,4 @@ const BoxTargetAndFAQ = () => {
     </section>
   </>;
 };
-
 export default BoxTargetAndFAQ;
