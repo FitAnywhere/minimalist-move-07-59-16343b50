@@ -10,7 +10,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ComparisonTable from './ComparisonTable';
 import VideoPlayer from './ui/VideoPlayer';
-
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(50); // Changed default to 50€/month
@@ -97,7 +96,7 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
-  return <section id="calculator" ref={sectionRef} className="py-24 bg-gradient-to-b from-white to-gray-50">
+  return <section id="calculator" ref={sectionRef} className="bg-white py-[66px]">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
@@ -113,20 +112,9 @@ const TimeAndCostCalculator = () => {
             <ComparisonTable />
             
             {/* Video player section with updated poster image */}
-            <div ref={videoRef} className="w-full mx-auto my-16 md:w-[65%]" 
-          aria-label="Demonstration video">
+            <div ref={videoRef} className="w-full mx-auto my-16 md:w-[65%]" aria-label="Demonstration video">
               <div className="aspect-video overflow-hidden rounded-xl shadow-md">
-                <VideoPlayer 
-                  src="/452025 Akcija.mp4" 
-                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746366944/poster_dgzet0.jpg" 
-                  autoPlay={isVideoInView} 
-                  loop={true} 
-                  muted={true} 
-                  controls={false} 
-                  aspectRatio="video" 
-                  className="w-full" 
-                  playMode="onView" 
-                />
+                <VideoPlayer src="/452025 Akcija.mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746366944/poster_dgzet0.jpg" autoPlay={isVideoInView} loop={true} muted={true} controls={false} aspectRatio="video" className="w-full" playMode="onView" />
               </div>
             </div>
             
@@ -195,5 +183,4 @@ const TimeAndCostCalculator = () => {
       </div>
     </section>;
 };
-
 export default TimeAndCostCalculator;
