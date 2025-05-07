@@ -208,9 +208,7 @@ const WorkoutAddictSection = () => {
                   </div>
                   
                   <div className="mt-6 w-full text-center">
-                    <p className="text-lg font-medium text-gray-800">
-                      Without ever stepping into a gym
-                    </p>
+                    
                   </div>
                 </div>}
             </div>

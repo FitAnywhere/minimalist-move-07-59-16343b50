@@ -19,7 +19,7 @@ const BoxTitleSection = () => {
         BOXFUN
         <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"></span>
       </h1>
-      <p className="text-gray-700 mt-4 text-lg">Strength and fun without stepping into a gym</p>
+      <p className="text-gray-700 mt-4 text-lg font-bold">Strength and fun without stepping into a gym</p>
     </div>;
 };
 const Box = () => {
