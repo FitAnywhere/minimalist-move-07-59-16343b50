@@ -58,6 +58,7 @@ const Index = () => {
         </Suspense>
       </div>
       
+      {/* Moved QuizSection to be directly above FAQ section */}
       <div id="quiz" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <QuizSection />
