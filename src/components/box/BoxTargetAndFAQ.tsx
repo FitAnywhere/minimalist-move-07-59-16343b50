@@ -4,18 +4,15 @@ import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
-
 interface FAQItem {
   question: string;
   answer: string;
 }
-
 interface TargetAudience {
   imageUrl: string;
   title: string;
   description: string;
 }
-
 const targetAudiences: TargetAudience[] = [{
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
   title: "TOTAL BEGINNERS",
@@ -29,7 +26,6 @@ const targetAudiences: TargetAudience[] = [{
   title: "SPACE-SAVING FANS",
   description: "For anyone looking to maximize workouts in small spaces."
 }];
-
 const faqItems: FAQItem[] = [{
   question: "How do I claim my €100 bonus?",
   answer: "Just ordered BoxFun? Send us your purchase confirmation on Facebook or WhatsApp, and we'll send you a €100 discount for the portable gym."
@@ -64,18 +60,15 @@ const faqItems: FAQItem[] = [{
   question: "Can it help with coordination or focus?",
   answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
 }];
-
 const BoxTargetAndFAQ = () => {
   const targetSectionRef = useRef<HTMLElement>(null);
   const faqSectionRef = useRef<HTMLDivElement>(null);
   const isTargetInView = useInView(targetSectionRef);
   const isFaqInView = useInView(faqSectionRef);
-
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://fitanywhere.today/', '_blank');
   };
-
   return <>
     {/* Target Audience Section */}
     <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
@@ -90,43 +83,13 @@ const BoxTargetAndFAQ = () => {
             <p className="text-lg md:text-xl text-gray-700 mt-6 mb-16">A home setup that helps you do what you thought was impossible.</p>
             
             <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-black">IDEAL FOR:</h3>
+              
             </div>
             
-            <div className="grid md:grid-cols-3 gap-8">
-              {targetAudiences.map((audience, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "rounded-2xl p-8 text-center group cursor-pointer transition-all duration-500",
-                    "bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl",
-                    "transform hover:-translate-y-2",
-                    isTargetInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
-                  )}
-                  style={{ transitionDelay: `${index * 150}ms` }}
-                >
-                  <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-gray-50 flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-all duration-500">
-                    <img
-                      src={audience.imageUrl}
-                      alt={audience.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  
-                  <h3 className="text-xl md:text-2xl font-bold text-black mb-4">{audience.title}</h3>
-                  <p className="text-gray-700 text-base md:text-lg">
-                    {audience.description}
-                  </p>
-                </div>
-              ))}
-            </div>
+            
 
             <div className="flex justify-center mt-8">
-              <a
-                href="#"
-                onClick={handleCTAClick}
-                className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]"
-              >
+              <a href="#" onClick={handleCTAClick} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]">
                 DISCOVER MORE
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
@@ -143,28 +106,17 @@ const BoxTargetAndFAQ = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center relative inline-block mb-12">
               FREQUENTLY ASKED QUESTIONS
-              <span
-                className={cn(
-                  "absolute bottom-0 left-0 right-0 mx-auto h-1 bg-yellow-400 transform transition-transform duration-1000",
-                  isFaqInView ? "scale-x-100" : "scale-x-0"
-                )}
-                style={{ width: '100%' }}
-              ></span>
+              <span className={cn("absolute bottom-0 left-0 right-0 mx-auto h-1 bg-yellow-400 transform transition-transform duration-1000", isFaqInView ? "scale-x-100" : "scale-x-0")} style={{
+                width: '100%'
+              }}></span>
             </h2>
           </div>
           
           <div className="max-w-3xl mx-auto">
             <Accordion type="single" collapsible className="w-full">
-              {faqItems.map((item, index) => (
-                <AccordionItem
-                  key={index}
-                  value={`item-${index}`}
-                  className={cn(
-                    "mb-4 transition-all duration-300 rounded-lg overflow-hidden",
-                    isFaqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                  )}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
+              {faqItems.map((item, index) => <AccordionItem key={index} value={`item-${index}`} className={cn("mb-4 transition-all duration-300 rounded-lg overflow-hidden", isFaqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")} style={{
+                transitionDelay: `${index * 100}ms`
+              }}>
                   <div className="border border-transparent hover:bg-gray-50/50 transition-all duration-300 rounded-lg
                   data-[state=open]:border-yellow data-[state=open]:border-[1.5px] data-[state=open]:bg-white">
                     <AccordionTrigger className="py-4 px-5 text-lg font-medium hover:no-underline flex justify-between items-center transition-all duration-300">
@@ -174,8 +126,7 @@ const BoxTargetAndFAQ = () => {
                       {item.answer}
                     </AccordionContent>
                   </div>
-                </AccordionItem>
-              ))}
+                </AccordionItem>)}
             </Accordion>
           </div>
         </div>
@@ -183,5 +134,4 @@ const BoxTargetAndFAQ = () => {
     </section>
   </>;
 };
-
 export default BoxTargetAndFAQ;
