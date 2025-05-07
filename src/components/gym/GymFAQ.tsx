@@ -1,4 +1,3 @@
-
 import { useRef, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -6,99 +5,70 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
 import VideoPlayer from "@/components/ui/VideoPlayer";
-
-const faqItems = [
-  {
-    question: "How do I set up FitAnywhere?",
-    answer: "Slide, click, and train. It takes under 2 minutes—no tools or drilling needed."
-  },
-  {
-    question: "I'm a total beginner. Will I really be able to use it?",
-    answer: "Yes. The colour‑coded bands lighten your body‑weight, so you can do every move on day one and reduce assistance as you get stronger."
-  },
-  {
-    question: "Will it fit in my flat with low ceilings?",
-    answer: "The height is fully adjustable (195-235 cm), making it ideal for apartments with lower ceilings."
-  },
-  {
-    question: "What's inside the box?",
-    answer: " • PowerTower frame\n • 4 colour‑coded assistance bands (15–45 kg)\n • Quick‑start setup card\n • Lifetime access to the video Training Library"
-  },
-  {
-    question: "How long does delivery take?",
-    answer: "We ship weekly, but if a unit is temporarily out of stock, there may be a short delay until we manufacture more. In a hurry? Don't hesitate to get in touch. We'll always try to make it work."
-  },
-  {
-    question: "Why is production limited?",
-    answer: "Every PowerTower is hand‑welded, hand‑powder‑coated, and individually tested. This careful, manual process guarantees top quality—but it also limits how many we can make."
-  },
-  {
-    question: "How much weight can it hold?",
-    answer: "Stress‑tested to 200 kg (440 lb)—plenty for weighted calisthenics."
-  },
-  {
-    question: "Will it scratch my floors?",
-    answer: "No. The built‑in rubber feet protect hardwood, tile, and laminate—no extra mats needed."
-  },
-  {
-    question: "What if I change my mind?",
-    answer: "Try it for 30 days. If it's not the perfect fit, return it for a full refund—no questions asked."
-  },
-  {
-    question: "Is there a warranty?",
-    answer: "2‑year warranty on PowerTower and bands."
-  },
-  {
-    question: "What if I want to start but don't have the full budget?",
-    answer: "Reach out to us. We're happy to explore flexible payment options or solutions that fit your current situation."
-  }
-];
-
+const faqItems = [{
+  question: "How do I set up FitAnywhere?",
+  answer: "Slide, click, and train. It takes under 2 minutes—no tools or drilling needed."
+}, {
+  question: "I'm a total beginner. Will I really be able to use it?",
+  answer: "Yes. The colour‑coded bands lighten your body‑weight, so you can do every move on day one and reduce assistance as you get stronger."
+}, {
+  question: "Will it fit in my flat with low ceilings?",
+  answer: "The height is fully adjustable (195-235 cm), making it ideal for apartments with lower ceilings."
+}, {
+  question: "What's inside the box?",
+  answer: " • PowerTower frame\n • 4 colour‑coded assistance bands (15–45 kg)\n • Quick‑start setup card\n • Lifetime access to the video Training Library"
+}, {
+  question: "How long does delivery take?",
+  answer: "We ship weekly, but if a unit is temporarily out of stock, there may be a short delay until we manufacture more. In a hurry? Don't hesitate to get in touch. We'll always try to make it work."
+}, {
+  question: "Why is production limited?",
+  answer: "Every PowerTower is hand‑welded, hand‑powder‑coated, and individually tested. This careful, manual process guarantees top quality—but it also limits how many we can make."
+}, {
+  question: "How much weight can it hold?",
+  answer: "Stress‑tested to 200 kg (440 lb)—plenty for weighted calisthenics."
+}, {
+  question: "Will it scratch my floors?",
+  answer: "No. The built‑in rubber feet protect hardwood, tile, and laminate—no extra mats needed."
+}, {
+  question: "What if I change my mind?",
+  answer: "Try it for 30 days. If it's not the perfect fit, return it for a full refund—no questions asked."
+}, {
+  question: "Is there a warranty?",
+  answer: "2‑year warranty on PowerTower and bands."
+}, {
+  question: "What if I want to start but don't have the full budget?",
+  answer: "Reach out to us. We're happy to explore flexible payment options or solutions that fit your current situation."
+}];
 const GymFAQ = () => {
   const faqSectionRef = useRef<HTMLDivElement>(null);
   const videoSectionRef = useRef<HTMLDivElement>(null);
   const isFaqInView = useInView(faqSectionRef);
-  const isVideoInView = useInView(videoSectionRef, { threshold: 0.3 });
+  const isVideoInView = useInView(videoSectionRef, {
+    threshold: 0.3
+  });
   const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <section id="faq" ref={faqSectionRef} className="py-24 bg-gray-50">
+  return <section id="faq" ref={faqSectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
-          <Collapsible
-            open={isOpen}
-            onOpenChange={setIsOpen}
-            className="w-full"
-          >
+          <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
             <div className="text-center mb-12">
               <CollapsibleTrigger className="w-full flex justify-center items-center cursor-pointer group">
                 <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center relative inline-block mb-2">
                   FREQUENTLY ASKED QUESTIONS
-                  <span className={cn(
-                    "absolute bottom-0 left-0 right-0 mx-auto h-1 bg-yellow-400 transform transition-transform duration-1000",
-                    isFaqInView ? "scale-x-100" : "scale-x-0"
-                  )} style={{ width: '100%' }}></span>
+                  <span className={cn("absolute bottom-0 left-0 right-0 mx-auto h-1 bg-yellow-400 transform transition-transform duration-1000", isFaqInView ? "scale-x-100" : "scale-x-0")} style={{
+                  width: '100%'
+                }}></span>
                 </h2>
-                <ChevronDown className={cn(
-                  "h-6 w-6 ml-2 shrink-0 text-black transition-transform duration-200",
-                  isOpen && "rotate-180"
-                )} />
+                <ChevronDown className={cn("h-6 w-6 ml-2 shrink-0 text-black transition-transform duration-200", isOpen && "rotate-180")} />
               </CollapsibleTrigger>
             </div>
             
             <CollapsibleContent className="overflow-hidden transition-all duration-300 ease-in-out">
               <div className="max-w-3xl mx-auto">
                 <Accordion type="single" collapsible className="w-full">
-                  {faqItems.map((item, index) => (
-                    <AccordionItem 
-                      key={index} 
-                      value={`item-${index}`} 
-                      className={cn(
-                        "mb-4 transition-all duration-300 rounded-lg overflow-hidden",
-                        isFaqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                      )}
-                      style={{ transitionDelay: `${index * 100}ms` }}
-                    >
+                  {faqItems.map((item, index) => <AccordionItem key={index} value={`item-${index}`} className={cn("mb-4 transition-all duration-300 rounded-lg overflow-hidden", isFaqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")} style={{
+                  transitionDelay: `${index * 100}ms`
+                }}>
                       <div className="border border-transparent hover:bg-gray-50/50 transition-all duration-300 rounded-lg
                         data-[state=open]:border-yellow data-[state=open]:border-[1.5px] data-[state=open]:bg-white">
                         <AccordionTrigger className="py-4 px-5 text-lg font-medium hover:no-underline flex justify-between items-center transition-all duration-300">
@@ -108,46 +78,23 @@ const GymFAQ = () => {
                           {item.answer}
                         </AccordionContent>
                       </div>
-                    </AccordionItem>
-                  ))}
+                    </AccordionItem>)}
                 </Accordion>
               </div>
             </CollapsibleContent>
           </Collapsible>
           
           {/* Video Section - Updated to match FOREVER YOURS section */}
-          <div 
-            ref={videoSectionRef}
-            className={cn(
-              "mt-20 transition-all duration-700",
-              isVideoInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            )}
-          >
-            <h3 className="text-center text-xl md:text-2xl font-medium text-gray-800 mb-6">
-              Achieve remarkable results without leaving your home—it's simpler than you think.
-            </h3>
+          <div ref={videoSectionRef} className={cn("mt-20 transition-all duration-700", isVideoInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+            <h3 className="text-center text-xl md:text-2xl font-medium text-gray-800 mb-6">It's simpler than you think</h3>
             <div className="w-full md:w-[65%] mx-auto">
               <div className="aspect-video overflow-hidden rounded-xl shadow-md">
-                <VideoPlayer
-                  src="/Results.mp4"
-                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746587883/readyy_j46izj.png"
-                  aspectRatio="video"
-                  autoPlay={isVideoInView}
-                  muted={true}
-                  loop={true}
-                  controls={false}
-                  preload="metadata"
-                  playMode="onView"
-                  showHeroVolumeControl={false}
-                  className="w-full"
-                />
+                <VideoPlayer src="/Results.mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746587883/readyy_j46izj.png" aspectRatio="video" autoPlay={isVideoInView} muted={true} loop={true} controls={false} preload="metadata" playMode="onView" showHeroVolumeControl={false} className="w-full" />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default GymFAQ;
