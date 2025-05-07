@@ -1,3 +1,4 @@
+
 import { useEffect, lazy, Suspense } from 'react';
 import NavBar from '@/components/NavBar';
 
@@ -13,6 +14,7 @@ const Footer = lazy(() => import('@/components/Footer'));
 const SectionLoader = () => <div className="min-h-[400px] w-full flex items-center justify-center" aria-hidden="true">
     <div className="w-8 h-8 border-4 border-yellow border-t-transparent rounded-full animate-spin"></div>
   </div>;
+
 const BoxTitleSection = () => {
   return <div className="hidden md:flex flex-col items-center justify-center pt-28 pb-6 bg-gradient-to-br from-gray-50 to-gray-100">
       <h1 className="text-4xl font-extrabold relative inline-block">
@@ -22,45 +24,53 @@ const BoxTitleSection = () => {
       <p className="text-gray-700 mt-4 text-lg font-bold">Strength and fun without stepping into a gym</p>
     </div>;
 };
+
 const Box = () => {
   return <div className="overflow-x-hidden">
       <NavBar />
       
       <BoxTitleSection />
       
+      {/* 1. Hero/BOXFUN section */}
       <div id="workout-addict" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <WorkoutAddictSection />
         </Suspense>
       </div>
       
+      {/* 2. WHY THEY LOVE BOXFUN? */}
       <div id="reviews-third" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsCarouselThird />
         </Suspense>
       </div>
       
-      <div id="target-faq" className="content-visibility-auto">
+      {/* 3. IT'S PERFECT IF... and 4. SPECIAL OFFER sections are inside BoxTargetAndFAQ */}
+      <div id="perfect-if-and-limited-offer" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <BoxTargetAndFAQ />
         </Suspense>
       </div>
       
-      <div id="limited-offer" className="content-visibility-auto">
+      {/* 5. WHAT IS A PRIVATE GYM? */}
+      <div id="target-faq" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <LimitedOfferSection />
         </Suspense>
       </div>
       
+      {/* 6. FREQUENTLY ASKED QUESTIONS and CTA */}
       <div id="cta">
         <Suspense fallback={<SectionLoader />}>
           <BoxCallToAction />
         </Suspense>
       </div>
       
+      {/* Footer */}
       <Suspense fallback={<SectionLoader />}>
         <Footer />
       </Suspense>
     </div>;
 };
+
 export default Box;
