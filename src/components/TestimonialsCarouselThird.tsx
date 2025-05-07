@@ -194,7 +194,7 @@ const TestimonialsCarouselThird = () => {
                 ))}
               </ul>
               
-              <div ref={videoContainerRef} className="max-w-md mx-auto mb-8">
+              <div ref={videoContainerRef} className="max-w-md mx-auto">
                 {/* Reduced video size by ~15-20% and set to 9:16 aspect ratio */}
                 <div className="relative w-4/5 mx-auto rounded-xl overflow-hidden shadow-md" style={{ aspectRatio: '9/16' }}>
                   <VideoPlayer 
