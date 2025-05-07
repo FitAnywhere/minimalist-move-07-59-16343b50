@@ -138,7 +138,7 @@ const BoxTargetAndFAQ = () => {
               {/* Reduced video size by ~20% and set to proper aspect ratio */}
               <div style={{
                 aspectRatio: '9/16'
-              }} className="relative w-3/5 mx-auto overflow-hidden shadow-md py-0 rounded-md">
+              }} className="relative w-3/5 mx-auto overflow-hidden shadow-md rounded-md py-0">
                 <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isVisible} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full" width={360} height={640} />
               </div>
             </div>
