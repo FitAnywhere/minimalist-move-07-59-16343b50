@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -139,19 +138,7 @@ const BoxTargetAndFAQ = () => {
               {/* Fixed video container - remove extra space */}
               <div className="relative w-3/5 mx-auto overflow-hidden shadow-md rounded-md">
                 <div className="aspect-[9/16] w-full">
-                  <VideoPlayer 
-                    src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
-                    poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
-                    autoPlay={isVisible} 
-                    muted={true} 
-                    loop={true} 
-                    controls={false} 
-                    playMode="onView" 
-                    aspectRatio="portrait" 
-                    className="w-full h-full" 
-                    width={360} 
-                    height={640} 
-                  />
+                  <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isVisible} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full h-full" width={360} height={640} />
                 </div>
               </div>
             </div>
@@ -160,14 +147,12 @@ const BoxTargetAndFAQ = () => {
           {/* Desktop layout (two column) */}
           <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-start">
             <div className="text-left flex flex-col justify-center h-full">
-              <h3 className="text-3xl font-bold text-black mb-8 self-center">
-                IT'S PERFECT IF...
-              </h3>
               
-              <ul className="space-y-6 px-[86px]">
+              
+              <ul className="space-y-6 px-[74px] py-0 my-[16px] mx-0">
                 {["You hate boring workouts", "You struggle with motivation", "You want to feel good while moving"].map((point, index) => <li key={index} className="flex items-center space-x-4 text-gray-800 text-xl font-medium">
                     <span className="text-yellow-400 text-2xl flex-shrink-0">•</span>
-                    <span>{point}</span>
+                    <span className="text-xl font-semibold px-[5px] mx-0 my-[10px] py-[6px]">{point}</span>
                   </li>)}
               </ul>
             </div>
@@ -176,19 +161,7 @@ const BoxTargetAndFAQ = () => {
               {/* Fixed video container - remove extra space */}
               <div className="relative w-3/5 overflow-hidden shadow-md rounded-sm">
                 <div className="aspect-[9/16] w-full">
-                  <VideoPlayer 
-                    src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
-                    poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
-                    autoPlay={isVisible} 
-                    muted={true} 
-                    loop={true} 
-                    controls={false} 
-                    playMode="onView" 
-                    aspectRatio="portrait" 
-                    className="w-full h-full" 
-                    width={360} 
-                    height={640} 
-                  />
+                  <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isVisible} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full h-full" width={360} height={640} />
                 </div>
               </div>
             </div>
