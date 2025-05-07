@@ -30,7 +30,7 @@ const LimitedOfferSection = () => {
 
           <div className="max-w-4xl mx-auto">
             {/* Video/Image Container */}
-            <div className="relative w-full mb-6 rounded-2xl overflow-hidden shadow-xl">
+            <div className="relative w-full md:w-[60%] mx-auto mb-6 rounded-2xl overflow-hidden shadow-xl">
               <img 
                 src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746366944/poster_dgzet0.jpg" 
                 alt="Private Gym Video Poster" 

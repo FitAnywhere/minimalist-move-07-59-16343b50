@@ -92,8 +92,8 @@ const BoxTargetAndFAQ = () => {
             </ul>
             
             <div className="max-w-md mx-auto">
-              {/* Adjusted video container - Make it wider */}
-              <div className="relative w-[90%] mx-auto overflow-hidden shadow-md rounded-md">
+              {/* Video container for mobile */}
+              <div className="relative w-[80%] mx-auto overflow-hidden shadow-md rounded-md">
                 <div className="aspect-[9/16] w-full">
                   <VideoPlayer 
                     src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
@@ -125,8 +125,8 @@ const BoxTargetAndFAQ = () => {
             </div>
             
             <div className="w-full h-full flex items-center justify-center">
-              {/* Adjusted video container - Make it wider */}
-              <div className="relative w-[85%] overflow-hidden shadow-md rounded-sm">
+              {/* Fixed video container for desktop - fixing size to match original design */}
+              <div className="relative w-[65%] overflow-hidden shadow-md rounded-sm">
                 <div className="aspect-[9/16] w-full">
                   <VideoPlayer 
                     src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
