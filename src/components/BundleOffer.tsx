@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -40,7 +39,7 @@ const BundleOffer = () => {
             {!isMobile && <div className="flex flex-col items-center space-y-2 ml-8"> {/* Added ml-8 to move closer to carousel */}
                 {/* Added GET 3in1 text */}
                 <div className="text-center mb-3">
-                  <span className="font-bold text-xl text-gray-900">GET 3in1</span>
+                  <span className="font-bold text-xl text-gray-900">GET 3 in 1</span>
                 </div>
                 
                 <div className="flex items-center gap-3 justify-center px-[97px] py-[4px]">
