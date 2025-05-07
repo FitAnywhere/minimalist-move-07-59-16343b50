@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
-import VideoPlayer from "@/components/ui/VideoPlayer";
 
 const faqItems = [{
   question: "How do I set up FitAnywhere?",
@@ -44,30 +43,12 @@ const faqItems = [{
 
 const GymFAQ = () => {
   const faqSectionRef = useRef<HTMLDivElement>(null);
-  const videoSectionRef = useRef<HTMLDivElement>(null);
   const isFaqInView = useInView(faqSectionRef);
-  const isVideoInView = useInView(videoSectionRef, {
-    threshold: 0.3
-  });
   const [isOpen, setIsOpen] = useState(false);
   
   return <section id="faq" ref={faqSectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
-          {/* Video Section - Updated text to all caps */}
-          <div ref={videoSectionRef} className={cn("mb-16 transition-all duration-700", isVideoInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-            <h3 className="text-center text-xl md:text-2xl font-medium text-gray-800 mb-6">IT'S SIMPLER THAN YOU THINK</h3>
-            <div className="w-full md:w-[65%] mx-auto">
-              <div className="aspect-video overflow-hidden rounded-xl shadow-md">
-                <VideoPlayer src="/Results.mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746587883/readyy_j46izj.png" aspectRatio="video" autoPlay={isVideoInView} muted={true} loop={true} controls={false} preload="metadata" playMode="onView" showHeroVolumeControl={false} className="w-full" />
-              </div>
-            </div>
-            
-            {/* New text added below the video */}
-            <h3 className="text-center text-xl md:text-2xl font-medium text-gray-800 mt-8">YOU ONLY NEED TO CHOOSE ONCE</h3>
-          </div>
-          
-          {/* FAQ Section - Moved below the video and new text */}
           <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
             <div className="text-center mb-12">
               <CollapsibleTrigger className="w-full flex justify-center items-center cursor-pointer group">

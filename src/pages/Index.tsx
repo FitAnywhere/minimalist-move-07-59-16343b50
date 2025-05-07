@@ -9,6 +9,7 @@ const BundleOffer = lazy(() => import('@/components/BundleOffer'));
 const GymTarget = lazy(() => import('@/components/gym/GymTarget'));
 const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
 const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalculator'));
+const GymVideoSection = lazy(() => import('@/components/gym/GymVideoSection'));
 const GymFAQ = lazy(() => import('@/components/gym/GymFAQ'));
 const QuizSection = lazy(() => import('@/components/quiz/QuizSection'));
 const GymCallToAction = lazy(() => import('@/components/gym/GymCallToAction'));
@@ -58,7 +59,13 @@ const Index = () => {
         </Suspense>
       </div>
       
-      {/* Moved QuizSection to be directly above FAQ section */}
+      {/* Added video section above quiz section */}
+      <div id="video-section" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <GymVideoSection />
+        </Suspense>
+      </div>
+      
       <div id="quiz" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <QuizSection />
