@@ -151,7 +151,7 @@ const BoxTargetAndFAQ = () => {
               </div>
             </div>
             
-            <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">100€ GIFT FOR YOUR PRIVATE GYM</p>
+            <p className="text-gray-700 mb-6 max-w-xl mx-auto font-medium text-xl">100€ GIFT FOR YOUR PRIVATE GYM</p>
             
             <div className="flex justify-center">
               <button className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]" onClick={handleStripeCheckout}>
