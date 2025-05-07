@@ -166,16 +166,16 @@ const TestimonialsCarouselThird = () => {
           </div>
           
           <div className={cn(
-            "mt-16 text-center transition-all duration-500",
+            "mt-16 text-center md:text-left transition-all duration-500",
             isInView ? "opacity-100" : "opacity-0 translate-y-4"
           )}>
-            <h3 className="text-2xl md:text-3xl font-bold text-black mb-6">
-              IT'S PERFECT IF...
-            </h3>
-            
             {/* Mobile layout (bullet points + video stacked) */}
             <div className="md:hidden">
-              <ul className="max-w-md mx-auto space-y-4 text-center mb-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-black mb-6">
+                IT'S PERFECT IF...
+              </h3>
+              
+              <ul className="max-w-md mx-auto text-left space-y-5 mb-8">
                 {[
                   "You hate boring workouts",
                   "You struggle with motivation",
@@ -183,9 +183,9 @@ const TestimonialsCarouselThird = () => {
                 ].map((point, index) => (
                   <li 
                     key={index} 
-                    className="flex items-center justify-center space-x-3 text-gray-800 text-base"
+                    className="flex items-center space-x-4 text-gray-800 text-base font-medium"
                   >
-                    <span className="text-yellow-400 text-xl">•</span>
+                    <span className="text-yellow-400 text-2xl flex-shrink-0">•</span>
                     <span>{point}</span>
                   </li>
                 ))}
@@ -203,15 +203,21 @@ const TestimonialsCarouselThird = () => {
                     playMode="onView"
                     aspectRatio="video"
                     className="w-full"
+                    width={640}
+                    height={360}
                   />
                 </div>
               </div>
             </div>
             
             {/* Desktop layout (two column) */}
-            <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-center">
+            <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-start">
               <div className="text-left">
-                <ul className="space-y-4">
+                <h3 className="text-2xl md:text-3xl font-bold text-black mb-6">
+                  IT'S PERFECT IF...
+                </h3>
+                
+                <ul className="space-y-5">
                   {[
                     "You hate boring workouts",
                     "You struggle with motivation",
@@ -219,16 +225,16 @@ const TestimonialsCarouselThird = () => {
                   ].map((point, index) => (
                     <li 
                       key={index} 
-                      className="flex items-center space-x-3 text-gray-800 text-lg"
+                      className="flex items-center space-x-4 text-gray-800 text-lg font-medium"
                     >
-                      <span className="text-yellow-400 text-xl">•</span>
+                      <span className="text-yellow-400 text-2xl flex-shrink-0">•</span>
                       <span>{point}</span>
                     </li>
                   ))}
                 </ul>
               </div>
               
-              <div ref={videoContainerRef} className="w-full">
+              <div ref={videoContainerRef} className="w-full h-full flex items-center">
                 <div className="relative w-full rounded-xl overflow-hidden shadow-md">
                   <VideoPlayer 
                     src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
@@ -240,6 +246,8 @@ const TestimonialsCarouselThird = () => {
                     playMode="onView"
                     aspectRatio="video"
                     className="w-full"
+                    width={640}
+                    height={360}
                   />
                 </div>
               </div>
@@ -252,4 +260,3 @@ const TestimonialsCarouselThird = () => {
 };
 
 export default TestimonialsCarouselThird;
-
