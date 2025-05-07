@@ -1,15 +1,12 @@
-
 import { useRef } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-
 interface FAQItem {
   question: string;
   answer: string;
 }
-
 const faqItems: FAQItem[] = [{
   question: "How do I claim my €100 bonus?",
   answer: "Just ordered BoxFun? Send us your purchase confirmation on Facebook or WhatsApp, and we'll send you a €100 discount for the portable gym."
@@ -44,12 +41,10 @@ const faqItems: FAQItem[] = [{
   question: "Can it help with coordination or focus?",
   answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
 }];
-
 const BoxCallToAction = () => {
   const faqSectionRef = useRef<HTMLDivElement>(null);
   const ctaSectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
-  
   const isFaqInView = useInView(faqSectionRef);
   const isCtaInView = useInView(ctaSectionRef, {
     threshold: 0.3
@@ -57,14 +52,11 @@ const BoxCallToAction = () => {
 
   // Set up parallax effect
   useParallax(backgroundRef, 0.05);
-  
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/7sIdTg8G31b720U14k', '_blank');
   };
-  
-  return (
-    <>
+  return <>
       {/* FAQ Section */}
       <section id="faq" className="py-24 bg-gray-50">
         <div className="container mx-auto px-6">
@@ -73,25 +65,16 @@ const BoxCallToAction = () => {
               <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center relative inline-block mb-12">
                 FREQUENTLY ASKED QUESTIONS
                 <span className={cn("absolute bottom-0 left-0 right-0 mx-auto h-1 bg-yellow-400 transform transition-transform duration-1000", isFaqInView ? "scale-x-100" : "scale-x-0")} style={{
-                  width: '100%'
-                }}></span>
+                width: '100%'
+              }}></span>
               </h2>
             </div>
             
             <div ref={faqSectionRef} className="max-w-3xl mx-auto">
               <Accordion type="single" collapsible className="w-full">
-                {faqItems.map((item, index) => (
-                  <AccordionItem 
-                    key={index} 
-                    value={`item-${index}`} 
-                    className={cn(
-                      "mb-4 transition-all duration-300 rounded-lg overflow-hidden", 
-                      isFaqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                    )} 
-                    style={{
-                      transitionDelay: `${index * 100}ms`
-                    }}
-                  >
+                {faqItems.map((item, index) => <AccordionItem key={index} value={`item-${index}`} className={cn("mb-4 transition-all duration-300 rounded-lg overflow-hidden", isFaqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")} style={{
+                transitionDelay: `${index * 100}ms`
+              }}>
                     <div className="border border-transparent hover:bg-gray-50/50 transition-all duration-300 rounded-lg
                     data-[state=open]:border-yellow data-[state=open]:border-[1.5px] data-[state=open]:bg-white">
                       <AccordionTrigger className="py-4 px-5 text-lg font-medium hover:no-underline flex justify-between items-center transition-all duration-300">
@@ -101,8 +84,7 @@ const BoxCallToAction = () => {
                         {item.answer}
                       </AccordionContent>
                     </div>
-                  </AccordionItem>
-                ))}
+                  </AccordionItem>)}
               </Accordion>
             </div>
           </div>
@@ -111,8 +93,8 @@ const BoxCallToAction = () => {
       
       {/* CTA Section */}
       <section id="order" ref={ctaSectionRef} className="relative py-8 md:py-12 overflow-hidden min-h-[auto] md:min-h-[40vh] flex items-center" style={{
-        background: 'linear-gradient(to bottom, #8A898C 0%, #555555 40%, #333333 70%, #222222 85%, black 100%)'
-      }}>
+      background: 'linear-gradient(to bottom, #8A898C 0%, #555555 40%, #333333 70%, #222222 85%, black 100%)'
+    }}>
         {/* Parallax Background */}
         <div ref={backgroundRef} className="absolute inset-0 opacity-30">
           {/* Background content if needed */}
@@ -122,7 +104,7 @@ const BoxCallToAction = () => {
           <div className="max-w-5xl mx-auto text-center">
             <div className="space-y-4 md:space-y-2">
               {/* Promotional text above CTA button */}
-              <p className={cn("font-semibold text-lg md:text-xl text-yellow transition-all duration-1000 mb-4", isCtaInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>Ready to get fit and actually enjoy it?</p>
+              <p className={cn("font-semibold text-lg md:text-xl text-yellow transition-all duration-1000 mb-4", isCtaInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>READY TO GET FIT WHILE HAVING FUN?</p>
               
               {/* CTA Button - reduced spacing */}
               <div className={cn("transition-all duration-1000 mt-4 md:mt-6", isCtaInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
@@ -137,8 +119,6 @@ const BoxCallToAction = () => {
           </div>
         </div>
       </section>
-    </>
-  );
+    </>;
 };
-
 export default BoxCallToAction;
