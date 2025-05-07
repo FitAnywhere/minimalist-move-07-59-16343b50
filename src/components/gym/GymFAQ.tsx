@@ -58,7 +58,7 @@ const GymFAQ = () => {
   const faqSectionRef = useRef<HTMLDivElement>(null);
   const videoSectionRef = useRef<HTMLDivElement>(null);
   const isFaqInView = useInView(faqSectionRef);
-  const isVideoInView = useInView(videoSectionRef);
+  const isVideoInView = useInView(videoSectionRef, { threshold: 0.3 });
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -115,7 +115,7 @@ const GymFAQ = () => {
             </CollapsibleContent>
           </Collapsible>
           
-          {/* Video Section */}
+          {/* Video Section - Updated to match FOREVER YOURS section */}
           <div 
             ref={videoSectionRef}
             className={cn(
@@ -126,20 +126,22 @@ const GymFAQ = () => {
             <h3 className="text-center text-xl md:text-2xl font-medium text-gray-800 mb-6">
               Achieve remarkable results without leaving your home—it's simpler than you think.
             </h3>
-            <div className="max-w-4xl mx-auto">
-              <VideoPlayer
-                src="/Results.mp4"
-                poster="/placeholder.svg"
-                aspectRatio="video"
-                autoPlay={false}
-                muted={true}
-                loop={false}
-                controls={true}
-                preload="metadata"
-                playMode="onView"
-                showHeroVolumeControl={true}
-                className="rounded-lg overflow-hidden shadow-xl"
-              />
+            <div className="w-full md:w-[65%] mx-auto">
+              <div className="aspect-video overflow-hidden rounded-xl shadow-md">
+                <VideoPlayer
+                  src="/Results.mp4"
+                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746587883/readyy_j46izj.png"
+                  aspectRatio="video"
+                  autoPlay={isVideoInView}
+                  muted={true}
+                  loop={true}
+                  controls={false}
+                  preload="metadata"
+                  playMode="onView"
+                  showHeroVolumeControl={false}
+                  className="w-full"
+                />
+              </div>
             </div>
           </div>
         </div>
