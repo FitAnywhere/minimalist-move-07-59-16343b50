@@ -175,7 +175,7 @@ const TestimonialsCarouselThird = () => {
                 {/* Reduced video size by ~15-20% and set to 9:16 aspect ratio */}
                 <div style={{
                 aspectRatio: '9/16'
-              }} className="relative w-4/5 mx-auto rounded-xl overflow-hidden shadow-md py-0">
+              }} className="relative w-4/5 mx-auto overflow-hidden shadow-md py-0 rounded-sm">
                   <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isVisible} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full" width={360} height={640} />
                 </div>
               </div>
