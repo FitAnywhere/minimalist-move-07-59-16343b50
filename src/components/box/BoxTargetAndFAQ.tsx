@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -7,12 +6,10 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { useVideoOptimization } from '@/hooks/useVideoOptimization';
-
 interface FAQItem {
   question: string;
   answer: string;
 }
-
 const faqItems: FAQItem[] = [{
   question: "How do I claim my €100 bonus?",
   answer: "Just ordered BoxFun? Send us your purchase confirmation on Facebook or WhatsApp, and we'll send you a €100 discount for the portable gym."
@@ -47,7 +44,6 @@ const faqItems: FAQItem[] = [{
   question: "Can it help with coordination or focus?",
   answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
 }];
-
 const BoxTargetAndFAQ = () => {
   const perfectIfSectionRef = useRef<HTMLDivElement>(null);
   const specialOfferSectionRef = useRef<HTMLDivElement>(null);
@@ -64,12 +60,10 @@ const BoxTargetAndFAQ = () => {
     e.preventDefault();
     window.open('https://fitanywhere.today/', '_blank');
   };
-
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
   };
-
   return <>
     {/* 3. IT'S PERFECT IF... Section */}
     <section id="perfect-if" ref={perfectIfSectionRef} className="py-16 bg-white">
@@ -95,19 +89,7 @@ const BoxTargetAndFAQ = () => {
               {/* Video container for mobile */}
               <div className="relative w-[80%] mx-auto overflow-hidden shadow-md rounded-md">
                 <div className="aspect-[3/4] w-full">
-                  <VideoPlayer 
-                    src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
-                    poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
-                    autoPlay={isPerfectIfInView} 
-                    muted={true} 
-                    loop={true} 
-                    controls={false} 
-                    playMode="onView" 
-                    aspectRatio="portrait" 
-                    className="w-full h-full object-cover" 
-                    width={360} 
-                    height={480} 
-                  />
+                  <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isPerfectIfInView} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full h-full object-cover" width={360} height={480} />
                 </div>
               </div>
             </div>
@@ -128,19 +110,7 @@ const BoxTargetAndFAQ = () => {
               {/* Fixed video container for desktop with 3:4 aspect ratio */}
               <div className="relative w-[65%] overflow-hidden shadow-md rounded-sm">
                 <div className="aspect-[3/4] w-full">
-                  <VideoPlayer 
-                    src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
-                    poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
-                    autoPlay={isPerfectIfInView} 
-                    muted={true} 
-                    loop={true} 
-                    controls={false} 
-                    playMode="onView" 
-                    aspectRatio="portrait" 
-                    className="w-full h-full object-cover" 
-                    width={360} 
-                    height={480} 
-                  />
+                  <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isPerfectIfInView} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full h-full object-cover" width={360} height={480} />
                 </div>
               </div>
             </div>
@@ -160,34 +130,22 @@ const BoxTargetAndFAQ = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isSpecialOfferInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            <p className="text-gray-700 mb-6 max-w-xl mx-auto font-medium py-[16px] my-[12px] text-xl px-[59px]">GET 100€ GIFT FOR YOUR PRIVATE GYM</p>
+            
             
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
-              <div className="p-6 flex flex-col items-center">
-                <img 
-                  src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745092806/Screenshot_16_qqtwbf.png" 
-                  alt="BoxFun Offer" 
-                  className="object-contain w-full md:w-[75%] rounded-2xl" 
-                  loading="lazy" 
-                  width="800" 
-                  height="600" 
-                  srcSet="
+              <div className="p-6 flex flex-col items-center py-[35px]">
+                <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745092806/Screenshot_16_qqtwbf.png" alt="BoxFun Offer" className="object-contain w-full md:w-[75%] rounded-2xl" loading="lazy" width="800" height="600" srcSet="
                     https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1745092806/Screenshot_16_qqtwbf.png 400w,
                     https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1745092806/Screenshot_16_qqtwbf.png 800w,
                     https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_1200/v1745092806/Screenshot_16_qqtwbf.png 1200w
-                  " 
-                  sizes="(max-width: 768px) 400px, 800px" 
-                />
+                  " sizes="(max-width: 768px) 400px, 800px" />
               </div>
             </div>
             
-            <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">Big moves deserve big rewards.</p>
+            <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">100€ GIFT FOR YOUR PRIVATE GYM</p>
             
             <div className="flex justify-center">
-              <button 
-                className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]"
-                onClick={handleStripeCheckout}
-              >
+              <button className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]" onClick={handleStripeCheckout}>
                 🛒 SECURE YOURS
               </button>
             </div>
@@ -197,5 +155,4 @@ const BoxTargetAndFAQ = () => {
     </section>
   </>;
 };
-
 export default BoxTargetAndFAQ;
