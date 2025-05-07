@@ -38,6 +38,11 @@ const BundleOffer = () => {
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0" // Changed gap from 3 to 0
         )}>
             {!isMobile && <div className="flex flex-col items-center space-y-2 ml-8"> {/* Added ml-8 to move closer to carousel */}
+                {/* Added GET 3in1 text */}
+                <div className="text-center mb-3">
+                  <span className="font-bold text-xl text-gray-900">GET 3in1</span>
+                </div>
+                
                 <div className="flex items-center gap-3 justify-center px-[97px] py-[4px]">
                   <span className="text-2xl text-gray-700 line-through">
                     {formatPrice(originalPrice)}
@@ -61,6 +66,11 @@ const BundleOffer = () => {
             </div>
 
             {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
+                {/* Added GET 3in1 text for mobile */}
+                <div className="text-center mb-2">
+                  <span className="font-bold text-lg text-gray-900">GET 3in1</span>
+                </div>
+                
                 <div className="flex items-center gap-3 justify-center">
                   <span className="text-xl text-gray-700 line-through">
                     {formatPrice(originalPrice)}
