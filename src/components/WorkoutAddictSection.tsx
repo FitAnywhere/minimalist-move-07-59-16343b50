@@ -117,7 +117,9 @@ const WorkoutAddictSection = () => {
                     </div>
                     
                     <div className={cn("mt-6 w-full flex justify-center transition-all duration-700 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
-                      
+                      <p className="text-lg font-medium text-gray-800">
+                        Without ever stepping into a gym
+                      </p>
                     </div>
                   </div>}
                 
@@ -207,7 +209,11 @@ const WorkoutAddictSection = () => {
                     {renderBoxFunVideo()}
                   </div>
                   
-                  
+                  <div className="mt-6 w-full text-center">
+                    <p className="text-lg font-medium text-gray-800">
+                      Without ever stepping into a gym
+                    </p>
+                  </div>
                 </div>}
             </div>
           </div>
