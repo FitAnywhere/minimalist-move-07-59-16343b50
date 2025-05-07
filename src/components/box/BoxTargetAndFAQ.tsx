@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -98,6 +99,11 @@ const BoxTargetAndFAQ = () => {
                 <VideoPlayer src="/452025 Akcija.mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746366944/poster_dgzet0.jpg" autoPlay={isVisible} muted={true} loop={true} playMode="onView" aspectRatio="video" className="w-full" />
               </div>
             </div>
+            
+            {/* Added text below video */}
+            <p className="text-lg md:text-xl font-medium text-gray-800 mt-6 mb-8">
+              Where beginners do what once felt impossible
+            </p>
 
             <div className="flex justify-center mt-8">
               <a href="#" onClick={handleCTAClick} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]">
