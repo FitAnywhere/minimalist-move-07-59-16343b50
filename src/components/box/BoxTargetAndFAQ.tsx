@@ -1,9 +1,13 @@
+
 import React, { useState, useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
+import VideoPlayer from '@/components/ui/VideoPlayer';
+import { useVideoOptimization } from '@/hooks/useVideoOptimization';
+
 interface FAQItem {
   question: string;
   answer: string;
@@ -63,12 +67,22 @@ const faqItems: FAQItem[] = [{
 const BoxTargetAndFAQ = () => {
   const targetSectionRef = useRef<HTMLElement>(null);
   const faqSectionRef = useRef<HTMLDivElement>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
   const isTargetInView = useInView(targetSectionRef);
   const isFaqInView = useInView(faqSectionRef);
+  const [videoContainerRef2, isVisible, isLoaded] = useVideoOptimization({
+    threshold: 0.1,
+    rootMargin: '200px',
+    lazyLoad: true,
+    priorityLoad: false
+  });
+  const isMobile = useIsMobile();
+  
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://fitanywhere.today/', '_blank');
   };
+  
   return <>
     {/* Target Audience Section */}
     <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
@@ -76,17 +90,27 @@ const BoxTargetAndFAQ = () => {
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center mb-20 transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-12")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
-              WHAT IS PORTABLE GYM?
+              WHAT IS A PRIVATE GYM?
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isTargetInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            <p className="text-lg md:text-xl text-gray-700 mt-6 mb-16">A home setup that helps you do what you thought was impossible.</p>
+            <p className="text-lg md:text-xl text-gray-700 mt-6 mb-8">A home setup that helps you do what you thought was impossible.</p>
             
-            <div className="text-center mb-8">
-              
+            {/* Video Player */}
+            <div ref={videoContainerRef2} className="max-w-4xl mx-auto mb-8">
+              <div className="relative w-full rounded-2xl overflow-hidden shadow-xl">
+                <VideoPlayer 
+                  src="/452025 Akcija.mp4" 
+                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746366944/poster_dgzet0.jpg"
+                  autoPlay={isVisible}
+                  muted={true}
+                  loop={true}
+                  playMode="onView"
+                  aspectRatio="video"
+                  className="w-full"
+                />
+              </div>
             </div>
-            
-            
 
             <div className="flex justify-center mt-8">
               <a href="#" onClick={handleCTAClick} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px]">
