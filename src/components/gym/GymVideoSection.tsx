@@ -18,7 +18,7 @@ const GymVideoSection = () => {
               </div>
             </div>
             
-            <h3 className="text-center text-xl md:text-2xl font-medium text-gray-800 mt-8">YOU ONLY NEED TO CHOOSE ONCE</h3>
+            
           </div>
         </div>
       </div>
