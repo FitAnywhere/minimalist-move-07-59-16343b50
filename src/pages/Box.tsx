@@ -50,15 +50,15 @@ const Box = () => {
         </Suspense>
       </div>
       
-      <div id="limited-offer" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <LimitedOfferSection />
-        </Suspense>
-      </div>
-      
       <div id="target-faq" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <BoxTargetAndFAQ />
+        </Suspense>
+      </div>
+      
+      <div id="limited-offer" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <LimitedOfferSection />
         </Suspense>
       </div>
       

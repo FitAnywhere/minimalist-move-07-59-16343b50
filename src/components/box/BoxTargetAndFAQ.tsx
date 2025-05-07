@@ -6,6 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { useVideoOptimization } from '@/hooks/useVideoOptimization';
+
 interface FAQItem {
   question: string;
   answer: string;
@@ -135,8 +136,8 @@ const BoxTargetAndFAQ = () => {
             </ul>
             
             <div className="max-w-md mx-auto">
-              {/* Fixed video container - remove extra space */}
-              <div className="relative w-3/5 mx-auto overflow-hidden shadow-md rounded-md">
+              {/* Adjusted video container - Make it wider */}
+              <div className="relative w-4/5 mx-auto overflow-hidden shadow-md rounded-md">
                 <div className="aspect-[9/16] w-full">
                   <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isVisible} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full h-full" width={360} height={640} />
                 </div>
@@ -147,8 +148,6 @@ const BoxTargetAndFAQ = () => {
           {/* Desktop layout (two column) */}
           <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-start">
             <div className="text-left flex flex-col justify-center h-full">
-              
-              
               <ul className="space-y-6 px-[74px] py-0 my-[16px] mx-0">
                 {["You hate boring workouts", "You struggle with motivation", "You want to feel good while moving"].map((point, index) => <li key={index} className="flex items-center space-x-4 text-gray-800 text-xl font-medium">
                     <span className="text-yellow-400 text-2xl flex-shrink-0">•</span>
@@ -158,8 +157,8 @@ const BoxTargetAndFAQ = () => {
             </div>
             
             <div className="w-full h-full flex items-center justify-center">
-              {/* Fixed video container - remove extra space */}
-              <div className="relative w-3/5 overflow-hidden shadow-md rounded-sm">
+              {/* Adjusted video container - Make it wider */}
+              <div className="relative w-3/4 overflow-hidden shadow-md rounded-sm">
                 <div className="aspect-[9/16] w-full">
                   <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isVisible} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full h-full" width={360} height={640} />
                 </div>
