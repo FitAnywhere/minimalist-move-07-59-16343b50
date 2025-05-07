@@ -17,10 +17,26 @@ const SectionLoader = () => (
   </div>
 );
 
+const BoxTitleSection = () => {
+  return (
+    <div className="hidden md:flex flex-col items-center justify-center py-12 bg-white">
+      <h1 className="text-4xl font-extrabold relative inline-block">
+        BOXFUN
+        <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"></span>
+      </h1>
+      <p className="text-gray-700 mt-4 text-lg">
+        Freedom, strength, and fun — without ever stepping into a gym.
+      </p>
+    </div>
+  );
+};
+
 const Box = () => {
   return (
     <div className="overflow-x-hidden">
       <NavBar />
+      
+      <BoxTitleSection />
       
       <div id="workout-addict" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>

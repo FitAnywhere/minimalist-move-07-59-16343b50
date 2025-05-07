@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -6,10 +7,12 @@ import { ChevronRight, ChevronDown, X, Loader } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import VideoPlayer from '@/components/ui/VideoPlayer';
+
 interface LifestyleFeature {
   title: string;
   description: string;
 }
+
 const lifestyleFeatures: LifestyleFeature[] = [{
   title: "FEEL UNSTOPPABLE",
   description: "Tap into boundless energy to train like never before."
@@ -20,6 +23,7 @@ const lifestyleFeatures: LifestyleFeature[] = [{
   title: "WORKOUT YOU'LL ACTUALLY LOVE",
   description: "It's addictive in the best way possible."
 }];
+
 const WorkoutAddictSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -33,19 +37,24 @@ const WorkoutAddictSection = () => {
   const isInView = useInView(sectionRef, {
     threshold: 0.2
   }, false);
+
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
+
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/7sIdTg8G31b720U14k', '_blank');
   };
+
   const handleVideoPlay = () => {
     setIsVideoPlaying(true);
   };
+
   const handleVideoLoad = () => {
     setIsVideoLoaded(true);
   };
+
   const renderBoxFunVideo = () => {
     const mobileVideoWidth = "80%";
     return <div className={cn("relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group", isMobile && "mx-auto")} style={isMobile ? {
@@ -83,6 +92,7 @@ const WorkoutAddictSection = () => {
         </div>
       </div>;
   };
+
   return <section ref={sectionRef} className="py-20 relative overflow-hidden" id="workout-addict">
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         {Array.from({
@@ -103,7 +113,7 @@ const WorkoutAddictSection = () => {
           <div className={cn("transition-all duration-1000 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
             <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
               <div className="space-y-6 w-full md:w-1/2 flex flex-col h-full justify-between">
-                <div className="space-y-4 text-center md:text-left mb-6 flex-grow-0">
+                <div className="space-y-4 text-center md:text-left mb-6 flex-grow-0 md:hidden">
                   <h2 id="become-workout-addict" className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
                     BOXFUN
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
