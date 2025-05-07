@@ -1,4 +1,3 @@
-
 import { Separator } from "@/components/ui/separator";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
@@ -48,10 +47,10 @@ const TermsOfService = () => {
           
           <h2 className="text-2xl font-semibold mt-8 mb-4">1. COMPANY INFORMATION</h2>
           <p className="text-gray-700 mb-4">This website is owned and operated by:</p>
-          <p className="text-gray-700 mb-4">FitAnywhere<br />Email: be@fitanywhere.today</p>
+          <p className="text-gray-700 mb-4">FitAnywhere</p>
           
           <h2 className="text-2xl font-semibold mt-8 mb-4">2. ORDER PROCESSING & ACCEPTANCE</h2>
-          <p className="text-gray-700 mb-2">2.1 Order Placement – Orders can be placed online through our secure checkout process or by emailing be@fitanywhere.today.</p>
+          <p className="text-gray-700 mb-2">2.1 Order Placement – Orders can be placed online through our secure checkout process.</p>
           <p className="text-gray-700 mb-2">2.2 Order Confirmation – You will receive an email confirming your order details within 24 hours or the next business day.</p>
           <p className="text-gray-700 mb-6">2.3 Order Acceptance – Your order represents an offer to purchase goods, and acceptance occurs only upon shipment. We reserve the right to reject an order due to product availability, pricing errors, inability to authorize payment, or other circumstances at our sole discretion.</p>
           
@@ -92,8 +91,7 @@ const TermsOfService = () => {
           
           <h2 className="text-2xl font-semibold mt-8 mb-4">11. CONTACT INFORMATION</h2>
           <p className="text-gray-700 mb-6">
-            For inquiries, support, or privacy concerns, contact us:<br />
-            Email: be@fitanywhere.today
+            For inquiries, support, or privacy concerns, contact us via WhatsApp.
           </p>
           
           <Separator className="my-8" />
