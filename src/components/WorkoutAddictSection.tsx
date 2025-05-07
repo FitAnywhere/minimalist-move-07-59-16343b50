@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -7,12 +6,10 @@ import { ChevronRight, ChevronDown, X, Loader } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import VideoPlayer from '@/components/ui/VideoPlayer';
-
 interface LifestyleFeature {
   title: string;
   description: string;
 }
-
 const lifestyleFeatures: LifestyleFeature[] = [{
   title: "FEEL UNSTOPPABLE",
   description: "Tap into boundless energy to train like never before."
@@ -23,7 +20,6 @@ const lifestyleFeatures: LifestyleFeature[] = [{
   title: "WORKOUT YOU'LL ACTUALLY LOVE",
   description: "It's addictive in the best way possible."
 }];
-
 const WorkoutAddictSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -37,24 +33,19 @@ const WorkoutAddictSection = () => {
   const isInView = useInView(sectionRef, {
     threshold: 0.2
   }, false);
-
   const handleFeatureClick = (index: number) => {
     setOpenFeatureIndex(openFeatureIndex === index ? null : index);
   };
-
   const handleStripeCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/7sIdTg8G31b720U14k', '_blank');
   };
-
   const handleVideoPlay = () => {
     setIsVideoPlaying(true);
   };
-
   const handleVideoLoad = () => {
     setIsVideoLoaded(true);
   };
-
   const renderBoxFunVideo = () => {
     const mobileVideoWidth = "80%";
     return <div className={cn("relative w-full h-full overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl group", isMobile && "mx-auto")} style={isMobile ? {
@@ -92,7 +83,6 @@ const WorkoutAddictSection = () => {
         </div>
       </div>;
   };
-
   return <section ref={sectionRef} className="py-20 relative overflow-hidden" id="workout-addict">
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         {Array.from({
@@ -205,7 +195,7 @@ const WorkoutAddictSection = () => {
                 
                 <div className="flex flex-col items-center mt-2 flex-grow-0">
                   <Button onClick={handleStripeCheckout} className={cn("bg-yellow hover:bg-yellow-dark text-black font-bold py-4 px-8 rounded-full text-lg", "transition-all duration-300 transform hover:scale-105", "shadow-md hover:shadow-[0_0_25px_rgba(255,215,0,0.6)]", "w-auto max-w-fit text-center", "flex items-center justify-center space-x-2")}>
-                    <span className="my-0 mx-[6px] px-[14px] text-sm font-bold py-0">🛒 BUY BOXFUN NOW Only € 69,99!</span>
+                    <span className="my-0 mx-[6px] px-[14px] text-sm font-bold py-0">🛒 NOW ONLY €69,99</span>
                   </Button>
                   
                   
