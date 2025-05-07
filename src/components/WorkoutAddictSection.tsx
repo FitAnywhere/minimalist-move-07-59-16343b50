@@ -117,9 +117,7 @@ const WorkoutAddictSection = () => {
                     </div>
                     
                     <div className={cn("mt-6 w-full flex justify-center transition-all duration-700 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
-                      <Button variant="outline" size="sm" className="uppercase font-bold border-yellow border-2 bg-transparent text-black hover:bg-yellow-light/20 transition-all text-xs py-1" onClick={() => setShowSpecs(true)}>
-                        Specifications
-                      </Button>
+                      
                     </div>
                   </div>}
                 
