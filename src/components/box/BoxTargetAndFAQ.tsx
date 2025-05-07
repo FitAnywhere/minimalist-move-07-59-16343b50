@@ -7,15 +7,18 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { useVideoOptimization } from '@/hooks/useVideoOptimization';
+
 interface FAQItem {
   question: string;
   answer: string;
 }
+
 interface TargetAudience {
   imageUrl: string;
   title: string;
   description: string;
 }
+
 const targetAudiences: TargetAudience[] = [{
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745074773/dee_sszbgx.png",
   title: "TOTAL BEGINNERS",
@@ -29,6 +32,7 @@ const targetAudiences: TargetAudience[] = [{
   title: "SPACE-SAVING FANS",
   description: "For anyone looking to maximize workouts in small spaces."
 }];
+
 const faqItems: FAQItem[] = [{
   question: "How do I claim my €100 bonus?",
   answer: "Just ordered BoxFun? Send us your purchase confirmation on Facebook or WhatsApp, and we'll send you a €100 discount for the portable gym."
@@ -63,13 +67,15 @@ const faqItems: FAQItem[] = [{
   question: "Can it help with coordination or focus?",
   answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
 }];
+
 const BoxTargetAndFAQ = () => {
   const targetSectionRef = useRef<HTMLElement>(null);
+  const perfectIfSectionRef = useRef<HTMLDivElement>(null);
   const faqSectionRef = useRef<HTMLDivElement>(null);
-  const videoContainerRef = useRef<HTMLDivElement>(null);
   const isTargetInView = useInView(targetSectionRef);
+  const isPerfectIfInView = useInView(perfectIfSectionRef);
   const isFaqInView = useInView(faqSectionRef);
-  const [videoContainerRef2, isVisible, isLoaded] = useVideoOptimization({
+  const [videoContainerRef, isVisible, isLoaded] = useVideoOptimization({
     threshold: 0.1,
     rootMargin: '200px',
     lazyLoad: true,
@@ -80,6 +86,7 @@ const BoxTargetAndFAQ = () => {
     e.preventDefault();
     window.open('https://fitanywhere.today/', '_blank');
   };
+
   return <>
     {/* Target Audience Section */}
     <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
@@ -91,10 +98,8 @@ const BoxTargetAndFAQ = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isTargetInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            
-            
             {/* Video Player */}
-            <div ref={videoContainerRef2} className="max-w-4xl mx-auto mb-8">
+            <div ref={videoContainerRef} className="max-w-4xl mx-auto mb-8">
               <div className="relative w-full rounded-2xl overflow-hidden shadow-xl">
                 <VideoPlayer src="/452025 Akcija.mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746366944/poster_dgzet0.jpg" autoPlay={isVisible} muted={true} loop={true} playMode="onView" aspectRatio="video" className="w-full" />
               </div>
@@ -115,8 +120,90 @@ const BoxTargetAndFAQ = () => {
         </div>
       </div>
     </section>
+
+    {/* Perfect If Section - Created as a separate section from the testimonials */}
+    <section id="perfect-if" ref={perfectIfSectionRef} className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className={cn("text-center mb-12 transition-all duration-1000", isPerfectIfInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
+              IT'S PERFECT IF...
+              <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isPerfectIfInView ? "scale-x-100" : "scale-x-0")}></span>
+            </h2>
+          </div>
+          
+          {/* Mobile layout (bullet points + video stacked) */}
+          <div className="md:hidden">
+            <ul className="max-w-md mx-auto text-left space-y-5 mb-8">
+              {["You hate boring workouts", "You struggle with motivation", "You want to feel good while moving"].map((point, index) => (
+                <li key={index} className="flex items-center space-x-4 text-gray-800 text-base font-medium">
+                  <span className="text-yellow-400 text-2xl flex-shrink-0">•</span>
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+            
+            <div className="max-w-md mx-auto">
+              {/* Reduced video size by ~20% and set to proper aspect ratio */}
+              <div style={{aspectRatio: '9/16'}} className="relative w-3/5 mx-auto overflow-hidden shadow-md py-0 rounded-md">
+                <VideoPlayer 
+                  src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
+                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
+                  autoPlay={isVisible} 
+                  muted={true} 
+                  loop={true} 
+                  controls={false} 
+                  playMode="onView" 
+                  aspectRatio="portrait" 
+                  className="w-full" 
+                  width={360} 
+                  height={640} 
+                />
+              </div>
+            </div>
+          </div>
+          
+          {/* Desktop layout (two column) */}
+          <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-start">
+            <div className="text-left flex flex-col justify-center h-full">
+              <h3 className="text-3xl font-bold text-black mb-8 self-center">
+                IT'S PERFECT IF...
+              </h3>
+              
+              <ul className="space-y-6 px-[86px]">
+                {["You hate boring workouts", "You struggle with motivation", "You want to feel good while moving"].map((point, index) => (
+                  <li key={index} className="flex items-center space-x-4 text-gray-800 text-xl font-medium">
+                    <span className="text-yellow-400 text-2xl flex-shrink-0">•</span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div className="w-full h-full flex items-center justify-center">
+              {/* Reduced video size by ~20% */}
+              <div style={{aspectRatio: '9/16'}} className="relative w-3/5 overflow-hidden shadow-md py-0 rounded-sm">
+                <VideoPlayer 
+                  src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
+                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
+                  autoPlay={isVisible} 
+                  muted={true} 
+                  loop={true} 
+                  controls={false} 
+                  playMode="onView" 
+                  aspectRatio="portrait" 
+                  className="w-full" 
+                  width={360} 
+                  height={640} 
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     
-    {/* FAQ Section - Always visible without dropdown */}
+    {/* FAQ Section */}
     <section id="faq" ref={faqSectionRef} className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
@@ -151,4 +238,5 @@ const BoxTargetAndFAQ = () => {
     </section>
   </>;
 };
+
 export default BoxTargetAndFAQ;

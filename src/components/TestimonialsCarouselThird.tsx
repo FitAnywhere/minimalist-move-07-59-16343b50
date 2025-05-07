@@ -1,3 +1,4 @@
+
 import { useState, useRef, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -6,12 +7,14 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { useVideoOptimization } from '@/hooks/useVideoOptimization';
+
 interface Testimonial {
   name: string;
   role: string;
   quote: string;
   imageUrl: string;
 }
+
 const testimonials: Testimonial[] = [{
   name: "Laura G.",
   role: "",
@@ -38,6 +41,7 @@ const testimonials: Testimonial[] = [{
   quote: "Getting fit used to feel like work. Now it feels like play.",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744141492/Izdelek_brez_naslova_-_2025-04-08T214404.198_yb1jc0.png"
 }];
+
 const TestimonialImage = memo(({
   imageUrl
 }: {
@@ -64,7 +68,9 @@ const TestimonialImage = memo(({
         `} sizes="(max-width: 640px) 300px, (max-width: 768px) 400px, 600px" />
     </div>;
 });
+
 TestimonialImage.displayName = 'TestimonialImage';
+
 const TestimonialCard = ({
   testimonial
 }: {
@@ -90,16 +96,12 @@ const TestimonialCard = ({
       </div>
     </div>;
 };
+
 const TestimonialsCarouselThird = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
-  const [videoContainerRef, isVisible, isLoaded] = useVideoOptimization({
-    threshold: 0.1,
-    rootMargin: '200px',
-    lazyLoad: true,
-    priorityLoad: false
-  });
+
   return <section ref={containerRef} id="testimonials-third" className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
@@ -131,58 +133,9 @@ const TestimonialsCarouselThird = () => {
           
           {/* Added empty space container for more spacing */}
           <div className="h-12 md:h-16"></div>
-          
-          <div className={cn("mt-16 text-center md:text-left transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
-            {/* Mobile layout (bullet points + video stacked) */}
-            <div className="md:hidden">
-              <h3 className="text-2xl md:text-3xl font-bold text-black mb-6">
-                IT'S PERFECT IF...
-              </h3>
-              
-              <ul className="max-w-md mx-auto text-left space-y-5 mb-8">
-                {["You hate boring workouts", "You struggle with motivation", "You want to feel good while moving"].map((point, index) => <li key={index} className="flex items-center space-x-4 text-gray-800 text-base font-medium">
-                    <span className="text-yellow-400 text-2xl flex-shrink-0">•</span>
-                    <span>{point}</span>
-                  </li>)}
-              </ul>
-              
-              <div ref={videoContainerRef} className="max-w-md mx-auto">
-                {/* Reduced video size by ~15-20% and set to 9:16 aspect ratio */}
-                <div style={{
-                aspectRatio: '9/16'
-              }} className="relative w-4/5 mx-auto overflow-hidden shadow-md py-0 rounded-md">
-                  <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isVisible} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full" width={360} height={640} />
-                </div>
-              </div>
-            </div>
-            
-            {/* Desktop layout (two column) */}
-            <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-start">
-              <div className="text-left flex flex-col justify-center h-full">
-                <h3 className="text-2xl md:text-3xl font-bold text-black mb-6 self-center">
-                  IT'S PERFECT IF...
-                </h3>
-                
-                <ul className="space-y-5 px-[86px]">
-                  {["You hate boring workouts", "You struggle with motivation", "You want to feel good while moving"].map((point, index) => <li key={index} className="flex items-center space-x-4 text-gray-800 text-lg font-medium">
-                      <span className="text-yellow-400 text-2xl flex-shrink-0">•</span>
-                      <span>{point}</span>
-                    </li>)}
-                </ul>
-              </div>
-              
-              <div ref={videoContainerRef} className="w-full h-full flex items-center">
-                {/* Reduced video size by ~15-20% and set to 9:16 aspect ratio */}
-                <div style={{
-                aspectRatio: '9/16'
-              }} className="relative w-4/5 mx-auto overflow-hidden shadow-md py-0 rounded-sm">
-                  <VideoPlayer src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" autoPlay={isVisible} muted={true} loop={true} controls={false} playMode="onView" aspectRatio="portrait" className="w-full" width={360} height={640} />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>;
 };
+
 export default TestimonialsCarouselThird;
