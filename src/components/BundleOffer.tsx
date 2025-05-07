@@ -67,7 +67,7 @@ const BundleOffer = () => {
             {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
                 {/* Added GET 3in1 text for mobile */}
                 <div className="text-center mb-2">
-                  <span className="font-bold text-lg text-gray-900">GET 3in1</span>
+                  <span className="font-bold text-lg text-gray-900">GET 3 in 1</span>
                 </div>
                 
                 <div className="flex items-center gap-3 justify-center">
