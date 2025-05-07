@@ -19,7 +19,7 @@ const SectionLoader = () => (
 
 const BoxTitleSection = () => {
   return (
-    <div className="hidden md:flex flex-col items-center justify-center py-12 bg-white">
+    <div className="hidden md:flex flex-col items-center justify-center pt-28 pb-6 bg-gradient-to-br from-gray-50 to-gray-100">
       <h1 className="text-4xl font-extrabold relative inline-block">
         BOXFUN
         <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"></span>
