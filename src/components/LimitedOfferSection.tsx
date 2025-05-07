@@ -29,14 +29,14 @@ const LimitedOfferSection = () => {
                     https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1745092806/Screenshot_16_qqtwbf.png 800w,
                     https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_1200/v1745092806/Screenshot_16_qqtwbf.png 1200w
                   " sizes="(max-width: 768px) 400px, 800px" />
-                <h3 className="text-center mb-2 text-[#337833] font-bold text-xl">FOR UPGRADING YOUR LIFE</h3>
+                
               </div>
             </div>
             
             <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto font-medium">Big moves deserve big rewards.</p>
             
             <div className="flex justify-center">
-              <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105")} onClick={handleGetBoxFunFree}>🛒  BoxFun + BONUS!</Button>
+              <Button size="lg" variant="yellow" className={cn("text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105")} onClick={handleGetBoxFunFree}>🛒 SECURE  YOURS</Button>
             </div>
           </div>
         </div>
