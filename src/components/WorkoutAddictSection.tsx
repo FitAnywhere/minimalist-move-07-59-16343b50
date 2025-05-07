@@ -108,7 +108,7 @@ const WorkoutAddictSection = () => {
                     BOXFUN
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
                   </h2>
-                  <p className="text-gray-700 mt-2 font-medium text-base py-[9px]">Freedom, strength, and fun — without ever stepping into a gym.</p>
+                  <p className="text-gray-700 mt-2 font-medium text-base py-[9px]">Strength and fun without stepping into a gym</p>
                 </div>
                 
                 {isMobile && <div className="w-full flex flex-col items-center my-6">
@@ -117,9 +117,7 @@ const WorkoutAddictSection = () => {
                     </div>
                     
                     <div className={cn("mt-6 w-full flex justify-center transition-all duration-700 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
-                      <p className="text-lg font-medium text-gray-800">
-                        Without ever stepping into a gym
-                      </p>
+                      
                     </div>
                   </div>}
                 
