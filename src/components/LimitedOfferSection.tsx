@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useInView } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
+import VideoPlayer from '@/components/ui/VideoPlayer';
 
 const LimitedOfferSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -29,14 +30,21 @@ const LimitedOfferSection = () => {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            {/* Video/Image Container */}
+            {/* Video Container */}
             <div className="relative w-full md:w-[60%] mx-auto mb-6 rounded-2xl overflow-hidden shadow-xl">
-              <img 
-                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746366944/poster_dgzet0.jpg" 
-                alt="Private Gym Video Poster" 
-                className="w-full h-auto object-cover rounded-2xl" 
-                loading="lazy"
-              />
+              <div className="aspect-video w-full">
+                <VideoPlayer 
+                  src="/Results.mp4" 
+                  poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746587883/readyy_j46izj.png" 
+                  aspectRatio="video"
+                  autoPlay={isInView}
+                  muted={true} 
+                  loop={true} 
+                  controls={false}
+                  playMode="onView"
+                  className="w-full h-full object-cover rounded-2xl"
+                />
+              </div>
             </div>
 
             <p className="text-lg md:text-xl font-medium text-gray-800 text-center mt-6 mb-8">

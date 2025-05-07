@@ -94,11 +94,11 @@ const BoxTargetAndFAQ = () => {
             <div className="max-w-md mx-auto">
               {/* Video container for mobile */}
               <div className="relative w-[80%] mx-auto overflow-hidden shadow-md rounded-md">
-                <div className="aspect-[9/16] w-full">
+                <div className="aspect-[3/4] w-full">
                   <VideoPlayer 
                     src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
                     poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
-                    autoPlay={isVisible} 
+                    autoPlay={isPerfectIfInView} 
                     muted={true} 
                     loop={true} 
                     controls={false} 
@@ -106,7 +106,7 @@ const BoxTargetAndFAQ = () => {
                     aspectRatio="portrait" 
                     className="w-full h-full object-cover" 
                     width={360} 
-                    height={640} 
+                    height={480} 
                   />
                 </div>
               </div>
@@ -125,13 +125,13 @@ const BoxTargetAndFAQ = () => {
             </div>
             
             <div className="w-full h-full flex items-center justify-center">
-              {/* Fixed video container for desktop - fixing size to match original design */}
+              {/* Fixed video container for desktop with 3:4 aspect ratio */}
               <div className="relative w-[65%] overflow-hidden shadow-md rounded-sm">
-                <div className="aspect-[9/16] w-full">
+                <div className="aspect-[3/4] w-full">
                   <VideoPlayer 
                     src="/Boxfun Opt (720P) (Online-Video-Cutter.Com).mp4" 
                     poster="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744379740/Screenshot_52_vdjgxp.png" 
-                    autoPlay={isVisible} 
+                    autoPlay={isPerfectIfInView} 
                     muted={true} 
                     loop={true} 
                     controls={false} 
@@ -139,7 +139,7 @@ const BoxTargetAndFAQ = () => {
                     aspectRatio="portrait" 
                     className="w-full h-full object-cover" 
                     width={360} 
-                    height={640} 
+                    height={480} 
                   />
                 </div>
               </div>
@@ -167,7 +167,7 @@ const BoxTargetAndFAQ = () => {
                 <img 
                   src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745092806/Screenshot_16_qqtwbf.png" 
                   alt="BoxFun Offer" 
-                  className="object-contain w-full rounded-2xl" 
+                  className="object-contain w-full md:w-[75%] rounded-2xl" 
                   loading="lazy" 
                   width="800" 
                   height="600" 
