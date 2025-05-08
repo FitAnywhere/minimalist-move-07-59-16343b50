@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -111,21 +112,21 @@ const BundleOffer = () => {
               YOUR GYM → YOUR RULES
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
-            
-            {/* Price counter with background */}
-            <div className="flex items-center gap-3 justify-center mt-4">
-              <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500")}>
-                <span className={cn("text-2xl text-white transition-all duration-300",
-              // Always show line-through until animation is complete
-              animationComplete ? "" : "line-through")}>
-                  €{currentPrice}
-                </span>
-              </a>
-            </div>
           </div>
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0")}>
             {!isMobile && <div className="flex flex-col items-center space-y-2 ml-8">
+                {/* Price counter moved above "Unlock your strongest self" text */}
+                <div className="flex items-center gap-3 justify-center mb-3">
+                  <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500")}>
+                    <span className={cn("text-2xl text-white transition-all duration-300",
+                  // Always show line-through until animation is complete
+                  animationComplete ? "" : "line-through")}>
+                      €{currentPrice}
+                    </span>
+                  </a>
+                </div>
+                
                 <div className="text-center mb-3">
                   <span className="font-bold text-xl text-gray-900">Unlock your strogest self</span>
                 </div>
@@ -139,27 +140,62 @@ const BundleOffer = () => {
                 </p>
               </div>}
 
-            {/* Updated Video/Image Carousel with increased size by 15-20% */}
+            {/* Updated Video/Image Carousel */}
             <div className="w-full max-w-[500px] relative" style={{
-            height: isMobile ? "450px" : "530px" // Increased size by ~15-20%
+            height: isMobile ? "450px" : "530px" // Maintained increased size
           }}>
-              {carouselContent.map((item, index) => <div key={index} className={cn("absolute top-0 left-0 transition-opacity duration-1000 w-full h-full flex flex-col items-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
+              {carouselContent.map((item, index) => (
+                <div 
+                  key={index} 
+                  className={cn(
+                    "absolute top-0 left-0 w-full h-full flex flex-col items-center",
+                    // Remove transition-opacity for immediate transitions
+                    index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+                  )}
+                >
                   <div className="flex justify-center h-[75%] items-center">
-                    {item.type === 'video' ? <video ref={index === 0 ? videoRef : null} src={item.src} className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" muted playsInline loop preload="metadata" /> : <img src={item.src} alt="Product image" className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" loading="eager" />}
+                    {item.type === 'video' ? (
+                      <video 
+                        ref={index === 0 ? videoRef : null} 
+                        src={item.src} 
+                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
+                        muted 
+                        playsInline 
+                        loop 
+                        preload="metadata" 
+                      />
+                    ) : (
+                      <img 
+                        src={item.src} 
+                        alt="Product image" 
+                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
+                        loading="eager" 
+                      />
+                    )}
                   </div>
                   <div className="mt-4 text-center">
                     <p className="font-semibold text-gray-800">{item.label}</p>
                   </div>
-                </div>)}
+                </div>
+              ))}
             </div>
 
             {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
+                {/* Price counter moved above "Unlock your strongest self" text for mobile */}
+                <div className="flex items-center gap-3 justify-center mb-2">
+                  <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500")}>
+                    <span className={cn("text-2xl text-white transition-all duration-300",
+                  // Always show line-through until animation is complete
+                  animationComplete ? "" : "line-through")}>
+                      €{currentPrice}
+                    </span>
+                  </a>
+                </div>
+                
                 <div className="text-center mb-2">
                   <span className="font-bold text-lg text-gray-900">Unlock your strogest self</span>
                 </div>
                 
-                
-
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
                   <ShoppingCart className="w-5 h-5" /> CLAIM THIS DEAL
                 </Button>
