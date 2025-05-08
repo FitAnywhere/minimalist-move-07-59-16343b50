@@ -15,8 +15,29 @@ const ScrollToTopOnRefresh = () => {
   }, [pathname]);
 
   useEffect(() => {
-    // This runs only on initial mount to handle direct URL access
+    // This runs on initial mount
     window.scrollTo(0, 0);
+    
+    // Handle direct navigation or refresh
+    const handleDirectNavigation = () => {
+      // Check if this is the initial page load
+      const isInitialLoad = !sessionStorage.getItem('app_initialized');
+      
+      if (isInitialLoad) {
+        // Mark that the app has been initialized
+        sessionStorage.setItem('app_initialized', 'true');
+        // Ensure we're at the top
+        window.scrollTo(0, 0);
+        
+        // If we arrived via redirect from 404.html, make sure the URL is clean
+        if (window.location.search.includes('?/')) {
+          const targetPath = window.location.search.split('?/')[1].split('&')[0];
+          window.history.replaceState(null, null, '/' + targetPath);
+          // Force scroll to top after URL cleanup
+          setTimeout(() => window.scrollTo(0, 0), 100);
+        }
+      }
+    };
     
     // Set up page visibility change detection for better refresh handling
     const handleVisibilityChange = () => {
@@ -39,10 +60,21 @@ const ScrollToTopOnRefresh = () => {
     if (isRefresh) {
       // Clear the flag
       sessionStorage.removeItem('page_refreshing');
+      // Get last path before refresh
+      const lastPath = sessionStorage.getItem('last_path');
+      
+      // If we're not already on that path, ensure correct navigation
+      if (lastPath && lastPath !== pathname && !window.location.pathname.includes(lastPath)) {
+        window.history.replaceState(null, null, lastPath);
+      }
+      
       // Ensure we scroll to top
       window.scrollTo(0, 0);
     }
 
+    // Run direct navigation handling
+    handleDirectNavigation();
+    
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('beforeunload', handleBeforeUnload);
     

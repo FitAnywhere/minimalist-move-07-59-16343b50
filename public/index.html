@@ -10,15 +10,19 @@
       // Single Page Apps for GitHub Pages or static hosts
       // This script checks to see if a redirect is present in the query string,
       // and if so, converts it back into the correct url and adds it to the
-      // browser's history without affecting the page load.
+      // browser's history using the History API, without affecting the page load.
       (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&')[0].split('=')[0];
+          // Remove leading slash to get clean path
+          decoded = decoded.replace(/^\//g, '');
+          
+          // Handle empty path (just "/")
+          if (!decoded) {
+            window.history.replaceState(null, null, l.pathname);
+          } else {
+            window.history.replaceState(null, null, '/' + decoded + l.hash);
+          }
         }
       }(window.location))
     </script>
