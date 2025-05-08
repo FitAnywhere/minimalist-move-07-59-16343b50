@@ -53,7 +53,11 @@ const GymTarget = () => {
             
             {/* Desktop view - show grid layout */}
             {!isMobile && <div className="hidden md:grid md:grid-cols-3 gap-8">
-                {targetAudiences.map((audience, index) => <div key={index} className={cn("text-center group cursor-pointer transition-all duration-500", "rounded-2xl p-8 bg-white border-2 border-gray-100 hover:border-yellow hover:shadow-xl", "transform hover:-translate-y-2", isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12")} style={{
+                {targetAudiences.map((audience, index) => <div key={index} className={cn("text-center group cursor-pointer transition-all duration-500", 
+                // Removed "bg-white" from desktop cards, keeping border and hover effects
+                "rounded-2xl p-8 border-2 border-gray-100 hover:border-yellow hover:shadow-xl", 
+                "transform hover:-translate-y-2", 
+                isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12")} style={{
               transitionDelay: `${index * 150}ms`
             }}>
                     <div className={cn("relative w-full overflow-hidden flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-all duration-500", "aspect-[2/3] rounded-2xl")}>
