@@ -4,11 +4,13 @@ import { cn } from '@/lib/utils';
 import { Star } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
 interface Testimonial {
   name: string;
   quote: string;
   imageUrl: string;
 }
+
 const testimonials: Testimonial[] = [{
   name: "Emily T.",
   quote: "I doubted myself, now I love every workout",
@@ -34,6 +36,7 @@ const testimonials: Testimonial[] = [{
   quote: "I turn on speaker and grow muscle on my terrace.",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
 }];
+
 const TestimonialImage = memo(({
   imageUrl
 }: {
@@ -61,6 +64,7 @@ const TestimonialImage = memo(({
     </div>;
 });
 TestimonialImage.displayName = 'TestimonialImage';
+
 const TestimonialCard = ({
   testimonial
 }: {
@@ -86,10 +90,12 @@ const TestimonialCard = ({
       </div>
     </div>;
 };
+
 const TestimonialsCarousel = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
+
   return <section ref={containerRef} id="testimonials" className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
@@ -117,9 +123,16 @@ const TestimonialsCarousel = () => {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
+            
+            <div className="text-center mt-8">
+              <p className="text-gray-700 font-semibold text-lg">
+                For those who train when no one believes in them
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </section>;
 };
+
 export default TestimonialsCarousel;
