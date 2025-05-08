@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -30,9 +29,7 @@ const BundleOffer = () => {
               GET YOURS
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
-            <p className="mt-2 text-gray-700 font-semibold text-xl py-[28px]">OWN THE STRENGTH AND FREEDOM YOU DESERVE
-
-          </p>
+            <p className="mt-2 text-gray-700 font-semibold text-xl py-[28px]">For those who train when no one believes in them</p>
           </div>
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0" // Changed gap from 3 to 0
