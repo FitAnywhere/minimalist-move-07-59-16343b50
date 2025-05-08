@@ -40,34 +40,31 @@ const BundleOffer = () => {
         setCurrentPrice(originalPrice); // Reset price
         setBackgroundClass("bg-red-500"); // Set initial background color to red
 
-        // Delay the animation by 1.5 seconds
-        setTimeout(() => {
-          // Start the animation with increased duration (20-30% slower)
-          const animationDuration = 4000; // Increased from 3000 to 4000ms (33% slower)
-          const steps = 80; // Increased steps for smoother animation
-          const stepDuration = animationDuration / steps;
-          const priceDecrement = (originalPrice - finalPrice) / steps;
-          let step = 0;
+        // Start the animation immediately when section is in view
+        const animationDuration = 4000; // Increased from 3000 to 4000ms (33% slower)
+        const steps = 80; // Increased steps for smoother animation
+        const stepDuration = animationDuration / steps;
+        const priceDecrement = (originalPrice - finalPrice) / steps;
+        let step = 0;
+        
+        const animationInterval = setInterval(() => {
+          step++;
+          setCurrentPrice(prev => {
+            const newPrice = originalPrice - priceDecrement * step;
+            // Ensure we don't go below the final price
+            return newPrice > finalPrice ? Math.round(newPrice) : finalPrice;
+          });
           
-          const animationInterval = setInterval(() => {
-            step++;
-            setCurrentPrice(prev => {
-              const newPrice = originalPrice - priceDecrement * step;
-              // Ensure we don't go below the final price
-              return newPrice > finalPrice ? Math.round(newPrice) : finalPrice;
-            });
-            
-            // When we reach 80% of the steps, start transitioning the background color to green
-            if (step >= Math.floor(steps * 0.8)) {
-              setBackgroundClass("bg-green-600");
-            }
-            
-            if (step >= steps) {
-              clearInterval(animationInterval);
-              setAnimationComplete(true);
-            }
-          }, stepDuration);
-        }, 1500); // 1.5 seconds delay
+          // When we reach 80% of the steps, start transitioning the background color to green
+          if (step >= Math.floor(steps * 0.8)) {
+            setBackgroundClass("bg-green-600");
+          }
+          
+          if (step >= steps) {
+            clearInterval(animationInterval);
+            setAnimationComplete(true);
+          }
+        }, stepDuration);
       }
     }, {
       threshold: 0.3
@@ -93,11 +90,11 @@ const BundleOffer = () => {
             
             {/* Enhanced animated price counter between title and subline with background */}
             <div className="flex items-center gap-3 justify-center mt-4">
-              <span className={cn("px-4 py-1 rounded-md text-white transition-all duration-500", backgroundClass)}>
+              <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", backgroundClass)}>
                 <span className={cn("text-2xl text-white transition-all duration-300", animationComplete ? "" : "line-through")}>
                   €{currentPrice}
                 </span>
-              </span>
+              </a>
             </div>
             
             <p className="mt-2 text-gray-700 font-semibold text-xl py-[28px]">For those who train when no one believes in them</p>
