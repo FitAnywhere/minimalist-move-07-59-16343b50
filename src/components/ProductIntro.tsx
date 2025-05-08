@@ -1,11 +1,9 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const features = [{
   title: "PRIVATE",
   description: "Train without eyes on you"
@@ -16,7 +14,6 @@ const features = [{
   title: "FAST",
   description: "Set up in just 2 minutes"
 }];
-
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -28,7 +25,6 @@ const ProductIntro = () => {
     features: [false, false, false],
     finalLine: false
   });
-
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -61,8 +57,7 @@ const ProductIntro = () => {
       })), 1200);
     }
   }, [isInView]);
-
-  return <section id="product" ref={containerRef} className="py-16 bg-white">
+  return <section id="product" ref={containerRef} className="bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6 items-center">
@@ -74,54 +69,27 @@ const ProductIntro = () => {
                 </h2>
               </div>
               
-              {isMobile && (
-                <video autoPlay muted loop playsInline className="w-full max-w-[64%] mx-auto rounded-xl h-auto object-contain py-[2px] my-[8px]">
+              {isMobile && <video autoPlay muted loop playsInline className="w-full max-w-[64%] mx-auto rounded-xl h-auto object-contain py-[2px] my-[8px]">
                   <source src="/intro women.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
-                </video>
-              )}
+                </video>}
               
               <div className="space-y-5 md:space-y-6 my-[9px] mx-0 px-0 py-0 rounded-none">
-                {features.map((feature, index) => (
-                  <div 
-                    key={index} 
-                    className={cn(
-                      isMobile ? "px-[18px] py-3 space-y-1" : "px-6 py-2 md:py-3", 
-                      "rounded-full", 
-                      "transition-all duration-300 ease-in-out",
-                      "shadow-md",
-                      "transform",
-                      "border-2 border-yellow bg-white",
-                      isMobile ? "text-center" : "text-center md:text-center",
-                      !isMobile && "max-w-[90%] mx-auto",
-                      animationState.features[index] ? "opacity-100" : "opacity-0"
-                    )} 
-                    style={{
-                      transitionDelay: `${(index + 1) * 100}ms`
-                    }}
-                  >
+                {features.map((feature, index) => <div key={index} className={cn(isMobile ? "px-[18px] py-3 space-y-1" : "px-6 py-2 md:py-3", "rounded-full", "transition-all duration-300 ease-in-out", "shadow-md", "transform", "border-2 border-yellow bg-white", isMobile ? "text-center" : "text-center md:text-center", !isMobile && "max-w-[90%] mx-auto", animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
+                transitionDelay: `${(index + 1) * 100}ms`
+              }}>
                     <div className="flex flex-col items-center md:items-center justify-center">
-                      <h4 className={cn(
-                        "text-lg font-bold", 
-                        isMobile ? "m-0 p-0" : "mb-1"
-                      )}>
+                      <h4 className={cn("text-lg font-bold", isMobile ? "m-0 p-0" : "mb-1")}>
                         {feature.title}
                       </h4>
                     
-                      <div className={cn(
-                        "opacity-100",
-                        isMobile ? "mt-0" : "mt-0.5"
-                      )}>
-                        <p className={cn(
-                          "text-gray-600 font-medium",
-                          isMobile ? "text-sm m-0 p-0" : "py-0"
-                        )}>
+                      <div className={cn("opacity-100", isMobile ? "mt-0" : "mt-0.5")}>
+                        <p className={cn("text-gray-600 font-medium", isMobile ? "text-sm m-0 p-0" : "py-0")}>
                           {feature.description}
                         </p>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
             
@@ -138,5 +106,4 @@ const ProductIntro = () => {
       </div>
     </section>;
 };
-
 export default ProductIntro;
