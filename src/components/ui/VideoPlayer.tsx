@@ -201,33 +201,7 @@ const VideoPlayer = memo(({
     setIsMuted(newMutedState);
     videoRef.current.muted = newMutedState;
   };
-  return <div ref={containerRef} className={cn("relative overflow-hidden", getAspectRatioClass(), className)} data-loaded={isLoaded} data-playing={isPlaying}>
-      <video ref={videoRef} preload={preload} muted={isMuted} playsInline loop={loop} controls={controls && isPlaying} poster={poster} aria-label="Video player" width={width} height={height} fetchpriority={fetchpriority} onClick={handlePlayClick} onLoadedMetadata={event => {
-      setIsLoaded(true);
-      onLoadedMetadata?.(event);
-    }} className="w-full h-full object-cover cursor-pointer py-0 my-0 mx-0 px-0">
-        <source src={src} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
-      {!isPlaying && <div className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer transition-opacity duration-300" onClick={handlePlayClick}>
-          <button className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center hover:bg-yellow-400 transition-colors" aria-label="Play video" type="button">
-            <Play className="w-8 h-8 text-black ml-1" />
-          </button>
-        </div>}
-
-      {showHeroVolumeControl && <div className="absolute bottom-4 right-4 flex flex-col items-end" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          <div className={cn("bg-black/50 px-3 py-4 rounded-lg mb-2 transition-opacity duration-150", showVolumeSlider ? "opacity-100 visible" : "opacity-0 invisible")}>
-            <Slider defaultValue={[volume]} max={1} step={0.1} orientation="vertical" className="h-24" onValueChange={handleVolumeChange} />
-          </div>
-          <button onClick={() => {
-        toggleMute();
-        handleVolumeToggle();
-      }} className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center hover:bg-black/70 transition-colors" aria-label={isMuted ? "Unmute video" : "Mute video"}>
-            {isMuted ? <VolumeX className="w-5 h-5 text-white" /> : <Volume2 className="w-5 h-5 text-white" />}
-          </button>
-        </div>}
-    </div>;
+  return;
 });
 VideoPlayer.displayName = 'VideoPlayer';
 export default VideoPlayer;
