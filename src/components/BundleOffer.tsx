@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -54,6 +55,11 @@ const BundleOffer = () => {
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-8 py-5 rounded-full text-xl font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
                   <ShoppingCart className="w-6 h-6" /> NOW €990
                 </Button>
+                
+                {/* Added limited stock text for desktop */}
+                <p className="text-xs text-gray-400/80 mt-1">
+                  (Only 37 left in The Netherlands)
+                </p>
               </div>}
 
             <div className="w-full max-w-[350px] relative" style={{
@@ -83,7 +89,10 @@ const BundleOffer = () => {
                   <ShoppingCart className="w-5 h-5" /> NOW €990
                 </Button>
                 
-                
+                {/* Added limited stock text for mobile */}
+                <p className="text-xs text-gray-400/80 mt-1">
+                  (Only 37 left in The Netherlands)
+                </p>
               </div>}
           </div>
           

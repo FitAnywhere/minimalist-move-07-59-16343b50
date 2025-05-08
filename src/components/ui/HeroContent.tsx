@@ -34,7 +34,7 @@ const HeroContent = memo(({
           
           <div className="text-center mt-6 flex flex-col items-center">
             <span className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm">
-              NOW 40% OFF
+              NOW 40% OFF - NL this month only
             </span>
             <ArrowDown className="mt-4 w-6 h-6 animate-bounce text-yellow" />
           </div>

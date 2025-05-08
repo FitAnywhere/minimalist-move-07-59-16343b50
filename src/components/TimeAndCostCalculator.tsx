@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -174,7 +175,10 @@ const TimeAndCostCalculator = () => {
                 </div>
                 
                 <div className={cn("transition-all duration-1000 delay-700", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
-                  
+                  {/* Changed text here */}
+                  <p className="text-lg font-medium text-gray-700">
+                    Share your honest thoughts. We'll thank you with €100 OFF.
+                  </p>
                 </div>
               </div>
             </div>

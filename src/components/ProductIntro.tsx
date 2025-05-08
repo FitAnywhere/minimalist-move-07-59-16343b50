@@ -8,13 +8,13 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 const features = [{
   title: "PRIVATE",
-  description: "Comfort at home"
+  description: "Train without eyes on you"
 }, {
   title: "EASY",
-  description: "Support from day one"
+  description: "Progress from first try"
 }, {
   title: "FAST",
-  description: "Ready in 2 minutes"
+  description: "Set up in just 2 minutes"
 }];
 
 const ProductIntro = () => {
