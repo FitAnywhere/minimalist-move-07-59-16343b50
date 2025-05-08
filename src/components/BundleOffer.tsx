@@ -62,8 +62,8 @@ const BundleOffer = () => {
           }
 
           // Start the animation immediately when section is 60% in view
-          const animationDuration = 3500; // 10-15% faster than before (was 4000ms)
-          const steps = 80; // Increased steps for smoother animation
+          const animationDuration = 3300; // 15-20% faster than before (was 3500ms, which was already 10-15% faster than original 4000ms)
+          const steps = 660; // Increased steps to show more numbers in the countdown
           const stepDuration = animationDuration / steps;
           const priceDecrement = (originalPrice - finalPrice) / steps;
           let step = 0;
@@ -114,7 +114,7 @@ const BundleOffer = () => {
             <div className="flex items-center gap-3 justify-center mt-4">
               <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn(
                 "px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer",
-                animationComplete ? "bg-green-500" : "bg-red-500"  // Change to green when animation completes
+                animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500"  // Changed to rgba green color
               )}>
                 <span className={cn("text-2xl text-white transition-all duration-300", 
                   // Always show line-through until animation is complete
