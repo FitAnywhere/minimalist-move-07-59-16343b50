@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -8,10 +9,12 @@ import { ShoppingCart } from 'lucide-react';
 // New carousel content - a video and an image
 const carouselContent = [{
   type: 'video',
-  src: '/Fitanyprodcut.mp4'
+  src: '/Fitanyprodcut.mp4',
+  label: 'PRIVATE STRENGTH STATION'
 }, {
   type: 'image',
-  src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746737918/PRIVATE_GYM_oyz5hq.png'
+  src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746739187/PRIVATE_GYM_2_vknutu.png',
+  label: 'PROGRESSIVE SUPPORT (15–120KG)'
 }];
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -42,7 +45,8 @@ const BundleOffer = () => {
   useEffect(() => {
     // Get the current video element if the current slide is a video
     if (currentSlide === 0 && videoRef.current) {
-      // Play video when it's the active slide
+      // Reset video to beginning and play when it's the active slide
+      videoRef.current.currentTime = 0;
       videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
     }
   }, [currentSlide]);
@@ -59,6 +63,7 @@ const BundleOffer = () => {
 
           // Try to play video if it's the current slide
           if (currentSlide === 0 && videoRef.current) {
+            videoRef.current.currentTime = 0;
             videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
           }
 
@@ -136,13 +141,37 @@ const BundleOffer = () => {
                 </p>
               </div>}
 
-            {/* New Video/Image Carousel */}
-            <div className="w-full max-w-[350px] relative" style={{
-            height: isMobile ? "300px" : "320px"
+            {/* Updated Video/Image Carousel - 20-25% bigger */}
+            <div className="w-full max-w-[425px] relative" style={{
+            height: isMobile ? "360px" : "400px"
           }}>
-              {carouselContent.map((item, index) => <div key={index} className={cn("absolute top-0 left-0 transition-opacity duration-1000 w-full h-full flex justify-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
-                  {item.type === 'video' ? <video ref={index === 0 ? videoRef : null} src={item.src} className="w-full h-full object-contain max-w-[250px] md:max-w-[340px] rounded-lg" muted playsInline loop preload="metadata" /> : <img src={item.src} alt="Product image" className="w-full h-full object-contain max-w-[250px] md:max-w-[340px] rounded-lg" loading="eager" />}
-                </div>)}
+              {carouselContent.map((item, index) => (
+                <div key={index} className={cn("absolute top-0 left-0 transition-opacity duration-1000 w-full h-full flex flex-col justify-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
+                  <div className="flex justify-center">
+                    {item.type === 'video' ? (
+                      <video 
+                        ref={index === 0 ? videoRef : null} 
+                        src={item.src} 
+                        className="w-full h-full object-contain max-w-[300px] md:max-w-[425px] rounded-lg" 
+                        muted 
+                        playsInline 
+                        loop 
+                        preload="metadata" 
+                      />
+                    ) : (
+                      <img 
+                        src={item.src} 
+                        alt="Product image" 
+                        className="w-full h-full object-contain max-w-[300px] md:max-w-[425px] rounded-lg" 
+                        loading="eager" 
+                      />
+                    )}
+                  </div>
+                  <div className="mt-2 text-center">
+                    <p className="font-semibold text-gray-800">{item.label}</p>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
