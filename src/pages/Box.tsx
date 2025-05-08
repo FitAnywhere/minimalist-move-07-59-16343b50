@@ -26,6 +26,12 @@ const BoxTitleSection = () => {
 };
 
 const Box = () => {
+  // Add effect to ensure we start at the top of the page when component mounts or on refresh
+  useEffect(() => {
+    // Force scroll to top when the Box component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
   return <div className="overflow-x-hidden">
       <NavBar />
       
