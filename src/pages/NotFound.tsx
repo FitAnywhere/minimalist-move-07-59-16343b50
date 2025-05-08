@@ -12,6 +12,15 @@ const NotFound = () => {
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );
+    
+    // Check if this is a known route with incorrect formatting
+    const path = location.pathname.toLowerCase();
+    if (path.includes('box') && path !== '/box') {
+      // Redirect to the correct box page after a short delay
+      setTimeout(() => {
+        window.location.href = '/box';
+      }, 100);
+    }
   }, [location.pathname]);
 
   return (

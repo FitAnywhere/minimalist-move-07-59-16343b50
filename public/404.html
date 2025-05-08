@@ -6,23 +6,30 @@
     <title>FitAnywhere</title>
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages or static hosts
-      // This script takes the current URL and converts the path and query
-      // string into just a query string that index.html can handle correctly
-      var pathSegmentsToKeep = 0;
-      var l = window.location;
-      
-      // Store the actual route we want to navigate to
-      var targetPath = l.pathname;
-      
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        '/' +
-        (targetPath.length ? '?/' + targetPath.slice(1) : '') +
-        (l.search ? (targetPath.length ? '&' : '') + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
+      // Modified script to handle routes properly
+      (function() {
+        // Preserve the original URL without modification
+        var pathSegmentsToKeep = 0;
+        var l = window.location;
+        
+        // Store the actual pathname for proper redirection
+        var originalPath = l.pathname;
+        
+        // Create the new redirection URL without changing the path to a query parameter
+        var redirectUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + 
+          '/' + 
+          (l.search ? l.search : '') + 
+          (l.hash ? l.hash : '');
+        
+        // Store the original path in sessionStorage so main page can redirect properly
+        sessionStorage.setItem('redirectPath', originalPath);
+        
+        // Redirect preserving the original path intent
+        window.location.replace(redirectUrl);
+      })();
     </script>
   </head>
   <body>
+    Redirecting...
   </body>
 </html>

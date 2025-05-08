@@ -5,12 +5,18 @@ import { useLocation } from 'react-router-dom';
 const ScrollToTopOnRefresh = () => {
   const { pathname } = useLocation();
   const prevPathRef = useRef(pathname);
+  const isInitialRender = useRef(true);
 
   useEffect(() => {
     // Handle route changes
-    if (prevPathRef.current !== pathname) {
+    if (!isInitialRender.current && prevPathRef.current !== pathname) {
       window.scrollTo(0, 0);
       prevPathRef.current = pathname;
+    }
+
+    // Mark initial render complete
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
     }
   }, [pathname]);
 
@@ -18,36 +24,44 @@ const ScrollToTopOnRefresh = () => {
     // This runs on initial mount
     window.scrollTo(0, 0);
     
+    // Special handling for the box page
+    if (window.location.pathname === '/box') {
+      console.log('On Box page - ensuring proper page load behavior');
+      
+      // Ensure URL is clean (no query params that might be leftovers)
+      if (window.location.search) {
+        window.history.replaceState(null, null, '/box');
+      }
+      
+      // Force scroll to top
+      window.scrollTo(0, 0);
+    }
+    
     // Handle direct navigation or refresh
     const handleDirectNavigation = () => {
-      // Check if this is the initial page load
-      const isInitialLoad = !sessionStorage.getItem('app_initialized');
+      const isPageRefresh = performance.navigation && 
+        (performance.navigation.type === 1 || 
+        sessionStorage.getItem('page_refreshing') === 'true');
       
-      if (isInitialLoad) {
-        // Mark that the app has been initialized
-        sessionStorage.setItem('app_initialized', 'true');
-        // Ensure we're at the top
-        window.scrollTo(0, 0);
+      if (isPageRefresh) {
+        sessionStorage.removeItem('page_refreshing');
+        console.log('Page was refreshed, ensuring correct path:', window.location.pathname);
         
-        // If we arrived via redirect from 404.html, make sure the URL is clean
-        if (window.location.search.includes('?/')) {
-          const targetPath = window.location.search.split('?/')[1].split('&')[0];
-          window.history.replaceState(null, null, '/' + targetPath);
-          // Force scroll to top after URL cleanup
+        // Specifically handle Box page refresh
+        if (window.location.pathname === '/box' || 
+            window.location.pathname.includes('/box')) {
+          // Force correct URL if needed
+          if (window.location.pathname !== '/box') {
+            window.history.replaceState(null, null, '/box');
+          }
+          
+          // Extra scroll enforcement with slight delay to ensure rendering completes
           setTimeout(() => window.scrollTo(0, 0), 100);
         }
       }
     };
     
-    // Set up page visibility change detection for better refresh handling
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        // User has returned to the page - might be a refresh
-        window.scrollTo(0, 0);
-      }
-    };
-    
-    // Handle beforeunload for refresh detection
+    // Set up beforeunload for refresh detection
     const handleBeforeUnload = () => {
       // Set a session storage flag that we're refreshing
       sessionStorage.setItem('page_refreshing', 'true');
@@ -55,32 +69,33 @@ const ScrollToTopOnRefresh = () => {
       sessionStorage.setItem('last_path', pathname);
     };
     
-    // Check if coming from refresh and handle accordingly
-    const isRefresh = sessionStorage.getItem('page_refreshing') === 'true';
-    if (isRefresh) {
-      // Clear the flag
-      sessionStorage.removeItem('page_refreshing');
-      // Get last path before refresh
-      const lastPath = sessionStorage.getItem('last_path');
-      
-      // If we're not already on that path, ensure correct navigation
-      if (lastPath && lastPath !== pathname && !window.location.pathname.includes(lastPath)) {
-        window.history.replaceState(null, null, lastPath);
-      }
-      
-      // Ensure we scroll to top
-      window.scrollTo(0, 0);
-    }
-
-    // Run direct navigation handling
     handleDirectNavigation();
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('beforeunload', handleBeforeUnload);
+    
+    // If we landed here via redirect from 404.html
+    if (sessionStorage.getItem('redirectPath')) {
+      const redirectPath = sessionStorage.getItem('redirectPath');
+      console.log('Handling redirect from 404.html to:', redirectPath);
+      sessionStorage.removeItem('redirectPath');
+      
+      // Give browser a moment to settle
+      setTimeout(() => {
+        // Force the correct path
+        window.history.replaceState(null, null, redirectPath);
+        
+        // Extra enforcement for the Box page
+        if (redirectPath?.includes('box')) {
+          // Force to /box if the path contains box but isn't exactly /box
+          if (redirectPath !== '/box') {
+            window.history.replaceState(null, null, '/box');
+          }
+          setTimeout(() => window.scrollTo(0, 0), 100); 
+        }
+      }, 10);
+    }
     
     // Cleanup
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [pathname]);
