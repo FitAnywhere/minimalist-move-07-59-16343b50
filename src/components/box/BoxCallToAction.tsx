@@ -1,3 +1,4 @@
+
 import { useRef, useState } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight, ChevronDown } from 'lucide-react';
@@ -78,7 +79,6 @@ const BoxCallToAction = () => {
                       FREQUENTLY ASKED QUESTIONS
                       <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isFaqInView ? "scale-x-100" : "scale-x-0")}></span>
                     </h2>
-                    <p className="text-gray-600 mt-4 text-lg">Questions you might have before getting started</p>
                   </div>
                   <ChevronDown className={cn("h-6 w-6 transition-transform duration-300", isFaqExpanded ? "rotate-180" : "")} />
                 </CollapsibleTrigger>
