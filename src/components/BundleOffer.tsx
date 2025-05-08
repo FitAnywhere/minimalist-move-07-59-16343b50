@@ -1,10 +1,13 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { formatPrice } from '@/utils/formatters';
 import { ShoppingCart } from 'lucide-react';
+
 const carouselImages = ["https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745834932/PRIVATE_GYM_1_vcyki4.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828736/2284_training_obtekg.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828745/2284_supp_bh0dtd.png"];
+
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
@@ -12,54 +15,73 @@ const BundleOffer = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentPrice, setCurrentPrice] = useState(1650);
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [animationStarted, setAnimationStarted] = useState(false);
+  const [backgroundClass, setBackgroundClass] = useState("bg-red-500");
   const finalPrice = 990;
   const originalPrice = 1650;
+
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
   };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide(prevSlide => (prevSlide + 1) % carouselImages.length);
     }, 2000);
     return () => clearInterval(interval);
   }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !animationComplete) {
+      if (entry.isIntersecting && !animationStarted) {
+        setAnimationStarted(true);
         setAnimationComplete(false); // Reset animation state
         setCurrentPrice(originalPrice); // Reset price
+        setBackgroundClass("bg-red-500"); // Set initial background color to red
 
-        // Start the animation when section becomes visible
-        const animationDuration = 3000; // 3 seconds
-        const steps = 60; // 60 steps for smooth animation (20 steps per second)
-        const stepDuration = animationDuration / steps;
-        const priceDecrement = (originalPrice - finalPrice) / steps;
-        let step = 0;
-        const animationInterval = setInterval(() => {
-          step++;
-          setCurrentPrice(prev => {
-            const newPrice = originalPrice - priceDecrement * step;
-            // Ensure we don't go below the final price
-            return newPrice > finalPrice ? Math.round(newPrice) : finalPrice;
-          });
-          if (step >= steps) {
-            clearInterval(animationInterval);
-            setAnimationComplete(true);
-          }
-        }, stepDuration);
+        // Delay the animation by 1.5 seconds
+        setTimeout(() => {
+          // Start the animation with increased duration (20-30% slower)
+          const animationDuration = 4000; // Increased from 3000 to 4000ms (33% slower)
+          const steps = 80; // Increased steps for smoother animation
+          const stepDuration = animationDuration / steps;
+          const priceDecrement = (originalPrice - finalPrice) / steps;
+          let step = 0;
+          
+          const animationInterval = setInterval(() => {
+            step++;
+            setCurrentPrice(prev => {
+              const newPrice = originalPrice - priceDecrement * step;
+              // Ensure we don't go below the final price
+              return newPrice > finalPrice ? Math.round(newPrice) : finalPrice;
+            });
+            
+            // When we reach 80% of the steps, start transitioning the background color to green
+            if (step >= Math.floor(steps * 0.8)) {
+              setBackgroundClass("bg-green-600");
+            }
+            
+            if (step >= steps) {
+              clearInterval(animationInterval);
+              setAnimationComplete(true);
+            }
+          }, stepDuration);
+        }, 1500); // 1.5 seconds delay
       }
     }, {
       threshold: 0.3
-    } // Trigger when 30% of the element is visible
-    );
+    }); // Trigger when 30% of the element is visible
+    
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
+    
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [animationStarted]);
+
   return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-gray-50">
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
@@ -69,21 +91,20 @@ const BundleOffer = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            {/* Added animated price counter between title and subline */}
+            {/* Enhanced animated price counter between title and subline with background */}
             <div className="flex items-center gap-3 justify-center mt-4">
-              <span className={cn("text-2xl text-gray-700 transition-all duration-300", animationComplete ? "" : "line-through")}>
-                €{currentPrice}
+              <span className={cn("px-4 py-1 rounded-md text-white transition-all duration-500", backgroundClass)}>
+                <span className={cn("text-2xl text-white transition-all duration-300", animationComplete ? "" : "line-through")}>
+                  €{currentPrice}
+                </span>
               </span>
-              {animationComplete}
             </div>
             
             <p className="mt-2 text-gray-700 font-semibold text-xl py-[28px]">For those who train when no one believes in them</p>
           </div>
 
-          <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0" // Changed gap from 3 to 0
-        )}>
-            {!isMobile && <div className="flex flex-col items-center space-y-2 ml-8"> {/* Added ml-8 to move closer to carousel */}
-                {/* Added GET 3in1 text */}
+          <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0")}>
+            {!isMobile && <div className="flex flex-col items-center space-y-2 ml-8">
                 <div className="text-center mb-3">
                   <span className="font-bold text-xl text-gray-900">GET 3 in 1</span>
                 </div>
@@ -101,7 +122,6 @@ const BundleOffer = () => {
                   <ShoppingCart className="w-6 h-6" /> NOW €990
                 </Button>
                 
-                {/* Added limited stock text for desktop */}
                 <p className="text-xs text-gray-400/80 mt-1">
                   (Only 37 left in The Netherlands)
                 </p>
@@ -116,7 +136,6 @@ const BundleOffer = () => {
             </div>
 
             {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
-                {/* Added GET 3in1 text for mobile */}
                 <div className="text-center mb-2">
                   <span className="font-bold text-lg text-gray-900">GET 3 in 1</span>
                 </div>
@@ -134,17 +153,16 @@ const BundleOffer = () => {
                   <ShoppingCart className="w-5 h-5" /> NOW €990
                 </Button>
                 
-                {/* Added limited stock text for mobile */}
                 <p className="text-xs text-gray-400/80 mt-1">
                   (Only 37 left in The Netherlands)
                 </p>
               </div>}
           </div>
           
-          {/* Added centered tagline for desktop view with increased margin-top */}
           {!isMobile}
         </div>
       </div>
     </section>;
 };
+
 export default BundleOffer;
