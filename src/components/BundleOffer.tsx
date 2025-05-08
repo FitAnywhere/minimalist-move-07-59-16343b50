@@ -87,7 +87,7 @@ const BundleOffer = () => {
               </a>
             </div>
             
-            <p className="mt-2 text-gray-700 font-semibold text-xl py-[28px]">For those who train when no one believes in them</p>
+            
           </div>
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0")}>
