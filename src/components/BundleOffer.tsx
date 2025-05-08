@@ -13,7 +13,7 @@ const carouselContent = [{
   label: 'PRIVATE STRENGTH STATION'
 }, {
   type: 'image',
-  src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746739187/PRIVATE_GYM_2_vknutu.png',
+  src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746741821/PRIVATE_GYM_5_j0cyio.png',
   label: 'PROGRESSIVE SUPPORT (15–120KG)'
 }];
 const BundleOffer = () => {
@@ -104,6 +104,7 @@ const BundleOffer = () => {
       observer.disconnect();
     };
   }, [animationStarted, currentSlide, originalPrice, finalPrice]);
+  
   return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-white">
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
@@ -115,8 +116,7 @@ const BundleOffer = () => {
             
             {/* Price counter with background */}
             <div className="flex items-center gap-3 justify-center mt-4">
-              <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500" // Changed to rgba green color
-            )}>
+              <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500")}>
                 <span className={cn("text-2xl text-white transition-all duration-300",
               // Always show line-through until animation is complete
               animationComplete ? "" : "line-through")}>
@@ -141,18 +141,21 @@ const BundleOffer = () => {
                 </p>
               </div>}
 
-            {/* Updated Video/Image Carousel - 20-25% bigger */}
+            {/* Updated Video/Image Carousel with consistent sizing */}
             <div className="w-full max-w-[425px] relative" style={{
-            height: isMobile ? "360px" : "400px"
-          }}>
+              height: isMobile ? "380px" : "450px" // Slightly increased height for better proportions
+            }}>
               {carouselContent.map((item, index) => (
-                <div key={index} className={cn("absolute top-0 left-0 transition-opacity duration-1000 w-full h-full flex flex-col justify-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
-                  <div className="flex justify-center">
+                <div key={index} className={cn(
+                  "absolute top-0 left-0 transition-opacity duration-1000 w-full h-full flex flex-col items-center", 
+                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+                )}>
+                  <div className="flex justify-center h-[75%] items-center">
                     {item.type === 'video' ? (
                       <video 
                         ref={index === 0 ? videoRef : null} 
                         src={item.src} 
-                        className="w-full h-full object-contain max-w-[300px] md:max-w-[425px] rounded-lg" 
+                        className="w-full h-auto max-h-full object-contain max-w-[300px] md:max-w-[425px] rounded-lg" 
                         muted 
                         playsInline 
                         loop 
@@ -162,12 +165,12 @@ const BundleOffer = () => {
                       <img 
                         src={item.src} 
                         alt="Product image" 
-                        className="w-full h-full object-contain max-w-[300px] md:max-w-[425px] rounded-lg" 
+                        className="w-full h-auto max-h-full object-contain max-w-[300px] md:max-w-[425px] rounded-lg" 
                         loading="eager" 
                       />
                     )}
                   </div>
-                  <div className="mt-2 text-center">
+                  <div className="mt-4 text-center">
                     <p className="font-semibold text-gray-800">{item.label}</p>
                   </div>
                 </div>
