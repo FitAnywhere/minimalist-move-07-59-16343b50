@@ -6,33 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FitAnywhere - Your Private Gym</title>
     <script type="text/javascript">
-      // Improved script for handling routes on static hosting
+      // Improved script for handling routes on static hosting and refreshes
       (function() {
         // Check if we have a redirected path from 404.html
         var redirectPath = sessionStorage.getItem('redirectPath');
         if (redirectPath) {
-          // Clear the stored path
-          sessionStorage.removeItem('redirectPath');
+          console.log("index.html: Found redirect path in session storage:", redirectPath);
           
-          // Handle the root path case
-          if (redirectPath === '/') {
-            // Already at root, no need to change
-            return;
+          // Special handling for direct /box route
+          if (redirectPath === '/box' || redirectPath.indexOf('/box') === 0) {
+            console.log("Direct access to box page detected");
+            // Mark this page as the box page for additional processing
+            sessionStorage.setItem('isBoxPage', 'true');
           }
           
-          // Remove any leading slash for consistency
-          if (redirectPath.startsWith('/')) {
-            redirectPath = redirectPath.substring(1);
-          }
-          
-          // Now replace current history state with the actual path
-          var targetPath = '/' + redirectPath;
-          // Ensure path doesn't have double slashes
-          targetPath = targetPath.replace(/\/+/g, '/');
-          
-          // Replace the current history state without reloading
-          window.history.replaceState(null, null, targetPath);
+          // Don't remove redirectPath yet, we need it for app initialization
         }
+        
+        // This function will handle browser refresh detection
+        window.addEventListener('beforeunload', function() {
+          // Store current path on refresh
+          var currentPath = window.location.pathname;
+          if (currentPath && currentPath !== '/') {
+            console.log("Storing current path before refresh:", currentPath);
+            sessionStorage.setItem('refreshPath', currentPath);
+          }
+        });
       })();
     </script>
     

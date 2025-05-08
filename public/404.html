@@ -8,23 +8,20 @@
       // Single Page Apps for GitHub Pages or static hosts
       // Modified script to handle routes properly
       (function() {
-        // Preserve the original URL without modification
-        var pathSegmentsToKeep = 0;
-        var l = window.location;
+        // Get the path that the user was trying to access
+        var path = window.location.pathname;
         
         // Store the actual pathname for proper redirection
-        var originalPath = l.pathname;
+        sessionStorage.setItem('redirectPath', path);
         
-        // Create the new redirection URL without changing the path to a query parameter
-        var redirectUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + 
-          '/' + 
-          (l.search ? l.search : '') + 
-          (l.hash ? l.hash : '');
+        // Create the new redirection URL pointing to the root
+        var l = window.location;
+        var redirectUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + '/';
         
-        // Store the original path in sessionStorage so main page can redirect properly
-        sessionStorage.setItem('redirectPath', originalPath);
+        // Log the redirect for debugging
+        console.log('404.html redirect - Original path:', path, 'Redirecting to:', redirectUrl);
         
-        // Redirect preserving the original path intent
+        // Redirect to the root, the app will handle proper routing based on sessionStorage
         window.location.replace(redirectUrl);
       })();
     </script>

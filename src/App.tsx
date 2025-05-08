@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import ScrollToTopOnRefresh from "@/components/ui/ScrollToTopOnRefresh";
 import Index from "./pages/Index";
 import Box from "./pages/Box";
@@ -16,20 +16,25 @@ const queryClient = new QueryClient();
 
 // Custom Router wrapper to handle initial route path restoration
 const RouterWithPathRestoration = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  
   useEffect(() => {
-    // Check if there's any route path that needs to be restored
+    // Check if there's any route path that needs to be restored from sessionStorage
     const redirectPath = sessionStorage.getItem('redirectPath');
     if (redirectPath) {
-      console.log("Found redirect path, restoring to:", redirectPath);
+      console.log("Found redirect path in session storage, restoring to:", redirectPath);
+      
       // Clear the stored path immediately to prevent loops
       sessionStorage.removeItem('redirectPath');
       
-      // Allow the initial render to complete then restore the path
+      // Use timeout to ensure this happens after initial render
       setTimeout(() => {
-        window.history.replaceState(null, null, redirectPath);
+        console.log("Navigating to:", redirectPath);
+        navigate(redirectPath, { replace: true });
       }, 0);
     }
-  }, []);
+  }, [navigate]);
 
   return children;
 };

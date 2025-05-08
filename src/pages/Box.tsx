@@ -1,5 +1,6 @@
+
 import { useEffect, lazy, Suspense } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 
 // Lazy load sections
@@ -27,13 +28,19 @@ const BoxTitleSection = () => {
 
 const Box = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   
   // Critical rendering and routing enforcement for Box page
   useEffect(() => {
-    // Force URL to be exactly /box
+    console.log('Box component mounted, current path:', location.pathname);
+    
+    // Set a marker in the DOM to identify this as the Box page
+    document.body.setAttribute('data-page', 'box-page');
+    
+    // Force URL to be exactly /box if needed
     if (window.location.pathname !== '/box') {
       console.log('Correcting Box page URL:', window.location.pathname, 'to /box');
-      window.history.replaceState(null, null, '/box');
+      navigate('/box', { replace: true });
     }
     
     // Force scroll to top with redundancy
@@ -45,28 +52,15 @@ const Box = () => {
       console.log('Box page - secondary scroll to top executed');
     }, 200);
     
-    // Handle refresh detection and restore proper URL if needed
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        console.log('Box page visibility changed to visible - enforcing correct URL');
-        // Re-enforce path when tab becomes visible (might be after refresh)
-        if (window.location.pathname !== '/box') {
-          window.history.replaceState(null, null, '/box');
-          window.scrollTo(0, 0);
-        }
-      }
-    };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    
     return () => {
+      // Clean up data attribute when component unmounts
+      document.body.removeAttribute('data-page');
       clearTimeout(scrollTimeout);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [location]);
+  }, [location.pathname, navigate]);
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-hidden" id="box-page-container">
       <NavBar />
       
       <BoxTitleSection />

@@ -1,11 +1,12 @@
 
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Home, ArrowLeft } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.error(
@@ -16,12 +17,21 @@ const NotFound = () => {
     // Check if this is a known route with incorrect formatting
     const path = location.pathname.toLowerCase();
     if (path.includes('box') && path !== '/box') {
-      // Redirect to the correct box page after a short delay
-      setTimeout(() => {
-        window.location.href = '/box';
-      }, 100);
+      console.log("Detected malformed box URL, redirecting to correct /box path");
+      // Navigate to the correct box page
+      navigate('/box', { replace: true });
+      return;
     }
-  }, [location.pathname]);
+    
+    // Check for redirect path from session storage (from 404.html)
+    const redirectPath = sessionStorage.getItem('redirectPath');
+    if (redirectPath && redirectPath.includes('box')) {
+      console.log("NotFound: Found box redirect path in session storage:", redirectPath);
+      sessionStorage.removeItem('redirectPath');
+      navigate('/box', { replace: true });
+      return;
+    }
+  }, [location.pathname, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

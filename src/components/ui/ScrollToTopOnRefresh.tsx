@@ -1,9 +1,10 @@
 
 import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ScrollToTopOnRefresh = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const prevPathRef = useRef(pathname);
   const isInitialRender = useRef(true);
 
@@ -21,84 +22,56 @@ const ScrollToTopOnRefresh = () => {
   }, [pathname]);
 
   useEffect(() => {
-    // This runs on initial mount
+    // First, handle direct access to box page
+    if (sessionStorage.getItem('isBoxPage') === 'true') {
+      console.log('Box page direct access detected');
+      sessionStorage.removeItem('isBoxPage');
+      
+      // Ensure we're on the box page
+      if (pathname !== '/box') {
+        console.log('Redirecting to box page from:', pathname);
+        navigate('/box', { replace: true });
+      }
+    }
+    
+    // Check for refresh path stored by beforeunload event
+    const refreshPath = sessionStorage.getItem('refreshPath');
+    if (refreshPath) {
+      console.log('Detected page refresh, stored path was:', refreshPath);
+      sessionStorage.removeItem('refreshPath');
+      
+      // If refreshed on box page, ensure we're there
+      if (refreshPath.includes('/box') && pathname !== '/box') {
+        console.log('Box page was refreshed, restoring navigation');
+        navigate('/box', { replace: true });
+        // Force scroll to top
+        window.scrollTo(0, 0);
+        return;
+      }
+    }
+
+    // This runs on initial mount for regular navigation
     window.scrollTo(0, 0);
     
-    // Special handling for the box page
-    if (window.location.pathname === '/box') {
-      console.log('On Box page - ensuring proper page load behavior');
-      
-      // Ensure URL is clean (no query params that might be leftovers)
-      if (window.location.search) {
-        window.history.replaceState(null, null, '/box');
-      }
-      
-      // Force scroll to top
-      window.scrollTo(0, 0);
-    }
-    
-    // Handle direct navigation or refresh
-    const handleDirectNavigation = () => {
-      const isPageRefresh = performance.navigation && 
-        (performance.navigation.type === 1 || 
-        sessionStorage.getItem('page_refreshing') === 'true');
-      
-      if (isPageRefresh) {
-        sessionStorage.removeItem('page_refreshing');
-        console.log('Page was refreshed, ensuring correct path:', window.location.pathname);
-        
-        // Specifically handle Box page refresh
-        if (window.location.pathname === '/box' || 
-            window.location.pathname.includes('/box')) {
-          // Force correct URL if needed
-          if (window.location.pathname !== '/box') {
-            window.history.replaceState(null, null, '/box');
-          }
-          
-          // Extra scroll enforcement with slight delay to ensure rendering completes
-          setTimeout(() => window.scrollTo(0, 0), 100);
-        }
-      }
-    };
-    
-    // Set up beforeunload for refresh detection
-    const handleBeforeUnload = () => {
-      // Set a session storage flag that we're refreshing
-      sessionStorage.setItem('page_refreshing', 'true');
-      // Also set the current path so we know where to redirect back to
-      sessionStorage.setItem('last_path', pathname);
-    };
-    
-    handleDirectNavigation();
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    
-    // If we landed here via redirect from 404.html
-    if (sessionStorage.getItem('redirectPath')) {
-      const redirectPath = sessionStorage.getItem('redirectPath');
-      console.log('Handling redirect from 404.html to:', redirectPath);
+    // Check if we have a pending redirect from 404.html
+    const redirectPath = sessionStorage.getItem('redirectPath');
+    if (redirectPath) {
+      console.log('Processing redirect path from 404.html:', redirectPath);
       sessionStorage.removeItem('redirectPath');
       
-      // Give browser a moment to settle
-      setTimeout(() => {
-        // Force the correct path
-        window.history.replaceState(null, null, redirectPath);
-        
-        // Extra enforcement for the Box page
-        if (redirectPath?.includes('box')) {
-          // Force to /box if the path contains box but isn't exactly /box
-          if (redirectPath !== '/box') {
-            window.history.replaceState(null, null, '/box');
+      if (redirectPath.includes('/box')) {
+        console.log('Redirecting to box page');
+        // Give browser a moment to settle
+        setTimeout(() => {
+          if (pathname !== '/box') {
+            navigate('/box', { replace: true });
           }
-          setTimeout(() => window.scrollTo(0, 0), 100); 
-        }
-      }, 10);
+          window.scrollTo(0, 0);
+        }, 10);
+      }
     }
     
-    // Cleanup
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [pathname]);
+  }, [pathname, navigate]);
 
   return null;
 };
