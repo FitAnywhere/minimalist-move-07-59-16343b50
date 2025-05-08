@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -13,7 +12,7 @@ const carouselContent = [{
   label: 'PRIVATE STRENGTH STATION'
 }, {
   type: 'image',
-  src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746741821/PRIVATE_GYM_5_j0cyio.png',
+  src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746741696/PRIVATE_GYM_4_o02rth.png',
   label: 'PROGRESSIVE SUPPORT (15–120KG)'
 }];
 const BundleOffer = () => {
@@ -129,11 +128,11 @@ const BundleOffer = () => {
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0")}>
             {!isMobile && <div className="flex flex-col items-center space-y-2 ml-8">
                 <div className="text-center mb-3">
-                  <span className="font-bold text-xl text-gray-900">GET 3 in 1</span>
+                  <span className="font-bold text-xl text-gray-900">Unlock your strogest self</span>
                 </div>
 
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-8 py-5 rounded-full text-xl font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
-                  <ShoppingCart className="w-6 h-6" /> NOW €990
+                  <ShoppingCart className="w-6 h-6" /> CLAIM THIS DEAL
                 </Button>
                 
                 <p className="text-xs text-gray-400/80 mt-1">
@@ -141,9 +140,9 @@ const BundleOffer = () => {
                 </p>
               </div>}
 
-            {/* Updated Video/Image Carousel with consistent sizing */}
-            <div className="w-full max-w-[425px] relative" style={{
-              height: isMobile ? "380px" : "450px" // Slightly increased height for better proportions
+            {/* Updated Video/Image Carousel with increased size by 15-20% */}
+            <div className="w-full max-w-[500px] relative" style={{
+              height: isMobile ? "450px" : "530px" // Increased size by ~15-20%
             }}>
               {carouselContent.map((item, index) => (
                 <div key={index} className={cn(
@@ -155,7 +154,7 @@ const BundleOffer = () => {
                       <video 
                         ref={index === 0 ? videoRef : null} 
                         src={item.src} 
-                        className="w-full h-auto max-h-full object-contain max-w-[300px] md:max-w-[425px] rounded-lg" 
+                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
                         muted 
                         playsInline 
                         loop 
@@ -165,7 +164,7 @@ const BundleOffer = () => {
                       <img 
                         src={item.src} 
                         alt="Product image" 
-                        className="w-full h-auto max-h-full object-contain max-w-[300px] md:max-w-[425px] rounded-lg" 
+                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
                         loading="eager" 
                       />
                     )}
@@ -179,7 +178,7 @@ const BundleOffer = () => {
 
             {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
                 <div className="text-center mb-2">
-                  <span className="font-bold text-lg text-gray-900">GET 3 in 1</span>
+                  <span className="font-bold text-lg text-gray-900">Unlock your strogest self</span>
                 </div>
                 
                 <div className="flex items-center gap-3 justify-center">
@@ -192,7 +191,7 @@ const BundleOffer = () => {
                 </div>
 
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
-                  <ShoppingCart className="w-5 h-5" /> NOW €990
+                  <ShoppingCart className="w-5 h-5" /> CLAIM THIS DEAL
                 </Button>
                 
                 <p className="text-xs text-gray-400/80 mt-1">
