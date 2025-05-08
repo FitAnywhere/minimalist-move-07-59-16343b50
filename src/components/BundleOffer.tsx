@@ -1,12 +1,20 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { formatPrice } from '@/utils/formatters';
 import { ShoppingCart } from 'lucide-react';
-const carouselImages = ["https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745834932/PRIVATE_GYM_1_vcyki4.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828736/2284_training_obtekg.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828745/2284_supp_bh0dtd.png"];
+
+// New carousel content - a video and an image
+const carouselContent = [
+  { type: 'video', src: '/Fitanyprodcut.mp4' },
+  { type: 'image', src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746737918/PRIVATE_GYM_oyz5hq.png' }
+];
+
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -16,23 +24,43 @@ const BundleOffer = () => {
   const [backgroundClass, setBackgroundClass] = useState("bg-red-500");
   const finalPrice = 990;
   const originalPrice = 1650;
+
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
   };
+
+  // Auto-rotate carousel
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide(prevSlide => (prevSlide + 1) % carouselImages.length);
-    }, 2000);
+      setCurrentSlide(prevSlide => (prevSlide + 1) % carouselContent.length);
+    }, 3000); // Switch every 3 seconds
+    
     return () => clearInterval(interval);
   }, []);
+
+  // Video control based on carousel visibility and active slide
+  useEffect(() => {
+    // Get the current video element if the current slide is a video
+    if (currentSlide === 0 && videoRef.current) {
+      // Play video when it's the active slide
+      videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
+    }
+  }, [currentSlide]);
+
+  // Handle intersection observer to manage video playback and price animation
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !animationStarted) {
+      if (entry.isIntersecting) {
         setAnimationStarted(true);
         setAnimationComplete(false); // Reset animation state
         setCurrentPrice(originalPrice); // Reset price
         setBackgroundClass("bg-red-500"); // Set initial background color to red
+
+        // Try to play video if it's the current slide
+        if (currentSlide === 0 && videoRef.current) {
+          videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
+        }
 
         // Start the animation immediately when section is in view
         const animationDuration = 4000; // Increased from 3000 to 4000ms (33% slower)
@@ -57,6 +85,11 @@ const BundleOffer = () => {
             setAnimationComplete(true);
           }
         }, stepDuration);
+      } else {
+        // Pause video when section is not in view
+        if (videoRef.current) {
+          videoRef.current.pause();
+        }
       }
     }, {
       threshold: 0.3
@@ -65,10 +98,12 @@ const BundleOffer = () => {
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
+    
     return () => {
       observer.disconnect();
     };
-  }, [animationStarted]);
+  }, [animationStarted, currentSlide]);
+
   return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-gray-50">
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
@@ -86,8 +121,6 @@ const BundleOffer = () => {
                 </span>
               </a>
             </div>
-            
-            
           </div>
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0")}>
@@ -95,8 +128,6 @@ const BundleOffer = () => {
                 <div className="text-center mb-3">
                   <span className="font-bold text-xl text-gray-900">GET 3 in 1</span>
                 </div>
-                
-                
 
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-8 py-5 rounded-full text-xl font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
                   <ShoppingCart className="w-6 h-6" /> NOW €990
@@ -107,12 +138,35 @@ const BundleOffer = () => {
                 </p>
               </div>}
 
+            {/* New Video/Image Carousel */}
             <div className="w-full max-w-[350px] relative" style={{
-            height: isMobile ? "300px" : "320px"
-          }}>
-              {carouselImages.map((src, index) => <div key={index} className={cn("absolute top-0 left-0 transition-opacity duration-1000 w-full flex justify-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
-                  <img src={src} alt={`Product image ${index + 1}`} className="w-full h-auto object-contain max-w-[250px] md:max-w-[340px] rounded-lg" loading="eager" />
-                </div>)}
+              height: isMobile ? "300px" : "320px"
+            }}>
+              {carouselContent.map((item, index) => (
+                <div key={index} className={cn(
+                  "absolute top-0 left-0 transition-opacity duration-1000 w-full h-full flex justify-center",
+                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+                )}>
+                  {item.type === 'video' ? (
+                    <video 
+                      ref={index === 0 ? videoRef : null}
+                      src={item.src}
+                      className="w-full h-full object-contain max-w-[250px] md:max-w-[340px] rounded-lg"
+                      muted
+                      playsInline
+                      loop
+                      preload="metadata"
+                    />
+                  ) : (
+                    <img 
+                      src={item.src} 
+                      alt="Product image"
+                      className="w-full h-full object-contain max-w-[250px] md:max-w-[340px] rounded-lg"
+                      loading="eager"
+                    />
+                  )}
+                </div>
+              ))}
             </div>
 
             {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
@@ -144,4 +198,5 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
+
 export default BundleOffer;
