@@ -77,7 +77,9 @@ const BoxCallToAction = () => {
                   <div className="text-center">
                     <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center relative inline-block">
                       FREQUENTLY ASKED QUESTIONS
-                      <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isFaqInView ? "scale-x-100" : "scale-x-0")}></span>
+                      <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400">
+                        {/* Removed the conditional scale transform to always show the yellow underline */}
+                      </span>
                     </h2>
                   </div>
                   <ChevronDown className={cn("h-6 w-6 transition-transform duration-300", isFaqExpanded ? "rotate-180" : "")} />
@@ -139,3 +141,4 @@ const BoxCallToAction = () => {
     </>;
 };
 export default BoxCallToAction;
+
