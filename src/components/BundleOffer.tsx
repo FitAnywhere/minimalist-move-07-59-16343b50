@@ -21,7 +21,6 @@ const BundleOffer = () => {
   const [currentPrice, setCurrentPrice] = useState(1650);
   const [animationComplete, setAnimationComplete] = useState(false);
   const [animationStarted, setAnimationStarted] = useState(false);
-  const [backgroundClass, setBackgroundClass] = useState("bg-red-500");
   const finalPrice = 990;
   const originalPrice = 1650;
 
@@ -51,40 +50,38 @@ const BundleOffer = () => {
   // Handle intersection observer to manage video playback and price animation
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setAnimationStarted(true);
-        setAnimationComplete(false); // Reset animation state
-        setCurrentPrice(originalPrice); // Reset price
-        setBackgroundClass("bg-red-500"); // Set initial background color to red
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.6) { // Only trigger when 60% visible
+        if (!animationStarted) {
+          setAnimationStarted(true);
+          setAnimationComplete(false); // Reset animation state
+          setCurrentPrice(originalPrice); // Reset price
 
-        // Try to play video if it's the current slide
-        if (currentSlide === 0 && videoRef.current) {
-          videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
+          // Try to play video if it's the current slide
+          if (currentSlide === 0 && videoRef.current) {
+            videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
+          }
+
+          // Start the animation immediately when section is 60% in view
+          const animationDuration = 3500; // 10-15% faster than before (was 4000ms)
+          const steps = 80; // Increased steps for smoother animation
+          const stepDuration = animationDuration / steps;
+          const priceDecrement = (originalPrice - finalPrice) / steps;
+          let step = 0;
+          const animationInterval = setInterval(() => {
+            step++;
+            setCurrentPrice(prev => {
+              const newPrice = originalPrice - priceDecrement * step;
+              // Ensure we don't go below the final price
+              return newPrice > finalPrice ? Math.round(newPrice) : finalPrice;
+            });
+
+            // When we reach the final price, clear the interval and set animation complete
+            if (step >= steps) {
+              clearInterval(animationInterval);
+              setAnimationComplete(true);
+            }
+          }, stepDuration);
         }
-
-        // Start the animation immediately when section is in view
-        const animationDuration = 4000; // Increased from 3000 to 4000ms (33% slower)
-        const steps = 80; // Increased steps for smoother animation
-        const stepDuration = animationDuration / steps;
-        const priceDecrement = (originalPrice - finalPrice) / steps;
-        let step = 0;
-        const animationInterval = setInterval(() => {
-          step++;
-          setCurrentPrice(prev => {
-            const newPrice = originalPrice - priceDecrement * step;
-            // Ensure we don't go below the final price
-            return newPrice > finalPrice ? Math.round(newPrice) : finalPrice;
-          });
-
-          // When we reach 80% of the steps, start transitioning the background color to green
-          if (step >= Math.floor(steps * 0.8)) {
-            setBackgroundClass("bg-green-600");
-          }
-          if (step >= steps) {
-            clearInterval(animationInterval);
-            setAnimationComplete(true);
-          }
-        }, stepDuration);
       } else {
         // Pause video when section is not in view
         if (videoRef.current) {
@@ -92,8 +89,8 @@ const BundleOffer = () => {
         }
       }
     }, {
-      threshold: 0.3
-    }); // Trigger when 30% of the element is visible
+      threshold: 0.6 // Trigger when 60% of the element is visible
+    });
 
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
@@ -102,7 +99,7 @@ const BundleOffer = () => {
     return () => {
       observer.disconnect();
     };
-  }, [animationStarted, currentSlide]);
+  }, [animationStarted, currentSlide, originalPrice, finalPrice]);
 
   return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-gray-50">
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]")}>
@@ -113,10 +110,12 @@ const BundleOffer = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            {/* Enhanced animated price counter between title and subline with background */}
+            {/* Price counter with background */}
             <div className="flex items-center gap-3 justify-center mt-4">
-              <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", backgroundClass)}>
-                <span className={cn("text-2xl text-white transition-all duration-300", animationComplete ? "" : "line-through")}>
+              <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className="px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer bg-red-500">
+                <span className={cn("text-2xl text-white transition-all duration-300", 
+                  // Always show line-through until animation is complete
+                  animationComplete ? "" : "line-through")}>
                   €{currentPrice}
                 </span>
               </a>
