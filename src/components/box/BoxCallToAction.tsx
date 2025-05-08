@@ -1,8 +1,10 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
 interface FAQItem {
   question: string;
   answer: string;
@@ -49,44 +51,60 @@ const BoxCallToAction = () => {
   const isCtaInView = useInView(ctaSectionRef, {
     threshold: 0.3
   });
+  const [isFaqExpanded, setIsFaqExpanded] = useState(false);
 
   // Set up parallax effect
   useParallax(backgroundRef, 0.05);
+  
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/7sIdTg8G31b720U14k', '_blank');
   };
+  
+  const toggleFaqVisibility = () => {
+    setIsFaqExpanded(!isFaqExpanded);
+  };
+
   return <>
       {/* FAQ Section */}
       <section id="faq" className="py-24 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center relative inline-block mb-12">
-                FREQUENTLY ASKED QUESTIONS
-                <span className={cn("absolute bottom-0 left-0 right-0 mx-auto h-1 bg-yellow-400 transform transition-transform duration-1000", isFaqInView ? "scale-x-100" : "scale-x-0")} style={{
-                width: '100%'
-              }}></span>
-              </h2>
-            </div>
-            
-            <div ref={faqSectionRef} className="max-w-3xl mx-auto">
-              <Accordion type="single" collapsible className="w-full">
-                {faqItems.map((item, index) => <AccordionItem key={index} value={`item-${index}`} className={cn("mb-4 transition-all duration-300 rounded-lg overflow-hidden", isFaqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")} style={{
-                transitionDelay: `${index * 100}ms`
-              }}>
-                    <div className="border border-transparent hover:bg-gray-50/50 transition-all duration-300 rounded-lg
-                    data-[state=open]:border-yellow data-[state=open]:border-[1.5px] data-[state=open]:bg-white">
-                      <AccordionTrigger className="py-4 px-5 text-lg font-medium hover:no-underline flex justify-between items-center transition-all duration-300">
-                        {item.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 px-5 pb-5 font-normal transition-all duration-300">
-                        {item.answer}
-                      </AccordionContent>
-                    </div>
-                  </AccordionItem>)}
-              </Accordion>
-            </div>
+            <Collapsible open={isFaqExpanded} onOpenChange={toggleFaqVisibility} className="w-full">
+              <div className="flex items-center justify-center">
+                <CollapsibleTrigger className="flex items-center justify-center space-x-2 cursor-pointer mb-6 group">
+                  <div className="text-center">
+                    <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center relative inline-block">
+                      FREQUENTLY ASKED QUESTIONS
+                      <span className={cn("absolute bottom-0 left-0 right-0 mx-auto h-1 bg-yellow-400 transform transition-transform duration-1000", isFaqInView ? "scale-x-100" : "scale-x-0")} style={{
+                        width: '100%'
+                      }}></span>
+                    </h2>
+                  </div>
+                  <ChevronDown className={cn("h-6 w-6 transition-transform duration-300", isFaqExpanded ? "rotate-180" : "")} />
+                </CollapsibleTrigger>
+              </div>
+              
+              <CollapsibleContent className="transition-all duration-300 data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
+                <div ref={faqSectionRef} className="max-w-3xl mx-auto">
+                  <Accordion type="single" collapsible className="w-full">
+                    {faqItems.map((item, index) => <AccordionItem key={index} value={`item-${index}`} className={cn("mb-4 transition-all duration-300 rounded-lg overflow-hidden", isFaqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")} style={{
+                    transitionDelay: `${index * 100}ms`
+                  }}>
+                        <div className="border border-transparent hover:bg-gray-50/50 transition-all duration-300 rounded-lg
+                        data-[state=open]:border-yellow data-[state=open]:border-[1.5px] data-[state=open]:bg-white">
+                          <AccordionTrigger className="py-4 px-5 text-lg font-medium hover:no-underline flex justify-between items-center transition-all duration-300">
+                            {item.question}
+                          </AccordionTrigger>
+                          <AccordionContent className="text-gray-600 px-5 pb-5 font-normal transition-all duration-300">
+                            {item.answer}
+                          </AccordionContent>
+                        </div>
+                      </AccordionItem>)}
+                  </Accordion>
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
           </div>
         </div>
       </section>
