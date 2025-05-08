@@ -32,7 +32,7 @@ const LimitedOfferSection = () => {
   };
   return <section id="private-gym" ref={sectionRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        <div className="max-w-5xl mx-auto py-0 px-0 my-0">
+        <div className="max-w-5xl mx-auto px-0 my-0 py-[24px]">
           <div className={cn("text-center mb-6 transition-all duration-1000", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
               WHAT IS A PRIVATE GYM?
@@ -41,7 +41,7 @@ const LimitedOfferSection = () => {
           </div>
 
           {/* Carousel Container - uses the same styling approach as HeroCarousel */}
-          <div className="flex flex-col items-center mb-8">
+          <div className="flex flex-col items-center mb-8 my-0 py-[23px]">
             <div className={cn("relative overflow-hidden rounded-xl mb-4", isMobile ? "aspect-square w-[80%]" : "max-w-[400px] w-full aspect-square mx-auto")}>
               {carouselImages.map((image, index) => <div key={image} className={cn("absolute inset-0 w-full h-full transition-opacity duration-1000", currentIndex === index ? "opacity-100" : "opacity-0")}>
                   <img src={image} alt={`Private gym image ${index + 1}`} className="w-full h-full object-cover rounded-xl" width={1080} height={1080} loading={index === 0 ? "eager" : "lazy"} />
