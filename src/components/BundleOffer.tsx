@@ -112,7 +112,10 @@ const BundleOffer = () => {
             
             {/* Price counter with background */}
             <div className="flex items-center gap-3 justify-center mt-4">
-              <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className="px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer bg-red-500">
+              <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn(
+                "px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer",
+                animationComplete ? "bg-green-500" : "bg-red-500"  // Change to green when animation completes
+              )}>
                 <span className={cn("text-2xl text-white transition-all duration-300", 
                   // Always show line-through until animation is complete
                   animationComplete ? "" : "line-through")}>
