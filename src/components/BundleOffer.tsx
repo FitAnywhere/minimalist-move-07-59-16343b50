@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -108,7 +107,7 @@ const BundleOffer = () => {
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
           <div className={cn("text-center transition-all duration-1000 transform", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-[27px]">
               YOUR GYM → YOUR RULES
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
@@ -120,8 +119,8 @@ const BundleOffer = () => {
                 <div className="flex items-center gap-3 justify-center mb-3">
                   <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500")}>
                     <span className={cn("text-2xl text-white transition-all duration-300",
-                  // Always show line-through until animation is complete
-                  animationComplete ? "" : "line-through")}>
+                // Always show line-through until animation is complete
+                animationComplete ? "" : "line-through")}>
                       €{currentPrice}
                     </span>
                   </a>
@@ -144,40 +143,16 @@ const BundleOffer = () => {
             <div className="w-full max-w-[500px] relative" style={{
             height: isMobile ? "450px" : "530px" // Maintained increased size
           }}>
-              {carouselContent.map((item, index) => (
-                <div 
-                  key={index} 
-                  className={cn(
-                    "absolute top-0 left-0 w-full h-full flex flex-col items-center",
-                    // Remove transition-opacity for immediate transitions
-                    index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-                  )}
-                >
+              {carouselContent.map((item, index) => <div key={index} className={cn("absolute top-0 left-0 w-full h-full flex flex-col items-center",
+            // Remove transition-opacity for immediate transitions
+            index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
                   <div className="flex justify-center h-[75%] items-center">
-                    {item.type === 'video' ? (
-                      <video 
-                        ref={index === 0 ? videoRef : null} 
-                        src={item.src} 
-                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
-                        muted 
-                        playsInline 
-                        loop 
-                        preload="metadata" 
-                      />
-                    ) : (
-                      <img 
-                        src={item.src} 
-                        alt="Product image" 
-                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
-                        loading="eager" 
-                      />
-                    )}
+                    {item.type === 'video' ? <video ref={index === 0 ? videoRef : null} src={item.src} className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" muted playsInline loop preload="metadata" /> : <img src={item.src} alt="Product image" className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" loading="eager" />}
                   </div>
                   <div className="mt-4 text-center">
                     <p className="font-semibold text-gray-800">{item.label}</p>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
 
             {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
@@ -185,8 +160,8 @@ const BundleOffer = () => {
                 <div className="flex items-center gap-3 justify-center mb-2">
                   <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500")}>
                     <span className={cn("text-2xl text-white transition-all duration-300",
-                  // Always show line-through until animation is complete
-                  animationComplete ? "" : "line-through")}>
+                // Always show line-through until animation is complete
+                animationComplete ? "" : "line-through")}>
                       €{currentPrice}
                     </span>
                   </a>
