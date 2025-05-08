@@ -1,13 +1,10 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { formatPrice } from '@/utils/formatters';
 import { ShoppingCart } from 'lucide-react';
-
 const carouselImages = ["https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745834932/PRIVATE_GYM_1_vcyki4.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828736/2284_training_obtekg.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745828745/2284_supp_bh0dtd.png"];
-
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
@@ -19,19 +16,16 @@ const BundleOffer = () => {
   const [backgroundClass, setBackgroundClass] = useState("bg-red-500");
   const finalPrice = 990;
   const originalPrice = 1650;
-
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
   };
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide(prevSlide => (prevSlide + 1) % carouselImages.length);
     }, 2000);
     return () => clearInterval(interval);
   }, []);
-
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && !animationStarted) {
@@ -46,7 +40,6 @@ const BundleOffer = () => {
         const stepDuration = animationDuration / steps;
         const priceDecrement = (originalPrice - finalPrice) / steps;
         let step = 0;
-        
         const animationInterval = setInterval(() => {
           step++;
           setCurrentPrice(prev => {
@@ -54,12 +47,11 @@ const BundleOffer = () => {
             // Ensure we don't go below the final price
             return newPrice > finalPrice ? Math.round(newPrice) : finalPrice;
           });
-          
+
           // When we reach 80% of the steps, start transitioning the background color to green
           if (step >= Math.floor(steps * 0.8)) {
             setBackgroundClass("bg-green-600");
           }
-          
           if (step >= steps) {
             clearInterval(animationInterval);
             setAnimationComplete(true);
@@ -69,16 +61,14 @@ const BundleOffer = () => {
     }, {
       threshold: 0.3
     }); // Trigger when 30% of the element is visible
-    
+
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-    
     return () => {
       observer.disconnect();
     };
   }, [animationStarted]);
-
   return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-gray-50">
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
@@ -106,14 +96,7 @@ const BundleOffer = () => {
                   <span className="font-bold text-xl text-gray-900">GET 3 in 1</span>
                 </div>
                 
-                <div className="flex items-center gap-3 justify-center px-[97px] py-[4px]">
-                  <span className="text-2xl text-gray-700 line-through">
-                    {formatPrice(originalPrice)}
-                  </span>
-                  <div className="bg-green-600 px-4 py-1 rounded-full text-white font-bold text-lg">
-                    40% OFF
-                  </div>
-                </div>
+                
 
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-8 py-5 rounded-full text-xl font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
                   <ShoppingCart className="w-6 h-6" /> NOW €990
@@ -161,5 +144,4 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
-
 export default BundleOffer;
