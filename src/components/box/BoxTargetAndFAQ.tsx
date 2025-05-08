@@ -10,40 +10,42 @@ interface FAQItem {
   question: string;
   answer: string;
 }
-const faqItems: FAQItem[] = [{
-  question: "How do I claim my €100 bonus?",
-  answer: "Just ordered BoxFun? Send us your purchase confirmation on Facebook or WhatsApp, and we'll send you a €100 discount for the portable gym."
-}, {
-  question: "How do I set it up?",
-  answer: "Just adjust the cap size and put it on. That's it — you're ready to play, move, and punch."
-}, {
-  question: "Do I need boxing experience?",
-  answer: "Not at all. BoxFun is made for complete beginners. No gloves, no gym — just fun movement that makes you feel alive."
-}, {
-  question: "What's included in the package?",
-  answer: " • The custom-designed BoxFun cap\n • Premium elastic \n • High-quality rebound ball\n • Guaranteed smiles "
-}, {
-  question: "Is this an actual workout or just fun?",
-  answer: "Both! You'll be sweating and smiling at the same time. It boosts coordination, sharpens reflexes, and burns calories — all without it feeling like exercise."
-}, {
-  question: "Is it safe to use indoors?",
-  answer: "Yes — just make sure there's a little space around you. The elastic is designed for controlled rebound."
-}, {
-  question: "What ages is BoxFun for?",
-  answer: "Teens, adults, even grandparents — as long as you're ready to move and have fun, it's for you. We've seen smiles from ages 12 to 70+."
-}, {
-  question: "Does it fit all head sizes?",
-  answer: "Yes! The cap is adjustable and fits most head shapes comfortably."
-}, {
-  question: "How long until I get my order?",
-  answer: "We ship every week. Most orders arrive within 3–7 business days (depending on your location)."
-}, {
-  question: "What if I don't like it?",
-  answer: "Try it for 30 days. If it doesn't bring you joy or movement, send it back — no hard feelings."
-}, {
-  question: "Can it help with coordination or focus?",
-  answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
-}];
+const faqItems: FAQItem[] = [
+  {
+    question: "How do I claim my €100 bonus?",
+    answer: "Just ordered BoxFun? Send us your purchase confirmation on Facebook or WhatsApp, and we'll send you a €100 discount for the portable gym."
+  }, {
+    question: "How do I set it up?",
+    answer: "Just adjust the cap size and put it on. That's it — you're ready to play, move, and punch."
+  }, {
+    question: "Do I need boxing experience?",
+    answer: "Not at all. BoxFun is made for complete beginners. No gloves, no gym — just fun movement that makes you feel alive."
+  }, {
+    question: "What's included in the package?",
+    answer: " • The custom-designed BoxFun cap\n • Premium elastic \n • High-quality rebound ball\n • Guaranteed smiles "
+  }, {
+    question: "Is this an actual workout or just fun?",
+    answer: "Both! You'll be sweating and smiling at the same time. It boosts coordination, sharpens reflexes, and burns calories — all without it feeling like exercise."
+  }, {
+    question: "Is it safe to use indoors?",
+    answer: "Yes — just make sure there's a little space around you. The elastic is designed for controlled rebound."
+  }, {
+    question: "What ages is BoxFun for?",
+    answer: "Teens, adults, even grandparents — as long as you're ready to move and have fun, it's for you. We've seen smiles from ages 12 to 70+."
+  }, {
+    question: "Does it fit all head sizes?",
+    answer: "Yes! The cap is adjustable and fits most head shapes comfortably."
+  }, {
+    question: "How long until I get my order?",
+    answer: "We ship every week. Most orders arrive within 3–7 business days (depending on your location)."
+  }, {
+    question: "What if I don't like it?",
+    answer: "Try it for 30 days. If it doesn't bring you joy or movement, send it back — no hard feelings."
+  }, {
+    question: "Can it help with coordination or focus?",
+    answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
+  }
+];
 const BoxTargetAndFAQ = () => {
   const perfectIfSectionRef = useRef<HTMLDivElement>(null);
   const specialOfferSectionRef = useRef<HTMLDivElement>(null);
@@ -139,15 +141,20 @@ const BoxTargetAndFAQ = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isSpecialOfferInView ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            
-            
             <div className={isMobile ? "max-w-md mx-auto mb-8" : "max-w-2xl mx-auto mb-8"}>
               <div className="p-6 flex flex-col items-center py-[35px]">
-                <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745092806/Screenshot_16_qqtwbf.png" alt="BoxFun Offer" className="object-contain w-full md:w-[60%] rounded-2xl" loading="lazy" width="800" height="600" srcSet="
-                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1745092806/Screenshot_16_qqtwbf.png 400w,
-                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1745092806/Screenshot_16_qqtwbf.png 800w,
-                    https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_1200/v1745092806/Screenshot_16_qqtwbf.png 1200w
-                  " sizes="(max-width: 768px) 400px, 800px" />
+                <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745092806/Screenshot_16_qqtwbf.png" 
+                     alt="BoxFun Offer" 
+                     className="object-contain w-full md:w-[80%] rounded-2xl" 
+                     loading="lazy" 
+                     width="800" 
+                     height="600" 
+                     srcSet="
+                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_400/v1745092806/Screenshot_16_qqtwbf.png 400w,
+                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_800/v1745092806/Screenshot_16_qqtwbf.png 800w,
+                      https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_1200/v1745092806/Screenshot_16_qqtwbf.png 1200w
+                    " 
+                     sizes="(max-width: 768px) 400px, 800px" />
                 <p className="text-gray-500/70 text-sm mt-3">(Applies to one BoxFun order)</p>
               </div>
             </div>
