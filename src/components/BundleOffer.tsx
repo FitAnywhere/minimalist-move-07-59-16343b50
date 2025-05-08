@@ -26,7 +26,7 @@ const BundleOffer = () => {
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
           <div className={cn("text-center transition-all duration-1000 transform", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-              GET YOURS
+              YOUR GYM → YOUR RULES
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             <p className="mt-2 text-gray-700 font-semibold text-xl py-[28px]">For those who train when no one believes in them</p>
