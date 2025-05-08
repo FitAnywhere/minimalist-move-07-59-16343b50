@@ -42,7 +42,7 @@ const GymFAQ = () => {
   const faqSectionRef = useRef<HTMLDivElement>(null);
   const isFaqInView = useInView(faqSectionRef);
   const [isOpen, setIsOpen] = useState(false);
-  return <section id="faq" ref={faqSectionRef} className="py-16 bg-gray-50">
+  return <section id="faq" ref={faqSectionRef} className="py-16 bg-white">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">

@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -7,11 +6,13 @@ import { formatPrice } from '@/utils/formatters';
 import { ShoppingCart } from 'lucide-react';
 
 // New carousel content - a video and an image
-const carouselContent = [
-  { type: 'video', src: '/Fitanyprodcut.mp4' },
-  { type: 'image', src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746737918/PRIVATE_GYM_oyz5hq.png' }
-];
-
+const carouselContent = [{
+  type: 'video',
+  src: '/Fitanyprodcut.mp4'
+}, {
+  type: 'image',
+  src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746737918/PRIVATE_GYM_oyz5hq.png'
+}];
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -23,7 +24,6 @@ const BundleOffer = () => {
   const [animationStarted, setAnimationStarted] = useState(false);
   const finalPrice = 990;
   const originalPrice = 1650;
-
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
@@ -34,7 +34,7 @@ const BundleOffer = () => {
     const interval = setInterval(() => {
       setCurrentSlide(prevSlide => (prevSlide + 1) % carouselContent.length);
     }, 3000); // Switch every 3 seconds
-    
+
     return () => clearInterval(interval);
   }, []);
 
@@ -50,7 +50,8 @@ const BundleOffer = () => {
   // Handle intersection observer to manage video playback and price animation
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && entry.intersectionRatio >= 0.6) { // Only trigger when 60% visible
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+        // Only trigger when 60% visible
         if (!animationStarted) {
           setAnimationStarted(true);
           setAnimationComplete(false); // Reset animation state
@@ -91,17 +92,14 @@ const BundleOffer = () => {
     }, {
       threshold: 0.6 // Trigger when 60% of the element is visible
     });
-
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-    
     return () => {
       observer.disconnect();
     };
   }, [animationStarted, currentSlide, originalPrice, finalPrice]);
-
-  return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-gray-50">
+  return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-white">
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
           <div className={cn("text-center transition-all duration-1000 transform", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
@@ -112,13 +110,11 @@ const BundleOffer = () => {
             
             {/* Price counter with background */}
             <div className="flex items-center gap-3 justify-center mt-4">
-              <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn(
-                "px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer",
-                animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500"  // Changed to rgba green color
-              )}>
-                <span className={cn("text-2xl text-white transition-all duration-300", 
-                  // Always show line-through until animation is complete
-                  animationComplete ? "" : "line-through")}>
+              <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500" // Changed to rgba green color
+            )}>
+                <span className={cn("text-2xl text-white transition-all duration-300",
+              // Always show line-through until animation is complete
+              animationComplete ? "" : "line-through")}>
                   €{currentPrice}
                 </span>
               </a>
@@ -142,33 +138,11 @@ const BundleOffer = () => {
 
             {/* New Video/Image Carousel */}
             <div className="w-full max-w-[350px] relative" style={{
-              height: isMobile ? "300px" : "320px"
-            }}>
-              {carouselContent.map((item, index) => (
-                <div key={index} className={cn(
-                  "absolute top-0 left-0 transition-opacity duration-1000 w-full h-full flex justify-center",
-                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-                )}>
-                  {item.type === 'video' ? (
-                    <video 
-                      ref={index === 0 ? videoRef : null}
-                      src={item.src}
-                      className="w-full h-full object-contain max-w-[250px] md:max-w-[340px] rounded-lg"
-                      muted
-                      playsInline
-                      loop
-                      preload="metadata"
-                    />
-                  ) : (
-                    <img 
-                      src={item.src} 
-                      alt="Product image"
-                      className="w-full h-full object-contain max-w-[250px] md:max-w-[340px] rounded-lg"
-                      loading="eager"
-                    />
-                  )}
-                </div>
-              ))}
+            height: isMobile ? "300px" : "320px"
+          }}>
+              {carouselContent.map((item, index) => <div key={index} className={cn("absolute top-0 left-0 transition-opacity duration-1000 w-full h-full flex justify-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
+                  {item.type === 'video' ? <video ref={index === 0 ? videoRef : null} src={item.src} className="w-full h-full object-contain max-w-[250px] md:max-w-[340px] rounded-lg" muted playsInline loop preload="metadata" /> : <img src={item.src} alt="Product image" className="w-full h-full object-contain max-w-[250px] md:max-w-[340px] rounded-lg" loading="eager" />}
+                </div>)}
             </div>
 
             {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
@@ -200,5 +174,4 @@ const BundleOffer = () => {
       </div>
     </section>;
 };
-
 export default BundleOffer;

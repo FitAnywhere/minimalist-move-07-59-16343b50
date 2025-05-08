@@ -4,13 +4,11 @@ import { cn } from '@/lib/utils';
 import { Star } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-
 interface Testimonial {
   name: string;
   quote: string;
   imageUrl: string;
 }
-
 const testimonials: Testimonial[] = [{
   name: "Emily T.",
   quote: "I doubted myself, now I love every workout",
@@ -36,7 +34,6 @@ const testimonials: Testimonial[] = [{
   quote: "I turn on speaker and grow muscle on my terrace.",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
 }];
-
 const TestimonialImage = memo(({
   imageUrl
 }: {
@@ -64,7 +61,6 @@ const TestimonialImage = memo(({
     </div>;
 });
 TestimonialImage.displayName = 'TestimonialImage';
-
 const TestimonialCard = ({
   testimonial
 }: {
@@ -90,13 +86,11 @@ const TestimonialCard = ({
       </div>
     </div>;
 };
-
 const TestimonialsCarousel = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
-
-  return <section ref={containerRef} id="testimonials" className="py-16 bg-gray-50">
+  return <section ref={containerRef} id="testimonials" className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
@@ -134,5 +128,4 @@ const TestimonialsCarousel = () => {
       </div>
     </section>;
 };
-
 export default TestimonialsCarousel;

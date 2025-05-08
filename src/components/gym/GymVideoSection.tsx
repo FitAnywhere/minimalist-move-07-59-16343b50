@@ -7,7 +7,7 @@ const GymVideoSection = () => {
   const isVideoInView = useInView(videoSectionRef, {
     threshold: 0.3
   });
-  return <section className="py-16 bg-gray-50">
+  return <section className="py-16 bg-white">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div ref={videoSectionRef} className={cn("transition-all duration-700", isVideoInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>

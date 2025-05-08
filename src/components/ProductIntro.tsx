@@ -57,8 +57,8 @@ const ProductIntro = () => {
       })), 1200);
     }
   }, [isInView]);
-  return <section id="product" ref={containerRef} className="bg-gray-50">
-      <div className="container mx-auto px-4">
+  return <section id="product" ref={containerRef} className="bg-[#dee3e4]/[0.09]">
+      <div className="container mx-auto px-4 py-[14px]">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6 items-center">
             <div className="space-y-8 order-last md:order-first">
@@ -69,7 +69,7 @@ const ProductIntro = () => {
                 </h2>
               </div>
               
-              {isMobile && <video autoPlay muted loop playsInline className="w-full max-w-[64%] mx-auto rounded-xl h-auto object-contain py-[2px] my-[8px]">
+              {isMobile && <video autoPlay muted loop playsInline className="w-full max-w-[64%] rounded-xl h-auto object-contain py-[15px] px-0 my-[12px] mx-[50px]">
                   <source src="/intro women.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>}
