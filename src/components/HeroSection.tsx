@@ -13,7 +13,7 @@ const HeroSection = memo(() => {
     threshold: 0.4
   });
   return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white" aria-label="Introduction to FitAnywhere">
-      <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
+      <div className="py-16 bg-white"></div>
       
       <div className="container relative z-20 px-6 py-10 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
