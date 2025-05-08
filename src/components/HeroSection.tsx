@@ -1,4 +1,3 @@
-
 import { useRef, useState, useCallback, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -7,22 +6,18 @@ import HeroContent from './ui/HeroContent';
 import HeroCarousel from './ui/HeroCarousel';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 const HeroSection = memo(() => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const isInView = useInView(heroRef, {
     threshold: 0.4
   });
-
-  return (
-    <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white" aria-label="Introduction to FitAnywhere">
+  return <section ref={heroRef} className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white" aria-label="Introduction to FitAnywhere">
       <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
       
       <div className="container relative z-20 px-6 py-10 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          {isMobile ? (
-            <>
+          {isMobile ? <>
               <div className="text-center order-1 w-full space-y-6">
                 <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} isMobile={true} overrideTitle="START STRONG" />
                 
@@ -38,30 +33,23 @@ const HeroSection = memo(() => {
                   </div>
                   
                   <div className="mt-6 flex flex-col items-center">
-                    <span className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm">
-                      NOW 40% OFF - NL this month only
-                    </span>
+                    <span className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm">40% OFF - NL this month only</span>
                     <ArrowDown className="mt-4 w-6 h-6 animate-bounce text-yellow" />
                   </div>
                 </div>
               </div>
-            </>
-          ) : (
-            <>
+            </> : <>
               <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} overrideTitle="START STRONG" />
               <div className="order-1 md:order-2 w-full flex flex-col items-center">
                 <HeroCarousel />
                 <p className="mt-3 text-sm text-gray-600 text-center">THE FIRST LUXURY PRIVATE GYM</p>
               </div>
-            </>
-          )}
+            </>}
         </div>
       </div>
       
       <ScrollIndicator />
-    </section>
-  );
+    </section>;
 });
-
 HeroSection.displayName = 'HeroSection';
 export default HeroSection;
