@@ -239,7 +239,7 @@ const VideoPlayer = memo(({
         preload={preload}
         width={width}
         height={height}
-        fetchPriority={fetchpriority}
+        fetchpriority={fetchpriority}
         onLoadedMetadata={onLoadedMetadata}
       >
         <source src={src} type="video/mp4" />
