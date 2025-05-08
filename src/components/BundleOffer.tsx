@@ -8,7 +8,7 @@ import { ShoppingCart } from 'lucide-react';
 // New carousel content - a video and an image
 const carouselContent = [{
   type: 'video',
-  src: '/0408-Copy-Copy (1)-Copy.mp4',
+  src: '/Fitanyprodcut.mp4',
   label: 'PRIVATE STRENGTH STATION'
 }, {
   type: 'image',
