@@ -103,7 +103,6 @@ const BundleOffer = () => {
       observer.disconnect();
     };
   }, [animationStarted, currentSlide, originalPrice, finalPrice]);
-  
   return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-white">
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
@@ -142,38 +141,16 @@ const BundleOffer = () => {
 
             {/* Updated Video/Image Carousel with increased size by 15-20% */}
             <div className="w-full max-w-[500px] relative" style={{
-              height: isMobile ? "450px" : "530px" // Increased size by ~15-20%
-            }}>
-              {carouselContent.map((item, index) => (
-                <div key={index} className={cn(
-                  "absolute top-0 left-0 transition-opacity duration-1000 w-full h-full flex flex-col items-center", 
-                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-                )}>
+            height: isMobile ? "450px" : "530px" // Increased size by ~15-20%
+          }}>
+              {carouselContent.map((item, index) => <div key={index} className={cn("absolute top-0 left-0 transition-opacity duration-1000 w-full h-full flex flex-col items-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
                   <div className="flex justify-center h-[75%] items-center">
-                    {item.type === 'video' ? (
-                      <video 
-                        ref={index === 0 ? videoRef : null} 
-                        src={item.src} 
-                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
-                        muted 
-                        playsInline 
-                        loop 
-                        preload="metadata" 
-                      />
-                    ) : (
-                      <img 
-                        src={item.src} 
-                        alt="Product image" 
-                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
-                        loading="eager" 
-                      />
-                    )}
+                    {item.type === 'video' ? <video ref={index === 0 ? videoRef : null} src={item.src} className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" muted playsInline loop preload="metadata" /> : <img src={item.src} alt="Product image" className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" loading="eager" />}
                   </div>
                   <div className="mt-4 text-center">
                     <p className="font-semibold text-gray-800">{item.label}</p>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
 
             {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
@@ -181,14 +158,7 @@ const BundleOffer = () => {
                   <span className="font-bold text-lg text-gray-900">Unlock your strogest self</span>
                 </div>
                 
-                <div className="flex items-center gap-3 justify-center">
-                  <span className="text-xl text-gray-700 line-through">
-                    {formatPrice(originalPrice)}
-                  </span>
-                  <div className="bg-green-600 px-3 py-1 rounded-full text-white font-bold text-sm">
-                    40% OFF
-                  </div>
-                </div>
+                
 
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
                   <ShoppingCart className="w-5 h-5" /> CLAIM THIS DEAL
