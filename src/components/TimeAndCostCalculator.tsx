@@ -165,7 +165,7 @@ const TimeAndCostCalculator = () => {
               </div>
               
               <div className="mt-12 text-center">
-                <p className="text-lg font-medium mb-8">One decision for a lifetime of strength and confidence</p>
+                <p className="text-lg font-medium mb-8">The best decision you will make for a lifetime of strength and confidence</p>
                 
                 <div className="flex justify-center mb-8">
                   <Button variant="yellow" size="lg" className="bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide transition-all duration-300 hover:shadow-md hover:scale-105" onClick={handleCTAClick}>
