@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -21,9 +22,6 @@ const BundleOffer = () => {
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [currentPrice, setCurrentPrice] = useState(1650);
-  const [animationComplete, setAnimationComplete] = useState(false);
-  const [animationStarted, setAnimationStarted] = useState(false);
   const finalPrice = 990;
   const originalPrice = 1650;
   const handleCheckout = (e: React.MouseEvent) => {
@@ -50,42 +48,15 @@ const BundleOffer = () => {
     }
   }, [currentSlide]);
 
-  // Handle intersection observer to manage video playback and price animation
+  // Handle intersection observer to manage video playback
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
         // Only trigger when 60% visible
-        if (!animationStarted) {
-          setAnimationStarted(true);
-          setAnimationComplete(false); // Reset animation state
-          setCurrentPrice(originalPrice); // Reset price
-
-          // Try to play video if it's the current slide
-          if (currentSlide === 0 && videoRef.current) {
-            videoRef.current.currentTime = 0;
-            videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
-          }
-
-          // Start the animation immediately when section is 60% in view
-          const animationDuration = 3300; // 15-20% faster than before (was 3500ms, which was already 10-15% faster than original 4000ms)
-          const steps = 660; // Increased steps to show more numbers in the countdown
-          const stepDuration = animationDuration / steps;
-          const priceDecrement = (originalPrice - finalPrice) / steps;
-          let step = 0;
-          const animationInterval = setInterval(() => {
-            step++;
-            setCurrentPrice(prev => {
-              const newPrice = originalPrice - priceDecrement * step;
-              // Ensure we don't go below the final price
-              return newPrice > finalPrice ? Math.round(newPrice) : finalPrice;
-            });
-
-            // When we reach the final price, clear the interval and set animation complete
-            if (step >= steps) {
-              clearInterval(animationInterval);
-              setAnimationComplete(true);
-            }
-          }, stepDuration);
+        // Try to play video if it's the current slide
+        if (currentSlide === 0 && videoRef.current) {
+          videoRef.current.currentTime = 0;
+          videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
         }
       } else {
         // Pause video when section is not in view
@@ -102,7 +73,8 @@ const BundleOffer = () => {
     return () => {
       observer.disconnect();
     };
-  }, [animationStarted, currentSlide, originalPrice, finalPrice]);
+  }, [currentSlide]);
+
   return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-white">
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
@@ -115,19 +87,20 @@ const BundleOffer = () => {
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0")}>
             {!isMobile && <div className="flex flex-col items-center space-y-2 ml-8">
-                {/* Price counter moved above "Unlock your strongest self" text */}
-                <div className="flex items-center gap-3 justify-center mb-3">
-                  <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500")}>
-                    <span className={cn("text-2xl text-white transition-all duration-300",
-                // Always show line-through until animation is complete
-                animationComplete ? "" : "line-through")}>
-                      €{currentPrice}
+                {/* Desktop: Price tags - displayed side by side */}
+                <div className="flex items-center gap-2 justify-center mb-4">
+                  <span className="text-2xl text-gray-500 line-through">
+                    €{originalPrice}
+                  </span>
+                  <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className="px-4 py-1 rounded-full text-white bg-[rgba(22,163,74,255)]">
+                    <span className="text-2xl text-white">
+                      €{finalPrice}
                     </span>
                   </a>
                 </div>
                 
-                <div className="text-center mb-3">
-                  <span className="font-bold text-xl text-gray-900">Unlock your strogest self</span>
+                <div className="text-center mb-6">
+                  <span className="font-bold text-xl text-gray-900">+629 started getting stronger at home</span>
                 </div>
 
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-8 py-5 rounded-full text-xl font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
@@ -141,34 +114,78 @@ const BundleOffer = () => {
 
             {/* Updated Video/Image Carousel */}
             <div className="w-full max-w-[500px] relative" style={{
-            height: isMobile ? "450px" : "530px" // Maintained increased size
+            height: isMobile ? "450px" : "530px" 
           }}>
-              {carouselContent.map((item, index) => <div key={index} className={cn("absolute top-0 left-0 w-full h-full flex flex-col items-center",
-            // Remove transition-opacity for immediate transitions
-            index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
+              {/* For Mobile, show the label above the carousel */}
+              {isMobile && (
+                <div className="mb-3 text-center">
+                  <p className="font-semibold text-gray-800">
+                    {carouselContent[currentSlide].label}
+                  </p>
+                </div>
+              )}
+
+              {carouselContent.map((item, index) => (
+                <div 
+                  key={index} 
+                  className={cn(
+                    "absolute top-0 left-0 w-full h-full flex flex-col items-center",
+                    index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+                  )}
+                >
                   <div className="flex justify-center h-[75%] items-center">
-                    {item.type === 'video' ? <video ref={index === 0 ? videoRef : null} src={item.src} className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" muted playsInline loop preload="metadata" /> : <img src={item.src} alt="Product image" className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" loading="eager" />}
+                    {item.type === 'video' ? (
+                      <video 
+                        ref={index === 0 ? videoRef : null} 
+                        src={item.src} 
+                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
+                        muted 
+                        playsInline 
+                        loop 
+                        preload="metadata" 
+                      />
+                    ) : (
+                      <img 
+                        src={item.src} 
+                        alt="Product image" 
+                        className={cn(
+                          "w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg",
+                          // Adding zoom animation for images
+                          "transition-transform duration-3000 ease-in-out",
+                          index === currentSlide ? "scale-110" : "scale-100"
+                        )} 
+                        loading="eager" 
+                      />
+                    )}
                   </div>
-                  <div className="mt-4 text-center">
-                    <p className="font-semibold text-gray-800">{item.label}</p>
-                  </div>
-                </div>)}
+                  
+                  {/* Only show label below on desktop */}
+                  {!isMobile && (
+                    <div className="mt-4 text-center">
+                      <p className="font-semibold text-gray-800">{item.label}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
 
-            {isMobile && <div className="flex flex-col items-center space-y-4 mt-8 mx-[8px] px-0 py-[29px] my-[64px]">
-                {/* Price counter moved above "Unlock your strongest self" text for mobile */}
-                <div className="flex items-center gap-3 justify-center mb-2">
-                  <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className={cn("px-4 py-1 rounded-full text-white transition-all duration-500 cursor-pointer", animationComplete ? "bg-[rgba(22,163,74,255)]" : "bg-red-500")}>
-                    <span className={cn("text-2xl text-white transition-all duration-300",
-                // Always show line-through until animation is complete
-                animationComplete ? "" : "line-through")}>
-                      €{currentPrice}
+            {/* Mobile: display content with adjusted spacing */}
+            {isMobile && (
+              <div className="flex flex-col items-center space-y-4 mt-2">
+                {/* Mobile: Price tags - displayed side by side */}
+                <div className="flex items-center gap-2 justify-center mb-2">
+                  <span className="text-2xl text-gray-500 line-through">
+                    €{originalPrice}
+                  </span>
+                  <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className="px-4 py-1 rounded-full text-white bg-[rgba(22,163,74,255)]">
+                    <span className="text-2xl text-white">
+                      €{finalPrice}
                     </span>
                   </a>
                 </div>
                 
-                <div className="text-center mb-2">
-                  <span className="font-bold text-lg text-gray-900">Unlock your strogest self</span>
+                <div className="text-center mb-1">
+                  <span className="font-bold text-lg text-gray-900">+629 started getting stronger at home</span>
                 </div>
                 
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
@@ -178,7 +195,8 @@ const BundleOffer = () => {
                 <p className="text-xs text-gray-400/80 mt-1">
                   (Only 37 left in The Netherlands)
                 </p>
-              </div>}
+              </div>
+            )}
           </div>
           
           {!isMobile}
