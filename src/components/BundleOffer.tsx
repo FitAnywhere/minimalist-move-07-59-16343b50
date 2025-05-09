@@ -87,7 +87,8 @@ const BundleOffer = () => {
             {!isMobile && <div className="flex flex-col items-center space-y-2 ml-8">
                 {/* Desktop: Display text content */}
                 <div className="text-center mb-6">
-                  <span className="font-bold text-gray-900 px-0 mx-0 my-0 text-center text-lg">+629 already took advantage</span>
+                  <span className="font-bold text-gray-900 px-0 mx-0 my-0 text-center text-lg">Beginners just like you… already feel powerful
+              </span>
                 </div>
                 
                 {/* Desktop: Price tags - displayed below text */}
@@ -112,74 +113,37 @@ const BundleOffer = () => {
               </div>}
 
             {/* Mobile: Move the carousel label to the top with good visibility */}
-            {isMobile && (
-              <div className="w-full mb-3 text-center">
+            {isMobile && <div className="w-full mb-3 text-center">
                 <p className="font-semibold text-gray-800 mb-5">
                   {carouselContent[currentSlide].label}
                 </p>
-              </div>
-            )}
+              </div>}
 
             {/* Fixed carousel container with consistent media dimensions */}
-            <div className={cn(
-              "relative overflow-hidden",
-              isMobile ? "w-full" : "w-full max-w-[500px] h-[530px]"
-            )}>
-              {carouselContent.map((item, index) => (
-                <div 
-                  key={index} 
-                  className={cn(
-                    "flex flex-col items-center", 
-                    index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 absolute",
-                    isMobile ? "w-full" : "absolute top-0 left-0 w-full h-full"
-                  )}
-                >
-                  <div className={cn(
-                    "flex justify-center items-center",
-                    isMobile ? "w-full h-[300px]" : "h-[75%]" // Fixed height for mobile media to ensure consistency
-                  )}>
-                    {item.type === 'video' ? (
-                      <video 
-                        ref={index === 0 ? videoRef : null} 
-                        src={item.src} 
-                        className={cn(
-                          "object-contain rounded-lg",
-                          isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full" // Set consistent dimensions on mobile
-                        )} 
-                        muted 
-                        playsInline 
-                        loop 
-                        preload="metadata" 
-                      />
-                    ) : (
-                      <img 
-                        src={item.src} 
-                        alt="Product image" 
-                        className={cn(
-                          "object-contain rounded-lg",
-                          isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full", // Set consistent dimensions on mobile
-                          // Adding zoom animation for images
-                          "transition-transform duration-3000 ease-in-out", 
-                          index === currentSlide ? "scale-110" : "scale-100"
-                        )} 
-                        loading="eager" 
-                      />
-                    )}
+            <div className={cn("relative overflow-hidden", isMobile ? "w-full" : "w-full max-w-[500px] h-[530px]")}>
+              {carouselContent.map((item, index) => <div key={index} className={cn("flex flex-col items-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 absolute", isMobile ? "w-full" : "absolute top-0 left-0 w-full h-full")}>
+                  <div className={cn("flex justify-center items-center", isMobile ? "w-full h-[300px]" : "h-[75%]" // Fixed height for mobile media to ensure consistency
+              )}>
+                    {item.type === 'video' ? <video ref={index === 0 ? videoRef : null} src={item.src} className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full" // Set consistent dimensions on mobile
+                )} muted playsInline loop preload="metadata" /> : <img src={item.src} alt="Product image" className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full",
+                // Set consistent dimensions on mobile
+                // Adding zoom animation for images
+                "transition-transform duration-3000 ease-in-out", index === currentSlide ? "scale-110" : "scale-100")} loading="eager" />}
                   </div>
                   
                   {/* Only show label below on desktop */}
                   {!isMobile && <div className="mt-4 text-center">
                       <p className="font-semibold text-gray-800">{item.label}</p>
                     </div>}
-                </div>
-              ))}
+                </div>)}
             </div>
 
             {/* Mobile: display content with adjusted spacing - moved up closer to carousel */}
             {isMobile && <div className="flex flex-col items-center space-y-3 mt-4">
                 {/* Mobile: First display text */}
                 <div className="text-center mb-1">
-                  <span className="font-bold text-lg text-gray-900">+629 already took advantage</span>
+                  <span className="font-bold text-lg text-gray-900">Beginners just like you… already feel powerful
+              </span>
                 </div>
                 
                 {/* Mobile: Price tags - moved below text */}
