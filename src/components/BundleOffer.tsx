@@ -89,12 +89,11 @@ const BundleOffer = () => {
               {!isMobile && <div className="flex flex-col items-center space-y-2 mt-[-20px]">
                   {/* Desktop: Display text content - desktop remains unchanged but moved higher */}
                   <div className="text-center mb-6">
-                    <span className="font-bold text-gray-900 px-0 mx-0 my-0 text-center text-lg">Beginners just like you… already feel powerful
-                </span>
+                    <span className="text-gray-900 px-0 mx-0 my-0 text-center text-2xl font-semibold">Start feeling strong</span>
                   </div>
                   
                   {/* Desktop: Price tags - displayed below text */}
-                  <div className="flex items-center gap-2 justify-center mb-4">
+                  <div className="flex items-center gap-2 justify-center mb-4 py-[3px]">
                     <span className="text-2xl text-gray-500 line-through">
                       €{originalPrice}
                     </span>
