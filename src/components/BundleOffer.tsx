@@ -74,8 +74,7 @@ const BundleOffer = () => {
       observer.disconnect();
     };
   }, [currentSlide]);
-  return (
-    <>
+  return <>
       <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-white">
         <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-4 py-[60px]")}>
           <div className="max-w-5xl mx-auto px-4 md:px-4 md:py-[14px] space-y-6">
@@ -118,7 +117,7 @@ const BundleOffer = () => {
               {/* Mobile: Move the "Beginners just like you..." text ABOVE the carousel */}
               {isMobile && <div className="w-full mb-3 text-center">
                   <div className="text-center mb-5">
-                    <span className="font-bold text-lg text-gray-900 mx-px px-[20px]">Beginners just like you… already feel powerful</span>
+                    <span className="font-bold text-lg text-gray-900 mx-px px-[20px]">Beginners just like you… already feeling powerful</span>
                   </div>
                 </div>}
 
@@ -179,7 +178,6 @@ const BundleOffer = () => {
       
       {/* Add the new CheatSystemSection below the bundle offer */}
       <CheatSystemSection />
-    </>
-  );
+    </>;
 };
 export default BundleOffer;
