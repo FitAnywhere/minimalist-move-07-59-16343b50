@@ -74,18 +74,18 @@ const BundleOffer = () => {
     };
   }, [currentSlide]);
   return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-white">
-      <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-[150px] py-[60px]")}>
-        <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
+      <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-4 py-[60px]")}>
+        <div className="max-w-5xl mx-auto px-4 md:px-4 md:py-[14px] space-y-6">
           <div className={cn("text-center transition-all duration-1000 transform", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-[27px]">
-              OUR NEW GYM
+              YOUR NEW GYM
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
           </div>
 
-          <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0")}>
-            {!isMobile && <div className="flex flex-col items-center space-y-2 ml-8">
-                {/* Desktop: Display text content - desktop remains unchanged */}
+          <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-center gap-8")}>
+            {!isMobile && <div className="flex flex-col items-center space-y-2 mt-[-20px]">
+                {/* Desktop: Display text content - desktop remains unchanged but moved higher */}
                 <div className="text-center mb-6">
                   <span className="font-bold text-gray-900 px-0 mx-0 my-0 text-center text-lg">Beginners just like you… already feel powerful
               </span>
