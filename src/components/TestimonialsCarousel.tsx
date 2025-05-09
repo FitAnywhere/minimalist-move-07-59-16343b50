@@ -119,9 +119,7 @@ const TestimonialsCarousel = () => {
             </Carousel>
             
             <div className="text-center mt-8">
-              <p className="text-gray-700 font-semibold text-lg">
-                For those who train when no one believes in them
-              </p>
+              <p className="text-gray-700 font-semibold text-lg">For those that improves when no one believes in them</p>
             </div>
           </div>
         </div>
