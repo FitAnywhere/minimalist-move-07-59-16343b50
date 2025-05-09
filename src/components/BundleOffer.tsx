@@ -142,8 +142,7 @@ const BundleOffer = () => {
             {isMobile && <div className="flex flex-col items-center space-y-3 mt-4">
                 {/* Mobile: First display text */}
                 <div className="text-center mb-1">
-                  <span className="font-bold text-lg text-gray-900">Beginners just like you… already feel powerful
-              </span>
+                  <span className="font-bold text-lg text-gray-900 mx-px px-[20px]">Beginners just like you…  already feel powerful</span>
                 </div>
                 
                 {/* Mobile: Price tags - moved below text */}
