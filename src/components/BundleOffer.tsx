@@ -78,14 +78,14 @@ const BundleOffer = () => {
         <div className="max-w-5xl mx-auto px-4 md:px-[115px] md:py-[14px] space-y-6">
           <div className={cn("text-center transition-all duration-1000 transform", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-[27px]">
-              YOUR GYM → YOUR RULES
+              OUR NEW GYM
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
           </div>
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0")}>
             {!isMobile && <div className="flex flex-col items-center space-y-2 ml-8">
-                {/* Desktop: Display text content */}
+                {/* Desktop: Display text content - desktop remains unchanged */}
                 <div className="text-center mb-6">
                   <span className="font-bold text-gray-900 px-0 mx-0 my-0 text-center text-lg">Beginners just like you… already feel powerful
               </span>
@@ -112,11 +112,11 @@ const BundleOffer = () => {
                 </p>
               </div>}
 
-            {/* Mobile: Move the carousel label to the top with good visibility */}
+            {/* Mobile: Move the "Beginners just like you..." text ABOVE the carousel */}
             {isMobile && <div className="w-full mb-3 text-center">
-                <p className="font-semibold text-gray-800 mb-5">
-                  {carouselContent[currentSlide].label}
-                </p>
+                <div className="text-center mb-5">
+                  <span className="font-bold text-lg text-gray-900 mx-px px-[20px]">Beginners just like you… already feel powerful</span>
+                </div>
               </div>}
 
             {/* Fixed carousel container with consistent media dimensions */}
@@ -131,21 +131,23 @@ const BundleOffer = () => {
                 "transition-transform duration-3000 ease-in-out", index === currentSlide ? "scale-110" : "scale-100")} loading="eager" />}
                   </div>
                   
-                  {/* Only show label below on desktop */}
+                  {/* Only show label below on desktop - desktop remains unchanged */}
                   {!isMobile && <div className="mt-4 text-center">
                       <p className="font-semibold text-gray-800">{item.label}</p>
                     </div>}
                 </div>)}
             </div>
+            
+            {/* Mobile: Add the carousel-linked text BELOW the carousel */}
+            {isMobile && <div className="w-full mt-3 text-center">
+                <p className="font-semibold text-gray-800 mb-3">
+                  {carouselContent[currentSlide].label}
+                </p>
+              </div>}
 
-            {/* Mobile: display content with adjusted spacing - moved up closer to carousel */}
-            {isMobile && <div className="flex flex-col items-center space-y-3 mt-4">
-                {/* Mobile: First display text */}
-                <div className="text-center mb-1">
-                  <span className="font-bold text-lg text-gray-900 mx-px px-[20px]">Beginners just like you…  already feel powerful</span>
-                </div>
-                
-                {/* Mobile: Price tags - moved below text */}
+            {/* Mobile: display content with adjusted spacing - price and button section */}
+            {isMobile && <div className="flex flex-col items-center space-y-3">                
+                {/* Mobile: Price tags */}
                 <div className="flex items-center gap-2 justify-center mb-1">
                   <span className="text-2xl text-gray-500 line-through">
                     €{originalPrice}
