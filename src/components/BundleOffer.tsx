@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -121,7 +120,7 @@ const BundleOffer = () => {
               </div>
             )}
 
-            {/* Fixed carousel container - correctly sized elements and no empty space */}
+            {/* Fixed carousel container with consistent media dimensions */}
             <div className={cn(
               "relative overflow-hidden",
               isMobile ? "w-full" : "w-full max-w-[500px] h-[530px]"
@@ -134,11 +133,10 @@ const BundleOffer = () => {
                     index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 absolute",
                     isMobile ? "w-full" : "absolute top-0 left-0 w-full h-full"
                   )}
-                  style={isMobile ? {} : {}}
                 >
                   <div className={cn(
                     "flex justify-center items-center",
-                    isMobile ? "w-full" : "h-[75%]"
+                    isMobile ? "w-full h-[300px]" : "h-[75%]" // Fixed height for mobile media to ensure consistency
                   )}>
                     {item.type === 'video' ? (
                       <video 
@@ -146,7 +144,7 @@ const BundleOffer = () => {
                         src={item.src} 
                         className={cn(
                           "object-contain rounded-lg",
-                          isMobile ? "w-[110%] max-w-[110%]" : "w-full max-w-[115%] h-auto max-h-full"
+                          isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full" // Set consistent dimensions on mobile
                         )} 
                         muted 
                         playsInline 
@@ -159,7 +157,7 @@ const BundleOffer = () => {
                         alt="Product image" 
                         className={cn(
                           "object-contain rounded-lg",
-                          isMobile ? "w-[110%] max-w-[110%]" : "w-full max-w-[115%] h-auto max-h-full",
+                          isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full", // Set consistent dimensions on mobile
                           // Adding zoom animation for images
                           "transition-transform duration-3000 ease-in-out", 
                           index === currentSlide ? "scale-110" : "scale-100"
