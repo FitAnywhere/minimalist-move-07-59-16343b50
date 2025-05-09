@@ -139,7 +139,7 @@ const BundleOffer = () => {
             </div>
             
             {/* Mobile: Add the carousel-linked text BELOW the carousel */}
-            {isMobile && <div className="w-full mt-3 text-center">
+            {isMobile && <div className="w-full mt-3 text-center py-[7px] my-[18px]">
                 <p className="font-semibold text-gray-800 mb-3">
                   {carouselContent[currentSlide].label}
                 </p>
