@@ -115,25 +115,34 @@ const BundleOffer = () => {
             {/* Mobile: Move the carousel label to the top with good visibility */}
             {isMobile && (
               <div className="w-full mb-3 text-center">
-                <p className="font-semibold text-gray-800 mb-5">
+                <p className="font-semibold text-gray-800 mb-2">
                   {carouselContent[currentSlide].label}
                 </p>
               </div>
             )}
 
-            {/* Updated Video/Image Carousel - moved to bottom on mobile */}
-            <div className="w-full max-w-[500px] relative" style={{
-              height: isMobile ? "350px" : "530px"
+            {/* Updated Video/Image Carousel with larger size on mobile and no extra space */}
+            <div className={cn("w-full relative overflow-hidden", 
+              isMobile ? "h-auto" : "max-w-[500px]")} 
+              style={{
+                height: isMobile ? "auto" : "530px",
+                maxHeight: isMobile ? "none" : "530px"
             }}>
               {carouselContent.map((item, index) => (
-                <div key={index} className={cn("absolute top-0 left-0 w-full h-full flex flex-col items-center", 
-                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
-                  <div className="flex justify-center h-[75%] items-center">
+                <div key={index} className={cn("w-full flex flex-col items-center", 
+                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0",
+                  isMobile ? "static" : "absolute top-0 left-0 h-full"
+                )}>
+                  <div className={cn("flex justify-center items-center", 
+                    !isMobile && "h-[75%]")}>
                     {item.type === 'video' ? (
                       <video 
                         ref={index === 0 ? videoRef : null} 
                         src={item.src} 
-                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
+                        className={cn(
+                          "w-full h-auto object-contain rounded-lg",
+                          isMobile ? "max-w-[120%] -mx-[10%]" : "max-w-[350px] md:max-w-[500px]"
+                        )}
                         muted 
                         playsInline 
                         loop 
@@ -144,7 +153,8 @@ const BundleOffer = () => {
                         src={item.src} 
                         alt="Product image" 
                         className={cn(
-                          "w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg",
+                          "w-full h-auto object-contain rounded-lg",
+                          isMobile ? "max-w-[120%] -mx-[10%]" : "max-w-[350px] md:max-w-[500px]",
                           // Adding zoom animation for images
                           "transition-transform duration-3000 ease-in-out", 
                           index === currentSlide ? "scale-110" : "scale-100"
@@ -163,14 +173,14 @@ const BundleOffer = () => {
             </div>
 
             {/* Mobile: display content with adjusted spacing - moved up closer to carousel */}
-            {isMobile && <div className="flex flex-col items-center space-y-3 mt-4">
+            {isMobile && <div className="flex flex-col items-center space-y-3 mt-2">
                 {/* Mobile: First display text */}
-                <div className="text-center mb-1">
+                <div className="text-center">
                   <span className="font-bold text-lg text-gray-900">+629 already took advantage</span>
                 </div>
                 
                 {/* Mobile: Price tags - moved below text */}
-                <div className="flex items-center gap-2 justify-center mb-1">
+                <div className="flex items-center gap-2 justify-center">
                   <span className="text-2xl text-gray-500 line-through">
                     €{originalPrice}
                   </span>
@@ -185,7 +195,7 @@ const BundleOffer = () => {
                   <ShoppingCart className="w-5 h-5" /> CLAIM THIS DEAL
                 </Button>
                 
-                <p className="text-xs text-gray-400/80 mt-0">
+                <p className="text-xs text-gray-400/80">
                   (Only 37 left in The Netherlands)
                 </p>
               </div>}
