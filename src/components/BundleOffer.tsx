@@ -91,7 +91,7 @@ const BundleOffer = () => {
                   <span className="font-bold text-gray-900 px-0 mx-0 my-0 text-center text-lg">+629 already took advantage</span>
                 </div>
                 
-                {/* Desktop: Price tags - displayed side by side - MOVED BELOW TEXT */}
+                {/* Desktop: Price tags - displayed below text */}
                 <div className="flex items-center gap-2 justify-center mb-4">
                   <span className="text-2xl text-gray-500 line-through">
                     €{originalPrice}
@@ -121,19 +121,30 @@ const BundleOffer = () => {
               </div>
             )}
 
-            {/* Updated Video/Image Carousel - moved to bottom on mobile */}
-            <div className="w-full max-w-[500px] relative" style={{
-              height: isMobile ? "350px" : "530px"
-            }}>
+            {/* Updated Video/Image Carousel - adjusted for mobile - removes empty space and increases size */}
+            <div className={cn(
+              "relative",
+              isMobile ? "w-full h-auto mb-0 pb-0" : "w-full max-w-[500px]", 
+              isMobile ? "" : "h-[530px]"
+            )}>
               {carouselContent.map((item, index) => (
-                <div key={index} className={cn("absolute top-0 left-0 w-full h-full flex flex-col items-center", 
-                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
-                  <div className="flex justify-center h-[75%] items-center">
+                <div key={index} className={cn(
+                  "flex flex-col items-center", 
+                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0",
+                  isMobile ? "relative" : "absolute top-0 left-0 w-full h-full"
+                )}>
+                  <div className={cn(
+                    "flex justify-center items-center",
+                    isMobile ? "w-full h-auto" : "h-[75%]"
+                  )}>
                     {item.type === 'video' ? (
                       <video 
                         ref={index === 0 ? videoRef : null} 
                         src={item.src} 
-                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
+                        className={cn(
+                          "object-contain rounded-lg",
+                          isMobile ? "w-[112%] max-w-[112%]" : "w-full max-w-[115%] h-auto max-h-full",
+                        )} 
                         muted 
                         playsInline 
                         loop 
@@ -144,7 +155,8 @@ const BundleOffer = () => {
                         src={item.src} 
                         alt="Product image" 
                         className={cn(
-                          "w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg",
+                          "object-contain rounded-lg",
+                          isMobile ? "w-[112%] max-w-[112%]" : "w-full max-w-[115%] h-auto max-h-full",
                           // Adding zoom animation for images
                           "transition-transform duration-3000 ease-in-out", 
                           index === currentSlide ? "scale-110" : "scale-100"
