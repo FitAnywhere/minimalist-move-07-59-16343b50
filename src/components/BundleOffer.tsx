@@ -121,21 +121,24 @@ const BundleOffer = () => {
               </div>
             )}
 
-            {/* Updated Video/Image Carousel - adjusted for mobile - removes empty space and increases size */}
+            {/* Fixed carousel container - correctly sized elements and no empty space */}
             <div className={cn(
-              "relative",
-              isMobile ? "w-full h-auto mb-0 pb-0" : "w-full max-w-[500px]", 
-              isMobile ? "" : "h-[530px]"
+              "relative overflow-hidden",
+              isMobile ? "w-full" : "w-full max-w-[500px] h-[530px]"
             )}>
               {carouselContent.map((item, index) => (
-                <div key={index} className={cn(
-                  "flex flex-col items-center", 
-                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0",
-                  isMobile ? "relative" : "absolute top-0 left-0 w-full h-full"
-                )}>
+                <div 
+                  key={index} 
+                  className={cn(
+                    "flex flex-col items-center", 
+                    index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 absolute",
+                    isMobile ? "w-full" : "absolute top-0 left-0 w-full h-full"
+                  )}
+                  style={isMobile ? {} : {}}
+                >
                   <div className={cn(
                     "flex justify-center items-center",
-                    isMobile ? "w-full h-auto" : "h-[75%]"
+                    isMobile ? "w-full" : "h-[75%]"
                   )}>
                     {item.type === 'video' ? (
                       <video 
@@ -143,7 +146,7 @@ const BundleOffer = () => {
                         src={item.src} 
                         className={cn(
                           "object-contain rounded-lg",
-                          isMobile ? "w-[112%] max-w-[112%]" : "w-full max-w-[115%] h-auto max-h-full",
+                          isMobile ? "w-[110%] max-w-[110%]" : "w-full max-w-[115%] h-auto max-h-full"
                         )} 
                         muted 
                         playsInline 
@@ -156,7 +159,7 @@ const BundleOffer = () => {
                         alt="Product image" 
                         className={cn(
                           "object-contain rounded-lg",
-                          isMobile ? "w-[112%] max-w-[112%]" : "w-full max-w-[115%] h-auto max-h-full",
+                          isMobile ? "w-[110%] max-w-[110%]" : "w-full max-w-[115%] h-auto max-h-full",
                           // Adding zoom animation for images
                           "transition-transform duration-3000 ease-in-out", 
                           index === currentSlide ? "scale-110" : "scale-100"
