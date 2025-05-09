@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -112,10 +113,10 @@ const BundleOffer = () => {
 
             {/* Updated Video/Image Carousel */}
             <div className="w-full max-w-[500px] relative" style={{
-            height: isMobile ? "450px" : "530px"
+            height: isMobile ? "400px" : "530px" // Reduced height for mobile
           }}>
               {/* For Mobile, show the label above the carousel */}
-              {isMobile && <div className="mb-3 text-center">
+              {isMobile && <div className="mb-1 text-center">
                   <p className="font-semibold text-gray-800">
                     {carouselContent[currentSlide].label}
                   </p>
@@ -135,10 +136,10 @@ const BundleOffer = () => {
                 </div>)}
             </div>
 
-            {/* Mobile: display content with adjusted spacing */}
-            {isMobile && <div className="flex flex-col items-center space-y-4 mt-2">
+            {/* Mobile: display content with adjusted spacing - moved up closer to carousel */}
+            {isMobile && <div className="flex flex-col items-center space-y-3 mt-0">
                 {/* Mobile: Price tags - displayed side by side */}
-                <div className="flex items-center gap-2 justify-center mb-2">
+                <div className="flex items-center gap-2 justify-center mb-1">
                   <span className="text-2xl text-gray-500 line-through">
                     €{originalPrice}
                   </span>
@@ -149,7 +150,7 @@ const BundleOffer = () => {
                   </a>
                 </div>
                 
-                <div className="text-center mb-1">
+                <div className="text-center mb-0">
                   <span className="font-bold text-lg text-gray-900">+629 already took advantage</span>
                 </div>
                 
@@ -157,7 +158,7 @@ const BundleOffer = () => {
                   <ShoppingCart className="w-5 h-5" /> CLAIM THIS DEAL
                 </Button>
                 
-                <p className="text-xs text-gray-400/80 mt-1">
+                <p className="text-xs text-gray-400/80 mt-0">
                   (Only 37 left in The Netherlands)
                 </p>
               </div>}
