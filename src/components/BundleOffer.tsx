@@ -86,7 +86,12 @@ const BundleOffer = () => {
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-between gap-0")}>
             {!isMobile && <div className="flex flex-col items-center space-y-2 ml-8">
-                {/* Desktop: Price tags - displayed side by side */}
+                {/* Desktop: Display text content */}
+                <div className="text-center mb-6">
+                  <span className="font-bold text-gray-900 px-0 mx-0 my-0 text-center text-lg">+629 already took advantage</span>
+                </div>
+                
+                {/* Desktop: Price tags - displayed side by side - MOVED BELOW TEXT */}
                 <div className="flex items-center gap-2 justify-center mb-4">
                   <span className="text-2xl text-gray-500 line-through">
                     €{originalPrice}
@@ -96,10 +101,6 @@ const BundleOffer = () => {
                       €{finalPrice}
                     </span>
                   </a>
-                </div>
-                
-                <div className="text-center mb-6">
-                  <span className="font-bold text-gray-900 px-0 mx-0 my-0 text-center text-lg">+629 already took advantage</span>
                 </div>
 
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-8 py-5 rounded-full text-xl font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
@@ -111,34 +112,64 @@ const BundleOffer = () => {
                 </p>
               </div>}
 
-            {/* Updated Video/Image Carousel */}
-            <div className="w-full max-w-[500px] relative" style={{
-            height: isMobile ? "400px" : "530px" // Reduced height for mobile
-          }}>
-              {/* For Mobile, show the label above the carousel */}
-              {isMobile && <div className="mb-1 text-center">
-                  <p className="font-semibold text-gray-800">
-                    {carouselContent[currentSlide].label}
-                  </p>
-                </div>}
+            {/* Mobile: Move the carousel label to the top with good visibility */}
+            {isMobile && (
+              <div className="w-full mb-3 text-center">
+                <p className="font-semibold text-gray-800 mb-5">
+                  {carouselContent[currentSlide].label}
+                </p>
+              </div>
+            )}
 
-              {carouselContent.map((item, index) => <div key={index} className={cn("absolute top-0 left-0 w-full h-full flex flex-col items-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
+            {/* Updated Video/Image Carousel - moved to bottom on mobile */}
+            <div className="w-full max-w-[500px] relative" style={{
+              height: isMobile ? "350px" : "530px"
+            }}>
+              {carouselContent.map((item, index) => (
+                <div key={index} className={cn("absolute top-0 left-0 w-full h-full flex flex-col items-center", 
+                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0")}>
                   <div className="flex justify-center h-[75%] items-center">
-                    {item.type === 'video' ? <video ref={index === 0 ? videoRef : null} src={item.src} className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" muted playsInline loop preload="metadata" /> : <img src={item.src} alt="Product image" className={cn("w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg",
-                // Adding zoom animation for images
-                "transition-transform duration-3000 ease-in-out", index === currentSlide ? "scale-110" : "scale-100")} loading="eager" />}
+                    {item.type === 'video' ? (
+                      <video 
+                        ref={index === 0 ? videoRef : null} 
+                        src={item.src} 
+                        className="w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg" 
+                        muted 
+                        playsInline 
+                        loop 
+                        preload="metadata" 
+                      />
+                    ) : (
+                      <img 
+                        src={item.src} 
+                        alt="Product image" 
+                        className={cn(
+                          "w-full h-auto max-h-full object-contain max-w-[350px] md:max-w-[500px] rounded-lg",
+                          // Adding zoom animation for images
+                          "transition-transform duration-3000 ease-in-out", 
+                          index === currentSlide ? "scale-110" : "scale-100"
+                        )} 
+                        loading="eager" 
+                      />
+                    )}
                   </div>
                   
                   {/* Only show label below on desktop */}
                   {!isMobile && <div className="mt-4 text-center">
                       <p className="font-semibold text-gray-800">{item.label}</p>
                     </div>}
-                </div>)}
+                </div>
+              ))}
             </div>
 
             {/* Mobile: display content with adjusted spacing - moved up closer to carousel */}
-            {isMobile && <div className="flex flex-col items-center space-y-3 mt-0">
-                {/* Mobile: Price tags - displayed side by side */}
+            {isMobile && <div className="flex flex-col items-center space-y-3 mt-4">
+                {/* Mobile: First display text */}
+                <div className="text-center mb-1">
+                  <span className="font-bold text-lg text-gray-900">+629 already took advantage</span>
+                </div>
+                
+                {/* Mobile: Price tags - moved below text */}
                 <div className="flex items-center gap-2 justify-center mb-1">
                   <span className="text-2xl text-gray-500 line-through">
                     €{originalPrice}
@@ -148,10 +179,6 @@ const BundleOffer = () => {
                       €{finalPrice}
                     </span>
                   </a>
-                </div>
-                
-                <div className="text-center mb-0">
-                  <span className="font-bold text-lg text-gray-900">+629 already took advantage</span>
                 </div>
                 
                 <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
