@@ -116,7 +116,7 @@ const BundleOffer = () => {
               {/* Mobile: Move the "Beginners just like you..." text ABOVE the carousel */}
               {isMobile && <div className="w-full mb-3 text-center">
                   <div className="text-center mb-5">
-                    <span className="font-bold text-lg text-gray-900 mx-px px-[20px]">Beginners just like you… already feeling powerful</span>
+                    <span className="font-bold text-gray-900 mx-px px-[20px] text-xl">Start feeling strong</span>
                   </div>
                 </div>}
 
