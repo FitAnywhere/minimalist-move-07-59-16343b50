@@ -18,9 +18,9 @@ const CheatSystemSection = () => {
 
         {/* Desktop: Image on right, text on left
             Mobile: Title > Subtitle > Image > Bullet points */}
-        <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-6" : "flex flex-row-reverse items-center gap-8")}>
+        <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-6" : "flex flex-row-reverse items-center gap-4")}>
           {/* Image Column */}
-          <div className={cn("flex justify-center", isMobile ? "w-full order-2" : "w-2/5")}>
+          <div className={cn("flex justify-center", isMobile ? "w-full order-3" : "w-2/5")}>
             <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg", 
                 isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
               <img 
@@ -39,15 +39,23 @@ const CheatSystemSection = () => {
             </div>
           </div>
           
-          {/* Text Column */}
-          <div className={cn("flex flex-col", 
-              isMobile ? "w-full text-center space-y-4 order-1" : "w-3/5 text-left space-y-6 pl-4")}>
-            
-            {/* Subtitle text */}
-            <p className={cn("text-gray-700", 
-              isMobile ? "text-base font-semibold" : "text-xl font-medium")}>
+          {/* Subtitle text - Mobile: order-1, Desktop: part of left column */}
+          <div className={cn(isMobile ? "w-full text-center order-2" : "hidden")}>
+            <p className="text-base font-semibold text-gray-700">
               Buy the Private Gym to unlock the 15min a day cheat code
             </p>
+          </div>
+          
+          {/* Text Column - Mobile: now only contains bullet points */}
+          <div className={cn("flex flex-col", 
+              isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-6 pl-4")}>
+            
+            {/* Subtitle text - Desktop only */}
+            {!isMobile && (
+              <p className="text-xl font-medium text-gray-700">
+                Buy the Private Gym to unlock the 15min a day cheat code
+              </p>
+            )}
             
             {/* Updated bullet points with smaller dots */}
             <ul className={cn(
