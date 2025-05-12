@@ -22,15 +22,15 @@ const CheatSystemSection = () => {
             <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg", 
                 isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
               <img 
-                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746826547/Screenshot_217_ruzigl.png" 
-                alt="Cheat System Muscle Building" 
+                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747052494/15min_gains_uh8mgq.png" 
+                alt="Muscle Hacks System" 
                 className="w-full h-auto object-cover" 
                 loading="lazy" 
                 width={360} 
                 height={320} 
                 srcSet="
-                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_360/v1746826547/Screenshot_217_ruzigl.png 360w,
-                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_560/v1746826547/Screenshot_217_ruzigl.png 560w
+                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_360/v1747052494/15min_gains_uh8mgq.png 360w,
+                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_560/v1747052494/15min_gains_uh8mgq.png 560w
                 " 
                 sizes="(max-width: 768px) 100vw, 360px" 
               />
@@ -44,7 +44,13 @@ const CheatSystemSection = () => {
             {/* Text styling differs between mobile and desktop */}
             <p className={cn("text-gray-700", 
               isMobile ? "text-base font-semibold" : "text-xl font-medium")}>
-              The bundle includes a cheat system most people never discover
+              YOU GET THIS TOO
+            </p>
+            
+            <p className={cn("text-gray-700", 
+              isMobile ? "text-base font-medium" : "text-lg font-medium")}>
+              Buy the Private Gym, and we'll drop in a cheat system that 93% of our users say "changed everything." 
+              You won't see it posted. You'll feel it working.
             </p>
             
             {/* Updated bullet points with smaller dots */}
@@ -53,9 +59,9 @@ const CheatSystemSection = () => {
               !isMobile && "mt-1"
             )}>
               {[
-                "NO PRESSURE", 
-                "15 MINUTES A DAY", 
-                "LEAN MUSCLE ONLY"
+                "Visible results in 2 weeks (avg. from customer data)", 
+                "Built for beginners with zero gym history", 
+                "Only unlocked after ordering — no separate access"
               ].map((point, index) => (
                 <li key={index} className={cn(
                   "flex items-center gap-3",
