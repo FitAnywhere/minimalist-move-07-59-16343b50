@@ -16,9 +16,11 @@ const CheatSystemSection = () => {
           </h2>
         </div>
 
+        {/* Desktop: Image on right, text on left
+            Mobile: Title > Subtitle > Image > Bullet points */}
         <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-6" : "flex flex-row-reverse items-center gap-8")}>
-          {/* Image Column - on the right for desktop */}
-          <div className={cn("flex justify-center", isMobile ? "w-full" : "w-2/5")}>
+          {/* Image Column */}
+          <div className={cn("flex justify-center", isMobile ? "w-full order-2" : "w-2/5")}>
             <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg", 
                 isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
               <img 
@@ -37,20 +39,14 @@ const CheatSystemSection = () => {
             </div>
           </div>
           
-          {/* Text Column - on the left for desktop */}
+          {/* Text Column */}
           <div className={cn("flex flex-col", 
-              isMobile ? "w-full text-center space-y-4" : "w-3/5 text-left space-y-6 pl-4")}>
+              isMobile ? "w-full text-center space-y-4 order-1" : "w-3/5 text-left space-y-6 pl-4")}>
             
-            {/* Text styling differs between mobile and desktop */}
+            {/* Subtitle text */}
             <p className={cn("text-gray-700", 
               isMobile ? "text-base font-semibold" : "text-xl font-medium")}>
-              YOU GET THIS TOO
-            </p>
-            
-            <p className={cn("text-gray-700", 
-              isMobile ? "text-base font-medium" : "text-lg font-medium")}>
-              Buy the Private Gym, and we'll drop in a cheat system that 93% of our users say "changed everything." 
-              You won't see it posted. You'll feel it working.
+              Buy the Private Gym to unlock the 15min a day cheat code
             </p>
             
             {/* Updated bullet points with smaller dots */}
@@ -59,15 +55,15 @@ const CheatSystemSection = () => {
               !isMobile && "mt-1"
             )}>
               {[
-                "Visible results in 2 weeks (avg. from customer data)", 
-                "Built for beginners with zero gym history", 
-                "Only unlocked after ordering — no separate access"
+                "Just 15 min/day to see results", 
+                "Included only with Private Gym", 
+                "93% say it changed everything"
               ].map((point, index) => (
                 <li key={index} className={cn(
                   "flex items-center gap-3",
                   !isMobile && "text-[16px] font-semibold"
                 )}>
-                  {/* Smaller bullet points (20-30% reduced) */}
+                  {/* Smaller bullet points */}
                   <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
                     <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
                   </div>
