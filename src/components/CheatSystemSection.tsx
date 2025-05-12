@@ -9,23 +9,30 @@ const CheatSystemSection = () => {
     <section className="py-12 px-4 bg-white">
       <div className="container mx-auto">
         {/* Section title */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-[27px]">
-            MUSCLE HACKS
+            TIME HACKS
             <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000 scale-x-100"></span>
           </h2>
         </div>
 
         {/* Desktop: Image on right, text on left
             Mobile: Title > Subtitle > Image > Bullet points */}
-        <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-6" : "flex flex-row-reverse items-center gap-4")}>
+        <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-4" : "flex flex-row-reverse items-center gap-3")}>
+          {/* Subtitle text - Mobile only */}
+          <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
+            <p className="text-base font-semibold text-gray-700">
+              Unlock secret gains in just 15 minutes a day
+            </p>
+          </div>
+          
           {/* Image Column */}
-          <div className={cn("flex justify-center", isMobile ? "w-full order-3" : "w-2/5")}>
+          <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
             <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg", 
                 isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
               <img 
                 src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747052494/15min_gains_uh8mgq.png" 
-                alt="Muscle Hacks System" 
+                alt="Time Hacks System" 
                 className="w-full h-auto object-cover" 
                 loading="lazy" 
                 width={360} 
@@ -39,33 +46,26 @@ const CheatSystemSection = () => {
             </div>
           </div>
           
-          {/* Subtitle text - Mobile: order-1, Desktop: part of left column */}
-          <div className={cn(isMobile ? "w-full text-center order-2" : "hidden")}>
-            <p className="text-base font-semibold text-gray-700">
-              Buy the Private Gym to unlock the 15min a day cheat code
-            </p>
-          </div>
-          
-          {/* Text Column - Mobile: now only contains bullet points */}
+          {/* Text Column - Desktop version includes subtitle + bullets, Mobile only bullets */}
           <div className={cn("flex flex-col", 
-              isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-6 pl-4")}>
+              isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
             {!isMobile && (
-              <p className="text-xl font-medium text-gray-700">
-                Buy the Private Gym to unlock the 15min a day cheat code
+              <p className="text-xl font-medium text-gray-700 mt-0 pt-0">
+                Unlock secret gains in just 15 minutes a day
               </p>
             )}
             
             {/* Updated bullet points with smaller dots */}
             <ul className={cn(
               "space-y-3", 
-              !isMobile && "mt-1"
+              !isMobile && "mt-1 ml-4"
             )}>
               {[
-                "Just 15 min/day to see results", 
-                "Included only with Private Gym", 
-                "93% say it changed everything"
+                "Minimal time, visible change", 
+                "Only with the Private Gym kit", 
+                "Built for beginners, proven by 93%"
               ].map((point, index) => (
                 <li key={index} className={cn(
                   "flex items-center gap-3",
