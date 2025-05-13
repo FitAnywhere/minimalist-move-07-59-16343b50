@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 const CheatSystemSection = () => {
@@ -18,7 +17,7 @@ const CheatSystemSection = () => {
         <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-4" : "flex flex-row-reverse items-center gap-3")}>
           {/* Subtitle text - Mobile only */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-base font-semibold text-gray-700">This 15-min system turns excuses into muscle</p>
+            <p className="text-base font-semibold text-gray-700">15-min system turning excuses into muscle</p>
           </div>
           
           {/* Image Column */}
@@ -35,7 +34,7 @@ const CheatSystemSection = () => {
           <div className={cn("flex flex-col", isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && <p className="text-xl font-medium text-gray-700 mt-0 pt-0">This 15-min system turns excuses into muscle</p>}
+            {!isMobile && <p className="text-xl font-medium text-gray-700 mt-0 pt-0">15-min system turning excuses into muscle</p>}
             
             {/* Updated bullet points with smaller dots */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
