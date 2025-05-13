@@ -1,3 +1,4 @@
+
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 const CheatSystemSection = () => {
@@ -23,9 +24,9 @@ const CheatSystemSection = () => {
           {/* Image Column */}
           <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
             <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
-              <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747052494/15min_gains_uh8mgq.png" alt="Time Hacks System" className="w-full h-auto object-cover" loading="lazy" width={360} height={320} srcSet="
-                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_360/v1747052494/15min_gains_uh8mgq.png 360w,
-                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_560/v1747052494/15min_gains_uh8mgq.png 560w
+              <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747157019/Izdelek_brez_naslova_-_2025-05-13T190431.867_lhxus6.png" alt="Time Hacks System" className="w-full h-auto object-cover" loading="lazy" width={360} height={320} srcSet="
+                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_360/v1747157019/Izdelek_brez_naslova_-_2025-05-13T190431.867_lhxus6.png 360w,
+                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_560/v1747157019/Izdelek_brez_naslova_-_2025-05-13T190431.867_lhxus6.png 560w
                 " sizes="(max-width: 768px) 100vw, 360px" />
             </div>
           </div>
