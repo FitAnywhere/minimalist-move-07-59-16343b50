@@ -162,7 +162,7 @@ const BundleOffer = () => {
                     <ShoppingCart className="w-5 h-5" /> CLAIM THIS DEAL
                   </Button>
                   
-                  <p className="text-xs text-gray-400/80 mt-0">(40% OFF this month olny in The Netherlands)</p>
+                  <p className="text-xs text-gray-400/80 mt-0">(40% OFF this month only in the Netherlands)</p>
                 </div>}
             </div>
             
