@@ -11,7 +11,7 @@ interface Testimonial {
 }
 const testimonials: Testimonial[] = [{
   name: "Emily T.",
-  quote: "These short workouts are a blessing. Seeing real results now and still have time for everything else.",
+  quote: "Didn't think 15 minutes a day could do this much",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744150914/Screenshot_89_mw00er.png"
 }, {
   name: "Jordan P.",
