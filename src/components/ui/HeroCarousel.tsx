@@ -7,7 +7,7 @@ const images = [
   "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745755066/1_doj-Photoroom_9_-Photoroom_7_y2vlxo.jpg",
   "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745755066/IMG_20250427_114419_333_vqgbst.jpg",
   "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745755066/IMG_20250427_114421_715_kx0t3m.jpg",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747136449/Screenshot_30_whgnav.png"
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747159026/herro15m_ee2w1v.png"
 ];
 
 const HeroCarousel = () => {
