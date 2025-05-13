@@ -108,9 +108,7 @@ const BundleOffer = () => {
                     <ShoppingCart className="w-6 h-6" /> CLAIM THIS DEAL
                   </Button>
                   
-                  <p className="text-xs text-gray-400/80 mt-1">
-                    (Only 37 left in The Netherlands)
-                  </p>
+                  <p className="text-xs text-gray-400/80 mt-1">(40% OFF this month only in the Netherlands)</p>
                 </div>}
 
               {/* Mobile: Move the "Beginners just like you..." text ABOVE the carousel */}
