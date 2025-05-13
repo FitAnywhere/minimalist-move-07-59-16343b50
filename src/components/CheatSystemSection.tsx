@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 const CheatSystemSection = () => {
@@ -18,7 +17,7 @@ const CheatSystemSection = () => {
         <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-4" : "flex flex-row-reverse items-center gap-3")}>
           {/* Subtitle text - Mobile only */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-base font-semibold text-gray-700">Unlock the 15-minute system that turns excuses into muscle</p>
+            <p className="text-base font-semibold text-gray-700">This 15-min system turns excuses into muscle</p>
           </div>
           
           {/* Image Column */}
@@ -35,17 +34,11 @@ const CheatSystemSection = () => {
           <div className={cn("flex flex-col", isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && <p className="text-xl font-medium text-gray-700 mt-0 pt-0">
-                Unlock secret gains in just 15 minutes a day
-              </p>}
+            {!isMobile && <p className="text-xl font-medium text-gray-700 mt-0 pt-0">This 15-min system turns excuses into muscle</p>}
             
             {/* Updated bullet points with smaller dots */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
-              {[
-                "Access only for Private Gym owners",
-                "Built for gains, not wasted hours", 
-                "93% had their life changed after trying it"
-              ].map((point, index) => <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
+              {["Access only for Private Gym owners", "Built for gains, not wasted hours", "93% had their life changed after trying it"].map((point, index) => <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
                   {/* Smaller bullet points */}
                   <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
                     <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
