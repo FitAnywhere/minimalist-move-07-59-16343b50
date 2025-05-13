@@ -1,3 +1,4 @@
+
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 const CheatSystemSection = () => {
@@ -40,7 +41,11 @@ const CheatSystemSection = () => {
             
             {/* Updated bullet points with smaller dots */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
-              {["Minimal time, visible change", "Only with the Private Gym kit", "Built for beginners, proven by 93%"].map((point, index) => <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
+              {[
+                "Access only for Private Gym owners",
+                "Built for gains, not wasted hours", 
+                "93% had their life changed after trying it"
+              ].map((point, index) => <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
                   {/* Smaller bullet points */}
                   <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
                     <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
