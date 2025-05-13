@@ -105,7 +105,7 @@ const BundleOffer = () => {
                   </div>
 
                   <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-8 py-5 rounded-full text-xl font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
-                    <ShoppingCart className="w-6 h-6" /> CLAIM THIS DEAL
+                    <ShoppingCart className="w-6 h-6" /> TRY NOW
                   </Button>
                   
                   <p className="text-xs text-gray-400/80 mt-1">(40% OFF this month only in the Netherlands)</p>
@@ -159,7 +159,7 @@ const BundleOffer = () => {
                   </div>
                   
                   <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
-                    <ShoppingCart className="w-5 h-5" /> CLAIM THIS DEAL
+                    <ShoppingCart className="w-5 h-5" /> TRY NOW
                   </Button>
                   
                   <p className="text-xs text-gray-400/80 mt-0">(40% OFF this month only in the Netherlands)</p>
