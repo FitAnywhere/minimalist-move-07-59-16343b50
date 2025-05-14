@@ -12,6 +12,7 @@ const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalcula
 const GymVideoSection = lazy(() => import('@/components/gym/GymVideoSection'));
 const GymFAQ = lazy(() => import('@/components/gym/GymFAQ'));
 const QuizSection = lazy(() => import('@/components/quiz/QuizSection'));
+const WisdomOfLegends = lazy(() => import('@/components/gym/WisdomOfLegends'));
 const GymCallToAction = lazy(() => import('@/components/gym/GymCallToAction'));
 const Footer = lazy(() => import('@/components/Footer'));
 
@@ -69,6 +70,13 @@ const Index = () => {
       <div id="quiz" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <QuizSection />
+        </Suspense>
+      </div>
+      
+      {/* Add new Wisdom of Legends section here - between Quiz and FAQ */}
+      <div id="wisdom" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <WisdomOfLegends />
         </Suspense>
       </div>
       
