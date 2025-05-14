@@ -4,9 +4,6 @@ import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
 import ProductIntro from '@/components/ProductIntro';
 
-// Add the Google Font for Playfair Display
-import { Helmet } from 'react-helmet-async';
-
 // Lazy load non-critical sections
 const BundleOffer = lazy(() => import('@/components/BundleOffer'));
 const GymTarget = lazy(() => import('@/components/gym/GymTarget'));
@@ -29,10 +26,6 @@ const SectionLoader = () => (
 const Index = () => {
   return (
     <div className="overflow-x-hidden">
-      <Helmet>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" />
-      </Helmet>
-      
       <NavBar />
       
       <div id="hero">

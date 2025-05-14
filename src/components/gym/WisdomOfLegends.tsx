@@ -93,13 +93,13 @@ const WisdomOfLegends = () => {
     <section 
       ref={sectionRef} 
       id="wisdom-legends" 
-      className="py-20 md:py-28 lg:py-32 bg-gradient-to-r from-white via-[#FCFCFC] to-white"
+      className="py-24 bg-white"
     >
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center mb-16", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-              TRAIN LIKE LEGENDS
+              WISDOM OF LEGENDS
               <span className={cn(
                 "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000",
                 isInView ? "scale-x-100" : "scale-x-0"
@@ -107,12 +107,13 @@ const WisdomOfLegends = () => {
             </h2>
           </div>
           
-          <div className="h-[210px] md:h-[240px] flex flex-col justify-center">
+          <div className="h-[180px] md:h-[200px] flex flex-col justify-center">
             <Carousel
               setApi={setApi}
               opts={{ 
                 align: "center",
                 loop: true,
+                draggable: false // Disable manual scrolling/swiping
               }}
               className="w-full"
             >
@@ -120,13 +121,13 @@ const WisdomOfLegends = () => {
                 {quotes.map((quote, index) => (
                   <CarouselItem key={index} className="flex justify-center">
                     <div className={cn(
-                      "max-w-2xl text-center transition-all duration-700 ease-in-out",
+                      "max-w-2xl text-center transition-opacity duration-500",
                       current === index ? "opacity-100" : "opacity-0"
                     )}>
-                      <p className="font-playfair text-lg md:text-xl lg:text-2xl text-black font-normal leading-relaxed mb-8">
-                        <span className="text-yellow-400 text-[0.95em]">❝</span> {quote.text} <span className="text-yellow-400 text-[0.95em]">❞</span>
+                      <p className="text-xl md:text-2xl lg:text-3xl font-bold text-black mb-6">
+                        <span className="text-yellow-400">❝</span> {quote.text} <span className="text-yellow-400">❞</span>
                       </p>
-                      <p className="text-base md:text-lg italic text-[#FFD756] tracking-wide" style={{ fontSize: "85%" }}>
+                      <p className="text-base md:text-lg italic text-yellow-600/80">
                         — {quote.author}
                       </p>
                     </div>
@@ -134,6 +135,8 @@ const WisdomOfLegends = () => {
                 ))}
               </CarouselContent>
             </Carousel>
+            
+            {/* Indicator dots removed as requested */}
           </div>
         </div>
       </div>
