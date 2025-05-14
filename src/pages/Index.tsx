@@ -5,7 +5,7 @@ import HeroSection from '@/components/HeroSection';
 import ProductIntro from '@/components/ProductIntro';
 
 // Add the Google Font for Playfair Display
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 // Lazy load non-critical sections
 const BundleOffer = lazy(() => import('@/components/BundleOffer'));
