@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -6,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Check } from 'lucide-react';
-
 const CheatSystemSection = () => {
   const isMobile = useIsMobile();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -15,38 +13,35 @@ const CheatSystemSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Basic validation
     if (!orderNumber.trim() || !email.trim()) {
       setError('Please fill in all fields');
       return;
     }
-    
+
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError('Please enter a valid email address');
       return;
     }
-    
     setError('');
     setIsSubmitting(true);
-    
     try {
       const response = await fetch('https://hook.eu2.make.com/278gv0h3o3lxy7lafe1s7v2cwr4e192g', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           order_number: orderNumber,
           email: email
-        }),
+        })
       });
-      
+
       // Handle successful submission
       setIsSuccess(true);
       setOrderNumber('');
@@ -58,7 +53,6 @@ const CheatSystemSection = () => {
       setIsSubmitting(false);
     }
   };
-
   return <section className="py-12 px-4 bg-white">
       <div className="container mx-auto">
         {/* Section title */}
@@ -91,7 +85,7 @@ const CheatSystemSection = () => {
           <div className={cn("flex flex-col", isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && <p className="text-xl font-medium text-gray-700 mt-0 pt-0">15-min system turning excuses into muscle</p>}
+            {!isMobile && <p className="text-xl font-medium text-gray-700 mt-0 pt-0">The fastest muscle-building formula</p>}
             
             {/* Updated bullet points with smaller dots */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
@@ -106,12 +100,7 @@ const CheatSystemSection = () => {
             
             {/* CTA Button */}
             <div className={cn("pt-4", isMobile ? "flex justify-center" : "")}>
-              <Button 
-                variant="yellow" 
-                size="lg" 
-                className="font-semibold" 
-                onClick={() => setIsDialogOpen(true)}
-              >
+              <Button variant="yellow" size="lg" className="font-semibold" onClick={() => setIsDialogOpen(true)}>
                 REQUEST YOURS
               </Button>
             </div>
@@ -128,60 +117,37 @@ const CheatSystemSection = () => {
             </DialogTitle>
           </DialogHeader>
           
-          {isSuccess ? (
-            <div className="py-6 text-center space-y-4">
+          {isSuccess ? <div className="py-6 text-center space-y-4">
               <div className="flex justify-center">
                 <Check className="h-12 w-12 text-green-500" />
               </div>
               <p className="text-lg font-medium">Thank you.</p>
               <p>Once we confirm your order number, you will receive TIME HACKS on your email.</p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4 py-4">
+            </div> : <form onSubmit={handleSubmit} className="space-y-4 py-4">
               <div className="space-y-2">
                 <label htmlFor="order-number" className="text-sm font-medium">
                   Order Number
                 </label>
-                <Input
-                  id="order-number"
-                  value={orderNumber}
-                  onChange={(e) => setOrderNumber(e.target.value)}
-                  placeholder="Enter your order number"
-                  required
-                />
+                <Input id="order-number" value={orderNumber} onChange={e => setOrderNumber(e.target.value)} placeholder="Enter your order number" required />
               </div>
               
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium">
                   Email Address
                 </label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email address"
-                  required
-                />
+                <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email address" required />
               </div>
               
               {error && <p className="text-red-600 text-sm">{error}</p>}
               
               <div className="flex justify-center pt-2">
-                <Button 
-                  type="submit" 
-                  variant="yellow" 
-                  className="w-full font-semibold" 
-                  disabled={isSubmitting}
-                >
+                <Button type="submit" variant="yellow" className="w-full font-semibold" disabled={isSubmitting}>
                   GET MY TIME HACKS
                 </Button>
               </div>
-            </form>
-          )}
+            </form>}
         </DialogContent>
       </Dialog>
     </section>;
 };
-
 export default CheatSystemSection;
