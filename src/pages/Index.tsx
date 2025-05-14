@@ -1,3 +1,4 @@
+
 import { lazy, Suspense } from 'react';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
@@ -64,13 +65,6 @@ const Index = () => {
       <div id="video-section" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <GymVideoSection />
-        </Suspense>
-      </div>
-      
-      {/* Time Hacks section - keeping only this instance */}
-      <div id="time-hacks" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <CheatSystemSection />
         </Suspense>
       </div>
       
