@@ -64,19 +64,9 @@ const quotes: QuoteItem[] = [
     image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747252758/ChatGPT_Image_14._maj_2025_21_00_46_tzxkua.png"
   },
   {
-    text: "You get what you give. What you put into things is what you get out.",
+    text: "What you put into things is what you get out of them.",
     author: "Jennifer Lopez",
     image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747255384/ChatGPT_Image_14._maj_2025_22_36_45_ajuaie.png"
-  },
-  {
-    text: "If I succeed, it's because I worked my ass off.",
-    author: "Mark Wahlberg",
-    image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747252759/ChatGPT_Image_14._maj_2025_21_02_13_whbzzy.png"
-  },
-  {
-    text: "Don't count the days. Make the days count.",
-    author: "Muhammad Ali",
-    image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747255383/ChatGPT_Im"
   },
 ];
 
@@ -87,13 +77,13 @@ const WisdomOfLegends = () => {
   const [current, setCurrent] = useState(0);
   const [authorVisible, setAuthorVisible] = useState(false);
 
-  // Set up auto-rotation with timing to 3.5 seconds (3500ms)
+  // Set up auto-rotation with timing to 4.5 seconds (4500ms) - 1 second slower than before
   useEffect(() => {
     if (!api) return;
 
     const interval = setInterval(() => {
       api.scrollNext();
-    }, 3500);
+    }, 4500);
 
     // Monitor current slide
     const onSelect = () => {
@@ -125,14 +115,14 @@ const WisdomOfLegends = () => {
     <section 
       ref={sectionRef} 
       id="wisdom-legends" 
-      className="py-24 md:py-[100px]"
+      className="py-16 md:py-[70px]"
       style={{
         background: "radial-gradient(circle, #ffffff 30%, #fffbf0 100%)"
       }}
     >
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
-          <div className={cn("text-center mb-16", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
+          <div className={cn("text-center mb-10", isInView ? "opacity-100" : "opacity-0 translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
               LIVE LIKE LEGENDS
               <span className={cn(
@@ -160,20 +150,24 @@ const WisdomOfLegends = () => {
                     )}>
                       <div className="flex flex-col items-center">
                         <div className="mb-4">
-                          <img 
-                            src={quote.image} 
-                            alt={quote.author} 
-                            className="w-24 h-24 rounded-full object-cover mx-auto mb-4" 
-                          />
                           <div className="text-yellow-400 text-5xl mb-2 flex justify-center">
                             ❝
                           </div>
                         </div>
                         
-                        <div className="mb-8">
+                        <div className="mb-5">
                           <p className="font-serif text-xl md:text-2xl lg:text-[1.6em] leading-relaxed font-light text-black">
                             {quote.text}
                           </p>
+                        </div>
+                        
+                        {/* Moved image below quote and made it 10-20% bigger */}
+                        <div className="mb-4">
+                          <img 
+                            src={quote.image} 
+                            alt={quote.author} 
+                            className="w-28 h-28 rounded-full object-cover mx-auto mb-4" 
+                          />
                         </div>
                         
                         <div className={cn(
@@ -189,8 +183,11 @@ const WisdomOfLegends = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="hidden md:flex" />
-              <CarouselNext className="hidden md:flex" />
+              {/* Navigation buttons removed for desktop but kept for mobile */}
+              <div className="md:hidden">
+                <CarouselPrevious />
+                <CarouselNext />
+              </div>
             </Carousel>
           </div>
         </div>
