@@ -67,13 +67,13 @@ const WisdomOfLegends = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
-  // Set up auto-rotation every 3 seconds
+  // Set up auto-rotation with extended timing to 3.5 seconds (3500ms)
   useEffect(() => {
     if (!api) return;
 
     const interval = setInterval(() => {
       api.scrollNext();
-    }, 3000);
+    }, 3500);
 
     // Monitor current slide
     const onSelect = () => {
@@ -113,6 +113,7 @@ const WisdomOfLegends = () => {
               opts={{ 
                 align: "center",
                 loop: true,
+                draggable: false // Disable manual scrolling/swiping
               }}
               className="w-full"
             >
@@ -124,7 +125,7 @@ const WisdomOfLegends = () => {
                       current === index ? "opacity-100" : "opacity-0"
                     )}>
                       <p className="text-xl md:text-2xl lg:text-3xl font-bold text-black mb-6">
-                        ❝ {quote.text} ❞
+                        <span className="text-yellow-400">❝</span> {quote.text} <span className="text-yellow-400">❞</span>
                       </p>
                       <p className="text-base md:text-lg italic text-yellow-600/80">
                         — {quote.author}
@@ -135,22 +136,7 @@ const WisdomOfLegends = () => {
               </CarouselContent>
             </Carousel>
             
-            {/* Indicator dots */}
-            <div className="flex justify-center gap-2 mt-8">
-              {quotes.map((_, index) => (
-                <button 
-                  key={index}
-                  onClick={() => api?.scrollTo(index)}
-                  className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-300",
-                    current === index 
-                      ? "bg-yellow w-4" 
-                      : "bg-gray-300 hover:bg-gray-400"
-                  )}
-                  aria-label={`Go to quote ${index + 1}`}
-                />
-              ))}
-            </div>
+            {/* Indicator dots removed as requested */}
           </div>
         </div>
       </div>
