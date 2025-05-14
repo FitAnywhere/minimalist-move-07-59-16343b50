@@ -74,15 +74,15 @@ const CheatSystemSection = () => {
         <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-4" : "flex flex-row-reverse items-center gap-3")}>
           {/* Subtitle text - Mobile only */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-base font-semibold text-gray-700">15-min system turning excuses into muscle</p>
+            <p className="text-base font-semibold text-gray-700">The fastest muscle building formula</p>
           </div>
           
           {/* Image Column */}
           <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
             <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
-              <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747157667/Izdelek_brez_naslova_-_2025-05-13T190431.867_1_q7tetf.png" alt="Time Hacks System" className="w-full h-auto object-cover" loading="lazy" width={360} height={320} srcSet="
-                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_360/v1747157667/Izdelek_brez_naslova_-_2025-05-13T190431.867_1_q7tetf.png 360w,
-                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_560/v1747157667/Izdelek_brez_naslova_-_2025-05-13T190431.867_1_q7tetf.png 560w
+              <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747232994/m15GG_pfiuiu.png" alt="Time Hacks System" className="w-full h-auto object-cover" loading="lazy" width={360} height={320} srcSet="
+                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_360/v1747232994/m15GG_pfiuiu.png 360w,
+                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_560/v1747232994/m15GG_pfiuiu.png 560w
                 " sizes="(max-width: 768px) 100vw, 360px" />
             </div>
           </div>
@@ -91,11 +91,11 @@ const CheatSystemSection = () => {
           <div className={cn("flex flex-col", isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && <p className="text-xl font-medium text-gray-700 mt-0 pt-0">15-min system turning excuses into muscle</p>}
+            {!isMobile && <p className="text-xl font-medium text-gray-700 mt-0 pt-0">The fastest muscle building formula</p>}
             
             {/* Updated bullet points with smaller dots */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
-              {["Available to FITANY owners", "Quick muscle not wasted hours", "93% said it changed their life forever"].map((point, index) => <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
+              {["FREE FOR FITANY USERS", "STRENGTH IN 15 MINUTES A DAY", "LIFE CHANGING FOR 93% OF USERS"].map((point, index) => <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
                   {/* Smaller bullet points */}
                   <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
                     <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>

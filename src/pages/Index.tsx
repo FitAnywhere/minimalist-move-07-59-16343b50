@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
 import ProductIntro from '@/components/ProductIntro';
+import CheatSystemSection from '@/components/CheatSystemSection';
 
 // Lazy load non-critical sections
 const BundleOffer = lazy(() => import('@/components/BundleOffer'));
@@ -14,6 +15,8 @@ const GymFAQ = lazy(() => import('@/components/gym/GymFAQ'));
 const QuizSection = lazy(() => import('@/components/quiz/QuizSection'));
 const WisdomOfLegends = lazy(() => import('@/components/gym/WisdomOfLegends'));
 const GymCallToAction = lazy(() => import('@/components/gym/GymCallToAction'));
+const WorkoutAddictSection = lazy(() => import('@/components/WorkoutAddictSection'));
+const LimitedOfferSection = lazy(() => import('@/components/LimitedOfferSection'));
 const Footer = lazy(() => import('@/components/Footer'));
 
 // Loading fallback component
@@ -64,6 +67,25 @@ const Index = () => {
       <div id="video-section" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <GymVideoSection />
+        </Suspense>
+      </div>
+      
+      {/* Time Hacks section */}
+      <div id="time-hacks" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <CheatSystemSection />
+        </Suspense>
+      </div>
+      
+      <div id="workout-addict" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <WorkoutAddictSection />
+        </Suspense>
+      </div>
+      
+      <div id="limited-offer" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <LimitedOfferSection />
         </Suspense>
       </div>
       
