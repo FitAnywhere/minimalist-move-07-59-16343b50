@@ -1,4 +1,3 @@
-
 import { lazy, Suspense } from 'react';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
@@ -15,8 +14,6 @@ const GymFAQ = lazy(() => import('@/components/gym/GymFAQ'));
 const QuizSection = lazy(() => import('@/components/quiz/QuizSection'));
 const WisdomOfLegends = lazy(() => import('@/components/gym/WisdomOfLegends'));
 const GymCallToAction = lazy(() => import('@/components/gym/GymCallToAction'));
-const WorkoutAddictSection = lazy(() => import('@/components/WorkoutAddictSection'));
-const LimitedOfferSection = lazy(() => import('@/components/LimitedOfferSection'));
 const Footer = lazy(() => import('@/components/Footer'));
 
 // Loading fallback component
@@ -70,22 +67,10 @@ const Index = () => {
         </Suspense>
       </div>
       
-      {/* Time Hacks section */}
+      {/* Time Hacks section - keeping only this instance */}
       <div id="time-hacks" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <CheatSystemSection />
-        </Suspense>
-      </div>
-      
-      <div id="workout-addict" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <WorkoutAddictSection />
-        </Suspense>
-      </div>
-      
-      <div id="limited-offer" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <LimitedOfferSection />
         </Suspense>
       </div>
       
