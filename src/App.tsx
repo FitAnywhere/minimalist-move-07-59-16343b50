@@ -14,6 +14,20 @@ import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
+// Track page views with Facebook Pixel
+const RouteChangeTracker = () => {
+  const location = useLocation();
+  
+  useEffect(() => {
+    // Track PageView on route change
+    if (window.fbq) {
+      window.fbq('track', 'PageView');
+    }
+  }, [location.pathname]);
+  
+  return null;
+};
+
 // Custom Router wrapper to handle initial route path restoration
 const RouterWithPathRestoration = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -46,6 +60,7 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter basename="/">
+          <RouteChangeTracker />
           <RouterWithPathRestoration>
             <ScrollToTopOnRefresh />
             <FloatingWhatsAppButton />
@@ -62,5 +77,12 @@ const App = () => {
     </QueryClientProvider>
   );
 };
+
+// Add TypeScript interface for fbq
+declare global {
+  interface Window {
+    fbq: any;
+  }
+}
 
 export default App;
