@@ -19,7 +19,7 @@ const CheatSystemSection = () => {
   
   const images = [
     "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747232994/m15GG_pfiuiu.png",
-    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747373346/Izdelek_brez_naslova_14_a3avxi.png"
+    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747395657/Izdelek_brez_naslova_15_oqqh8v.png"
   ];
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const CheatSystemSection = () => {
         {/* Section title */}
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-[27px]">
-            THE DAILY PUMP
+            TIME HACKS
             <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000 scale-x-100"></span>
           </h2>
         </div>
@@ -88,8 +88,8 @@ const CheatSystemSection = () => {
             Mobile: Title > Subtitle > Image > Bullet points */}
         <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-4" : "flex flex-row-reverse items-center gap-3")}>
           {/* Subtitle text - Mobile only */}
-          <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-base font-semibold text-gray-700">The fastest muscle building formula</p>
+          <div className={cn(isMobile ? "w-full text-center order-2 mb-0" : "hidden")}>
+            <p className="text-base font-semibold text-gray-700">THE FASTEST MUSCLE BUILDING FORMULA</p>
           </div>
           
           {/* Image Column with Carousel */}
@@ -127,17 +127,33 @@ const CheatSystemSection = () => {
           <div className={cn("flex flex-col", isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && <p className="text-xl font-medium text-gray-700 mt-0 pt-0">The fastest muscle building formula</p>}
+            {!isMobile && <p className="text-xl font-medium text-gray-700 mt-0 pt-0">THE FASTEST MUSCLE BUILDING FORMULA</p>}
             
             {/* Updated bullet points with smaller dots */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
-              {["FREE FOR FITANY USERS", "FUN 15MIN DAILY CHALLENGES", "THE EASIEST WAY TO BUILD MUSCLE CONSISTENTLY"].map((point, index) => <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
-                  {/* Smaller bullet points */}
-                  <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
-                    <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
-                  </div>
-                  <span className="text-gray-800">{point}</span>
-                </li>)}
+              {isMobile ? 
+                // Mobile bullet points
+                ["FREE FOR FITANY USERS", "FUN 15MIN DAILY CHALLENGES", "THE EASIEST WAY TO GROW"].map((point, index) => (
+                  <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
+                    {/* Smaller bullet points */}
+                    <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
+                    </div>
+                    <span className="text-gray-800">{point}</span>
+                  </li>
+                ))
+                : 
+                // Desktop bullet points
+                ["FREE for FITANY users", "FUN 15min daily challenges", "THE EASIEST way to grow"].map((point, index) => (
+                  <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
+                    {/* Smaller bullet points */}
+                    <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
+                    </div>
+                    <span className="text-gray-800">{point}</span>
+                  </li>
+                ))
+              }
             </ul>
             
             {/* CTA Button */}
