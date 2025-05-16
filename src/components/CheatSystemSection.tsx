@@ -1,7 +1,7 @@
 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -15,6 +15,21 @@ const CheatSystemSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const images = [
+    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747232994/m15GG_pfiuiu.png",
+    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747373346/Izdelek_brez_naslova_14_a3avxi.png"
+  ];
+
+  useEffect(() => {
+    // Set up image carousel to switch every 3 seconds
+    const interval = setInterval(() => {
+      setCurrentImageIndex(prevIndex => (prevIndex === 0 ? 1 : 0));
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,7 +79,7 @@ const CheatSystemSection = () => {
         {/* Section title */}
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-[27px]">
-            TIME HACKS
+            THE DAILY PUMP
             <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000 scale-x-100"></span>
           </h2>
         </div>
@@ -77,13 +92,34 @@ const CheatSystemSection = () => {
             <p className="text-base font-semibold text-gray-700">The fastest muscle building formula</p>
           </div>
           
-          {/* Image Column */}
+          {/* Image Column with Carousel */}
           <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
-            <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
-              <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747232994/m15GG_pfiuiu.png" alt="Time Hacks System" className="w-full h-auto object-cover" loading="lazy" width={360} height={320} srcSet="
-                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_360/v1747232994/m15GG_pfiuiu.png 360w,
-                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto,w_560/v1747232994/m15GG_pfiuiu.png 560w
-                " sizes="(max-width: 768px) 100vw, 360px" />
+            <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg relative", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
+              {images.map((src, index) => (
+                <img 
+                  key={index}
+                  src={src} 
+                  alt="Daily Pump System" 
+                  className={`w-full h-auto object-cover absolute top-0 left-0 transition-opacity duration-1000 ${currentImageIndex === index ? 'opacity-100' : 'opacity-0'}`} 
+                  loading={index === 0 ? "eager" : "lazy"} 
+                  width={360} 
+                  height={320} 
+                  srcSet={`
+                    ${src} 360w,
+                    ${src} 560w
+                  `}
+                  sizes="(max-width: 768px) 100vw, 360px" 
+                />
+              ))}
+              {/* This is a placeholder to maintain the correct aspect ratio */}
+              <img 
+                src={images[0]} 
+                alt="" 
+                className="w-full h-auto object-cover invisible" 
+                aria-hidden="true"
+                width={360} 
+                height={320} 
+              />
             </div>
           </div>
           
@@ -95,7 +131,7 @@ const CheatSystemSection = () => {
             
             {/* Updated bullet points with smaller dots */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
-              {["FREE FOR FITANY USERS", "STRENGTH IN 15 MINUTES A DAY", "LIFE CHANGING FOR 93% OF USERS"].map((point, index) => <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
+              {["FREE FOR FITANY USERS", "FUN 15MIN DAILY CHALLENGES", "THE EASIEST WAY TO BUILD MUSCLE CONSISTENTLY"].map((point, index) => <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
                   {/* Smaller bullet points */}
                   <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
                     <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
