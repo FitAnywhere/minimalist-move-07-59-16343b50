@@ -1,3 +1,4 @@
+
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -128,7 +129,7 @@ const CheatSystemSection = () => {
             {/* Subtitle text - Desktop only */}
             {!isMobile && <p className="text-xl font-medium text-gray-700 mt-0 pt-0">THE FASTEST MUSCLE BUILDING FORMULA</p>}
             
-            {/* Updated bullet points with smaller dots */}
+            {/* Updated bullet points with increased spacing and larger text on desktop */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
               {isMobile ? 
                 // Mobile bullet points
@@ -142,14 +143,14 @@ const CheatSystemSection = () => {
                   </li>
                 ))
                 : 
-                // Desktop bullet points
+                // Desktop bullet points - updated with more spacing and larger text
                 ["FREE for FITANY users", "FUN 15min daily challenges", "THE EASIEST way to grow"].map((point, index) => (
-                  <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
-                    {/* Smaller bullet points */}
-                    <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
+                  <li key={index} className="flex items-center gap-4 mb-6 last:mb-0">
+                    {/* Bullet points */}
+                    <div className="w-5 h-5 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
                       <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
                     </div>
-                    <span className="text-gray-800">{point}</span>
+                    <span className="text-gray-800 text-lg font-medium">{point}</span>
                   </li>
                 ))
               }
