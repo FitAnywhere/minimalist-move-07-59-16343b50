@@ -110,7 +110,7 @@ const CheatSystemSection = () => {
                     <span className="text-gray-800">{point}</span>
                   </li>) :
             // Desktop bullet points - updated with consistent spacing and larger text
-            ["FREE for FITANY users", "FUN 15min daily challenges", "THE EASIEST way to grow"].map((point, index) => <li key={index} className="flex items-center gap-4 mb-6 last:mb-0 py-[6px] px-0">
+            ["FREE for FITANY users", "FUN 15min daily challenges", "THE EASIEST way to grow"].map((point, index) => <li key={index} className="flex items-center gap-4 mb-6 last:mb-0 py-[6px] px-0 my-[30px]">
                     {/* Bullet points */}
                     <div className="w-5 h-5 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
                       <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
