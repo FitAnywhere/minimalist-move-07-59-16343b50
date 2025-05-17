@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -10,6 +11,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ComparisonTable from './ComparisonTable';
 import VideoPlayer from './ui/VideoPlayer';
+
 const TimeAndCostCalculator = () => {
   const [timeWastedPerVisit, setTimeWastedPerVisit] = useState(0); // Default 0 minutes
   const [gymMonthlyCost, setGymMonthlyCost] = useState(50); // Changed default to 50€/month
@@ -21,9 +23,9 @@ const TimeAndCostCalculator = () => {
   const videoRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  // Add back the isInView variable using the useInView hook
+  // Modified threshold from 0.3 to 0.1 to make the section appear earlier
   const isInView = useInView(sectionRef, {
-    threshold: 0.3
+    threshold: 0.1
   });
 
   // Add video in view detection
@@ -96,6 +98,7 @@ const TimeAndCostCalculator = () => {
     const value = parseInt(e.target.value.replace(/[^0-9]/g, '') || '0');
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
+
   return <section id="calculator" ref={sectionRef} className="bg-[#dee3e4]/[0.09]">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
