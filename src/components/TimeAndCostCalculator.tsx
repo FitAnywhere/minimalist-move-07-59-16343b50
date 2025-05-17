@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -23,9 +22,9 @@ const TimeAndCostCalculator = () => {
   const videoRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  // Modified threshold from 0.3 to 0.1 to make the section appear earlier
+  // Further reduced threshold from 0.1 to 0.01 to make the section appear immediately
   const isInView = useInView(sectionRef, {
-    threshold: 0.1
+    threshold: 0.01
   });
 
   // Add video in view detection
@@ -102,11 +101,13 @@ const TimeAndCostCalculator = () => {
   return <section id="calculator" ref={sectionRef} className="bg-[#dee3e4]/[0.09]">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
-          <div className={cn("transition-all duration-1000", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
+          {/* Removed transition-all duration-1000 to make the section appear immediately */}
+          <div className={cn("", isInView ? "opacity-100" : "opacity-0 translate-y-10")}>
             <div className="text-center mb-8 md:mb-12">
               <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4 relative inline-block">
                 FOREVER YOURS
-                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isInView ? "scale-x-100" : "scale-x-0")}></span>
+                {/* Modified to appear immediately without animation */}
+                <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400", isInView ? "scale-x-100" : "scale-x-0")}></span>
               </h2>
               
               <p className="text-lg md:text-xl text-gray-700 mt-8 mb-4 font-semibold">WHY IT'S THE BEST WAY TO START</p>

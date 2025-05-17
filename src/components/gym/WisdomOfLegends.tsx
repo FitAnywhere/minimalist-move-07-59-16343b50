@@ -4,13 +4,15 @@ import { useInView } from '@/utils/animations';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import type { CarouselApi } from "@/components/ui/carousel";
 import { Quote } from "lucide-react";
+
 interface QuoteItem {
   text: string;
   author: string;
   image: string;
 }
+
 const quotes: QuoteItem[] = [{
-  text: "You don't need a gym. You need commitment.",
+  text: "It's not about being the best. It's about being better than yesterday.",
   author: "Jason Statham",
   image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747252757/14._maj_2025_21_04_44_epv4in.png"
 }, {
@@ -54,6 +56,7 @@ const quotes: QuoteItem[] = [{
   author: "Jennifer Lopez",
   image: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747255384/ChatGPT_Image_14._maj_2025_22_36_45_ajuaie.png"
 }];
+
 const WisdomOfLegends = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef);
