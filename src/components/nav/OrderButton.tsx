@@ -10,11 +10,8 @@ export const OrderButton = ({ className = "" }: OrderButtonProps) => {
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Updated to use the new URL for both routes
-    const url = location.pathname === '/box' 
-      ? 'https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l' // Updated for BOX page
-      : 'https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l'; // Updated for GYM page
-    window.open(url, '_blank');
+    // Use the same URL for both routes as requested
+    window.open('https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l', '_blank');
   };
 
   return (

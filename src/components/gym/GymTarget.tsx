@@ -39,10 +39,12 @@ const GymTarget = () => {
 
     return () => clearInterval(interval);
   }, [isMobile]);
+  
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
+    window.open('https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l', '_blank');
   };
+  
   return <section id="target" ref={containerRef} className="bg-[#dee3e4]/[0.09]">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">

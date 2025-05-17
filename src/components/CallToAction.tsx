@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
@@ -35,7 +36,7 @@ const CallToAction = () => {
             
             {/* CTA Button - reduced spacing */}
             <div className={cn("transition-all duration-1000 mt-4 md:mt-6", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
-              <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px] my-[26px]">
+              <a href="https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l" onClick={handleCheckout} className="inline-flex items-center bg-yellow text-black hover:bg-yellow-dark px-8 rounded-full text-lg font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-[15px] my-[26px]">
                 🛒 MAKE YOUR MOVE
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
