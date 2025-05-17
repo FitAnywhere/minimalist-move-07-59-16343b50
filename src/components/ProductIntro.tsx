@@ -69,7 +69,7 @@ const ProductIntro = () => {
                 </h2>
               </div>
               
-              {isMobile && <video autoPlay muted loop playsInline className="w-full max-w-[72%] rounded-xl h-auto object-contain py-[15px] px-0 my-[12px] mx-[auto]">
+              {isMobile && <video autoPlay muted loop playsInline className="w-full max-w-[72%] rounded-xl h-auto object-contain px-0 mx-[auto] py-[2px] my-[15px]">
                   <source src="/intro women.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>}
