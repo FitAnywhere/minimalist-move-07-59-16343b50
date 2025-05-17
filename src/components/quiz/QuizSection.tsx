@@ -298,7 +298,7 @@ const QuizSection = () => {
                   </div>
                 </div>}
               
-              {/* Thank You - UPDATED TEXT */}
+              {/* Thank You - UPDATED URL */}
               {state.currentStep === 5 && state.isCompleted && <div className="animate-fade-in text-center py-6">
                   <h3 className="text-2xl font-bold mb-4">
                     Thanks, Legend.
@@ -307,7 +307,7 @@ const QuizSection = () => {
                     Your exclusive link is below 👇
                   </p>
                   
-                  <a href="https://buy.stripe.com/3cs00q0cR3dW9rO5kD" target="_blank" rel="noopener noreferrer" className="inline-block bg-yellow text-black px-6 py-3 rounded-full font-bold hover:bg-yellow-dark transition-all">
+                  <a href="https://buy.stripe.com/dRmeVd8BJeTFb2z0Ns6Na0m" target="_blank" rel="noopener noreferrer" className="inline-block bg-yellow text-black px-6 py-3 rounded-full font-bold hover:bg-yellow-dark transition-all">
                     GET €100 OFF
                   </a>
                 </div>}

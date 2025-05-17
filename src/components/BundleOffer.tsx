@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -27,7 +26,7 @@ const BundleOffer = () => {
   const originalPrice = 1650;
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
+    window.open('https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l', '_blank');
   };
 
   // Auto-rotate carousel
@@ -98,7 +97,7 @@ const BundleOffer = () => {
                     <span className="text-2xl text-gray-500 line-through">
                       €{originalPrice}
                     </span>
-                    <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className="px-4 py-1 rounded-full text-white bg-[rgba(22,163,74,255)]">
+                    <a href="https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l" onClick={handleCheckout} className="px-4 py-1 rounded-full text-white bg-[rgba(22,163,74,255)]">
                       <span className="text-2xl text-white">
                         €{finalPrice}
                       </span>
@@ -152,7 +151,7 @@ const BundleOffer = () => {
                     <span className="text-2xl text-gray-500 line-through">
                       €{originalPrice}
                     </span>
-                    <a href="https://buy.stripe.com/00gaF43p38yg0Vi7sM" onClick={handleCheckout} className="px-4 py-1 rounded-full text-white bg-[rgba(22,163,74,255)]">
+                    <a href="https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l" onClick={handleCheckout} className="px-4 py-1 rounded-full text-white bg-[rgba(22,163,74,255)]">
                       <span className="text-2xl text-white">
                         €{finalPrice}
                       </span>

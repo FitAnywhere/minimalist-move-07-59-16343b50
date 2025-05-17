@@ -86,10 +86,10 @@ const TimeAndCostCalculator = () => {
     return () => clearTimeout(timer);
   }, [timeWastedInYears, moneySpentInYears]);
 
-  // Handle CTA button click - updated to open Stripe checkout
+  // Handle CTA button click - updated to open new Stripe checkout URL
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
+    window.open('https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l', '_blank');
   };
 
   // Format cost input

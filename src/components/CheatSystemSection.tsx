@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -156,7 +155,7 @@ const CheatSystemSection = () => {
               }
             </ul>
             
-            {/* CTA Button */}
+            {/* CTA Button - Updated URL redirect */}
             <div className={cn("pt-4", isMobile ? "flex justify-center" : "")}>
               <Button 
                 variant="yellow" 
