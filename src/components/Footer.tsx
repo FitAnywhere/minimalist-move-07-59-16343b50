@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Facebook } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { WhatsAppButton } from "@/components/nav/WhatsAppButton";
 
@@ -13,12 +13,12 @@ const Footer = () => {
             <div className="flex items-center gap-2">
               <WhatsAppButton showText={true} className="bg-transparent hover:bg-transparent text-gray-700 hover:text-yellow p-0 px-0 py-0" />
               <a 
-                href="https://www.facebook.com/FitAnywhereandBoxFun/" 
+                href="https://www.instagram.com/fitanywhere.today" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center hover:text-[#1877F2] transition-colors ml-2"
+                className="flex items-center hover:text-[#E1306C] transition-colors ml-2"
               >
-                <Facebook className="w-4 h-4" />
+                <Instagram className="w-4 h-4" />
               </a>
             </div>
             
