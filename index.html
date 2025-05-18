@@ -3,10 +3,18 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Added favicon link -->
+    <!-- Added favicon link with explicit dimensions -->
     <link rel="icon" type="image/png" href="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744661695/Screenshot_118-removebg-preview-removebg-preview_qx2zqy.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FitAnywhere</title>
+    
+    <!-- Preconnect to critical domains -->
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.gpteng.co" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.gpteng.co">
+    
     <!-- Meta Pixel Code -->
     <script>
       !function(f,b,e,v,n,t,s)
@@ -21,11 +29,30 @@
       fbq('track', 'PageView');
     </script>
     <!-- End Meta Pixel Code -->
+    
     <!-- Add Google Fonts for quotes section -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Playfair+Display:ital,wght@0,300;0,400;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <!-- End Google Fonts -->
+    
+    <!-- Inline critical CSS -->
+    <style>
+      /* Basic reset and font rendering optimization */
+      body {
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+      
+      /* Prevent FOIT (Flash of Invisible Text) */
+      html {
+        visibility: visible;
+        opacity: 1;
+      }
+    </style>
   </head>
   <body>
     <!-- Meta Pixel Code (noscript) -->

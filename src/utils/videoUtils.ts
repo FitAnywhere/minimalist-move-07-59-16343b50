@@ -39,7 +39,7 @@ export const prefetchCriticalVideos = (): void => {
   if (typeof window === 'undefined') return;
   
   // Use requestIdleCallback to prefetch when the browser is idle
-  if (window.requestIdleCallback) {
+  if ('requestIdleCallback' in window) {
     window.requestIdleCallback(
       () => {
         prefetchVideos();
@@ -100,7 +100,9 @@ export const initVideoOptimization = (): void => {
     prefetchCriticalVideos();
   } else {
     window.addEventListener('load', () => {
-      prefetchCriticalVideos();
+      setTimeout(() => {
+        prefetchCriticalVideos();
+      }, 1000);
     });
   }
 };

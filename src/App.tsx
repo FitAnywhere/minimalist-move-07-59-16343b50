@@ -10,9 +10,19 @@ import Box from "./pages/Box";
 import NotFound from "./pages/NotFound";
 import TermsOfService from "./pages/TermsOfService";
 import FloatingWhatsAppButton from "./components/FloatingWhatsAppButton";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense, useState } from "react";
 
-const queryClient = new QueryClient();
+// Create a QueryClient with optimized settings
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000, // 1 minute
+      cacheTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1, // Reduce retries for faster feedback
+      refetchOnWindowFocus: false, // Disable automatic refetches on window focus for better performance
+    },
+  },
+});
 
 // Track page views with Facebook Pixel
 const RouteChangeTracker = () => {
@@ -32,8 +42,12 @@ const RouteChangeTracker = () => {
 const RouterWithPathRestoration = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isRestored, setIsRestored] = useState(false);
   
   useEffect(() => {
+    // Only run once
+    if (isRestored) return;
+    
     // Check if there's any route path that needs to be restored from sessionStorage
     const redirectPath = sessionStorage.getItem('redirectPath');
     if (redirectPath) {
@@ -42,13 +56,16 @@ const RouterWithPathRestoration = ({ children }: { children: React.ReactNode }) 
       // Clear the stored path immediately to prevent loops
       sessionStorage.removeItem('redirectPath');
       
-      // Use timeout to ensure this happens after initial render
-      setTimeout(() => {
+      // Use requestAnimationFrame for better timing
+      requestAnimationFrame(() => {
         console.log("Navigating to:", redirectPath);
         navigate(redirectPath, { replace: true });
-      }, 0);
+        setIsRestored(true);
+      });
+    } else {
+      setIsRestored(true);
     }
-  }, [navigate]);
+  }, [navigate, isRestored]);
 
   return children;
 };
