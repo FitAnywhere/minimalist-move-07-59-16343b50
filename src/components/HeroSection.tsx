@@ -41,7 +41,8 @@ const HeroSection = memo(() => {
                 <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} isMobile={true} overrideTitle="START STRONG" />
                 
                 <div className="relative">
-                  <p className="text-sm text-gray-600 mb-2 font-medium">THE FIRST LUXURY PRIVATE GYM</p>
+                  <p className="text-sm text-gray-600 mb-2 font-medium">THE PREMIUM WAY TO START STRONG
+              </p>
                   <HeroCarousel />
                 </div>
                 
