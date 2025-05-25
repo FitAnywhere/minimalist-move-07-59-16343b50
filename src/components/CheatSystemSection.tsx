@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Check } from 'lucide-react';
-
 const CheatSystemSection = () => {
   const isMobile = useIsMobile();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -15,12 +14,7 @@ const CheatSystemSection = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const images = [
-    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747232994/m15GG_pfiuiu.png",
-    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747395657/Izdelek_brez_naslova_15_oqqh8v.png"
-  ];
-
+  const images = ["https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747232994/m15GG_pfiuiu.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747395657/Izdelek_brez_naslova_15_oqqh8v.png"];
   useEffect(() => {
     // Set up image carousel to switch every 3 seconds
     const interval = setInterval(() => {
@@ -28,7 +22,6 @@ const CheatSystemSection = () => {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -69,13 +62,11 @@ const CheatSystemSection = () => {
       setIsSubmitting(false);
     }
   };
-
-  return (
-    <section className="py-12 px-4 bg-white">
+  return <section className="py-12 px-4 bg-white">
       <div className="container mx-auto">
         {/* Section title */}
         <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-[27px]">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-0">
             WE GOT YOU
             <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000 scale-x-100"></span>
           </h2>
@@ -83,112 +74,68 @@ const CheatSystemSection = () => {
 
         {/* Desktop: Image on right, text on left
             Mobile: Title > Subtitle > Image > Bullet points */}
-        <div className={cn(
-          "max-w-6xl mx-auto",
-          isMobile ? "flex flex-col space-y-4" : "flex flex-row-reverse items-center gap-3"
-        )}>
+        <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-4" : "flex flex-row-reverse items-center gap-3")}>
           
           {/* Subtitle text - Mobile only - moved closer to title */}
-          <div className={cn(
-            isMobile ? "w-full text-center order-2 mb-1" : "hidden"
-          )}>
-            <p className="text-base font-semibold text-gray-700">ALL THE SUPPORT YOU NEED</p>
+          <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
+            <p className="text-base font-semibold text-gray-700 px-[18px] py-0 my-0">ALL THE SUPPORT YOU NEED</p>
           </div>
           
           {/* Image Column with Carousel */}
-          <div className={cn(
-            "flex justify-center",
-            isMobile ? "w-full order-3 mt-3" : "w-2/5"
-          )}>
-            <div className={cn(
-              "overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg relative",
-              isMobile ? "w-full max-w-md" : "w-full max-w-[360px]"
-            )}>
-              {images.map((src, index) => (
-                <img
-                  key={index}
-                  src={src}
-                  alt="Daily Pump System"
-                  className={`w-full h-auto object-cover absolute top-0 left-0 transition-opacity duration-1000 ${
-                    currentImageIndex === index ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  width={360}
-                  height={320}
-                  srcSet={`
+          <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
+            <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg relative", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
+              {images.map((src, index) => <img key={index} src={src} alt="Daily Pump System" className={`w-full h-auto object-cover absolute top-0 left-0 transition-opacity duration-1000 ${currentImageIndex === index ? 'opacity-100' : 'opacity-0'}`} loading={index === 0 ? "eager" : "lazy"} width={360} height={320} srcSet={`
                     ${src} 360w,
                     ${src} 560w
-                  `}
-                  sizes="(max-width: 768px) 100vw, 360px"
-                />
-              ))}
-              <img
-                src={images[0]}
-                alt=""
-                className="w-full h-auto object-cover invisible"
-                aria-hidden="true"
-                width={360}
-                height={320}
-              />
+                  `} sizes="(max-width: 768px) 100vw, 360px" />)}
+              <img src={images[0]} alt="" className="w-full h-auto object-cover invisible" aria-hidden="true" width={360} height={320} />
             </div>
           </div>
           
           {/* Text Column - Desktop version includes subtitle + bullets, Mobile only bullets */}
-          <div className={cn(
-            "flex flex-col",
-            isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6"
-          )}>
+          <div className={cn("flex flex-col", isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && (
-              <p className="text-2xl font-medium text-gray-700 mt-0 pt-0 mb-8">ALL THE SUPPORT YOU NEED</p>
-            )}
+            {!isMobile && <p className="text-2xl font-medium text-gray-700 mt-0 pt-0 mb-8">ALL THE SUPPORT YOU NEED</p>}
             
             {/* Updated bullet points with minimal, premium text */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
-              {isMobile ? (
-                // Mobile bullet points
-                [
-                  { title: "1-ON-1 COACH ACCESS" },
-                  { title: "15-MINUTE SMART TRAININGS" },
-                  { title: "WINNERS MINDSET LESSONS" }
-                ].map((point, index) => (
-                  <li key={index} className="flex items-start gap-3">
+              {isMobile ?
+            // Mobile bullet points
+            [{
+              title: "1-ON-1 COACH ACCESS"
+            }, {
+              title: "15-MINUTE SMART TRAININGS"
+            }, {
+              title: "WINNERS MINDSET LESSONS"
+            }].map((point, index) => <li key={index} className="flex items-start gap-3">
                     <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center mt-1">
                       <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
                     </div>
                     <div className="text-gray-800">
                       <div className="font-semibold">{point.title}</div>
                     </div>
-                  </li>
-                ))
-              ) : (
-                // Desktop bullet points
-                [
-                  { title: "1-ON-1 COACH ACCESS" },
-                  { title: "15-MINUTE SMART TRAININGS" },
-                  { title: "WINNERS MINDSET LESSONS" }
-                ].map((point, index) => (
-                  <li key={index} className="flex items-start gap-4 mb-6 last:mb-0 py-[6px] px-0 my-[30px]">
+                  </li>) :
+            // Desktop bullet points
+            [{
+              title: "1-ON-1 COACH ACCESS"
+            }, {
+              title: "15-MINUTE SMART TRAININGS"
+            }, {
+              title: "WINNERS MINDSET LESSONS"
+            }].map((point, index) => <li key={index} className="flex items-start gap-4 mb-6 last:mb-0 py-[6px] px-0 my-[30px]">
                     <div className="w-5 h-5 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center mt-1">
                       <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
                     </div>
                     <div className="text-gray-800">
                       <div className="text-lg font-medium">{point.title}</div>
                     </div>
-                  </li>
-                ))
-              )}
+                  </li>)}
             </ul>
             
             {/* CTA Button */}
             <div className={cn("pt-4", isMobile ? "flex justify-center" : "")}>
-              <Button
-                variant="yellow"
-                size="lg"
-                className="font-semibold"
-                onClick={() => setIsDialogOpen(true)}
-              >
+              <Button variant="yellow" size="lg" className="font-semibold" onClick={() => setIsDialogOpen(true)}>
                 REQUEST YOURS
               </Button>
             </div>
@@ -236,8 +183,6 @@ const CheatSystemSection = () => {
             </form>}
         </DialogContent>
       </Dialog>
-    </section>
-  );
+    </section>;
 };
-
 export default CheatSystemSection;
