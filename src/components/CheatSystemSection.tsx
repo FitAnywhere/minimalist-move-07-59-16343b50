@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Check } from 'lucide-react';
+
 const CheatSystemSection = () => {
   const isMobile = useIsMobile();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -67,7 +68,7 @@ const CheatSystemSection = () => {
         {/* Section title */}
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-[27px]">
-            TIME HACKS
+            WE GOT YOU
             <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000 scale-x-100"></span>
           </h2>
         </div>
@@ -77,16 +78,28 @@ const CheatSystemSection = () => {
         <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-4" : "flex flex-row-reverse items-center gap-3")}>
           {/* Subtitle text - Mobile only */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-0" : "hidden")}>
-            <p className="text-base font-semibold text-gray-700">THE FASTEST MUSCLE BUILDING FORMULA</p>
+            <p className="text-base font-semibold text-gray-700">ALL THE SUPPORT YOU NEED — To grow fast and stay motivated</p>
           </div>
           
           {/* Image Column with Carousel */}
           <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
             <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg relative", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
-              {images.map((src, index) => <img key={index} src={src} alt="Daily Pump System" className={`w-full h-auto object-cover absolute top-0 left-0 transition-opacity duration-1000 ${currentImageIndex === index ? 'opacity-100' : 'opacity-0'}`} loading={index === 0 ? "eager" : "lazy"} width={360} height={320} srcSet={`
+              {images.map((src, index) => (
+                <img 
+                  key={index} 
+                  src={src} 
+                  alt="Daily Pump System" 
+                  className={`w-full h-auto object-cover absolute top-0 left-0 transition-opacity duration-1000 ${currentImageIndex === index ? 'opacity-100' : 'opacity-0'}`} 
+                  loading={index === 0 ? "eager" : "lazy"} 
+                  width={360} 
+                  height={320} 
+                  srcSet={`
                     ${src} 360w,
                     ${src} 560w
-                  `} sizes="(max-width: 768px) 100vw, 360px" />)}
+                  `} 
+                  sizes="(max-width: 768px) 100vw, 360px" 
+                />
+              ))}
               {/* This is a placeholder to maintain the correct aspect ratio */}
               <img src={images[0]} alt="" className="w-full h-auto object-cover invisible" aria-hidden="true" width={360} height={320} />
             </div>
@@ -96,27 +109,67 @@ const CheatSystemSection = () => {
           <div className={cn("flex flex-col", isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only - Increased text size and added more margin bottom */}
-            {!isMobile && <p className="text-2xl font-medium text-gray-700 mt-0 pt-0 mb-8">THE FASTEST MUSCLE BUILDING FORMULA</p>}
+            {!isMobile && (
+              <p className="text-2xl font-medium text-gray-700 mt-0 pt-0 mb-8">ALL THE SUPPORT YOU NEED — To grow fast and stay motivated</p>
+            )}
             
             {/* Updated bullet points with consistent spacing and larger text on desktop */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
-              {isMobile ?
-            // Mobile bullet points
-            ["FREE FOR FITANY USERS", "FUN 15MIN DAILY CHALLENGES", "THE EASIEST WAY TO GROW"].map((point, index) => <li key={index} className={cn("flex items-center gap-3", !isMobile && "text-[16px] font-semibold")}>
+              {isMobile ? (
+                // Mobile bullet points
+                [
+                  {
+                    title: "1-ON-1 COACH CHAT ACCESS",
+                    description: "Feel unstoppable with answers & encouragement."
+                  },
+                  {
+                    title: "15-MINUTE ROUTINES TAILORED TO YOU", 
+                    description: "Train smarter, not longer to achieve your goals."
+                  },
+                  {
+                    title: "MINDSET LESSONS FOR ENDLESS MOTIVATION",
+                    description: "Learn what winners do to stay driven, even on bad days."
+                  }
+                ].map((point, index) => (
+                  <li key={index} className={cn("flex items-start gap-3", !isMobile && "text-[16px] font-semibold")}>
                     {/* Smaller bullet points */}
-                    <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
+                    <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center mt-1">
                       <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
                     </div>
-                    <span className="text-gray-800">{point}</span>
-                  </li>) :
-            // Desktop bullet points - updated with consistent spacing and larger text
-            ["FREE for FITANY users", "FUN 15min daily challenges", "THE EASIEST way to grow"].map((point, index) => <li key={index} className="flex items-center gap-4 mb-6 last:mb-0 py-[6px] px-0 my-[30px]">
+                    <div className="text-gray-800">
+                      <div className="font-semibold">{point.title}</div>
+                      <div className="text-sm text-gray-600">{point.description}</div>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                // Desktop bullet points - updated with consistent spacing and larger text
+                [
+                  {
+                    title: "1-ON-1 COACH CHAT ACCESS",
+                    description: "Feel unstoppable with answers & encouragement."
+                  },
+                  {
+                    title: "15-MINUTE ROUTINES TAILORED TO YOU", 
+                    description: "Train smarter, not longer to achieve your goals."
+                  },
+                  {
+                    title: "MINDSET LESSONS FOR ENDLESS MOTIVATION",
+                    description: "Learn what winners do to stay driven, even on bad days."
+                  }
+                ].map((point, index) => (
+                  <li key={index} className="flex items-start gap-4 mb-6 last:mb-0 py-[6px] px-0 my-[30px]">
                     {/* Bullet points */}
-                    <div className="w-5 h-5 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center">
+                    <div className="w-5 h-5 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center mt-1">
                       <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
                     </div>
-                    <span className="text-gray-800 text-lg font-medium">{point}</span>
-                  </li>)}
+                    <div className="text-gray-800">
+                      <div className="text-lg font-medium">{point.title}</div>
+                      <div className="text-base text-gray-600">{point.description}</div>
+                    </div>
+                  </li>
+                ))
+              )}
             </ul>
             
             {/* CTA Button - Updated URL redirect */}
