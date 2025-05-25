@@ -1,4 +1,3 @@
-
 import { lazy, Suspense } from 'react';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
@@ -37,6 +36,14 @@ const Index = () => {
         <ProductIntro />
       </div>
       
+      {/* Move CheatSystemSection (WE GOT YOU) to appear first */}
+      <div id="cheat-system" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <CheatSystemSection />
+        </Suspense>
+      </div>
+      
+      {/* Then BundleOffer (NO EXCUSES) appears second */}
       <div id="bundle" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <BundleOffer />
