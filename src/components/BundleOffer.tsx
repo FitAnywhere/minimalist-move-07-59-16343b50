@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -23,7 +24,7 @@ const BundleOffer = () => {
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const newPrice = 1390;
+  const newPrice = "1,390";
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
