@@ -1,4 +1,5 @@
 
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -67,7 +68,7 @@ const ProductIntro = () => {
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6 items-center">
             <div className="space-y-8 order-last md:order-first">
-              <div className="space-y-4 flex flex-col items-center md:items-center">
+              <div className={cn("space-y-4 flex flex-col", isMobile ? "items-center" : "items-center")}>
                 <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   NO LIMITS
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
@@ -99,7 +100,7 @@ const ProductIntro = () => {
             </div>
             
             <div className={cn("flex justify-center items-center transition-all duration-700 h-full order-first md:order-last hidden md:flex", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
-              <div className="w-full max-w-[70%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
+              <div className="w-full max-w-[85%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
                 <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
                   <source src="/452025 Akcija.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
@@ -113,3 +114,4 @@ const ProductIntro = () => {
 };
 
 export default ProductIntro;
+
