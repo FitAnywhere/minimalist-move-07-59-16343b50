@@ -4,16 +4,18 @@ import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const features = [{
-  title: "PRIVATE",
-  description: "Train without eyes on you"
+  title: "PORTABLE",
+  description: "Set up without tools anywhere"
+}, {
+  title: "ADJUSTABLE",
+  description: "Adaptable height to fit your space"
 }, {
   title: "EASY",
-  description: "Progress from first try"
-}, {
-  title: "FAST",
-  description: "Set up in just 2 minutes"
+  description: "Elastics make hard feel easy"
 }];
+
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -25,6 +27,7 @@ const ProductIntro = () => {
     features: [false, false, false],
     finalLine: false
   });
+
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -57,6 +60,7 @@ const ProductIntro = () => {
       })), 1200);
     }
   }, [isInView]);
+
   return <section id="product" ref={containerRef} className="bg-[#dee3e4]/[0.09]">
       <div className="container mx-auto px-4 py-[14px]">
         <div className="max-w-5xl mx-auto">
@@ -70,7 +74,7 @@ const ProductIntro = () => {
               </div>
               
               {isMobile && <video autoPlay muted loop playsInline className="w-full max-w-[72%] rounded-xl h-auto object-contain px-0 mx-[auto] py-[2px] my-[15px]">
-                  <source src="/intro women.mp4" type="video/mp4" />
+                  <source src="/452025 Akcija.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>}
               
@@ -96,7 +100,7 @@ const ProductIntro = () => {
             <div className={cn("flex justify-center items-center transition-all duration-700 h-full order-first md:order-last hidden md:flex", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
               <div className="w-full max-w-[70%] mx-auto rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
                 <video className="w-full h-auto object-contain" autoPlay muted loop playsInline>
-                  <source src="/intro women.mp4" type="video/mp4" />
+                  <source src="/452025 Akcija.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>
@@ -106,4 +110,5 @@ const ProductIntro = () => {
       </div>
     </section>;
 };
+
 export default ProductIntro;
