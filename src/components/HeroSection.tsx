@@ -61,9 +61,7 @@ const HeroSection = memo(() => {
               <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} overrideTitle="START STRONG" />
               <div className="order-1 md:order-2 w-full flex flex-col items-center">
                 <HeroCarousel />
-                <p className="mt-3 text-sm text-gray-600 text-center">THE PREMIUM WAY TO START STRONG
-
-            </p>
+                <p className="mt-3 text-sm text-gray-600 text-center">WHERE BEGINNERS ARE FEELING LIKE PROS</p>
               </div>
             </>}
         </div>
