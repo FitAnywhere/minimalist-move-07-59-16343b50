@@ -49,7 +49,7 @@ const HeroSection = memo(() => {
                 <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} isMobile={true} overrideTitle="TOO WEAK TO START?" />
                 
                 <div className="relative">
-                  <p className="text-sm text-gray-600 mb-2 font-medium uppercase">WE BUILD WINNERS</p>
+                  
                   <HeroCarousel />
                 </div>
                 
