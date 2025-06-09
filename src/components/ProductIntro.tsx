@@ -94,16 +94,16 @@ const ProductIntro = () => {
                 </video>}
               
               <div className="space-y-5 md:space-y-6 my-[9px] mx-0 px-0 py-0 rounded-none">
-                {features.map((feature, index) => <div key={index} className={cn(isMobile ? "px-[18px] py-3 space-y-1" : "px-6 py-2 md:py-3", "rounded-full", "transition-all duration-300 ease-in-out", "shadow-md", "transform", "bg-black", isMobile ? "text-center" : "text-center md:text-center", !isMobile && "max-w-[90%] mx-auto", animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
+                {features.map((feature, index) => <div key={index} className={cn(isMobile ? "px-[18px] py-3 space-y-1" : "px-6 py-2 md:py-3", "rounded-full", "transition-all duration-300 ease-in-out", "shadow-md", "transform", "bg-yellow", isMobile ? "text-center" : "text-center md:text-center", !isMobile && "max-w-[90%] mx-auto", animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
                 transitionDelay: `${(index + 1) * 100}ms`
               }}>
                     <div className="flex flex-col items-center md:items-center justify-center">
-                      <h4 className={cn("text-lg font-bold text-white", isMobile ? "m-0 p-0" : "mb-1")}>
+                      <h4 className={cn("text-lg font-bold text-black", isMobile ? "m-0 p-0" : "mb-1")}>
                         {feature.title}
                       </h4>
                     
                       <div className={cn("opacity-100", isMobile ? "mt-0" : "mt-0.5")}>
-                        <p className={cn("text-yellow font-medium", isMobile ? "text-sm m-0 p-0" : "py-0")}>
+                        <p className={cn("text-black font-medium", isMobile ? "text-sm m-0 p-0" : "py-0")}>
                           {feature.description}
                         </p>
                       </div>
