@@ -49,13 +49,13 @@ const HeroContent = memo(({
           </div>
           
           <div className="text-center mt-6 flex flex-col items-center">
+            <ArrowDown className="mb-4 w-6 h-6 animate-bounce text-yellow" />
             <button
               onClick={onCTAClick}
               className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm hover:bg-yellow-dark transition-colors uppercase"
             >
               WHY AVERAGE MEN NEVER START
             </button>
-            <ArrowDown className="mt-4 w-6 h-6 animate-bounce text-yellow" />
           </div>
         </div>
       )}

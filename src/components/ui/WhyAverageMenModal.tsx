@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -55,68 +54,56 @@ const WhyAverageMenModal = ({ isOpen, onClose }: WhyAverageMenModalProps) => {
         {/* Modal content */}
         <div className="p-6 md:p-8">
           <h2 className="text-2xl md:text-3xl font-bold text-black mb-6 text-center uppercase">
-            THE TRUTH:
+            THE REALITY
           </h2>
           
           <div className="space-y-4 text-black leading-relaxed">
-            <p>He opens the gym app.</p>
-            <p>Closes it.</p>
-            <p>Opens a video.</p>
-            <p>Scrolls past it.</p>
-            <p>He thinks, "Tomorrow."</p>
+            <br /><br />
             
+            <p>Here's the truth:</p>
             <br />
-            
-            <p>He's not lazy.</p>
-            <p><strong>He's ashamed.</strong></p>
-            
-            <br />
-            
-            <p>Ashamed of the belly.</p>
-            <p>The soft arms.</p>
-            <p>The idea of walking into a gym and being the weakest man in the room.</p>
-            
-            <br />
-            
-            <p>So he waits.</p>
-            
-            <br />
-            
-            <p>But here's the truth:</p>
             <p>No one starts strong.</p>
+            <br />
             <p>No one looks good at the beginning.</p>
+            <br />
             <p>And the ones who do?</p>
+            <br />
             <p>They've already trained in silence — day after day — while you were still waiting to feel ready.</p>
             
-            <br />
+            <br /><br />
             
-            <p><strong>Read this twice:</strong></p>
+            <p>Read this twice:</p>
             
-            <br />
+            <br /><br />
             
             <p><em>Average men wait to feel ready.</em></p>
+            <br />
             <p><em>Exceptional men move anyway.</em></p>
             
-            <br />
+            <br /><br />
             
             <p>That's the difference.</p>
-            <p>Not genetics. Not luck.</p>
-            <p><strong>Courage in private.</strong></p>
-            
             <br />
+            <p>Not genetics. Not luck.</p>
+            
+            <br /><br /><br />
             
             <p>You don't need motivation.</p>
+            <br />
             <p>You need a place to begin — without eyes, mirrors, noise, or judgment.</p>
             
-            <br />
+            <br /><br />
             
             <p>Build quietly.</p>
+            <br />
             <p>Return loudly.</p>
+            <br />
             <p><strong>Be the man they don't recognize.</strong></p>
             
-            <br />
+            <br /><br />
             
             <p>Average men never start.</p>
+            <br />
             <p><strong>That's why you must.</strong></p>
           </div>
         </div>
