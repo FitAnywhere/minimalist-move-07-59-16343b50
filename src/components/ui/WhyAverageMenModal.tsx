@@ -54,8 +54,8 @@ const WhyAverageMenModal = ({ isOpen, onClose }: WhyAverageMenModalProps) => {
 
         {/* Modal content */}
         <div className="p-6 md:p-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-black mb-6 text-center">
-            WHY AVERAGE MEN NEVER START
+          <h2 className="text-2xl md:text-3xl font-bold text-black mb-6 text-center uppercase">
+            THE TRUTH:
           </h2>
           
           <div className="space-y-4 text-black leading-relaxed">

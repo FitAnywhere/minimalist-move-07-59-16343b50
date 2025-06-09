@@ -61,11 +61,11 @@ const HeroSection = memo(() => {
                   isInView={isInView} 
                   scrollToOwnBoth={() => {}} 
                   isMobile={true} 
-                  overrideTitle="FEEL TOO WEAK TO START?" 
+                  overrideTitle="TOO WEAK TO START?" 
                 />
                 
                 <div className="relative">
-                  <p className="text-sm text-gray-600 mb-2 font-medium">WHERE BEGINNERS ARE FEELING LIKE PROS</p>
+                  <p className="text-sm text-gray-600 mb-2 font-medium uppercase">WE BUILD WINNERS</p>
                   <HeroCarousel />
                 </div>
                 
@@ -82,11 +82,12 @@ const HeroSection = memo(() => {
                     <div className="mt-6 flex flex-col items-center">
                       <button
                         onClick={handleCTAClick}
-                        className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm hover:bg-yellow-dark transition-colors"
+                        className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm hover:bg-yellow-dark transition-colors uppercase"
                       >
-                        📖 Why average men never start
+                        WHY AVERAGE MEN NEVER START
                       </button>
                       <ArrowDown className="mt-4 w-6 h-6 animate-bounce text-yellow" />
+                      <p className="mt-2 text-sm text-gray-600 font-medium uppercase">WE BUILD WINNERS</p>
                     </div>
                   </div>
                 )}
@@ -97,12 +98,12 @@ const HeroSection = memo(() => {
               <HeroContent 
                 isInView={isInView} 
                 scrollToOwnBoth={() => {}} 
-                overrideTitle="FEEL TOO WEAK TO START?"
+                overrideTitle="TOO WEAK TO START?"
                 onCTAClick={handleCTAClick}
               />
               <div className="order-1 md:order-2 w-full flex flex-col items-center">
                 <HeroCarousel />
-                <p className="mt-3 text-sm text-gray-600 text-center">WHERE BEGINNERS ARE FEELING LIKE PROS</p>
+                <p className="mt-3 text-sm text-gray-600 text-center uppercase">WE BUILD WINNERS</p>
               </div>
             </>
           )}

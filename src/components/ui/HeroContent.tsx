@@ -23,7 +23,7 @@ const HeroContent = memo(({
   return (
     <div className={cn("text-center", isMobile ? "md:text-left" : "")}>
       <h1 className={cn(
-        "text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000",
+        "text-4xl md:text-5xl lg:text-6xl font-bold text-black transition-all duration-1000 uppercase",
         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       )}>
         <span className="relative inline-block min-w-[300px] md:min-w-[400px] min-h-[1.2em]">
@@ -51,9 +51,9 @@ const HeroContent = memo(({
           <div className="text-center mt-6 flex flex-col items-center">
             <button
               onClick={onCTAClick}
-              className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm hover:bg-yellow-dark transition-colors"
+              className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm hover:bg-yellow-dark transition-colors uppercase"
             >
-              📖 Why average men never start
+              WHY AVERAGE MEN NEVER START
             </button>
             <ArrowDown className="mt-4 w-6 h-6 animate-bounce text-yellow" />
           </div>
