@@ -7,14 +7,14 @@ import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const features = [{
-  title: "PORTABLE",
-  description: "Set up without tools anywhere"
+  title: "PRIVATE",
+  description: "Train in silence. No stares. No judgment."
 }, {
-  title: "ADJUSTABLE",
-  description: "Adaptable height to fit your space"
+  title: "FITS EVERYWHERE",
+  description: "Corners, bedrooms, balconies..."
 }, {
-  title: "EASY",
-  description: "Elastics make hard feel easy"
+  title: "BEGINNER PROOF",
+  description: "Elastics let you win from day one."
 }];
 
 const ProductIntro = () => {
@@ -62,14 +62,14 @@ const ProductIntro = () => {
     }
   }, [isInView]);
 
-  return <section id="product" ref={containerRef} className="bg-[#dee3e4]/[0.09]">
+  return <section id="product" ref={containerRef} className="bg-black">
       <div className="container mx-auto px-4 py-[14px]">
         <div className="max-w-5xl mx-auto">
           {/* Desktop: Center title above grid */}
           {!isMobile && (
             <div className="flex justify-center mb-8">
               <div className="space-y-4 flex flex-col items-center">
-                <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <h2 className={cn("text-3xl md:text-4xl font-extrabold text-white relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   NO LIMITS
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
@@ -82,7 +82,7 @@ const ProductIntro = () => {
               {/* Mobile: Show title here */}
               {isMobile && (
                 <div className="space-y-4 flex flex-col items-center">
-                  <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                  <h2 className={cn("text-3xl md:text-4xl font-extrabold text-white relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     NO LIMITS
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                   </h2>
@@ -95,16 +95,16 @@ const ProductIntro = () => {
                 </video>}
               
               <div className="space-y-5 md:space-y-6 my-[9px] mx-0 px-0 py-0 rounded-none">
-                {features.map((feature, index) => <div key={index} className={cn(isMobile ? "px-[18px] py-3 space-y-1" : "px-6 py-2 md:py-3", "rounded-full", "transition-all duration-300 ease-in-out", "shadow-md", "transform", "border-2 border-yellow bg-white", isMobile ? "text-center" : "text-center md:text-center", !isMobile && "max-w-[90%] mx-auto", animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
+                {features.map((feature, index) => <div key={index} className={cn(isMobile ? "px-[18px] py-3 space-y-1" : "px-6 py-2 md:py-3", "rounded-full", "transition-all duration-300 ease-in-out", "shadow-md", "transform", "bg-white", isMobile ? "text-center" : "text-center md:text-center", !isMobile && "max-w-[90%] mx-auto", animationState.features[index] ? "opacity-100" : "opacity-0")} style={{
                 transitionDelay: `${(index + 1) * 100}ms`
               }}>
                     <div className="flex flex-col items-center md:items-center justify-center">
-                      <h4 className={cn("text-lg font-bold", isMobile ? "m-0 p-0" : "mb-1")}>
+                      <h4 className={cn("text-lg font-bold text-white", isMobile ? "m-0 p-0" : "mb-1")}>
                         {feature.title}
                       </h4>
                     
                       <div className={cn("opacity-100", isMobile ? "mt-0" : "mt-0.5")}>
-                        <p className={cn("text-gray-600 font-medium", isMobile ? "text-sm m-0 p-0" : "py-0")}>
+                        <p className={cn("text-yellow font-medium", isMobile ? "text-sm m-0 p-0" : "py-0")}>
                           {feature.description}
                         </p>
                       </div>
