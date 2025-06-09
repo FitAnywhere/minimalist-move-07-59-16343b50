@@ -4,10 +4,21 @@ import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const images = [
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745755066/1_doj-Photoroom_9_-Photoroom_7_y2vlxo.jpg",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745755066/IMG_20250427_114419_333_vqgbst.jpg",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1745755066/IMG_20250427_114421_715_kx0t3m.jpg",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747161397/streeee_zbon82.png"
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408246/44_nnkfe5.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749481218/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_5_q4x78j.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408237/42_ozxxdn.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749480525/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_4_jljvlh.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408245/43_tlkqgd.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749480382/58_hn78d8.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749478288/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_1_tl0kfa.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408284/36_ely4pq.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408285/30_xu4ljl.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408286/31_fkb6l1.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408287/33_snxgki.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408279/34_tkyirg.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408278/35_cyyf2m.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408294/37_ar3noo.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408283/28_hxqe7h.png"
 ];
 
 const HeroCarousel = () => {
@@ -34,13 +45,13 @@ const HeroCarousel = () => {
     });
   }, []);
 
-  // Only start carousel rotation once first image is loaded
+  // Only start carousel rotation once first image is loaded - changed to 1 second
   useEffect(() => {
     if (!imagesLoaded[0]) return;
     
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 2000);
+    }, 1000);
 
     return () => clearInterval(timer);
   }, [imagesLoaded]);
