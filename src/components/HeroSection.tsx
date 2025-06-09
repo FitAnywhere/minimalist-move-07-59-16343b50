@@ -3,11 +3,11 @@ import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ScrollIndicator from './ui/ScrollIndicator';
 import HeroContent from './ui/HeroContent';
-import { ImageSwiper } from './ui/image-swiper';
+import HeroCarousel from './ui/HeroCarousel';
 import WhyAverageMenModal from './ui/WhyAverageMenModal';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-const images = ["https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408246/44_nnkfe5.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749481218/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_5_q4x78j.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408237/42_ozxxdn.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749480525/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_4_jljvlh.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408245/43_tlkqgd.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749480382/58_hn78d8.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749478288/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_1_tl0kfa.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408284/36_ely4pq.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408285/30_xu4ljl.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408286/31_fkb6l1.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408287/33_snxgki.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408279/34_tkyirg.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408278/35_cyyf2m.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408294/37_ar3noo.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408283/28_hxqe7h.png"];
+import { throttle } from '@/utils/eventOptimizers';
 const HeroSection = memo(() => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
@@ -50,7 +50,7 @@ const HeroSection = memo(() => {
                 
                 <div className="relative">
                   <p className="text-sm text-gray-600 mb-2 font-medium uppercase">WE BUILD WINNERS</p>
-                  <ImageSwiper images={images} />
+                  <HeroCarousel />
                 </div>
                 
                 {isRendered && <div className={cn("transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
@@ -64,14 +64,15 @@ const HeroSection = memo(() => {
                         WHY AVERAGE MEN NEVER START
                       </button>
                       <ArrowDown className="mt-4 w-6 h-6 animate-bounce text-yellow" />
+                      
                     </div>
                   </div>}
               </div>
             </> : <>
               <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} overrideTitle="TOO WEAK TO START?" onCTAClick={handleCTAClick} />
               <div className="order-1 md:order-2 w-full flex flex-col items-center">
-                <ImageSwiper images={images} />
-                <p className="mt-3 text-gray-600 text-center uppercase text-lg font-medium my-[37px]">BUILDING WINNERS</p>
+                <HeroCarousel />
+                <p className="mt-3 text-sm text-gray-600 text-center uppercase">WE BUILD WINNERS</p>
               </div>
             </>}
         </div>
