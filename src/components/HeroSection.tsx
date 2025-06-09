@@ -72,7 +72,7 @@ const HeroSection = memo(() => {
               <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} overrideTitle="TOO WEAK TO START?" onCTAClick={handleCTAClick} />
               <div className="order-1 md:order-2 w-full flex flex-col items-center">
                 <HeroCarousel />
-                <p className="mt-3 text-sm text-gray-600 text-center uppercase">WE BUILD WINNERS</p>
+                
               </div>
             </>}
         </div>
