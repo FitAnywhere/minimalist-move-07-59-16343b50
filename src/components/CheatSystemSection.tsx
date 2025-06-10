@@ -1,10 +1,12 @@
+
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Check } from 'lucide-react';
+import { Check, X, HelpCircle } from 'lucide-react';
+
 const CheatSystemSection = () => {
   const isMobile = useIsMobile();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -13,15 +15,50 @@ const CheatSystemSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const images = ["https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747232994/m15GG_pfiuiu.png", "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1747395657/Izdelek_brez_naslova_15_oqqh8v.png"];
-  useEffect(() => {
-    // Set up image carousel to switch every 3 seconds
-    const interval = setInterval(() => {
-      setCurrentImageIndex(prevIndex => prevIndex === 0 ? 1 : 0);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+  const [activeBulletPopup, setActiveBulletPopup] = useState<number | null>(null);
+
+  const bulletData = [
+    {
+      text: "1 MONTH OF PERSONAL COACH ACCESS TO GET ON TRACK",
+      popupHeadline: "Still stuck? You were never meant to do this alone.",
+      popupBody: `Every time you try to start again, life pulls you back.
+
+That's not your fault — but doing nothing is.
+
+This coach isn't here to coddle you.
+
+They're here to eliminate confusion, silence your doubts, and hold you accountable like your future depends on it.
+
+Because it does.`
+    },
+    {
+      text: "15-MINUTE DOPAMINE WORKOUTS THAT LOCK YOU IN FAST",
+      popupHeadline: "Your brain's wired for quick wins. We hijacked that.",
+      popupBody: `Motivation is dead.
+
+Dopamine is king.
+
+These workouts are engineered to feel so good, your brain wants to do them again.
+
+No long plans. No burnout.
+
+Just 15 minutes that flip your lazy switch to beast mode — every damn time.`
+    },
+    {
+      text: "A MINDSET LESSONS BUILT TO DESTROY HESITATION",
+      popupHeadline: "Fix your mind and your body will follow.",
+      popupBody: `You don't need more workouts.
+
+You need to stop quitting.
+
+This isn't fluff. It's mental reprogramming from day one.
+
+No more 'I'll start Monday.'
+
+You'll act like someone who wins — because we'll wire you to be one.`
+    }
+  ];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -62,12 +99,14 @@ const CheatSystemSection = () => {
       setIsSubmitting(false);
     }
   };
-  return <section className="py-12 px-4 bg-white">
+
+  return (
+    <section className="py-12 px-4 bg-white">
       <div className="container mx-auto">
         {/* Section title */}
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-0">
-            WE GOT YOU
+            YOU DON'T NEED A PLAN.
             <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000 scale-x-100"></span>
           </h2>
         </div>
@@ -78,17 +117,25 @@ const CheatSystemSection = () => {
           
           {/* Subtitle text - Mobile only - moved closer to title */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-base font-semibold text-gray-700 px-[18px] py-0 my-0">ALL THE SUPPORT YOU NEED</p>
+            <p className="text-base font-semibold text-gray-700 px-[18px] py-0 my-0">We built the one your excuses can't beat.</p>
           </div>
           
-          {/* Image Column with Carousel */}
+          {/* Image Column */}
           <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
-            <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg relative", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
-              {images.map((src, index) => <img key={index} src={src} alt="Daily Pump System" className={`w-full h-auto object-cover absolute top-0 left-0 transition-opacity duration-1000 ${currentImageIndex === index ? 'opacity-100' : 'opacity-0'}`} loading={index === 0 ? "eager" : "lazy"} width={360} height={320} srcSet={`
-                    ${src} 360w,
-                    ${src} 560w
-                  `} sizes="(max-width: 768px) 100vw, 360px" />)}
-              <img src={images[0]} alt="" className="w-full h-auto object-cover invisible" aria-hidden="true" width={360} height={320} />
+            <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
+              <img 
+                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749553235/ChatGPT_Image_10._jun._2025_12_58_40_sz5ttt.png" 
+                alt="Support System" 
+                className="w-full h-auto object-cover"
+                loading="eager"
+                width={360}
+                height={320}
+                srcSet={`
+                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749553235/ChatGPT_Image_10._jun._2025_12_58_40_sz5ttt.png 360w,
+                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749553235/ChatGPT_Image_10._jun._2025_12_58_40_sz5ttt.png 560w
+                `}
+                sizes="(max-width: 768px) 100vw, 360px"
+              />
             </div>
           </div>
           
@@ -96,54 +143,67 @@ const CheatSystemSection = () => {
           <div className={cn("flex flex-col", isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && <p className="text-2xl font-medium text-gray-700 mt-0 pt-0 mb-8">ALL THE SUPPORT YOU NEED</p>}
+            {!isMobile && <p className="text-2xl font-medium text-gray-700 mt-0 pt-0 mb-8">We built the one your excuses can't beat.</p>}
             
-            {/* Updated bullet points with minimal, premium text */}
+            {/* Interactive bullet points */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
-              {isMobile ?
-            // Mobile bullet points
-            [{
-              title: "1-ON-1 COACH ACCESS"
-            }, {
-              title: "15-MINUTE SMART TRAININGS"
-            }, {
-              title: "WINNERS MINDSET LESSONS"
-            }].map((point, index) => <li key={index} className="flex items-start gap-3">
-                    <div className="w-4 h-4 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center mt-1">
-                      <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
+              {bulletData.map((bullet, index) => (
+                <li 
+                  key={index} 
+                  className="flex items-start gap-3 cursor-pointer group"
+                  onClick={() => setActiveBulletPopup(index)}
+                >
+                  <div className="w-4 h-4 flex-shrink-0 flex items-center justify-center mt-1">
+                    <HelpCircle className="w-4 h-4 text-white animate-spin group-hover:text-yellow transition-colors" />
+                  </div>
+                  <div className="text-gray-800 group-hover:text-yellow transition-colors">
+                    <div className={cn("font-semibold", isMobile ? "text-sm" : "text-lg")}>
+                      ❓ {bullet.text}
                     </div>
-                    <div className="text-gray-800">
-                      <div className="font-semibold">{point.title}</div>
-                    </div>
-                  </li>) :
-            // Desktop bullet points
-            [{
-              title: "1-ON-1 COACH ACCESS"
-            }, {
-              title: "15-MINUTE SMART TRAININGS"
-            }, {
-              title: "WINNERS MINDSET LESSONS"
-            }].map((point, index) => <li key={index} className="flex items-start gap-4 mb-6 last:mb-0 py-[6px] px-0 my-[30px]">
-                    <div className="w-5 h-5 bg-yellow rounded-full flex-shrink-0 flex items-center justify-center mt-1">
-                      <div className="w-1.5 h-1.5 bg-yellow rounded-full"></div>
-                    </div>
-                    <div className="text-gray-800">
-                      <div className="text-lg font-medium">{point.title}</div>
-                    </div>
-                  </li>)}
+                  </div>
+                </li>
+              ))}
             </ul>
             
             {/* CTA Button */}
             <div className={cn("pt-4", isMobile ? "flex justify-center" : "")}>
               <Button variant="yellow" size="lg" className="font-semibold" onClick={() => setIsDialogOpen(true)}>
-                REQUEST YOURS
+                GET YOURS →
               </Button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Modal Dialog */}
+      {/* Bullet Point Popups */}
+      {activeBulletPopup !== null && (
+        <Dialog open={true} onOpenChange={() => setActiveBulletPopup(null)}>
+          <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-center text-xl font-bold pr-8">
+                {bulletData[activeBulletPopup].popupHeadline}
+              </DialogTitle>
+              <button
+                onClick={() => setActiveBulletPopup(null)}
+                className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                aria-label="Close popup"
+              >
+                <X className="w-4 h-4 text-gray-600 hover:text-yellow" />
+              </button>
+            </DialogHeader>
+            
+            <div className="py-4 text-left space-y-2">
+              {bulletData[activeBulletPopup].popupBody.split('\n\n').map((paragraph, idx) => (
+                <p key={idx} className="text-gray-800 leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Original Modal Dialog for form submission */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -152,37 +212,61 @@ const CheatSystemSection = () => {
             </DialogTitle>
           </DialogHeader>
           
-          {isSuccess ? <div className="py-6 text-center space-y-4">
+          {isSuccess ? (
+            <div className="py-6 text-center space-y-4">
               <div className="flex justify-center">
                 <Check className="h-12 w-12 text-green-500" />
               </div>
               <p className="text-lg font-medium">Thank you.</p>
               <p>Once we confirm your order number, you will receive TIME HACKS on your email.</p>
-            </div> : <form onSubmit={handleSubmit} className="space-y-4 py-4">
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4 py-4">
               <div className="space-y-2">
                 <label htmlFor="order-number" className="text-sm font-medium">
                   Order Number
                 </label>
-                <Input id="order-number" value={orderNumber} onChange={e => setOrderNumber(e.target.value)} placeholder="Enter your order number" required />
+                <Input 
+                  id="order-number" 
+                  value={orderNumber} 
+                  onChange={(e) => setOrderNumber(e.target.value)} 
+                  placeholder="Enter your order number" 
+                  required 
+                />
               </div>
               
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium">
                   Email Address
                 </label>
-                <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email address" required />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
+                  placeholder="Enter your email address" 
+                  required 
+                />
               </div>
               
               {error && <p className="text-red-600 text-sm">{error}</p>}
               
               <div className="flex justify-center pt-2">
-                <Button type="submit" variant="yellow" className="w-full font-semibold" disabled={isSubmitting}>
+                <Button 
+                  type="submit" 
+                  variant="yellow" 
+                  className="w-full font-semibold" 
+                  disabled={isSubmitting}
+                >
                   GET MY TIME HACKS
                 </Button>
               </div>
-            </form>}
+            </form>
+          )}
         </DialogContent>
       </Dialog>
-    </section>;
+    </section>
+  );
 };
+
 export default CheatSystemSection;
