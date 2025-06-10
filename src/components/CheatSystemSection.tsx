@@ -19,16 +19,14 @@ const CheatSystemSection = () => {
 
   const bulletData = [
     {
-      text: "1 MONTH OF COACH ACCESS TO GET ON TRACK",
-      popupHeadline: "YOU WERE NEVER MEANT TO DO THIS ALONE",
-      popupBody: `Coach isn't here to coddle you.
-
-They're here to eliminate confusion, silence your doubts, and hold you accountable like your future depends on it.
+      text: "1 MONTH OF COACH ACCESS",
+      popupHeadline: "GET ON TRACK",
+      popupBody: `Coach is here to eliminate confusion, silence your doubts, and hold you accountable like your future depends on it.
 
 Because it does.`
     },
     {
-      text: "15-MINUTE DOPAMINE WORKOUTS THAT LOCK YOU IN",
+      text: "15-MINUTE DOPAMINE WORKOUTS",
       popupHeadline: "YOUR BRAIN'S WIRED FOR QUICK WINS",
       popupBody: `Motivation is dead.
 
@@ -41,7 +39,7 @@ No long plans. No burnout.
 Just 15 minutes that flip your lazy switch to beast mode — every damn time.`
     },
     {
-      text: "A MINDSET LESSONS BUILT TO DESTROY HESITATION",
+      text: "WINNERS MINDSET LESSONS",
       popupHeadline: "FIX YOUR MIND AND YOUR BODY WILL FOLLOW",
       popupBody: `You don't need more workouts.
 
@@ -51,7 +49,7 @@ This isn't fluff. It's mental reprogramming from day one.
 
 No more 'I'll start Monday.'
 
-You'll act like someone who wins — because we'll wire you to be one.`
+You'll act like a winner — because we'll wire you to be one.`
     }
   ];
 
@@ -113,24 +111,20 @@ You'll act like someone who wins — because we'll wire you to be one.`
           
           {/* Subtitle text - Mobile only - moved closer to title */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-base font-semibold text-gray-700 px-[18px] py-0 my-0">We built one your excuses can't beat.</p>
+            <p className="text-lg font-bold text-gray-700 px-[18px] py-0 my-0">We built one your excuses can't beat</p>
           </div>
           
           {/* Image Column */}
           <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
-            <div className={cn("overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-lg", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
+            <div className={cn("overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-lg", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
               <img 
-                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749553235/ChatGPT_Image_10._jun._2025_12_58_40_sz5ttt.png" 
+                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749556400/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_6_yioypp.png" 
                 alt="Support System" 
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover rounded-lg"
                 loading="eager"
                 width={360}
-                height={320}
-                srcSet={`
-                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749553235/ChatGPT_Image_10._jun._2025_12_58_40_sz5ttt.png 360w,
-                  https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749553235/ChatGPT_Image_10._jun._2025_12_58_40_sz5ttt.png 560w
-                `}
-                sizes="(max-width: 768px) 100vw, 360px"
+                height={360}
+                style={{ borderRadius: '8px' }}
               />
             </div>
           </div>
@@ -139,7 +133,7 @@ You'll act like someone who wins — because we'll wire you to be one.`
           <div className={cn("flex flex-col", isMobile ? "w-full space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && <p className="text-2xl font-medium text-gray-700 mt-0 pt-0 mb-8">We built one your excuses can't beat.</p>}
+            {!isMobile && <p className="text-2xl font-bold text-gray-700 mt-0 pt-0 mb-8">We built one your excuses can't beat</p>}
             
             {/* Interactive bullet points */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4", isMobile ? "text-left" : "")}>
@@ -150,7 +144,7 @@ You'll act like someone who wins — because we'll wire you to be one.`
                   onClick={() => setActiveBulletPopup(index)}
                 >
                   <div className="w-4 h-4 flex-shrink-0 flex items-center justify-center mt-1">
-                    <HelpCircle className="w-4 h-4 text-white animate-spin group-hover:text-yellow transition-colors" />
+                    <span className="text-yellow group-hover:text-red-600 transition-colors text-lg">❓</span>
                   </div>
                   <div className="text-gray-800 group-hover:text-yellow transition-colors">
                     <div className={cn("font-semibold", isMobile ? "text-sm" : "text-lg")}>
@@ -197,7 +191,7 @@ You'll act like someone who wins — because we'll wire you to be one.`
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-center text-xl font-bold">
-              {isSuccess ? 'Request Submitted' : 'Request Your Time Hacks'}
+              {isSuccess ? 'Request Submitted' : 'VERIFY TO GET ACCESS'}
             </DialogTitle>
           </DialogHeader>
           
@@ -247,7 +241,7 @@ You'll act like someone who wins — because we'll wire you to be one.`
                   className="w-full font-semibold" 
                   disabled={isSubmitting}
                 >
-                  GET MY TIME HACKS
+                  VERIFY
                 </Button>
               </div>
             </form>
