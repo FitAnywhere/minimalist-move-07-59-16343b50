@@ -19,21 +19,17 @@ const CheatSystemSection = () => {
 
   const bulletData = [
     {
-      text: "1 MONTH OF PERSONAL COACH ACCESS TO GET ON TRACK",
-      popupHeadline: "Still stuck? You were never meant to do this alone.",
-      popupBody: `Every time you try to start again, life pulls you back.
-
-That's not your fault — but doing nothing is.
-
-This coach isn't here to coddle you.
+      text: "1 MONTH OF COACH ACCESS TO GET ON TRACK",
+      popupHeadline: "YOU WERE NEVER MEANT TO DO THIS ALONE",
+      popupBody: `Coach isn't here to coddle you.
 
 They're here to eliminate confusion, silence your doubts, and hold you accountable like your future depends on it.
 
 Because it does.`
     },
     {
-      text: "15-MINUTE DOPAMINE WORKOUTS THAT LOCK YOU IN FAST",
-      popupHeadline: "Your brain's wired for quick wins. We hijacked that.",
+      text: "15-MINUTE DOPAMINE WORKOUTS THAT LOCK YOU IN",
+      popupHeadline: "YOUR BRAIN'S WIRED FOR QUICK WINS",
       popupBody: `Motivation is dead.
 
 Dopamine is king.
@@ -46,7 +42,7 @@ Just 15 minutes that flip your lazy switch to beast mode — every damn time.`
     },
     {
       text: "A MINDSET LESSONS BUILT TO DESTROY HESITATION",
-      popupHeadline: "Fix your mind and your body will follow.",
+      popupHeadline: "FIX YOUR MIND AND YOUR BODY WILL FOLLOW",
       popupBody: `You don't need more workouts.
 
 You need to stop quitting.
@@ -106,7 +102,7 @@ You'll act like someone who wins — because we'll wire you to be one.`
         {/* Section title */}
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-0">
-            YOU DON'T NEED A PLAN.
+            YOU DON'T NEED A PLAN
             <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000 scale-x-100"></span>
           </h2>
         </div>
@@ -117,7 +113,7 @@ You'll act like someone who wins — because we'll wire you to be one.`
           
           {/* Subtitle text - Mobile only - moved closer to title */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-base font-semibold text-gray-700 px-[18px] py-0 my-0">We built the one your excuses can't beat.</p>
+            <p className="text-base font-semibold text-gray-700 px-[18px] py-0 my-0">We built one your excuses can't beat.</p>
           </div>
           
           {/* Image Column */}
@@ -140,13 +136,13 @@ You'll act like someone who wins — because we'll wire you to be one.`
           </div>
           
           {/* Text Column - Desktop version includes subtitle + bullets, Mobile only bullets */}
-          <div className={cn("flex flex-col", isMobile ? "w-full text-center space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
+          <div className={cn("flex flex-col", isMobile ? "w-full space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && <p className="text-2xl font-medium text-gray-700 mt-0 pt-0 mb-8">We built the one your excuses can't beat.</p>}
+            {!isMobile && <p className="text-2xl font-medium text-gray-700 mt-0 pt-0 mb-8">We built one your excuses can't beat.</p>}
             
             {/* Interactive bullet points */}
-            <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4")}>
+            <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4", isMobile ? "text-left" : "")}>
               {bulletData.map((bullet, index) => (
                 <li 
                   key={index} 
@@ -180,16 +176,9 @@ You'll act like someone who wins — because we'll wire you to be one.`
         <Dialog open={true} onOpenChange={() => setActiveBulletPopup(null)}>
           <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="text-center text-xl font-bold pr-8">
+              <DialogTitle className="text-center text-xl font-bold">
                 {bulletData[activeBulletPopup].popupHeadline}
               </DialogTitle>
-              <button
-                onClick={() => setActiveBulletPopup(null)}
-                className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
-                aria-label="Close popup"
-              >
-                <X className="w-4 h-4 text-gray-600 hover:text-yellow" />
-              </button>
             </DialogHeader>
             
             <div className="py-4 text-left space-y-2">
