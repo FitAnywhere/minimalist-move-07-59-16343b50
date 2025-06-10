@@ -107,18 +107,18 @@ You'll act like a winner — because we'll wire you to be one.`
 
         {/* Desktop: Image on right, text on left
             Mobile: Title > Subtitle > Image > Bullet points */}
-        <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-4" : "flex flex-row-reverse items-center gap-3")}>
+        <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-4" : "flex flex-row-reverse items-center gap-6")}>
           
           {/* Subtitle text - Mobile only - moved closer to title */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-lg font-bold text-gray-700 px-[18px] py-0 my-0">We built one your excuses can't beat</p>
+            <p className="text-xl font-bold text-gray-700 px-[18px] py-0 my-0">We built one your excuses can't beat</p>
           </div>
           
           {/* Image Column */}
           <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
             <div className={cn("overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-lg", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
               <img 
-                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749556400/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_6_yioypp.png" 
+                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749560246/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_9_syn6qr.png" 
                 alt="Support System" 
                 className="w-full h-auto object-cover rounded-lg"
                 loading="eager"
@@ -144,11 +144,11 @@ You'll act like a winner — because we'll wire you to be one.`
                   onClick={() => setActiveBulletPopup(index)}
                 >
                   <div className="w-4 h-4 flex-shrink-0 flex items-center justify-center mt-1">
-                    <span className="text-yellow group-hover:text-red-600 transition-colors text-lg">❓</span>
+                    <span className="text-yellow-400 group-hover:text-red-600 transition-colors text-lg">❓</span>
                   </div>
-                  <div className="text-gray-800 group-hover:text-yellow transition-colors">
+                  <div className="text-gray-800 group-hover:text-yellow-600 transition-colors">
                     <div className={cn("font-semibold", isMobile ? "text-sm" : "text-lg")}>
-                      ❓ {bullet.text}
+                      {bullet.text}
                     </div>
                   </div>
                 </li>
