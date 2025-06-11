@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -21,7 +20,7 @@ const CheatSystemSection = () => {
   const carouselImages = [
     "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749668008/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_18_ods8zr.png",
     "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749668008/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_20_jspmsd.png",
-    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749668008/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_17_yavfbb.png"
+    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749669084/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_21_bioeyh.png"
   ];
 
   const bulletData = [
