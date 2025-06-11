@@ -64,7 +64,7 @@ You'll act like a winner — because we'll wire you to be one.`
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
-    }, 1500);
+    }, 2000);
 
     return () => clearInterval(timer);
   }, [carouselImages.length]);
