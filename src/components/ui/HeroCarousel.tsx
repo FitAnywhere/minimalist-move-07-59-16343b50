@@ -9,16 +9,7 @@ const images = [
   "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408237/42_ozxxdn.png",
   "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749480525/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_4_jljvlh.png",
   "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408245/43_tlkqgd.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749480382/58_hn78d8.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749478288/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_1_tl0kfa.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408284/36_ely4pq.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408285/30_xu4ljl.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408286/31_fkb6l1.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408287/33_snxgki.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408279/34_tkyirg.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408278/35_cyyf2m.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408294/37_ar3noo.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749408283/28_hxqe7h.png"
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749480382/58_hn78d8.png"
 ];
 
 const HeroCarousel = () => {
@@ -45,13 +36,13 @@ const HeroCarousel = () => {
     });
   }, []);
 
-  // Only start carousel rotation once first image is loaded - changed to 1 second
+  // Only start carousel rotation once first image is loaded - changed to 1.6 seconds
   useEffect(() => {
     if (!imagesLoaded[0]) return;
     
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 1000);
+    }, 1600);
 
     return () => clearInterval(timer);
   }, [imagesLoaded]);
