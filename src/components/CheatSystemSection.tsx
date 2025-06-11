@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Check, X, HelpCircle } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 const CheatSystemSection = () => {
   const isMobile = useIsMobile();
@@ -16,6 +16,13 @@ const CheatSystemSection = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
   const [activeBulletPopup, setActiveBulletPopup] = useState<number | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const carouselImages = [
+    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749668008/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_18_ods8zr.png",
+    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749668008/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_20_jspmsd.png",
+    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749668008/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_17_yavfbb.png"
+  ];
 
   const bulletData = [
     {
@@ -52,6 +59,15 @@ No more 'I'll start Monday.'
 You'll act like a winner — because we'll wire you to be one.`
     }
   ];
+
+  // Carousel auto-rotation
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
+    }, 1500);
+
+    return () => clearInterval(timer);
+  }, [carouselImages.length]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,13 +130,33 @@ You'll act like a winner — because we'll wire you to be one.`
             <p className="text-xl font-bold text-gray-700 px-[18px] py-0 my-0">We built one your excuses can't beat</p>
           </div>
           
-          {/* Image Column */}
+          {/* Image Carousel Column */}
           <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
-            <div className={cn("overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-lg", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
+            <div className={cn("relative overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-lg", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
+              {carouselImages.map((image, index) => (
+                <div
+                  key={image}
+                  className={cn(
+                    "absolute inset-0 w-full h-full transition-opacity duration-1000",
+                    currentImageIndex === index ? "opacity-100" : "opacity-0"
+                  )}
+                >
+                  <img 
+                    src={image}
+                    alt={`Support System ${index + 1}`}
+                    className="w-full h-auto object-cover rounded-lg"
+                    loading={index === 0 ? "eager" : "lazy"}
+                    width={360}
+                    height={360}
+                    style={{ borderRadius: '8px' }}
+                  />
+                </div>
+              ))}
+              {/* Base container to maintain aspect ratio */}
               <img 
-                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749560246/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_9_syn6qr.png" 
-                alt="Support System" 
-                className="w-full h-auto object-cover rounded-lg"
+                src={carouselImages[0]}
+                alt="Support System Base"
+                className="w-full h-auto object-cover rounded-lg opacity-0"
                 loading="eager"
                 width={360}
                 height={360}
