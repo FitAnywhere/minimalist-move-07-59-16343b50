@@ -55,8 +55,8 @@ const NavBar = () => {
   };
 
   const navLinks: NavLink[] = [
-    { name: "GYM", href: "/", type: "page" },
-    { name: "BOX", href: "/box", type: "page" },
+    { name: "STRENGTH", href: "/", type: "page" },
+    { name: "CARDIO", href: "/box", type: "page" },
     { name: "FAQ", href: "#faq", type: "section" }
   ];
 
