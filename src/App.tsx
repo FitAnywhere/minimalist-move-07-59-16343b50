@@ -14,24 +14,50 @@ const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const NeverGetSick = lazy(() => import("./pages/NeverGetSick"));
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <BrowserRouter>
-        <ScrollToTopOnRefresh />
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/box" element={<Box />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route path="/NeverGetSick" element={<NeverGetSick />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  // Check if we're on the nevergetsick subdomain
+  const isNeverGetSickSubdomain = window.location.hostname === 'nevergetsick.fitanywhere.today';
+
+  if (isNeverGetSickSubdomain) {
+    // For the nevergetsick subdomain, show only the article
+    return (
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <BrowserRouter>
+            <ScrollToTopOnRefresh />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Routes>
+                <Route path="/" element={<NeverGetSick />} />
+                <Route path="*" element={<NeverGetSick />} />
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    );
+  }
+
+  // For the main domain, show the regular routes
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <BrowserRouter>
+          <ScrollToTopOnRefresh />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/box" element={<Box />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/NeverGetSick" element={<NeverGetSick />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
