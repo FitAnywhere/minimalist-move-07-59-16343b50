@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 
 const NeverGetSick = () => {
   useEffect(() => {
-    console.log('NeverGetSick component mounted');
+    console.log('🎯 NeverGetSick component mounted successfully!');
+    console.log('Current URL:', window.location.href);
     
     // Set page title and meta description
     document.title = 'The Anti-Virus Blueprint | FitAnywhere';

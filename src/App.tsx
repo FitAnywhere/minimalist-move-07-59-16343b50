@@ -15,36 +15,41 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const NeverGetSick = lazy(() => import("./pages/NeverGetSick"));
 
 const App = () => {
-  // Check if we're on the nevergetsick subdomain
+  // Enhanced subdomain detection with multiple checks
   const currentHostname = window.location.hostname;
-  const isNeverGetSickSubdomain = currentHostname === 'nevergetsick.fitanywhere.today';
+  const currentHref = window.location.href;
   
-  // Debug logging
+  // Multiple ways to detect the nevergetsick subdomain
+  const isNeverGetSickSubdomain = 
+    currentHostname === 'nevergetsick.fitanywhere.today' ||
+    currentHostname.startsWith('nevergetsick.') ||
+    currentHref.includes('nevergetsick.fitanywhere.today');
+  
+  // Enhanced debug logging
+  console.log('=== SUBDOMAIN DETECTION DEBUG ===');
   console.log('Current hostname:', currentHostname);
+  console.log('Current href:', currentHref);
   console.log('Is NeverGetSick subdomain:', isNeverGetSickSubdomain);
+  console.log('================================');
 
+  // FORCE RENDER for nevergetsick subdomain - NO ROUTING, JUST THE ARTICLE
   if (isNeverGetSickSubdomain) {
-    console.log('Rendering NeverGetSick subdomain version');
-    // For the nevergetsick subdomain, show only the article
+    console.log('🔥 FORCING NeverGetSick subdomain render - NO HOMEPAGE!');
     return (
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Toaster />
-          <BrowserRouter>
-            <ScrollToTopOnRefresh />
-            <Suspense fallback={<div>Loading...</div>}>
-              <Routes>
-                <Route path="/" element={<NeverGetSick />} />
-                <Route path="*" element={<NeverGetSick />} />
-              </Routes>
+          <div className="min-h-screen bg-white">
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading article...</div>}>
+              <NeverGetSick />
             </Suspense>
-          </BrowserRouter>
+          </div>
         </TooltipProvider>
       </QueryClientProvider>
     );
   }
 
-  console.log('Rendering main domain version');
+  console.log('Rendering main domain version with full routing');
   // For the main domain, show the regular routes
   return (
     <QueryClientProvider client={queryClient}>
