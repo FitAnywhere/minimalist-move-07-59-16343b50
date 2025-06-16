@@ -1,7 +1,10 @@
+
 import { useEffect } from 'react';
 
 const NeverGetSick = () => {
   useEffect(() => {
+    console.log('NeverGetSick component mounted');
+    
     // Set page title and meta description
     document.title = 'The Anti-Virus Blueprint | FitAnywhere';
     
