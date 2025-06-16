@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 
 const NeverGetSick = () => {
@@ -23,12 +22,9 @@ const NeverGetSick = () => {
       <main className="max-w-3xl mx-auto px-6 py-12">
         <article className="prose prose-lg max-w-none">
           <header className="mb-12 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
               The Anti-Virus Blueprint
             </h1>
-            <h2 className="text-xl md:text-2xl text-gray-700 mb-6 font-medium">
-              5 Daily Habits to Never Get Sick
-            </h2>
             <p className="text-lg text-gray-600 leading-relaxed">
               Here are five simple, science-backed ways to strengthen your immune system—starting today.
             </p>
