@@ -58,53 +58,39 @@ const WhyAverageMenModal = ({ isOpen, onClose }: WhyAverageMenModalProps) => {
             THE REALITY
           </h2>
           
-          <div className="space-y-4 text-black leading-relaxed">
-            <br />
-            
+          <div className="space-y-0 text-black leading-relaxed">
             <p>Here's the truth:</p>
-            <br />
-            <p>No one starts strong.</p>
-            <br />
-            <p>No one looks good at the beginning.</p>
-            <br />
+            
+            <p>Nobody starts strong.</p>
+            <p>Nobody looks good at the beginning.</p>
+            
             <p>And the ones who do?</p>
-            <br />
+            
             <p>They've already trained in silence — day after day — while you were still waiting to feel ready.</p>
             
             <br />
             
             <p>Read this twice:</p>
             
-            <br />
-            
             <p><em>Average men wait to feel ready.</em></p>
-            <br />
             <p><em>Exceptional men move anyway.</em></p>
             
             <br />
             
             <p>That's the difference.</p>
-            <br />
             <p>Not genetics. Not luck.</p>
             
-            <br />
-            
             <p>You don't need motivation.</p>
-            <br />
             <p>You need a place to begin — without eyes, mirrors, noise, or judgment.</p>
             
             <br />
             
             <p>Build quietly.</p>
-            <br />
             <p>Return loudly.</p>
-            <br />
+            
             <p><strong>Be the man they don't recognize.</strong></p>
             
-            <br />
-            
             <p>Average men never start.</p>
-            <br />
             <p><strong>That's why you must.</strong></p>
           </div>
         </div>
