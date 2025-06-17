@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -35,13 +36,13 @@ const HeroCarousel = () => {
     });
   }, []);
 
-  // Only start carousel rotation once first image is loaded - changed to 1.6 seconds
+  // Only start carousel rotation once first image is loaded - changed to 2000ms (slower)
   useEffect(() => {
     if (!imagesLoaded[0]) return;
     
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 1600);
+    }, 2000);
 
     return () => clearInterval(timer);
   }, [imagesLoaded]);

@@ -56,6 +56,9 @@ const HeroContent = memo(({
             >
               WHY YOU MUST START
             </button>
+            <p className="text-gray-600 text-sm mt-2 opacity-70">
+              30-day guarantee | Beginner-proof | Coach included
+            </p>
           </div>
         </div>
       )}
