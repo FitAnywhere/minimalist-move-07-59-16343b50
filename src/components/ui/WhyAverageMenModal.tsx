@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -58,7 +59,7 @@ const WhyAverageMenModal = ({ isOpen, onClose }: WhyAverageMenModalProps) => {
           </h2>
           
           <div className="space-y-4 text-black leading-relaxed">
-            <br /><br />
+            <br />
             
             <p>Here's the truth:</p>
             <br />
@@ -70,29 +71,29 @@ const WhyAverageMenModal = ({ isOpen, onClose }: WhyAverageMenModalProps) => {
             <br />
             <p>They've already trained in silence — day after day — while you were still waiting to feel ready.</p>
             
-            <br /><br />
+            <br />
             
             <p>Read this twice:</p>
             
-            <br /><br />
+            <br />
             
             <p><em>Average men wait to feel ready.</em></p>
             <br />
             <p><em>Exceptional men move anyway.</em></p>
             
-            <br /><br />
+            <br />
             
             <p>That's the difference.</p>
             <br />
             <p>Not genetics. Not luck.</p>
             
-            <br /><br /><br />
+            <br />
             
             <p>You don't need motivation.</p>
             <br />
             <p>You need a place to begin — without eyes, mirrors, noise, or judgment.</p>
             
-            <br /><br />
+            <br />
             
             <p>Build quietly.</p>
             <br />
@@ -100,7 +101,7 @@ const WhyAverageMenModal = ({ isOpen, onClose }: WhyAverageMenModalProps) => {
             <br />
             <p><strong>Be the man they don't recognize.</strong></p>
             
-            <br /><br />
+            <br />
             
             <p>Average men never start.</p>
             <br />
