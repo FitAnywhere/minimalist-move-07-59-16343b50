@@ -49,7 +49,7 @@ const HeroSection = memo(() => {
           {isMobile ? (
             <>
               <div className="text-center order-1 w-full space-y-6">
-                <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} isMobile={true} overrideTitle="TOO WEAK TO START?" />
+                <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} isMobile={true} overrideTitle="STILL WEAK?" />
                 
                 <div className="relative">
                   <HeroCarousel />
@@ -58,14 +58,14 @@ const HeroSection = memo(() => {
                 {isRendered && (
                   <div className={cn("transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="mt-4 space-y-1">
-                      <p className="text-gray-700 font-bold text-base">Train in private.</p>
-                      <p className="text-gray-700 px-0 py-[4px] font-bold text-base">Return with a body they can't ignore.</p>
+                      <p className="text-gray-700 font-bold text-base">Build strength in silence.</p>
+                      <p className="text-gray-700 px-0 py-[4px] font-bold text-base">In your bedroom, balcony, or any 1m² of space.</p>
                     </div>
                     
                     <div className="mt-6 flex flex-col items-center">
                       <ArrowDown className="mb-4 w-6 h-6 animate-bounce text-yellow" />
                       <button onClick={handleCTAClick} className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm hover:bg-yellow-dark transition-colors uppercase">
-                        WHY AVERAGE MEN NEVER START
+                        WHY YOU MUST START
                       </button>
                     </div>
                   </div>
@@ -74,7 +74,7 @@ const HeroSection = memo(() => {
             </>
           ) : (
             <>
-              <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} overrideTitle="TOO WEAK TO START?" onCTAClick={handleCTAClick} />
+              <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} overrideTitle="STILL WEAK?" onCTAClick={handleCTAClick} />
               <div className="order-1 md:order-2 w-full flex flex-col items-center">
                 <HeroCarousel />
               </div>

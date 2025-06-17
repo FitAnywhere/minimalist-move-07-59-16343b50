@@ -18,7 +18,7 @@ const HeroContent = memo(({
   overrideTitle,
   onCTAClick
 }: HeroContentProps) => {
-  const title = overrideTitle || "ZERO TO STRONG";
+  const title = overrideTitle || "STILL WEAK?";
 
   return (
     <div className={cn("text-center", isMobile ? "md:text-left" : "")}>
@@ -44,8 +44,8 @@ const HeroContent = memo(({
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         )}>
           <div className="mt-4 space-y-1 text-center">
-            <p className="text-gray-700 font-bold text-lg">Train in private.</p>
-            <p className="text-gray-700 px-0 py-[4px] font-bold text-lg">Return with a body they can't ignore.</p>
+            <p className="text-gray-700 font-bold text-lg">Build strength in silence.</p>
+            <p className="text-gray-700 px-0 py-[4px] font-bold text-lg">In your bedroom, balcony, or any 1m² of space.</p>
           </div>
           
           <div className="text-center mt-6 flex flex-col items-center">
@@ -54,7 +54,7 @@ const HeroContent = memo(({
               onClick={onCTAClick}
               className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm hover:bg-yellow-dark transition-colors uppercase"
             >
-              WHY AVERAGE MEN NEVER START
+              WHY YOU MUST START
             </button>
           </div>
         </div>
