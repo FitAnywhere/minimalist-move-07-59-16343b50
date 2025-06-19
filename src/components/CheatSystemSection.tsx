@@ -141,49 +141,47 @@ const CheatSystemSection = () => {
       {/* Why You Need It Modal */}
       <Dialog open={isWhyDialogOpen} onOpenChange={setIsWhyDialogOpen}>
         <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-          <div className="relative">
-            <button
-              onClick={() => setIsWhyDialogOpen(false)}
-              className="absolute top-0 right-0 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
-              aria-label="Close modal"
-            >
-              <X className="w-6 h-6 text-gray-600" />
-            </button>
+          <button
+            onClick={() => setIsWhyDialogOpen(false)}
+            className="absolute top-4 right-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
+            aria-label="Close modal"
+          >
+            <X className="w-6 h-6 text-gray-600" />
+          </button>
+          
+          <div className="py-6 text-left space-y-4 leading-relaxed text-gray-800 pr-8">
+            <p>It's not energy you're missing.</p>
+            <p>You need fewer reasons to quit.</p>
             
-            <div className="py-6 text-left space-y-4 leading-relaxed text-gray-800 pr-8">
-              <p>It's not energy you're missing.</p>
-              <p>You need fewer reasons to quit.</p>
-              
-              <br />
-              
-              <p>That's why we stripped this down to 3 non-negotiables:</p>
-              
-              <br />
-              
-              <p>A 1m² strength station you'll use — because it's right there, no wasted time, no excuses.</p>
-              <p>A coach who texts you like a friend and answers like a pro.</p>
-              <p>15-minute dopamine workouts your brain finishes before your excuses even load.</p>
-              
-              <br />
-              
-              <p>The result?</p>
-              <p>You start moving before your doubt has a chance to vote.</p>
-              
-              <br />
-              
-              <p>The reps feel small.</p>
-              <p>But something big is changing:</p>
-              
-              <br />
-              
-              <p>Not just your muscles.</p>
-              <p>Your story.</p>
-              
-              <br />
-              
-              <p>You're not getting back on track.</p>
-              <p>You're laying a new one.</p>
-            </div>
+            <br />
+            
+            <p>That's why we stripped this down to 3 non-negotiables:</p>
+            
+            <br />
+            
+            <p>A 1m² strength station you'll use — because it's right there, no wasted time, no excuses.</p>
+            <p>A coach who texts you like a friend and answers like a pro.</p>
+            <p>15-minute dopamine workouts your brain finishes before your excuses even load.</p>
+            
+            <br />
+            
+            <p>The result?</p>
+            <p>You start moving before your doubt has a chance to vote.</p>
+            
+            <br />
+            
+            <p>The reps feel small.</p>
+            <p>But something big is changing:</p>
+            
+            <br />
+            
+            <p>Not just your muscles.</p>
+            <p>Your story.</p>
+            
+            <br />
+            
+            <p>You're not getting back on track.</p>
+            <p>You're laying a new one.</p>
           </div>
         </DialogContent>
       </Dialog>
