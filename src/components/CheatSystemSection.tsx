@@ -16,40 +16,11 @@ const CheatSystemSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [activeBulletPopup, setActiveBulletPopup] = useState<number | null>(null);
 
   const bulletData = [
-    {
-      text: "PORTABLE STRENGTH STATION",
-      popupHeadline: "YOUR COMPLETE GYM IN 1M²",
-      popupBody: `No more gym excuses.
-
-Everything you need fits in a corner of your room.
-
-Set up in 30 seconds. Train anywhere.
-
-The resistance bands, suspension trainer, and workout guide that transforms any space into your personal strength station.`
-    },
-    {
-      text: "15-MIN DOPAMINE WORKOUTS",
-      popupHeadline: "YOUR BRAIN'S WIRED FOR QUICK WINS",
-      popupBody: `Motivation is dead.
-
-Dopamine is king.
-
-These workouts are engineered to feel so good, your brain wants to do them again.
-
-No long plans. No burnout.
-
-Just 15 minutes that flip your lazy switch to beast mode — every damn time.`
-    },
-    {
-      text: "1 MONTH OF COACH ACCESS",
-      popupHeadline: "GET ON TRACK",
-      popupBody: `Coach is here to eliminate confusion, silence your doubts, and hold you accountable like your future depends on it.
-
-Because it does.`
-    }
+    "PORTABLE STRENGTH STATION",
+    "15-MIN DOPAMINE WORKOUTS",
+    "1 MONTH OF COACH ACCESS"
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -138,20 +109,19 @@ Because it does.`
             {/* Subtitle text - Desktop only */}
             {!isMobile && <p className="text-2xl font-bold text-gray-700 mt-0 pt-0 mb-8">We built a plan your excuses can't beat.</p>}
             
-            {/* Interactive bullet points */}
+            {/* Non-interactive bullet points */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4", isMobile ? "text-left" : "")}>
               {bulletData.map((bullet, index) => (
                 <li 
                   key={index} 
-                  className="flex items-start gap-3 cursor-pointer group"
-                  onClick={() => setActiveBulletPopup(index)}
+                  className="flex items-start gap-3"
                 >
                   <div className="w-4 h-4 flex-shrink-0 flex items-center justify-center mt-1">
-                    <span className="text-yellow-400 group-hover:text-red-600 transition-colors text-lg">❓</span>
+                    <span className="text-yellow-400 text-lg">●</span>
                   </div>
-                  <div className="text-gray-800 group-hover:text-yellow-600 transition-colors">
+                  <div className="text-gray-800">
                     <div className={cn("font-semibold", isMobile ? "text-sm" : "text-lg")}>
-                      {bullet.text}
+                      {bullet}
                     </div>
                   </div>
                 </li>
@@ -167,27 +137,6 @@ Because it does.`
           </div>
         </div>
       </div>
-
-      {/* Bullet Point Popups */}
-      {activeBulletPopup !== null && (
-        <Dialog open={true} onOpenChange={() => setActiveBulletPopup(null)}>
-          <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-center text-xl font-bold">
-                {bulletData[activeBulletPopup].popupHeadline}
-              </DialogTitle>
-            </DialogHeader>
-            
-            <div className="py-4 text-left space-y-2">
-              {bulletData[activeBulletPopup].popupBody.split('\n\n').map((paragraph, idx) => (
-                <p key={idx} className="text-gray-800 leading-relaxed">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
 
       {/* Why You Need It Modal */}
       <Dialog open={isWhyDialogOpen} onOpenChange={setIsWhyDialogOpen}>
@@ -205,19 +154,32 @@ Because it does.`
               <p>It's not energy you're missing.</p>
               <p>You need fewer reasons to quit.</p>
               
+              <br />
+              
               <p>That's why we stripped this down to 3 non-negotiables:</p>
+              
+              <br />
               
               <p>A 1m² strength station you'll use — because it's right there, no wasted time, no excuses.</p>
               <p>A coach who texts you like a friend and answers like a pro.</p>
               <p>15-minute dopamine workouts your brain finishes before your excuses even load.</p>
               
+              <br />
+              
               <p>The result?</p>
               <p>You start moving before your doubt has a chance to vote.</p>
               
+              <br />
+              
               <p>The reps feel small.</p>
               <p>But something big is changing:</p>
+              
+              <br />
+              
               <p>Not just your muscles.</p>
               <p>Your story.</p>
+              
+              <br />
               
               <p>You're not getting back on track.</p>
               <p>You're laying a new one.</p>
