@@ -1,3 +1,4 @@
+
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -140,6 +141,10 @@ const CheatSystemSection = () => {
       {/* Why You Need It Modal */}
       <Dialog open={isWhyDialogOpen} onOpenChange={setIsWhyDialogOpen}>
         <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto [&>button]:hidden">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Why You Need It</DialogTitle>
+          </DialogHeader>
+          
           <button
             onClick={() => setIsWhyDialogOpen(false)}
             className="absolute top-4 right-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -154,9 +159,18 @@ const CheatSystemSection = () => {
             
             <p>That's why we stripped this down to 3 non-negotiables:</p>
             
-            <p className="italic">A 1m² strength station you'll use — because it's right there, no wasted time, no excuses.</p>
-            <p className="italic">A coach who texts you like a friend and answers like a pro.</p>
-            <p className="italic">15-minute dopamine workouts your brain finishes before your excuses even load.</p>
+            <div className="flex items-start gap-2">
+              <span className="text-black text-sm mt-1">●</span>
+              <p className="italic">A 1m² strength station you'll use — because it's right there, no wasted time, no excuses.</p>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-black text-sm mt-1">●</span>
+              <p className="italic">A coach who texts you like a friend and answers like a pro.</p>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-black text-sm mt-1">●</span>
+              <p className="italic">15-minute dopamine workouts your brain finishes before your excuses even load.</p>
+            </div>
             
             <p className="font-bold">The result?</p>
             <p>You start moving before your doubt has a chance to vote.</p>
