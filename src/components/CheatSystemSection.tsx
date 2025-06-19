@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -140,7 +139,7 @@ const CheatSystemSection = () => {
 
       {/* Why You Need It Modal */}
       <Dialog open={isWhyDialogOpen} onOpenChange={setIsWhyDialogOpen}>
-        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto [&>button]:hidden">
           <button
             onClick={() => setIsWhyDialogOpen(false)}
             className="absolute top-4 right-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -153,34 +152,22 @@ const CheatSystemSection = () => {
             <p>It's not energy you're missing.</p>
             <p>You need fewer reasons to quit.</p>
             
-            <br />
+            <p className="mt-4">That's why we stripped this down to 3 non-negotiables:</p>
             
-            <p>That's why we stripped this down to 3 non-negotiables:</p>
+            <p className="italic">A 1m² strength station you'll use — because it's right there, no wasted time, no excuses.</p>
+            <p className="italic">A coach who texts you like a friend and answers like a pro.</p>
+            <p className="italic">15-minute dopamine workouts your brain finishes before your excuses even load.</p>
             
-            <br />
-            
-            <p>A 1m² strength station you'll use — because it's right there, no wasted time, no excuses.</p>
-            <p>A coach who texts you like a friend and answers like a pro.</p>
-            <p>15-minute dopamine workouts your brain finishes before your excuses even load.</p>
-            
-            <br />
-            
-            <p>The result?</p>
+            <p className="font-bold mt-4">The result?</p>
             <p>You start moving before your doubt has a chance to vote.</p>
             
-            <br />
-            
-            <p>The reps feel small.</p>
+            <p className="mt-4">The reps feel small.</p>
             <p>But something big is changing:</p>
             
-            <br />
+            <p className="font-bold">Not just your muscles.</p>
+            <p className="font-bold">Your story.</p>
             
-            <p>Not just your muscles.</p>
-            <p>Your story.</p>
-            
-            <br />
-            
-            <p>You're not getting back on track.</p>
+            <p className="mt-4">You're not getting back on track.</p>
             <p>You're laying a new one.</p>
           </div>
         </DialogContent>
