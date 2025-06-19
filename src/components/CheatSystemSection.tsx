@@ -1,38 +1,37 @@
+
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Check } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 
 const CheatSystemSection = () => {
   const isMobile = useIsMobile();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isWhyDialogOpen, setIsWhyDialogOpen] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
   const [activeBulletPopup, setActiveBulletPopup] = useState<number | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const carouselImages = [
-    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749668008/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_18_ods8zr.png",
-    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749668008/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_20_jspmsd.png",
-    "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1749669084/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_21_bioeyh.png"
-  ];
 
   const bulletData = [
     {
-      text: "1 MONTH OF COACH ACCESS",
-      popupHeadline: "GET ON TRACK",
-      popupBody: `Coach is here to eliminate confusion, silence your doubts, and hold you accountable like your future depends on it.
+      text: "PORTABLE STRENGTH STATION",
+      popupHeadline: "YOUR COMPLETE GYM IN 1M²",
+      popupBody: `No more gym excuses.
 
-Because it does.`
+Everything you need fits in a corner of your room.
+
+Set up in 30 seconds. Train anywhere.
+
+The resistance bands, suspension trainer, and workout guide that transforms any space into your personal strength station.`
     },
     {
-      text: "15-MINUTE DOPAMINE WORKOUTS",
+      text: "15-MIN DOPAMINE WORKOUTS",
       popupHeadline: "YOUR BRAIN'S WIRED FOR QUICK WINS",
       popupBody: `Motivation is dead.
 
@@ -45,28 +44,13 @@ No long plans. No burnout.
 Just 15 minutes that flip your lazy switch to beast mode — every damn time.`
     },
     {
-      text: "WINNERS MINDSET LESSONS",
-      popupHeadline: "FIX YOUR MIND AND YOUR BODY WILL FOLLOW",
-      popupBody: `You don't need more workouts.
+      text: "1 MONTH OF COACH ACCESS",
+      popupHeadline: "GET ON TRACK",
+      popupBody: `Coach is here to eliminate confusion, silence your doubts, and hold you accountable like your future depends on it.
 
-You need to stop quitting.
-
-This isn't fluff. It's mental reprogramming from day one.
-
-No more 'I'll start Monday.'
-
-You'll act like a winner — because we'll wire you to be one.`
+Because it does.`
     }
   ];
-
-  // Carousel auto-rotation
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
-    }, 2000);
-
-    return () => clearInterval(timer);
-  }, [carouselImages.length]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,52 +99,36 @@ You'll act like a winner — because we'll wire you to be one.`
         {/* Section title */}
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block py-0 my-0">
-            YOU DON'T NEED A PLAN
+            CRUSH YOUR GOALS
             <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000 scale-x-100"></span>
           </h2>
         </div>
 
-        {/* Desktop: Image on right, text on left
-            Mobile: Title > Subtitle > Image > Bullet points */}
+        {/* Desktop: Video on right, text on left
+            Mobile: Title > Subtitle > Video > Bullet points */}
         <div className={cn("max-w-6xl mx-auto", isMobile ? "flex flex-col space-y-4" : "flex flex-row-reverse items-center gap-6")}>
           
           {/* Subtitle text - Mobile only - moved closer to title */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-xl font-bold text-gray-700 px-[18px] py-0 my-0">We built one your excuses can't beat</p>
+            <p className="text-xl font-bold text-gray-700 px-[18px] py-0 my-0">We built a plan your excuses can't beat.</p>
           </div>
           
-          {/* Image Carousel Column */}
+          {/* Video Column */}
           <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
             <div className={cn("relative overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-lg", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
-              {carouselImages.map((image, index) => (
-                <div
-                  key={image}
-                  className={cn(
-                    "absolute inset-0 w-full h-full transition-opacity duration-1000",
-                    currentImageIndex === index ? "opacity-100" : "opacity-0"
-                  )}
+              <div className="relative w-full h-0" style={{ paddingBottom: '133.33%' }}>
+                <video
+                  className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{ borderRadius: '8px' }}
                 >
-                  <img 
-                    src={image}
-                    alt={`Support System ${index + 1}`}
-                    className="w-full h-auto object-cover rounded-lg"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    width={360}
-                    height={360}
-                    style={{ borderRadius: '8px' }}
-                  />
-                </div>
-              ))}
-              {/* Base container to maintain aspect ratio */}
-              <img 
-                src={carouselImages[0]}
-                alt="Support System Base"
-                className="w-full h-auto object-cover rounded-lg opacity-0"
-                loading="eager"
-                width={360}
-                height={360}
-                style={{ borderRadius: '8px' }}
-              />
+                  <source src="/3Bp Section.webm" type="video/webm" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             </div>
           </div>
           
@@ -168,7 +136,7 @@ You'll act like a winner — because we'll wire you to be one.`
           <div className={cn("flex flex-col", isMobile ? "w-full space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && <p className="text-2xl font-bold text-gray-700 mt-0 pt-0 mb-8">We built one your excuses can't beat</p>}
+            {!isMobile && <p className="text-2xl font-bold text-gray-700 mt-0 pt-0 mb-8">We built a plan your excuses can't beat.</p>}
             
             {/* Interactive bullet points */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4", isMobile ? "text-left" : "")}>
@@ -192,8 +160,8 @@ You'll act like a winner — because we'll wire you to be one.`
             
             {/* CTA Button */}
             <div className={cn("pt-4", isMobile ? "flex justify-center" : "")}>
-              <Button variant="yellow" size="lg" className="font-semibold" onClick={() => setIsDialogOpen(true)}>
-                GET YOURS →
+              <Button variant="yellow" size="lg" className="font-semibold" onClick={() => setIsWhyDialogOpen(true)}>
+                WHY YOU NEED IT →
               </Button>
             </div>
           </div>
@@ -220,6 +188,43 @@ You'll act like a winner — because we'll wire you to be one.`
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Why You Need It Modal */}
+      <Dialog open={isWhyDialogOpen} onOpenChange={setIsWhyDialogOpen}>
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="relative">
+            <button
+              onClick={() => setIsWhyDialogOpen(false)}
+              className="absolute top-0 right-0 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
+              aria-label="Close modal"
+            >
+              <X className="w-6 h-6 text-gray-600" />
+            </button>
+            
+            <div className="py-6 text-left space-y-4 leading-relaxed text-gray-800 pr-8">
+              <p>It's not energy you're missing.</p>
+              <p>You need fewer reasons to quit.</p>
+              
+              <p>That's why we stripped this down to 3 non-negotiables:</p>
+              
+              <p>A 1m² strength station you'll use — because it's right there, no wasted time, no excuses.</p>
+              <p>A coach who texts you like a friend and answers like a pro.</p>
+              <p>15-minute dopamine workouts your brain finishes before your excuses even load.</p>
+              
+              <p>The result?</p>
+              <p>You start moving before your doubt has a chance to vote.</p>
+              
+              <p>The reps feel small.</p>
+              <p>But something big is changing:</p>
+              <p>Not just your muscles.</p>
+              <p>Your story.</p>
+              
+              <p>You're not getting back on track.</p>
+              <p>You're laying a new one.</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Original Modal Dialog for form submission */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
