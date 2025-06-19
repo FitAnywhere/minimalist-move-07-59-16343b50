@@ -140,14 +140,14 @@ const CheatSystemSection = () => {
 
       {/* Why You Need It Modal */}
       <Dialog open={isWhyDialogOpen} onOpenChange={setIsWhyDialogOpen}>
-        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto [&>button]:hidden">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto [&>button]:hidden relative">
           <DialogHeader className="sr-only">
             <DialogTitle>Why You Need It</DialogTitle>
           </DialogHeader>
           
           <button
             onClick={() => setIsWhyDialogOpen(false)}
-            className="absolute top-4 right-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="absolute top-4 right-4 z-50 p-2 hover:bg-gray-100 rounded-full transition-colors bg-white"
             aria-label="Close modal"
           >
             <X className="w-6 h-6 text-gray-600" />
@@ -159,16 +159,16 @@ const CheatSystemSection = () => {
             
             <p>That's why we stripped this down to 3 non-negotiables:</p>
             
-            <div className="flex items-start gap-2">
-              <span className="text-black text-sm mt-1">●</span>
+            <div className="flex items-start gap-3">
+              <span className="text-black text-lg mt-0.5 font-bold">●</span>
               <p className="italic">A 1m² strength station you'll use — because it's right there, no wasted time, no excuses.</p>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-black text-sm mt-1">●</span>
+            <div className="flex items-start gap-3">
+              <span className="text-black text-lg mt-0.5 font-bold">●</span>
               <p className="italic">A coach who texts you like a friend and answers like a pro.</p>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-black text-sm mt-1">●</span>
+            <div className="flex items-start gap-3">
+              <span className="text-black text-lg mt-0.5 font-bold">●</span>
               <p className="italic">15-minute dopamine workouts your brain finishes before your excuses even load.</p>
             </div>
             
