@@ -1,17 +1,13 @@
-
 import React, { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ChevronRight } from 'lucide-react';
-
 const GymTarget = () => {
   const targetSectionRef = useRef<HTMLElement>(null);
   const isTargetInView = useInView(targetSectionRef);
   const isMobile = useIsMobile();
-
-  return (
-    <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
+  return <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-12")}>
@@ -21,13 +17,10 @@ const GymTarget = () => {
             </h2>
             
             {/* Desktop Layout */}
-            {!isMobile && (
-              <>
+            {!isMobile && <>
                 {/* Single line under title */}
                 <div className={cn("text-center mb-8 transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">
-                    Parks judged them | Gyms pressured them | The attention broke them
-                  </p>
+                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Parks judged them | Gyms pressured them</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-8 items-center">
@@ -71,14 +64,7 @@ const GymTarget = () => {
                   <div className={cn("transition-all duration-1000 delay-600", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="w-full max-w-xs mx-auto">
                       <div className="relative aspect-[9/16] rounded-2xl overflow-hidden bg-black shadow-2xl">
-                        <video
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          className="w-full h-full object-cover"
-                          preload="metadata"
-                        >
+                        <video autoPlay muted loop playsInline className="w-full h-full object-cover" preload="metadata">
                           <source src="/0620(1).Mp4 (1).webm" type="video/webm" />
                           Your browser does not support the video tag.
                         </video>
@@ -86,12 +72,10 @@ const GymTarget = () => {
                     </div>
                   </div>
                 </div>
-              </>
-            )}
+              </>}
 
             {/* Mobile Layout */}
-            {isMobile && (
-              <>
+            {isMobile && <>
                 {/* Three main lines - bigger and bold, centered */}
                 <div className={cn("mb-4 text-center transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-gray-800 leading-tight mb-1">
@@ -100,23 +84,14 @@ const GymTarget = () => {
                   <p className="text-lg font-bold text-gray-800 leading-tight mb-1">
                     Gyms pressured them.
                   </p>
-                  <p className="text-lg font-bold text-gray-800 leading-tight">
-                    The attention broke them.
-                  </p>
+                  
                 </div>
 
                 {/* Video Block - 10% bigger than before */}
                 <div className={cn("mb-2 transition-all duration-1000 delay-400", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <div className="w-full max-w-[200px] mx-auto">
                     <div className="relative aspect-[9/16] rounded-2xl overflow-hidden bg-black shadow-2xl">
-                      <video
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="w-full h-full object-cover"
-                        preload="metadata"
-                      >
+                      <video autoPlay muted loop playsInline className="w-full h-full object-cover" preload="metadata">
                         <source src="/0620(1).Mp4 (1).webm" type="video/webm" />
                         Your browser does not support the video tag.
                       </video>
@@ -144,13 +119,10 @@ const GymTarget = () => {
                     They'll come back untouchable.
                   </p>
                 </div>
-              </>
-            )}
+              </>}
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default GymTarget;
