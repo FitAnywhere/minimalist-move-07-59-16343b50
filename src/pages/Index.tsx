@@ -1,17 +1,18 @@
+
 import { lazy, Suspense } from 'react';
 import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
-import ProductIntro from '@/components/ProductIntro';
 import CheatSystemSection from '@/components/CheatSystemSection';
+import ProductIntro from '@/components/ProductIntro';
+import OneTruthSection from '@/components/OneTruthSection';
+import TheChallengeSection from '@/components/TheChallengeSection';
 
 // Lazy load non-critical sections
 const BundleOffer = lazy(() => import('@/components/BundleOffer'));
 const GymTarget = lazy(() => import('@/components/gym/GymTarget'));
 const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
 const TimeAndCostCalculator = lazy(() => import('@/components/TimeAndCostCalculator'));
-const GymVideoSection = lazy(() => import('@/components/gym/GymVideoSection'));
 const GymFAQ = lazy(() => import('@/components/gym/GymFAQ'));
-const QuizSection = lazy(() => import('@/components/quiz/QuizSection'));
 const WisdomOfLegends = lazy(() => import('@/components/gym/WisdomOfLegends'));
 const GymCallToAction = lazy(() => import('@/components/gym/GymCallToAction'));
 const Footer = lazy(() => import('@/components/Footer'));
@@ -28,60 +29,60 @@ const Index = () => {
     <div className="overflow-x-hidden">
       <NavBar />
       
+      {/* 1. Hero Section */}
       <div id="hero">
         <HeroSection />
       </div>
       
-      <div id="product">
-        <ProductIntro />
-      </div>
-      
-      {/* Move CheatSystemSection (WE GOT YOU) to appear first */}
+      {/* 2. CRUSH YOUR GOALS */}
       <div id="cheat-system" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <CheatSystemSection />
-        </Suspense>
+        <CheatSystemSection />
       </div>
       
-      {/* Then BundleOffer (NO EXCUSES) appears second */}
-      <div id="bundle" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <BundleOffer />
-        </Suspense>
-      </div>
-      
+      {/* 3. BUILT FOR */}
       <div id="target" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <GymTarget />
         </Suspense>
       </div>
       
+      {/* 4. NO LIMITS */}
+      <div id="product" className="content-visibility-auto">
+        <ProductIntro />
+      </div>
+      
+      {/* 5. ONE TRUTH */}
+      <div id="one-truth" className="content-visibility-auto">
+        <OneTruthSection />
+      </div>
+      
+      {/* 6. THE CHALLENGE */}
+      <div id="the-challenge" className="content-visibility-auto">
+        <TheChallengeSection />
+      </div>
+      
+      {/* 7. NO EXCUSES */}
+      <div id="bundle" className="content-visibility-auto">
+        <Suspense fallback={<SectionLoader />}>
+          <BundleOffer />
+        </Suspense>
+      </div>
+      
+      {/* 8. LOVED BY */}
       <div id="reviews" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsCarousel />
         </Suspense>
       </div>
       
+      {/* 9. FOREVER YOURS */}
       <div id="calculator" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <TimeAndCostCalculator />
         </Suspense>
       </div>
       
-      {/* Added video section above quiz section */}
-      <div id="video-section" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <GymVideoSection />
-        </Suspense>
-      </div>
-      
-      <div id="quiz" className="content-visibility-auto">
-        <Suspense fallback={<SectionLoader />}>
-          <QuizSection />
-        </Suspense>
-      </div>
-      
-      {/* Add new Wisdom of Legends section here - between Quiz and FAQ */}
+      {/* 10. LIVE LIKE LEGENDS */}
       <div id="wisdom" className="content-visibility-auto">
         <Suspense fallback={<SectionLoader />}>
           <WisdomOfLegends />
