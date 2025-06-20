@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -140,7 +139,7 @@ const CheatSystemSection = () => {
 
       {/* Why You Need It Modal */}
       <Dialog open={isWhyDialogOpen} onOpenChange={setIsWhyDialogOpen}>
-        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto [&>button]:hidden">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader className="sr-only">
             <DialogTitle>Why You Need It</DialogTitle>
           </DialogHeader>
@@ -153,12 +152,12 @@ const CheatSystemSection = () => {
             <X className="w-6 h-6 text-gray-600" />
           </button>
           
-          <div className="py-6 text-left space-y-4 leading-relaxed text-gray-800 pr-8">
+          <div className="py-6 text-left space-y-6 leading-relaxed text-gray-800 pr-8">
             <p><strong>The best path to change? Strip everything that stops you from starting.</strong></p>
             
             <p>We boiled it down to three keys:</p>
             
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
                 <p><strong>• A setup that kills every excuse before it starts.</strong></p>
                 <p>Too tired? It's right there.</p>
