@@ -26,18 +26,18 @@ const GymTarget = () => {
                 {/* Single line under title */}
                 <div className={cn("text-center mb-6 transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">
-                    Parks judged them | Gyms pressured them | The attention broke them
+                    Parks judged them | Gyms pressured them
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 items-center">
+                <div className="grid grid-cols-2 gap-2 items-center">
                   {/* Left Column - Solution text and Bullet Points */}
                   <div className="text-left space-y-3">
                     {/* Solution text with animated arrow */}
                     <div className={cn("transition-all duration-1000 delay-300", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                       <div className="flex items-center mb-4">
                         <p className="text-xl md:text-2xl font-bold text-black mr-3">
-                          Now they found a solution
+                          These 3 found a solution
                         </p>
                         <ChevronRight className="w-6 h-6 text-yellow-400 animate-pulse" />
                       </div>
@@ -53,13 +53,13 @@ const GymTarget = () => {
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4"></div>
                         <p className="text-xl md:text-2xl font-bold text-black">PRIVACY</p>
                       </div>
-                      <div className="flex items-center mb-3">
+                      <div className="flex items-center mb-6">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4"></div>
                         <p className="text-xl md:text-2xl font-bold text-black">PROGRESS</p>
                       </div>
                     </div>
 
-                    {/* Payoff Line */}
+                    {/* Payoff Line - moved lower with more space */}
                     <div className={cn("transition-all duration-1000 delay-800", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                       <p className="text-lg md:text-xl font-bold text-black italic">
                         They'll come back untouchable.
@@ -85,22 +85,19 @@ const GymTarget = () => {
             {/* Mobile Layout */}
             {isMobile && (
               <>
-                {/* Three main lines - bigger and bold, centered */}
+                {/* Two main lines - bigger and bold, centered */}
                 <div className={cn("mb-3 text-center transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-gray-800 leading-tight mb-1">
                     Parks judged them.
                   </p>
-                  <p className="text-lg font-bold text-gray-800 leading-tight mb-1">
-                    Gyms pressured them.
-                  </p>
                   <p className="text-lg font-bold text-gray-800 leading-tight">
-                    The attention broke them.
+                    Gyms pressured them.
                   </p>
                 </div>
 
                 {/* Video Block */}
                 <div className={cn("mb-2 transition-all duration-1000 delay-400", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <div className="w-full max-w-[200px] mx-auto">
+                  <div className="w-full max-w-[220px] mx-auto">
                     <div className="relative aspect-[9/16] rounded-2xl overflow-hidden bg-black shadow-2xl">
                       <video autoPlay muted loop playsInline className="w-full h-full object-cover" preload="metadata">
                         <source src="/0620(1).Mp4 (1).webm" type="video/webm" />
@@ -113,18 +110,18 @@ const GymTarget = () => {
                 {/* Solution text - close to video */}
                 <div className={cn("mb-1 text-center transition-all duration-1000 delay-500", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black">
-                    Now they found a solution
+                    These 3 found a solution
                   </p>
                 </div>
 
                 {/* BANDS | PRIVACY | PROGRESS - black, bold, bigger */}
-                <div className={cn("mb-2 text-center transition-all duration-1000 delay-600", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <div className={cn("mb-4 text-center transition-all duration-1000 delay-600", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black">
                     BANDS | PRIVACY | PROGRESS
                   </p>
                 </div>
 
-                {/* Payoff Line - italic */}
+                {/* Payoff Line - italic with more space above */}
                 <div className={cn("text-center transition-all duration-1000 delay-800", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black italic">
                     They'll come back untouchable.
