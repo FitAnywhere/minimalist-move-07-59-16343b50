@@ -1,11 +1,10 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Check, X } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 const CheatSystemSection = () => {
   const isMobile = useIsMobile();
@@ -140,18 +139,10 @@ const CheatSystemSection = () => {
 
       {/* Why You Need It Modal */}
       <Dialog open={isWhyDialogOpen} onOpenChange={setIsWhyDialogOpen}>
-        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto [&>[data-radix-collection-item]]:hidden">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader className="sr-only">
             <DialogTitle>Why You Need It</DialogTitle>
           </DialogHeader>
-          
-          <button
-            onClick={() => setIsWhyDialogOpen(false)}
-            className="absolute top-4 right-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
-            aria-label="Close modal"
-          >
-            <X className="w-6 h-6 text-gray-600" />
-          </button>
           
           <div className="py-6 text-left space-y-6 leading-relaxed text-gray-800 pr-8">
             <p><strong>The best path to change? Strip everything that stops you from starting.</strong></p>
