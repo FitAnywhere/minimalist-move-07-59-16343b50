@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -140,7 +139,7 @@ const CheatSystemSection = () => {
 
       {/* Why You Need It Modal */}
       <Dialog open={isWhyDialogOpen} onOpenChange={setIsWhyDialogOpen}>
-        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto [&>button]:hidden">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader className="sr-only">
             <DialogTitle>Why You Need It</DialogTitle>
           </DialogHeader>
@@ -154,32 +153,42 @@ const CheatSystemSection = () => {
           </button>
           
           <div className="py-6 text-left space-y-4 leading-relaxed text-gray-800 pr-8">
-            <p>It's not energy you're missing.</p>
-            <p>You need fewer reasons to quit.</p>
+            <p><strong>The best path to change? Strip everything that stops you from starting.</strong></p>
             
-            <p>That's why we stripped this down to 3 non-negotiables:</p>
+            <p>We boiled it down to three keys:</p>
             
-            <div className="flex items-start gap-2">
-              <span className="text-black text-sm mt-1">●</span>
-              <p className="italic">A 1m² strength station you'll use — because it's right there, no wasted time, no excuses.</p>
+            <div className="space-y-4">
+              <div>
+                <p><strong>• A setup that kills every excuse before it starts.</strong></p>
+                <p>Too tired? It's right there.</p>
+                <p>No time? 15 minutes.</p>
+                <p>No strength? Use the bands.</p>
+                <p><em>You're out of reasons.</em></p>
+              </div>
+              
+              <div>
+                <p><strong>• A coach who checks in like a friend but holds you accountable like a pro.</strong></p>
+                <p>You're not left wondering.</p>
+                <p>You're not training alone.</p>
+                <p>You're guided, supported, and reminded before the guilt ever kicks in.</p>
+              </div>
+              
+              <div>
+                <p><strong>• 15-minute workouts <em>feeling</em> so good, skipping feels worse than starting.</strong></p>
+                <p>They don't drain you.</p>
+                <p>They <em>charge</em> you.</p>
+                <p>And leave you with a win your brain <em>wants</em> to repeat.</p>
+              </div>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-black text-sm mt-1">●</span>
-              <p className="italic">A coach who texts you like a friend and answers like a pro.</p>
-            </div>
-            <div className="flex items-start gap-2">
-              <span className="text-black text-sm mt-1">●</span>
-              <p className="italic">15-minute dopamine workouts your brain finishes before your excuses even load.</p>
-            </div>
             
-            <p className="font-bold">The result?</p>
-            <p>You start moving before your doubt has a chance to vote.</p>
+            <p><strong>The result?</strong></p>
             
-            <p>The reps feel small.</p>
+            <p>You start before hesitation even forms.</p>
+            <p>The reps feel light.</p>
             <p>But something big is changing:</p>
             
-            <p className="font-bold">Not just your muscles.</p>
-            <p className="font-bold">Your story.</p>
+            <p><strong>Not just your muscles.</strong></p>
+            <p><strong>Your story.</strong></p>
             
             <p>You're not getting back on track.</p>
             <p>You're laying a new one.</p>
