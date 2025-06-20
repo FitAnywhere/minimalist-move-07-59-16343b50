@@ -1,13 +1,17 @@
+
 import React, { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ChevronRight } from 'lucide-react';
+
 const GymTarget = () => {
   const targetSectionRef = useRef<HTMLElement>(null);
   const isTargetInView = useInView(targetSectionRef);
   const isMobile = useIsMobile();
-  return <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
+
+  return (
+    <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-12")}>
@@ -17,20 +21,23 @@ const GymTarget = () => {
             </h2>
             
             {/* Desktop Layout */}
-            {!isMobile && <>
+            {!isMobile && (
+              <>
                 {/* Single line under title */}
-                <div className={cn("text-center mb-8 transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Parks judged them | Gyms pressured them</p>
+                <div className={cn("text-center mb-6 transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">
+                    Parks judged them | Gyms pressured them | The attention broke them
+                  </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-8 items-center">
+                <div className="grid grid-cols-2 gap-4 items-center">
                   {/* Left Column - Solution text and Bullet Points */}
-                  <div className="text-left space-y-4">
+                  <div className="text-left space-y-3">
                     {/* Solution text with animated arrow */}
                     <div className={cn("transition-all duration-1000 delay-300", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                      <div className="flex items-center mb-6">
+                      <div className="flex items-center mb-4">
                         <p className="text-xl md:text-2xl font-bold text-black mr-3">
-                          These 3 found a solution
+                          Now they found a solution
                         </p>
                         <ChevronRight className="w-6 h-6 text-yellow-400 animate-pulse" />
                       </div>
@@ -38,15 +45,15 @@ const GymTarget = () => {
 
                     {/* Bullet points with yellow dots */}
                     <div className={cn("transition-all duration-1000 delay-400", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                      <div className="flex items-center mb-3">
+                      <div className="flex items-center mb-2">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4"></div>
                         <p className="text-xl md:text-2xl font-bold text-black">BANDS</p>
                       </div>
-                      <div className="flex items-center mb-3">
+                      <div className="flex items-center mb-2">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4"></div>
                         <p className="text-xl md:text-2xl font-bold text-black">PRIVACY</p>
                       </div>
-                      <div className="flex items-center mb-4">
+                      <div className="flex items-center mb-3">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4"></div>
                         <p className="text-xl md:text-2xl font-bold text-black">PROGRESS</p>
                       </div>
@@ -72,14 +79,26 @@ const GymTarget = () => {
                     </div>
                   </div>
                 </div>
-              </>}
+              </>
+            )}
 
             {/* Mobile Layout */}
-            {isMobile && <>
+            {isMobile && (
+              <>
                 {/* Three main lines - bigger and bold, centered */}
-                
+                <div className={cn("mb-3 text-center transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                  <p className="text-lg font-bold text-gray-800 leading-tight mb-1">
+                    Parks judged them.
+                  </p>
+                  <p className="text-lg font-bold text-gray-800 leading-tight mb-1">
+                    Gyms pressured them.
+                  </p>
+                  <p className="text-lg font-bold text-gray-800 leading-tight">
+                    The attention broke them.
+                  </p>
+                </div>
 
-                {/* Video Block - 10% bigger than before */}
+                {/* Video Block */}
                 <div className={cn("mb-2 transition-all duration-1000 delay-400", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <div className="w-full max-w-[200px] mx-auto">
                     <div className="relative aspect-[9/16] rounded-2xl overflow-hidden bg-black shadow-2xl">
@@ -92,9 +111,9 @@ const GymTarget = () => {
                 </div>
 
                 {/* Solution text - close to video */}
-                <div className={cn("mb-2 text-center transition-all duration-1000 delay-500", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <div className={cn("mb-1 text-center transition-all duration-1000 delay-500", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black">
-                    These 3 found a solution
+                    Now they found a solution
                   </p>
                 </div>
 
@@ -111,10 +130,13 @@ const GymTarget = () => {
                     They'll come back untouchable.
                   </p>
                 </div>
-              </>}
+              </>
+            )}
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default GymTarget;
