@@ -1,3 +1,4 @@
+
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -139,7 +140,7 @@ const CheatSystemSection = () => {
 
       {/* Why You Need It Modal */}
       <Dialog open={isWhyDialogOpen} onOpenChange={setIsWhyDialogOpen}>
-        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto [&>[data-radix-collection-item]]:hidden">
           <DialogHeader className="sr-only">
             <DialogTitle>Why You Need It</DialogTitle>
           </DialogHeader>
