@@ -55,11 +55,11 @@ const ProductIntro = () => {
                 </div>
               </div>
 
-              {/* Two-line text */}
+              {/* Two-line text with yellow arrow */}
               <div className={cn("text-center transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="space-y-2 max-w-md mx-auto">
                   <p className="text-lg text-black leading-relaxed">
-                    Open the box → Set it up
+                    Open the box <span className="text-yellow-400">→</span> Set it up
                   </p>
                   <p className="text-lg text-black leading-relaxed font-bold uppercase">
                     START BECOMING STRONG
@@ -69,7 +69,7 @@ const ProductIntro = () => {
 
               {/* Video */}
               <div className={cn("flex justify-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="max-w-[240px]">
+                <div className="max-w-[200px]">
                   <video 
                     autoPlay 
                     muted 
@@ -94,9 +94,9 @@ const ProductIntro = () => {
 
           {/* Desktop Layout */}
           {!isMobile && (
-            <div className="grid md:grid-cols-2 gap-16 items-start">
+            <div className="grid md:grid-cols-2 gap-8 items-start">
               {/* Left Column - Title, List, and Final Text */}
-              <div className="space-y-8">
+              <div className="space-y-12">
                 {/* Title */}
                 <div className={cn("transition-all duration-1000", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <h2 className="text-4xl lg:text-5xl font-bold uppercase text-black relative inline-block tracking-wide">
@@ -120,8 +120,8 @@ const ProductIntro = () => {
                   </div>
                 </div>
 
-                {/* Final Text with more spacing */}
-                <div className={cn("transition-all duration-1000 pt-8", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                {/* Final Text with matching spacing */}
+                <div className={cn("transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold italic text-black tracking-wide leading-tight">
                     Succeed when you're in control.
                   </p>
@@ -132,7 +132,7 @@ const ProductIntro = () => {
               <div className="space-y-8">
                 {/* Video */}
                 <div className={cn("transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <div className="max-w-[320px] mx-auto">
+                  <div className="max-w-[250px] mx-auto">
                     <video 
                       autoPlay 
                       muted 
