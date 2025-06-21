@@ -88,24 +88,23 @@ const BundleOffer = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            {/* NEW SUBHEADLINE */}
+            {/* UPDATED SUBHEADLINE */}
             <p className="text-xl md:text-2xl font-bold text-gray-900 mt-4 mb-6">
-              Get Fit in 15 Minutes a Day — Without Leaving Your Home
+              Get fit in 15-min a day without leaving your home
             </p>
           </div>
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-center gap-8")}>
             {!isMobile && <div className="flex flex-col items-center space-y-6 mt-[-20px]">
-                {/* Desktop: NEW PRICE LINE */}
+                {/* Desktop: UPDATED PRICE LINE */}
                 <div className="text-center mb-6">
                   <p className="text-2xl font-bold text-black">
-                    Was €1,390 → Now only €830 + VAT
+                    Now only €830 + VAT
                   </p>
                 </div>
                 
-                {/* Desktop: VALUE BREAKDOWN */}
+                {/* Desktop: VALUE BREAKDOWN - REMOVED HEADING */}
                 <div className="w-full max-w-sm mb-6">
-                  <h3 className="text-lg font-bold text-black mb-4 text-center">What You're Getting</h3>
                   <div className="space-y-2">
                     {valueBreakdownItems.map((item, index) => (
                       <div key={index} className="flex items-center space-x-3">
@@ -183,16 +182,15 @@ const BundleOffer = () => {
 
             {/* Mobile: Content with adjusted spacing */}
             {isMobile && <div className="flex flex-col items-center space-y-6 w-full mt-6">                
-                {/* Mobile: NEW PRICE LINE */}
+                {/* Mobile: UPDATED PRICE LINE */}
                 <div className="text-center">
                   <p className="text-xl font-bold text-black">
-                    Was €1,390 → Now only €830 + VAT
+                    Now only €830 + VAT
                   </p>
                 </div>
                 
-                {/* Mobile: VALUE BREAKDOWN */}
+                {/* Mobile: VALUE BREAKDOWN - REMOVED HEADING */}
                 <div className="w-full max-w-sm">
-                  <h3 className="text-lg font-bold text-black mb-4 text-center">What You're Getting</h3>
                   <div className="space-y-2">
                     {valueBreakdownItems.map((item, index) => (
                       <div key={index} className="flex items-center space-x-3">
