@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useInView } from '@/utils/animations';
 import { ArrowRight, Clock, Banknote } from 'lucide-react';
@@ -99,7 +98,7 @@ const TimeAndCostCalculator = () => {
     setGymMonthlyCost(Math.min(Math.max(value, 0), 150)); // Clamp between 0-150
   };
 
-  return <section id="calculator" ref={sectionRef} style={{ backgroundColor: '#fffacf' }}>
+  return <section id="calculator" ref={sectionRef} style={{ backgroundColor: '#ffffff' }}>
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           {/* Removed transition-all duration-1000 to make the section appear immediately */}

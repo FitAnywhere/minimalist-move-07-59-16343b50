@@ -61,7 +61,7 @@ const ProductIntro = () => {
     }
   }, [isInView]);
 
-  return <section id="product" ref={containerRef} style={{ backgroundColor: '#fffacf' }}>
+  return <section id="product" ref={containerRef} style={{ backgroundColor: '#f8f6df' }}>
       <div className="container mx-auto px-4 py-[14px]">
         <div className="max-w-5xl mx-auto">
           {/* Desktop: Center title above grid */}

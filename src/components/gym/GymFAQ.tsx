@@ -1,4 +1,3 @@
-
 import { useRef, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -46,7 +45,7 @@ const GymFAQ = () => {
   const isFaqInView = useInView(faqSectionRef);
   const [isOpen, setIsOpen] = useState(false);
 
-  return <section id="faq" ref={faqSectionRef} className="py-16" style={{ backgroundColor: '#fffacf' }}>
+  return <section id="faq" ref={faqSectionRef} className="py-16" style={{ backgroundColor: '#ffffff' }}>
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">

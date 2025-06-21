@@ -72,7 +72,7 @@ const BundleOffer = () => {
   }, [currentSlide]);
 
   return (
-    <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0" style={{ backgroundColor: '#fffacf' }}>
+    <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0" style={{ backgroundColor: '#ffffff' }}>
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-4 py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-4 md:py-[14px] space-y-6">
           <div className={cn("text-center transition-all duration-1000 transform", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>

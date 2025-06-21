@@ -90,7 +90,7 @@ const TestimonialsCarousel = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
-  return <section ref={containerRef} id="testimonials" className="py-16 bg-white">
+  return <section ref={containerRef} id="testimonials" className="py-16" style={{ backgroundColor: '#f8f6df' }}>
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>

@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -54,7 +53,7 @@ const TheChallengeSection = () => {
   };
 
   return (
-    <section ref={sectionRef} className="py-16 bg-white">
+    <section ref={sectionRef} className="py-16" style={{ backgroundColor: '#f8f6df' }}>
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           {/* Title */}
