@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -35,7 +36,7 @@ const BundleOffer = () => {
         const nextSlide = (prevSlide + 1) % carouselContent.length;
         return nextSlide;
       });
-    }, currentSlide === 0 ? 3000 : 1500); // Video (index 0) shows for 3000ms, image shows for 1500ms
+    }, currentSlide === 0 ? 4000 : 2000); // Video shows for 4000ms, image shows for 2000ms (2x longer)
 
     return () => clearInterval(interval);
   }, [currentSlide]);
@@ -74,10 +75,10 @@ const BundleOffer = () => {
 
   const valueBreakdownItems = [
     'Power Station',
-    '4 Elastic Bands (15–120kg support)',
-    'Free Shipping',
+    '4 Elastic Bands (15–120kg)',
     '15-Min Workouts',
-    'Personal Coach Access'
+    'Personal Coach Access',
+    'Free Shipping'
   ];
 
   return (
@@ -98,17 +99,17 @@ const BundleOffer = () => {
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-center gap-8")}>
             {!isMobile && <div className="flex flex-col items-center space-y-6 mt-[-20px]">
-                {/* Desktop: UPDATED PRICE LINE with background */}
+                {/* Desktop: UPDATED PRICE LINE with yellow text and black background */}
                 <div className="text-center mb-6">
-                  <div className="inline-block px-4 py-2 bg-gray-100 rounded-lg">
-                    <p className="text-2xl font-bold text-black">
+                  <div className="inline-block px-4 py-2 bg-black rounded-lg">
+                    <p className="text-2xl font-bold text-yellow">
                       €830 + VAT
                     </p>
                   </div>
                 </div>
                 
                 {/* Desktop: VALUE BREAKDOWN */}
-                <div className="w-full max-w-sm mb-6">
+                <div className="w-full max-w-sm mb-4">
                   <div className="space-y-2">
                     {valueBreakdownItems.map((item, index) => (
                       <div key={index} className="flex items-center space-x-3">
@@ -129,6 +130,13 @@ const BundleOffer = () => {
                 >
                   I WANT THIS GEAR
                 </Button>
+
+                {/* New text below CTA button */}
+                <div className="text-center mt-4">
+                  <p className="text-gray-600 text-sm">
+                    Still not sure? Don't take our word for it, take theirs.
+                  </p>
+                </div>
               </div>}
 
             {/* Fixed carousel container with consistent media dimensions - lowered on desktop */}
@@ -182,10 +190,10 @@ const BundleOffer = () => {
 
             {/* Mobile: Content with adjusted spacing */}
             {isMobile && <div className="flex flex-col items-center space-y-6 w-full mt-6 pb-20">                
-                {/* Mobile: UPDATED PRICE LINE with background */}
+                {/* Mobile: UPDATED PRICE LINE with yellow text and black background */}
                 <div className="text-center">
-                  <div className="inline-block px-4 py-2 bg-gray-100 rounded-lg">
-                    <p className="text-xl font-bold text-black">
+                  <div className="inline-block px-4 py-2 bg-black rounded-lg">
+                    <p className="text-xl font-bold text-yellow">
                       €830 + VAT
                     </p>
                   </div>
@@ -220,6 +228,12 @@ const BundleOffer = () => {
           >
             I WANT THIS GEAR
           </Button>
+          {/* New text below mobile CTA button */}
+          <div className="text-center mt-2">
+            <p className="text-gray-600 text-xs">
+              Still not sure? Don't take our word for it, take theirs.
+            </p>
+          </div>
         </div>
       )}
     </section>
