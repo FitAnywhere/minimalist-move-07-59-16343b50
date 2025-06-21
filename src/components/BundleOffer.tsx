@@ -108,8 +108,8 @@ const BundleOffer = () => {
                   </div>
                 </div>
                 
-                {/* Desktop: VALUE BREAKDOWN */}
-                <div className="w-full max-w-sm mb-4">
+                {/* Desktop: VALUE BREAKDOWN - moved more to the right */}
+                <div className="w-full max-w-sm mb-4 ml-8">
                   <div className="space-y-2">
                     {valueBreakdownItems.map((item, index) => (
                       <div key={index} className="flex items-center space-x-3">
@@ -199,8 +199,8 @@ const BundleOffer = () => {
                   </div>
                 </div>
                 
-                {/* Mobile: VALUE BREAKDOWN */}
-                <div className="w-full max-w-sm">
+                {/* Mobile: VALUE BREAKDOWN - moved more to the right */}
+                <div className="w-full max-w-sm ml-6">
                   <div className="space-y-2">
                     {valueBreakdownItems.map((item, index) => (
                       <div key={index} className="flex items-center space-x-3">
