@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Star } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
 interface Testimonial {
   name: string;
   quote: string;
@@ -90,7 +91,8 @@ const TestimonialsCarousel = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
-  return <section ref={containerRef} id="testimonials" className="py-16" style={{ backgroundColor: '#f8f6df' }}>
+  
+  return <section ref={containerRef} id="testimonials" className="py-16" style={{ backgroundColor: '#f6f6f6' }}>
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
