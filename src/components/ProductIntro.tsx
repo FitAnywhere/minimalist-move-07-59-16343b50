@@ -55,16 +55,24 @@ const ProductIntro = () => {
                 </div>
               </div>
 
-              {/* Subline */}
+              {/* Three-line text with arrows */}
               <div className={cn("text-center transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <p className="text-lg text-black leading-relaxed max-w-md mx-auto">
-                  You open the box, set it up and start becoming strong on your own time in your own space.
-                </p>
+                <div className="space-y-3 max-w-md mx-auto">
+                  <p className="text-lg text-black leading-relaxed">
+                    <span className="text-yellow-400 mr-2">→</span>open the box
+                  </p>
+                  <p className="text-lg text-black leading-relaxed">
+                    <span className="text-yellow-400 mr-2">→</span>set it up
+                  </p>
+                  <p className="text-lg text-black leading-relaxed">
+                    <span className="text-yellow-400 mr-2">→</span>start becoming strong
+                  </p>
+                </div>
               </div>
 
               {/* Video */}
               <div className={cn("flex justify-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="bg-white rounded-2xl shadow-lg p-4 max-w-xs">
+                <div className="border-2 border-yellow-400 rounded-2xl p-4 max-w-xs">
                   <video 
                     autoPlay 
                     muted 
@@ -81,7 +89,7 @@ const ProductIntro = () => {
               {/* Final Text */}
               <div className={cn("text-center transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <p className="text-lg font-bold uppercase text-black tracking-wide leading-tight">
-                  GET YOUR FIRST WIN.<br />FINALLY IN PEACE.
+                  ANYTIME AT YOUR OWN PLACE
                 </p>
               </div>
             </div>
@@ -90,7 +98,7 @@ const ProductIntro = () => {
           {/* Desktop Layout */}
           {!isMobile && (
             <div className="grid md:grid-cols-2 gap-16 items-center">
-              {/* Left Column - Title and Subline */}
+              {/* Left Column - Title, List, and Final Text */}
               <div className="space-y-8">
                 {/* Title */}
                 <div className={cn("transition-all duration-1000", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
@@ -100,19 +108,34 @@ const ProductIntro = () => {
                   </h2>
                 </div>
 
-                {/* Subline */}
+                {/* Three-line text with arrows */}
                 <div className={cn("transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-xl text-black leading-relaxed">
-                    You open the box, set it up and start becoming strong on your own time in your own space.
+                  <div className="space-y-3">
+                    <p className="text-xl text-black leading-relaxed">
+                      <span className="text-yellow-400 mr-3">→</span>open the box
+                    </p>
+                    <p className="text-xl text-black leading-relaxed">
+                      <span className="text-yellow-400 mr-3">→</span>set it up
+                    </p>
+                    <p className="text-xl text-black leading-relaxed">
+                      <span className="text-yellow-400 mr-3">→</span>start becoming strong
+                    </p>
+                  </div>
+                </div>
+
+                {/* Final Text */}
+                <div className={cn("transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                  <p className="text-lg font-bold uppercase text-black tracking-wide leading-tight">
+                    ANYTIME AT YOUR OWN PLACE
                   </p>
                 </div>
               </div>
 
-              {/* Right Column - Video and Final Text */}
+              {/* Right Column - Video */}
               <div className="space-y-8">
                 {/* Video */}
                 <div className={cn("transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <div className="bg-white rounded-2xl shadow-lg p-6 max-w-sm mx-auto">
+                  <div className="border-2 border-yellow-400 rounded-2xl p-6 max-w-sm mx-auto">
                     <video 
                       autoPlay 
                       muted 
@@ -124,13 +147,6 @@ const ProductIntro = () => {
                       Your browser does not support the video tag.
                     </video>
                   </div>
-                </div>
-
-                {/* Final Text */}
-                <div className={cn("transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg font-bold uppercase text-black tracking-wide leading-tight">
-                    GET YOUR FIRST WIN.<br />FINALLY IN PEACE.
-                  </p>
                 </div>
               </div>
             </div>
