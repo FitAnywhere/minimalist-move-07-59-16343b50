@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -29,14 +28,17 @@ const BundleOffer = () => {
     window.open('https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l', '_blank');
   };
 
-  // Auto-rotate carousel - 2x faster speed
+  // Auto-rotate carousel with different timing for video vs image
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide(prevSlide => (prevSlide + 1) % carouselContent.length);
-    }, 1500); // 2x faster than original 3000ms
+      setCurrentSlide(prevSlide => {
+        const nextSlide = (prevSlide + 1) % carouselContent.length;
+        return nextSlide;
+      });
+    }, currentSlide === 0 ? 3000 : 1500); // Video (index 0) shows for 3000ms, image shows for 1500ms
 
     return () => clearInterval(interval);
-  }, []);
+  }, [currentSlide]);
 
   // Video control based on carousel visibility and active slide
   useEffect(() => {
@@ -113,7 +115,6 @@ const BundleOffer = () => {
                       </div>
                     ))}
                     <div className="flex items-center space-x-3 text-red-600 font-semibold">
-                      <span className="text-red-600">🔥</span>
                       <span>Bonus: Free Cardio Gear if you order before midnight</span>
                     </div>
                   </div>
@@ -181,7 +182,7 @@ const BundleOffer = () => {
             </div>
 
             {/* Mobile: Content with adjusted spacing */}
-            {isMobile && <div className="flex flex-col items-center space-y-6 w-full mt-6">                
+            {isMobile && <div className="flex flex-col items-center space-y-6 w-full mt-6 pb-20">                
                 {/* Mobile: UPDATED PRICE LINE */}
                 <div className="text-center">
                   <p className="text-xl font-bold text-black">
@@ -199,7 +200,6 @@ const BundleOffer = () => {
                       </div>
                     ))}
                     <div className="flex items-center space-x-3 text-red-600 font-semibold">
-                      <span className="text-red-600">🔥</span>
                       <span>Bonus: Free Cardio Gear if you order before midnight</span>
                     </div>
                   </div>
