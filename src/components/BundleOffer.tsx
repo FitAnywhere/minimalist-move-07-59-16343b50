@@ -1,20 +1,20 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { formatPrice } from '@/utils/formatters';
-import { ShoppingCart } from 'lucide-react';
+import { Check } from 'lucide-react';
 import CheatSystemSection from './CheatSystemSection';
 
 // New carousel content - a video and an image
 const carouselContent = [{
   type: 'video',
   src: '/Fitanyprodcut.mp4',
-  label: 'PRIVATE STRENGTH STATION'
+  label: 'Power Station'
 }, {
   type: 'image',
   src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746741696/PRIVATE_GYM_4_o02rth.png',
-  label: 'PROGRESSIVE SUPPORT (15–120KG)'
+  label: 'Progressive Support Bands'
 }];
 
 const BundleOffer = () => {
@@ -23,18 +23,17 @@ const BundleOffer = () => {
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const newPrice = "1,390";
   
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l', '_blank');
   };
 
-  // Auto-rotate carousel
+  // Auto-rotate carousel - 2x faster speed
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide(prevSlide => (prevSlide + 1) % carouselContent.length);
-    }, 3000); // Switch every 3 seconds
+    }, 1500); // 2x faster than original 3000ms
 
     return () => clearInterval(interval);
   }, []);
@@ -71,6 +70,14 @@ const BundleOffer = () => {
     };
   }, [currentSlide]);
 
+  const valueBreakdownItems = [
+    'Power Station',
+    '4 Elastic Bands (15–120kg support)',
+    'Free Shipping',
+    '15-Min Workouts',
+    'Personal Coach Access'
+  ];
+
   return (
     <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0" style={{ backgroundColor: '#ffffff' }}>
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-4 py-[60px]")}>
@@ -80,84 +87,145 @@ const BundleOffer = () => {
               NO EXCUSES
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
+            
+            {/* NEW SUBHEADLINE */}
+            <p className="text-xl md:text-2xl font-bold text-gray-900 mt-4 mb-6">
+              Get Fit in 15 Minutes a Day — Without Leaving Your Home
+            </p>
           </div>
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-center gap-8")}>
-            {!isMobile && <div className="flex flex-col items-center space-y-2 mt-[-20px]">
-                {/* Desktop: Display text content - desktop remains unchanged but moved higher */}
+            {!isMobile && <div className="flex flex-col items-center space-y-6 mt-[-20px]">
+                {/* Desktop: NEW PRICE LINE */}
                 <div className="text-center mb-6">
-                  <span className="text-gray-900 px-0 mx-0 my-0 text-center text-2xl font-semibold">YOU'VE GOT THIS. JUST START.</span>
+                  <p className="text-2xl font-bold text-black">
+                    Was €1,390 → Now only €830 + VAT
+                  </p>
                 </div>
                 
-                {/* Desktop: New price block */}
-                <div className="flex flex-col items-center justify-center mb-4 py-[3px]">
-                  <a href="https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l" onClick={handleCheckout} className="text-center">
-                    <span className="text-2xl font-bold text-black">
-                      € {newPrice}
-                    </span>
-                    <p className="text-sm text-gray-400/70 mt-1">TAX and SHIPPING included</p>
-                  </a>
+                {/* Desktop: VALUE BREAKDOWN */}
+                <div className="w-full max-w-sm mb-6">
+                  <h3 className="text-lg font-bold text-black mb-4 text-center">What You're Getting</h3>
+                  <div className="space-y-2">
+                    {valueBreakdownItems.map((item, index) => (
+                      <div key={index} className="flex items-center space-x-3">
+                        <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                        <span className="text-gray-800">{item}</span>
+                      </div>
+                    ))}
+                    <div className="flex items-center space-x-3 text-red-600 font-semibold">
+                      <span className="text-red-600">🔥</span>
+                      <span>Bonus: Free Cardio Gear if you order before midnight</span>
+                    </div>
+                  </div>
                 </div>
 
-                <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-8 py-5 rounded-full text-xl font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
-                  <ShoppingCart className="w-6 h-6" /> LET'S DO IT
+                <Button 
+                  size="lg" 
+                  className={cn(
+                    "bg-yellow hover:bg-yellow-dark text-black px-8 py-5 rounded-full text-xl font-bold tracking-wide w-full",
+                    "transition-all duration-300 hover:shadow-md hover:scale-105"
+                  )} 
+                  onClick={handleCheckout}
+                >
+                  I WANT THIS GEAR
                 </Button>
-              </div>}
-
-            {/* Mobile: Move the "Beginners just like you..." text ABOVE the carousel */}
-            {isMobile && <div className="w-full mb-3 text-center">
-                <div className="text-center mb-5">
-                  
-                </div>
               </div>}
 
             {/* Fixed carousel container with consistent media dimensions */}
             <div className={cn("relative overflow-hidden", isMobile ? "w-full" : "w-full max-w-[500px] h-[530px]")}>
-              {carouselContent.map((item, index) => <div key={index} className={cn("flex flex-col items-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 absolute", isMobile ? "w-full" : "absolute top-0 left-0 w-full h-full")}>
-                  <div className={cn("flex justify-center items-center", isMobile ? "w-full h-[300px]" : "h-[75%]" // Fixed height for mobile media to ensure consistency
-              )}>
-                {item.type === 'video' ? <video ref={index === 0 ? videoRef : null} src={item.src} className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full" // Set consistent dimensions on mobile
-                )} muted playsInline loop preload="metadata" /> : <img src={item.src} alt="Product image" className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full",
-                // Set consistent dimensions on mobile
-                // Adding zoom animation for images
-                "transition-transform duration-3000 ease-in-out", index === currentSlide ? "scale-110" : "scale-100")} loading="eager" />}
-              </div>
+              {carouselContent.map((item, index) => 
+                <div key={index} className={cn(
+                  "flex flex-col items-center",
+                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 absolute",
+                  isMobile ? "w-full" : "absolute top-0 left-0 w-full h-full"
+                )}>
+                  <div className={cn(
+                    "flex justify-center items-center",
+                    isMobile ? "w-full h-[300px]" : "h-[75%]"
+                  )}>
+                    {item.type === 'video' ? 
+                      <video 
+                        ref={index === 0 ? videoRef : null} 
+                        src={item.src} 
+                        className={cn(
+                          "object-contain rounded-lg",
+                          isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full"
+                        )} 
+                        muted 
+                        playsInline 
+                        loop 
+                        preload="metadata" 
+                      /> : 
+                      <img 
+                        src={item.src} 
+                        alt="Product image" 
+                        className={cn(
+                          "object-contain rounded-lg",
+                          isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full",
+                          "transition-transform duration-3000 ease-in-out",
+                          index === currentSlide ? "scale-110" : "scale-100"
+                        )} 
+                        loading="eager" 
+                      />
+                    }
+                  </div>
+                </div>
+              )}
               
-              {/* Only show label below on desktop - desktop remains unchanged */}
-              {!isMobile && <div className="mt-4 text-center">
-                  <p className="font-semibold text-gray-800">{item.label}</p>
-                </div>}
-              </div>)}
-            </div>
-            
-            {/* Mobile: Add the carousel-linked text BELOW the carousel */}
-            {isMobile && <div className="w-full mt-3 text-center py-[7px] my-[18px]">
-                <p className="font-semibold text-gray-800 mb-3">
-                  {carouselContent[currentSlide].label}
+              {/* Unified caption under entire carousel */}
+              <div className="mt-4 text-center">
+                <p className="text-gray-500 opacity-70 text-sm">
+                  Your home gym | Adjustable support
                 </p>
-              </div>}
+              </div>
+            </div>
 
-            {/* Mobile: display content with adjusted spacing - price and button section */}
-            {isMobile && <div className="flex flex-col items-center space-y-3">                
-                {/* Mobile: New price block */}
-                <div className="flex flex-col items-center justify-center mb-1">
-                  <a href="https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l" onClick={handleCheckout} className="text-center">
-                    <span className="text-2xl font-bold text-black">
-                      € {newPrice}
-                    </span>
-                    <p className="text-sm text-gray-400/70 mt-1">TAX and SHIPPING included</p>
-                  </a>
+            {/* Mobile: Content with adjusted spacing */}
+            {isMobile && <div className="flex flex-col items-center space-y-6 w-full mt-6">                
+                {/* Mobile: NEW PRICE LINE */}
+                <div className="text-center">
+                  <p className="text-xl font-bold text-black">
+                    Was €1,390 → Now only €830 + VAT
+                  </p>
                 </div>
                 
-                <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-6 py-4 rounded-full text-lg font-bold tracking-wide", "transition-all duration-300 hover:shadow-md hover:scale-105", "flex items-center gap-2")} onClick={handleCheckout}>
-                  <ShoppingCart className="w-5 h-5" /> LET'S DO IT
-                </Button>
+                {/* Mobile: VALUE BREAKDOWN */}
+                <div className="w-full max-w-sm">
+                  <h3 className="text-lg font-bold text-black mb-4 text-center">What You're Getting</h3>
+                  <div className="space-y-2">
+                    {valueBreakdownItems.map((item, index) => (
+                      <div key={index} className="flex items-center space-x-3">
+                        <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                        <span className="text-gray-800">{item}</span>
+                      </div>
+                    ))}
+                    <div className="flex items-center space-x-3 text-red-600 font-semibold">
+                      <span className="text-red-600">🔥</span>
+                      <span>Bonus: Free Cardio Gear if you order before midnight</span>
+                    </div>
+                  </div>
+                </div>
               </div>}
           </div>
-          
-          {!isMobile}
         </div>
       </div>
+      
+      {/* Mobile: Sticky CTA Button */}
+      {isMobile && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white border-t border-gray-200">
+          <Button 
+            size="lg" 
+            className={cn(
+              "bg-yellow hover:bg-yellow-dark text-black px-8 py-4 rounded-full text-lg font-bold tracking-wide w-full",
+              "transition-all duration-300 hover:shadow-md"
+            )} 
+            onClick={handleCheckout}
+          >
+            I WANT THIS GEAR
+          </Button>
+        </div>
+      )}
     </section>
   );
 };
