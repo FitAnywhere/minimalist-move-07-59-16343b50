@@ -98,14 +98,16 @@ const BundleOffer = () => {
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-center gap-8")}>
             {!isMobile && <div className="flex flex-col items-center space-y-6 mt-[-20px]">
-                {/* Desktop: UPDATED PRICE LINE */}
+                {/* Desktop: UPDATED PRICE LINE with background */}
                 <div className="text-center mb-6">
-                  <p className="text-2xl font-bold text-black">
-                    Now only €830 + VAT
-                  </p>
+                  <div className="inline-block px-4 py-2 bg-gray-100 rounded-lg">
+                    <p className="text-2xl font-bold text-black">
+                      €830 + VAT
+                    </p>
+                  </div>
                 </div>
                 
-                {/* Desktop: VALUE BREAKDOWN - REMOVED HEADING */}
+                {/* Desktop: VALUE BREAKDOWN */}
                 <div className="w-full max-w-sm mb-6">
                   <div className="space-y-2">
                     {valueBreakdownItems.map((item, index) => (
@@ -114,9 +116,6 @@ const BundleOffer = () => {
                         <span className="text-gray-800">{item}</span>
                       </div>
                     ))}
-                    <div className="flex items-center space-x-3 text-red-600 font-semibold">
-                      <span>Bonus: Free Cardio Gear if you order before midnight</span>
-                    </div>
                   </div>
                 </div>
 
@@ -132,8 +131,8 @@ const BundleOffer = () => {
                 </Button>
               </div>}
 
-            {/* Fixed carousel container with consistent media dimensions */}
-            <div className={cn("relative overflow-hidden", isMobile ? "w-full" : "w-full max-w-[500px] h-[530px]")}>
+            {/* Fixed carousel container with consistent media dimensions - lowered on desktop */}
+            <div className={cn("relative overflow-hidden", isMobile ? "w-full" : "w-full max-w-[500px] h-[530px] mt-12")}>
               {carouselContent.map((item, index) => 
                 <div key={index} className={cn(
                   "flex flex-col items-center",
@@ -183,14 +182,16 @@ const BundleOffer = () => {
 
             {/* Mobile: Content with adjusted spacing */}
             {isMobile && <div className="flex flex-col items-center space-y-6 w-full mt-6 pb-20">                
-                {/* Mobile: UPDATED PRICE LINE */}
+                {/* Mobile: UPDATED PRICE LINE with background */}
                 <div className="text-center">
-                  <p className="text-xl font-bold text-black">
-                    Now only €830 + VAT
-                  </p>
+                  <div className="inline-block px-4 py-2 bg-gray-100 rounded-lg">
+                    <p className="text-xl font-bold text-black">
+                      €830 + VAT
+                    </p>
+                  </div>
                 </div>
                 
-                {/* Mobile: VALUE BREAKDOWN - REMOVED HEADING */}
+                {/* Mobile: VALUE BREAKDOWN */}
                 <div className="w-full max-w-sm">
                   <div className="space-y-2">
                     {valueBreakdownItems.map((item, index) => (
@@ -199,9 +200,6 @@ const BundleOffer = () => {
                         <span className="text-gray-800">{item}</span>
                       </div>
                     ))}
-                    <div className="flex items-center space-x-3 text-red-600 font-semibold">
-                      <span>Bonus: Free Cardio Gear if you order before midnight</span>
-                    </div>
                   </div>
                 </div>
               </div>}
