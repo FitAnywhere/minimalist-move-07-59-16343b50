@@ -131,11 +131,27 @@ const BundleOffer = () => {
                   I WANT THIS GEAR
                 </Button>
 
-                {/* New text below CTA button */}
-                <div className="text-center mt-4">
-                  <p className="text-gray-600 text-sm">
+                {/* New text below CTA button with more spacing, bigger size, bold, italic, and animated arrow */}
+                <div className="text-center mt-8">
+                  <p className="text-gray-600 text-lg font-bold italic">
                     Still not sure? Don't take our word for it, take theirs.
                   </p>
+                  {/* Animated yellow downward arrow */}
+                  <div className="flex justify-center mt-4">
+                    <div className="animate-bounce">
+                      <svg 
+                        className="w-6 h-6 text-yellow" 
+                        fill="currentColor" 
+                        viewBox="0 0 20 20"
+                      >
+                        <path 
+                          fillRule="evenodd" 
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" 
+                          clipRule="evenodd" 
+                        />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>}
 
@@ -228,11 +244,27 @@ const BundleOffer = () => {
           >
             I WANT THIS GEAR
           </Button>
-          {/* New text below mobile CTA button */}
-          <div className="text-center mt-2">
-            <p className="text-gray-600 text-xs">
+          {/* New text below mobile CTA button with more spacing, bigger size, bold, italic, and animated arrow */}
+          <div className="text-center mt-6">
+            <p className="text-gray-600 text-base font-bold italic">
               Still not sure? Don't take our word for it, take theirs.
             </p>
+            {/* Animated yellow downward arrow */}
+            <div className="flex justify-center mt-3">
+              <div className="animate-bounce">
+                <svg 
+                  className="w-5 h-5 text-yellow" 
+                  fill="currentColor" 
+                  viewBox="0 0 20 20"
+                >
+                  <path 
+                    fillRule="evenodd" 
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" 
+                    clipRule="evenodd" 
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
       )}
