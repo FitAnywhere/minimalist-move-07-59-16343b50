@@ -204,8 +204,8 @@ const BundleOffer = () => {
               </div>
             </div>
 
-            {/* Mobile: Content with adjusted spacing */}
-            {isMobile && <div className="flex flex-col items-center space-y-6 w-full mt-6 pb-20">                
+            {/* Mobile: Content with adjusted spacing and increased bottom padding */}
+            {isMobile && <div className="flex flex-col items-center space-y-6 w-full mt-6 pb-48">                
                 {/* Mobile: UPDATED PRICE LINE with yellow text and black background */}
                 <div className="text-center">
                   <div className="inline-block px-4 py-2 bg-black rounded-lg">
@@ -231,9 +231,9 @@ const BundleOffer = () => {
         </div>
       </div>
       
-      {/* Mobile: Sticky CTA Button */}
+      {/* Mobile: Sticky CTA Button - positioned higher to avoid overlap */}
       {isMobile && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white border-t border-gray-200">
+        <div className="fixed bottom-16 left-0 right-0 z-50 p-4 bg-white border-t border-gray-200">
           <Button 
             size="lg" 
             className={cn(
