@@ -1,9 +1,11 @@
+
 import { useRef, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
+
 const faqItems = [{
   question: "How do I set up FitAnywhere?",
   answer: "Slide, click, and train. It takes under 2 minutes—no tools or drilling needed."
@@ -38,11 +40,13 @@ const faqItems = [{
   question: "What if I want to start but don't have the full budget?",
   answer: "Reach out to us. We're happy to explore flexible payment options or solutions that fit your current situation."
 }];
+
 const GymFAQ = () => {
   const faqSectionRef = useRef<HTMLDivElement>(null);
   const isFaqInView = useInView(faqSectionRef);
   const [isOpen, setIsOpen] = useState(false);
-  return <section id="faq" ref={faqSectionRef} className="py-16 bg-white">
+
+  return <section id="faq" ref={faqSectionRef} className="py-16" style={{ backgroundColor: '#fffacf' }}>
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
@@ -82,4 +86,5 @@ const GymFAQ = () => {
       </div>
     </section>;
 };
+
 export default GymFAQ;

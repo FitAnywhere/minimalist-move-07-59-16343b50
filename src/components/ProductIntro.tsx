@@ -61,14 +61,14 @@ const ProductIntro = () => {
     }
   }, [isInView]);
 
-  return <section id="product" ref={containerRef} className="bg-black">
+  return <section id="product" ref={containerRef} style={{ backgroundColor: '#fffacf' }}>
       <div className="container mx-auto px-4 py-[14px]">
         <div className="max-w-5xl mx-auto">
           {/* Desktop: Center title above grid */}
           {!isMobile && (
             <div className="flex justify-center mb-8">
               <div className="space-y-4 flex flex-col items-center">
-                <h2 className={cn("text-3xl md:text-4xl font-extrabold text-white relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   NO LIMITS
                   <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                 </h2>
@@ -81,7 +81,7 @@ const ProductIntro = () => {
               {/* Mobile: Show title here */}
               {isMobile && (
                 <div className="space-y-4 flex flex-col items-center">
-                  <h2 className={cn("text-3xl md:text-4xl font-extrabold text-white relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                  <h2 className={cn("text-3xl md:text-4xl font-extrabold text-black relative inline-block", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     NO LIMITS
                     <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
                   </h2>

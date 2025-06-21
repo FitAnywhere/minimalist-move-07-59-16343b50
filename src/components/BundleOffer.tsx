@@ -41,9 +41,7 @@ const BundleOffer = () => {
 
   // Video control based on carousel visibility and active slide
   useEffect(() => {
-    // Get the current video element if the current slide is a video
     if (currentSlide === 0 && videoRef.current) {
-      // Reset video to beginning and play when it's the active slide
       videoRef.current.currentTime = 0;
       videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
     }
@@ -53,20 +51,17 @@ const BundleOffer = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
-        // Only trigger when 60% visible
-        // Try to play video if it's the current slide
         if (currentSlide === 0 && videoRef.current) {
           videoRef.current.currentTime = 0;
           videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
         }
       } else {
-        // Pause video when section is not in view
         if (videoRef.current) {
           videoRef.current.pause();
         }
       }
     }, {
-      threshold: 0.6 // Trigger when 60% of the element is visible
+      threshold: 0.6
     });
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
@@ -77,7 +72,7 @@ const BundleOffer = () => {
   }, [currentSlide]);
 
   return (
-    <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0 bg-white">
+    <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0" style={{ backgroundColor: '#fffacf' }}>
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-4 py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-4 md:py-[14px] space-y-6">
           <div className={cn("text-center transition-all duration-1000 transform", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>

@@ -64,7 +64,7 @@ const CheatSystemSection = () => {
   };
 
   return (
-    <section className="py-12 px-4 bg-white">
+    <section className="py-12 px-4" style={{ backgroundColor: '#fffacf' }}>
       <div className="container mx-auto">
         {/* Section title */}
         <div className="text-center mb-8">
