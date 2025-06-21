@@ -4,6 +4,7 @@ import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -40,7 +41,7 @@ const ProductIntro = () => {
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-6xl mx-auto">
           {/* Mobile Layout */}
-          {isMobile && <div className="space-y-12">
+          {isMobile && <div className="space-y-8">
               {/* Title */}
               <div className="flex justify-center">
                 <div className="space-y-6 flex flex-col items-center">
@@ -53,9 +54,9 @@ const ProductIntro = () => {
 
               {/* Two-line text with yellow arrow */}
               <div className={cn("text-center transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="space-y-3 max-w-md mx-auto">
+                <div className="space-y-2 max-w-md mx-auto">
                   <p className="text-lg text-black leading-relaxed">
-                    Open the box <span className="text-yellow-400 font-bold text-xl">→</span> Set it up
+                    Open the box <span className="text-yellow-400 font-bold text-3xl">→</span> Set it up
                   </p>
                   <p className="text-lg text-black leading-relaxed font-bold uppercase">
                     START BECOMING STRONG
@@ -65,7 +66,7 @@ const ProductIntro = () => {
 
               {/* Video */}
               <div className={cn("flex justify-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="max-w-[230px]">
+                <div className="max-w-[265px]">
                   <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover">
                     <source src="/boxxingbars.webm" type="video/webm" />
                     Your browser does not support the video tag.
@@ -76,15 +77,15 @@ const ProductIntro = () => {
               {/* Final Text */}
               <div className={cn("text-center transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <p className="text-lg font-bold uppercase text-black tracking-wide leading-tight py-0">
-                  SUCCEED WHEN YOU ARE IN CONTROL
+                  SUCCEED WHERE YOU ARE IN CONTROL
                 </p>
               </div>
             </div>}
 
           {/* Desktop Layout */}
-          {!isMobile && <div className="grid md:grid-cols-2 gap-4 items-start">
+          {!isMobile && <div className="grid md:grid-cols-2 gap-2 items-start">
               {/* Left Column - Title, List, and Final Text */}
-              <div className="space-y-12 px-[102px] py-0 my-[30px]">
+              <div className="space-y-16 px-[102px] py-0 my-[30px]">
                 {/* Title */}
                 <div className={cn("transition-all duration-1000", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <h2 className="text-4xl lg:text-5xl font-bold uppercase text-black relative inline-block tracking-wide">
@@ -97,13 +98,13 @@ const ProductIntro = () => {
                 <div className={cn("transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <div className="space-y-3">
                     <p className="text-xl text-black leading-relaxed font-bold uppercase">
-                      <span className="text-yellow-400 mr-3 font-bold text-2xl">→</span>OPEN THE BOX
+                      <span className="text-yellow-400 mr-3 font-bold text-3xl">→</span>OPEN THE BOX
                     </p>
                     <p className="text-xl text-black leading-relaxed font-bold uppercase">
-                      <span className="text-yellow-400 mr-3 font-bold text-2xl">→</span>SET IT UP
+                      <span className="text-yellow-400 mr-3 font-bold text-3xl">→</span>SET IT UP
                     </p>
                     <p className="text-xl text-black leading-relaxed font-bold uppercase">
-                      <span className="text-yellow-400 mr-3 font-bold text-2xl">→</span>START BECOMING STRONG
+                      <span className="text-yellow-400 mr-3 font-bold text-3xl">→</span>START BECOMING STRONG
                     </p>
                   </div>
                 </div>
@@ -111,7 +112,7 @@ const ProductIntro = () => {
                 {/* Final Text with matching spacing */}
                 <div className={cn("transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold italic text-black tracking-wide leading-tight">
-                    Succeed when you're in control.
+                    Succeed where you're in control.
                   </p>
                 </div>
               </div>
@@ -120,7 +121,7 @@ const ProductIntro = () => {
               <div className="space-y-8">
                 {/* Video */}
                 <div className={cn("transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <div className="max-w-[290px] mx-auto">
+                  <div className="max-w-[335px] mx-auto">
                     <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover">
                       <source src="/boxxingbars.webm" type="video/webm" />
                       Your browser does not support the video tag.
@@ -133,4 +134,5 @@ const ProductIntro = () => {
       </div>
     </section>;
 };
+
 export default ProductIntro;
