@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -36,12 +37,12 @@ const ProductIntro = () => {
     }
   }, [isInView]);
   return <section id="product" ref={containerRef} style={{
-    backgroundColor: '#f8f6df'
+    backgroundColor: '#f6f6f6'
   }}>
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-6xl mx-auto">
           {/* Mobile Layout */}
-          {isMobile && <div className="space-y-8">
+          {isMobile && <div className="space-y-6">
               {/* Title */}
               <div className="flex justify-center">
                 <div className="space-y-6 flex flex-col items-center">
@@ -54,9 +55,9 @@ const ProductIntro = () => {
 
               {/* Two-line text with yellow arrow */}
               <div className={cn("text-center transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="space-y-2 max-w-md mx-auto">
+                <div className="space-y-1 max-w-md mx-auto">
                   <p className="text-lg text-black leading-relaxed">
-                    Open the box <span className="text-yellow-400 font-bold text-3xl">→</span> Set it up
+                    Open the box <span className="text-yellow-400 font-black text-3xl">→</span> Set it up
                   </p>
                   <p className="text-lg text-black leading-relaxed font-bold uppercase">
                     START BECOMING STRONG
@@ -66,7 +67,7 @@ const ProductIntro = () => {
 
               {/* Video */}
               <div className={cn("flex justify-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="max-w-[265px]">
+                <div className="max-w-[304px]">
                   <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover">
                     <source src="/boxxingbars.webm" type="video/webm" />
                     Your browser does not support the video tag.
@@ -98,13 +99,13 @@ const ProductIntro = () => {
                 <div className={cn("transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <div className="space-y-3">
                     <p className="text-xl text-black leading-relaxed font-bold uppercase">
-                      <span className="text-yellow-400 mr-3 font-bold text-3xl">→</span>OPEN THE BOX
+                      <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>OPEN THE BOX
                     </p>
                     <p className="text-xl text-black leading-relaxed font-bold uppercase">
-                      <span className="text-yellow-400 mr-3 font-bold text-3xl">→</span>SET IT UP
+                      <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>SET IT UP
                     </p>
                     <p className="text-xl text-black leading-relaxed font-bold uppercase">
-                      <span className="text-yellow-400 mr-3 font-bold text-3xl">→</span>START BECOMING STRONG
+                      <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>START BECOMING STRONG
                     </p>
                   </div>
                 </div>
@@ -121,7 +122,7 @@ const ProductIntro = () => {
               <div className="space-y-8">
                 {/* Video */}
                 <div className={cn("transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <div className="max-w-[335px] mx-auto">
+                  <div className="max-w-[385px] mx-auto">
                     <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover">
                       <source src="/boxxingbars.webm" type="video/webm" />
                       Your browser does not support the video tag.
