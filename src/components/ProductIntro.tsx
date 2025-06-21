@@ -55,24 +55,21 @@ const ProductIntro = () => {
                 </div>
               </div>
 
-              {/* Three-line text with arrows */}
+              {/* Two-line text */}
               <div className={cn("text-center transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="space-y-3 max-w-md mx-auto">
+                <div className="space-y-2 max-w-md mx-auto">
                   <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 mr-2">→</span>open the box
+                    Open the box → Set it up
                   </p>
-                  <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 mr-2">→</span>set it up
-                  </p>
-                  <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 mr-2">→</span>start becoming strong
+                  <p className="text-lg text-black leading-relaxed font-bold uppercase">
+                    START BECOMING STRONG
                   </p>
                 </div>
               </div>
 
               {/* Video */}
               <div className={cn("flex justify-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="border-2 border-yellow-400 rounded-2xl p-4 max-w-xs">
+                <div className="max-w-[240px]">
                   <video 
                     autoPlay 
                     muted 
@@ -88,8 +85,8 @@ const ProductIntro = () => {
 
               {/* Final Text */}
               <div className={cn("text-center transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <p className="text-lg font-bold uppercase text-black tracking-wide leading-tight">
-                  ANYTIME AT YOUR OWN PLACE
+                <p className="text-lg font-bold uppercase text-black tracking-wide leading-tight py-4">
+                  SUCCEED WHEN YOU ARE IN CONTROL
                 </p>
               </div>
             </div>
@@ -97,7 +94,7 @@ const ProductIntro = () => {
 
           {/* Desktop Layout */}
           {!isMobile && (
-            <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="grid md:grid-cols-2 gap-16 items-start">
               {/* Left Column - Title, List, and Final Text */}
               <div className="space-y-8">
                 {/* Title */}
@@ -111,22 +108,22 @@ const ProductIntro = () => {
                 {/* Three-line text with arrows */}
                 <div className={cn("transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <div className="space-y-3">
-                    <p className="text-xl text-black leading-relaxed">
-                      <span className="text-yellow-400 mr-3">→</span>open the box
+                    <p className="text-xl text-black leading-relaxed font-bold uppercase">
+                      <span className="text-yellow-400 mr-3">→</span>OPEN THE BOX
                     </p>
-                    <p className="text-xl text-black leading-relaxed">
-                      <span className="text-yellow-400 mr-3">→</span>set it up
+                    <p className="text-xl text-black leading-relaxed font-bold uppercase">
+                      <span className="text-yellow-400 mr-3">→</span>SET IT UP
                     </p>
-                    <p className="text-xl text-black leading-relaxed">
-                      <span className="text-yellow-400 mr-3">→</span>start becoming strong
+                    <p className="text-xl text-black leading-relaxed font-bold uppercase">
+                      <span className="text-yellow-400 mr-3">→</span>START BECOMING STRONG
                     </p>
                   </div>
                 </div>
 
-                {/* Final Text */}
-                <div className={cn("transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg font-bold uppercase text-black tracking-wide leading-tight">
-                    ANYTIME AT YOUR OWN PLACE
+                {/* Final Text with more spacing */}
+                <div className={cn("transition-all duration-1000 pt-8", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                  <p className="text-lg font-bold italic text-black tracking-wide leading-tight">
+                    Succeed when you're in control.
                   </p>
                 </div>
               </div>
@@ -135,7 +132,7 @@ const ProductIntro = () => {
               <div className="space-y-8">
                 {/* Video */}
                 <div className={cn("transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <div className="border-2 border-yellow-400 rounded-2xl p-6 max-w-sm mx-auto">
+                  <div className="max-w-[320px] mx-auto">
                     <video 
                       autoPlay 
                       muted 
