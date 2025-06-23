@@ -112,7 +112,7 @@ const Slider: React.FC<SliderProps> = ({
   return (
     <div className={cn("w-full", className)}>
       <div className="relative flex justify-center items-center">
-        <style jsx>{`
+        <style>{`
           .custom-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -203,7 +203,7 @@ export function SavingsCalculator({
       scale: 1,
       filter: "blur(0px)",
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
         damping: 30,
         mass: 0.8,
@@ -226,7 +226,7 @@ export function SavingsCalculator({
       scale: 1,
       filter: "blur(0px)",
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 400,
         damping: 28,
         mass: 0.6,
@@ -240,7 +240,7 @@ export function SavingsCalculator({
       scale: [1, 1.05, 1],
       transition: {
         duration: 0.3,
-        ease: "easeInOut"
+        ease: "easeInOut" as const
       }
     } : {},
   }

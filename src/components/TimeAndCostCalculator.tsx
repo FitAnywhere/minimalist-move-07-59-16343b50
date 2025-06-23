@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { SavingsCalculator } from '@/components/ui/SavingsCalculator';
+import ComparisonTable from '@/components/ComparisonTable';
 
 const TimeAndCostCalculator = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -38,7 +39,23 @@ const TimeAndCostCalculator = () => {
           "transition-all duration-1000 transform",
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
         )}>
-          <SavingsCalculator />
+          {/* Section Title */}
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-black mb-6 text-black">
+              Don't Waste Another Euro on Gym Fees
+            </h2>
+            <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
+              Calculate how much money you'll save by choosing FitAnywhere over expensive gym memberships
+            </p>
+          </div>
+
+          {/* Calculator Component */}
+          <div className="mb-16">
+            <SavingsCalculator />
+          </div>
+
+          {/* Comparison Table */}
+          <ComparisonTable />
         </div>
       </div>
     </section>
