@@ -25,7 +25,7 @@ const GymTarget = () => {
               <>
                 {/* Single line under title */}
                 <div className={cn("text-center mb-8 transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Parks judged them | Gyms pressured them</p>
+                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you | Systems failed you</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 items-center px-[123px]">
@@ -35,7 +35,7 @@ const GymTarget = () => {
                     <div className={cn("transition-all duration-1000 delay-300", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                       <div className="flex items-center mb-6">
                         <p className="text-xl md:text-2xl font-bold text-black mr-3">
-                          Now they found a solution
+                          You were never the problem. The system was.
                         </p>
                         <ChevronRight className="w-6 h-6 text-yellow-400 animate-pulse" />
                       </div>
@@ -60,7 +60,7 @@ const GymTarget = () => {
                     {/* Payoff Line - moved lower with more spacing */}
                     <div className={cn("mt-12 transition-all duration-1000 delay-800", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                       <p className="text-lg md:text-xl font-bold text-black italic">
-                        They'll come back untouchable.
+                        Take your power back.
                       </p>
                     </div>
                   </div>
@@ -86,7 +86,7 @@ const GymTarget = () => {
                 {/* Text above video - restored */}
                 <div className={cn("mb-4 text-center transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-gray-800 leading-tight">
-                    Parks judged them | Gyms pressured them
+                    Gyms judged you | Parks embarrassed you | Systems failed you
                   </p>
                 </div>
 
@@ -105,7 +105,7 @@ const GymTarget = () => {
                 {/* Solution text - close to video */}
                 <div className={cn("mb-2 text-center transition-all duration-1000 delay-500", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black">
-                    Now they found a solution
+                    You were never the problem. The system was.
                   </p>
                 </div>
 
@@ -119,7 +119,7 @@ const GymTarget = () => {
                 {/* Payoff Line - moved lower with more spacing */}
                 <div className={cn("mt-8 text-center transition-all duration-1000 delay-800", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black italic">
-                    They'll come back untouchable.
+                    Take your power back.
                   </p>
                 </div>
               </>
