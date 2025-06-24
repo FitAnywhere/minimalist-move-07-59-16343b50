@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -20,7 +21,7 @@ const GymTarget = () => {
             {!isMobile && <>
                 {/* Single line under title */}
                 <div className={cn("text-center mb-8 transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you</p>
+                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you | Systems failed you</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 items-center px-[123px]">
@@ -78,7 +79,7 @@ const GymTarget = () => {
             {isMobile && <>
                 {/* Text above video - restored */}
                 <div className={cn("mb-4 text-center transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you</p>
+                  <p className="text-lg font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you | Systems failed you</p>
                 </div>
 
                 {/* Video Block */}
@@ -94,8 +95,8 @@ const GymTarget = () => {
                 </div>
 
                 {/* Solution text - close to video */}
-                <div className={cn("mb-2 text-center transition-all duration-1000 delay-500", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg font-bold text-black">You weren’t weak. The game was rigged.</p>
+                <div className={cn("mb-8 text-center transition-all duration-1000 delay-500", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                  <p className="text-lg font-bold text-black">You weren't weak. The game was rigged.</p>
                 </div>
 
                 {/* BANDS | PRIVACY | PROGRESS - black, bold, bigger */}
@@ -106,7 +107,7 @@ const GymTarget = () => {
                 </div>
 
                 {/* Payoff Line - moved lower with more spacing */}
-                <div className={cn("mt-8 text-center transition-all duration-1000 delay-800", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <div className={cn("text-center transition-all duration-1000 delay-800", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black italic">
                     Take your power back.
                   </p>
