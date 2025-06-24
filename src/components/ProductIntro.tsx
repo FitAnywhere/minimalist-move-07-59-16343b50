@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -153,13 +152,13 @@ const ProductIntro = () => {
                 </div>
               </div>
 
-              {/* Two Column Layout */}
-              <div className="grid md:grid-cols-2 gap-2 items-start">
+              {/* Two Column Layout with aligned content */}
+              <div className="grid md:grid-cols-2 gap-2 items-center">
                 {/* Left Column - Bullet Points and Final Text */}
-                <div className="space-y-16 px-[102px] py-0 my-[30px]">
+                <div className="flex flex-col justify-center h-full px-[102px] py-0">
                   {/* Bullet points */}
                   <div className={cn(
-                    "transition-all duration-1000",
+                    "transition-all duration-1000 mb-16",
                     animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                   )}>
                     <div className="space-y-3">
@@ -191,8 +190,8 @@ const ProductIntro = () => {
                   </div>
                 </div>
 
-                {/* Right Column - Video - 20% smaller */}
-                <div className="space-y-8">
+                {/* Right Column - Video */}
+                <div className="flex justify-center items-center h-full">
                   <div className={cn(
                     "transition-all duration-1000",
                     animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
