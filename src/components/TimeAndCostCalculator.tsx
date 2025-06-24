@@ -41,7 +41,7 @@ const TimeAndCostCalculator = () => {
         )}>
           {/* Section Title */}
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-gray-900 mb-2">
+            <h2 className="relative text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-gray-900 mb-2">
               STOP WASTING
               <div className="absolute -bottom-2 left-0 right-0 h-1 bg-yellow-400 rounded-full"></div>
             </h2>
@@ -66,9 +66,9 @@ const TimeAndCostCalculator = () => {
           <ComparisonTable />
 
           {/* Italic text below comparison table */}
-          <div className="text-center mt-8">
+          <div className="text-center mt-4">
             <p className="text-lg text-gray-700 italic">
-              Use something that's portabe and actually usefull.
+              Use something that's portable and actually usefull.
             </p>
           </div>
         </div>

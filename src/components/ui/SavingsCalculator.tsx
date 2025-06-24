@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+
 interface NumberFlowProps {
   value: number;
   format?: Intl.NumberFormatOptions;
@@ -59,6 +60,7 @@ const NumberFlow: React.FC<NumberFlowProps> = ({
       {formattedValue}
     </span>;
 };
+
 interface SliderProps {
   value: number[];
   onValueChange: (value: number[]) => void;
@@ -134,6 +136,7 @@ const Slider: React.FC<SliderProps> = ({
       </div>
     </div>;
 };
+
 interface SavingsCalculatorProps {
   className?: string;
   enableAnimations?: boolean;
@@ -155,6 +158,7 @@ export function SavingsCalculator({
     const clampedValue = Math.max(0, Math.min(150, value));
     setGymCost(clampedValue);
   };
+
   const containerVariants = {
     hidden: {
       opacity: 0,
@@ -209,6 +213,7 @@ export function SavingsCalculator({
       }
     } : {}
   };
+
   return <motion.div initial={shouldAnimate ? "hidden" : "visible"} animate="visible" variants={containerVariants} className={cn("w-full max-w-md mx-auto", className)}>
       <Card className="relative p-8 bg-background border-border shadow-2xl shadow-black/10 rounded-3xl overflow-hidden">
         {/* Main Title */}
@@ -219,7 +224,7 @@ export function SavingsCalculator({
         {/* Question */}
         <motion.div variants={shouldAnimate ? childVariants : {}} className="mb-8">
           <h3 className="text-lg font-bold text-foreground text-center mb-6">
-            What's your avarage gym membership cost?
+            What's a monthly gym membership cost in your country?
           </h3>
 
           {/* Slider */}
@@ -289,6 +294,7 @@ export function SavingsCalculator({
       </Card>
     </motion.div>;
 }
+
 export default function SavingsCalculatorDemo() {
   return <div className="min-h-screen p-4 bg-background flex items-center justify-center">
       <SavingsCalculator />
