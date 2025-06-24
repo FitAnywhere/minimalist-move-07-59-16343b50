@@ -10,130 +10,169 @@ const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
+  
   const [animationState, setAnimationState] = useState({
     title: false,
     subtitle: false,
     video: false,
     finalText: false
   });
+
   useEffect(() => {
     if (isInView) {
-      setTimeout(() => setAnimationState(prev => ({
-        ...prev,
-        title: true
-      })), 100);
-      setTimeout(() => setAnimationState(prev => ({
-        ...prev,
-        subtitle: true
-      })), 300);
-      setTimeout(() => setAnimationState(prev => ({
-        ...prev,
-        video: true
-      })), 500);
-      setTimeout(() => setAnimationState(prev => ({
-        ...prev,
-        finalText: true
-      })), 700);
+      setTimeout(() => setAnimationState(prev => ({ ...prev, title: true })), 100);
+      setTimeout(() => setAnimationState(prev => ({ ...prev, subtitle: true })), 300);
+      setTimeout(() => setAnimationState(prev => ({ ...prev, video: true })), 500);
+      setTimeout(() => setAnimationState(prev => ({ ...prev, finalText: true })), 700);
     }
   }, [isInView]);
-  return <section id="product" ref={containerRef} style={{
-    backgroundColor: '#f6f6f6'
-  }}>
+
+  return (
+    <section id="product" ref={containerRef} style={{ backgroundColor: '#f6f6f6' }}>
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-6xl mx-auto">
           {/* Mobile Layout */}
-          {isMobile && <div className="space-y-6">
+          {isMobile && (
+            <div className="space-y-6">
               {/* Title */}
               <div className="flex justify-center">
                 <div className="space-y-6 flex flex-col items-center">
-                  <h2 className={cn("text-3xl md:text-4xl font-bold uppercase text-black relative inline-block tracking-wide", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                  <h2 className={cn(
+                    "text-3xl md:text-4xl font-bold uppercase text-black relative inline-block tracking-wide",
+                    animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  )}>
                     NO PRESSURE
-                    <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
+                    <span className={cn(
+                      "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000",
+                      animationState.title ? "scale-x-100" : "scale-x-0"
+                    )}></span>
                   </h2>
                 </div>
               </div>
 
-              {/* Two-line text with yellow arrow */}
-              <div className={cn("text-center transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="space-y-1 max-w-md mx-auto">
-                  <p className="text-lg text-black leading-relaxed">
-                    Open the box <span className="text-yellow-400 font-black text-3xl">→</span> Set it up
+              {/* New bullet points with yellow arrows */}
+              <div className={cn(
+                "text-center transition-all duration-1000",
+                animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              )}>
+                <div className="space-y-2 max-w-md mx-auto">
+                  <p className="text-lg text-black leading-relaxed font-bold">
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>No traffic. No mind battles. No anxiety.
                   </p>
-                  <p className="text-lg text-black leading-relaxed font-bold uppercase">
-                    START BECOMING STRONG
+                  <p className="text-lg text-black leading-relaxed font-bold">
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>Just 15 minutes and done.
+                  </p>
+                  <p className="text-lg text-black leading-relaxed font-bold">
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>Open the box, set it up, and win from home.
                   </p>
                 </div>
               </div>
 
-              {/* Video */}
-              <div className={cn("flex justify-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="max-w-[304px]">
-                  <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover">
+              {/* Video - 20% smaller */}
+              <div className={cn(
+                "flex justify-center transition-all duration-1000",
+                animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              )}>
+                <div className="max-w-[243px]">
+                  <video 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline 
+                    className="w-full rounded-xl aspect-[3/4] object-cover"
+                  >
                     <source src="/boxxingbars.webm" type="video/webm" />
                     Your browser does not support the video tag.
                   </video>
                 </div>
               </div>
 
-              {/* Final Text */}
-              <div className={cn("text-center transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <p className="text-lg font-bold uppercase text-black tracking-wide leading-tight py-0">
-                  SUCCEED WHERE YOU ARE IN CONTROL
+              {/* Final Text - italic and proper capitalization */}
+              <div className={cn(
+                "text-center transition-all duration-1000",
+                animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              )}>
+                <p className="text-lg font-bold italic text-black tracking-wide leading-tight py-0">
+                  Succeed where you are in control.
                 </p>
               </div>
-            </div>}
+            </div>
+          )}
 
           {/* Desktop Layout */}
-          {!isMobile && <div className="grid md:grid-cols-2 gap-2 items-start">
-              {/* Left Column - Title, List, and Final Text */}
+          {!isMobile && (
+            <div className="grid md:grid-cols-2 gap-2 items-start">
+              {/* Left Column - Title, Bullet Points, and Final Text */}
               <div className="space-y-16 px-[102px] py-0 my-[30px]">
                 {/* Title */}
-                <div className={cn("transition-all duration-1000", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <div className={cn(
+                  "transition-all duration-1000",
+                  animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                )}>
                   <h2 className="text-4xl lg:text-5xl font-bold uppercase text-black relative inline-block tracking-wide">
                     NO PRESSURE
-                    <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", animationState.title ? "scale-x-100" : "scale-x-0")}></span>
+                    <span className={cn(
+                      "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000",
+                      animationState.title ? "scale-x-100" : "scale-x-0"
+                    )}></span>
                   </h2>
                 </div>
 
-                {/* Three-line text with arrows */}
-                <div className={cn("transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                {/* New bullet points with arrows */}
+                <div className={cn(
+                  "transition-all duration-1000",
+                  animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                )}>
                   <div className="space-y-3">
-                    <p className="text-xl text-black leading-relaxed font-bold uppercase">
-                      <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>OPEN THE BOX
+                    <p className="text-xl text-black leading-relaxed font-bold">
+                      <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>No traffic. No mind battles. No anxiety.
                     </p>
-                    <p className="text-xl text-black leading-relaxed font-bold uppercase">
-                      <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>SET IT UP
+                    <p className="text-xl text-black leading-relaxed font-bold">
+                      <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>Just 15 minutes and done.
                     </p>
-                    <p className="text-xl text-black leading-relaxed font-bold uppercase">
-                      <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>START BECOMING STRONG
+                    <p className="text-xl text-black leading-relaxed font-bold">
+                      <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>Open the box, set it up, and win from home.
                     </p>
                   </div>
                 </div>
 
-                {/* Final Text with matching spacing */}
-                <div className={cn("transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                {/* Final Text - italic and proper capitalization */}
+                <div className={cn(
+                  "transition-all duration-1000",
+                  animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                )}>
                   <p className="text-lg font-bold italic text-black tracking-wide leading-tight">
-                    Succeed where you're in control.
+                    Succeed where you are in control.
                   </p>
                 </div>
               </div>
 
-              {/* Right Column - Video */}
+              {/* Right Column - Video - 20% smaller */}
               <div className="space-y-8">
-                {/* Video */}
-                <div className={cn("transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <div className="max-w-[385px] mx-auto">
-                    <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover">
+                <div className={cn(
+                  "transition-all duration-1000",
+                  animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                )}>
+                  <div className="max-w-[308px] mx-auto">
+                    <video 
+                      autoPlay 
+                      muted 
+                      loop 
+                      playsInline 
+                      className="w-full rounded-xl aspect-[3/4] object-cover"
+                    >
                       <source src="/boxxingbars.webm" type="video/webm" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 
 export default ProductIntro;
