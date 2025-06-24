@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -18,9 +17,9 @@ const CheatSystemSection = () => {
   const [error, setError] = useState('');
 
   const bulletData = [
-    "PORTABLE STRENGTH STATION",
+    "1 MONTH OF COACH ACCESS",
     "15-MIN DOPAMINE WORKOUTS",
-    "1 MONTH OF COACH ACCESS"
+    "PORTABLE STRENGTH STATION"
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
