@@ -53,7 +53,7 @@ const OneTruthSection = () => {
   );
 
   const renderTextContent = () => (
-    <div className={cn("space-y-6", isMobile ? "text-center" : "text-left")}>
+    <div className={cn("space-y-6", isMobile ? "text-left" : "text-left")}>
       <div className={cn(
         "transition-all duration-1000 transform",
         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -71,20 +71,28 @@ const OneTruthSection = () => {
         "transition-all duration-1000 transform space-y-4",
         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       )} style={{ animationDelay: "200ms" }}>
-        <div className="space-y-3">
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 bg-yellow-400 rounded-full flex-shrink-0"></div>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              +73 different exercises?<br />
-              That's okay
+        <div className="space-y-6">
+          <div className="space-y-1">
+            <div className="flex items-start gap-3">
+              <div className="w-3 h-3 bg-yellow-400 rounded-full flex-shrink-0 mt-1"></div>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                +73 different exercises?
+              </p>
+            </div>
+            <p className="text-lg text-gray-700 leading-relaxed italic pl-6">
+              That's okay.
             </p>
           </div>
           
-          <div className="flex items-start gap-3">
-            <div className="w-3 h-3 bg-yellow-400 rounded-full flex-shrink-0 mt-1"></div>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Real strength? = 4 core moves done right.<br />
-              That's it.
+          <div className="space-y-1">
+            <div className="flex items-start gap-3">
+              <div className="w-3 h-3 bg-yellow-400 rounded-full flex-shrink-0 mt-1"></div>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Real strength? = 4 core moves done right.
+              </p>
+            </div>
+            <p className="text-lg text-gray-700 leading-relaxed italic pl-6">
+              That's it!
             </p>
           </div>
         </div>
@@ -110,10 +118,14 @@ const OneTruthSection = () => {
 
       {!isMobile && (
         <div className={cn(
-          "transition-all duration-1000 transform pt-6",
+          "transition-all duration-1000 transform pt-6 space-y-2",
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
         )} style={{ animationDelay: "600ms" }}>
-          {renderSupportingText()}
+          <p className="text-lg text-gray-700">Your coach gives you the plan.</p>
+          <p className="text-lg text-gray-700">You give 15 minutes.</p>
+          <p className="text-lg text-black font-semibold bg-gray-100 px-3 py-1 rounded inline-block">
+            THAT'S HOW YOU WIN
+          </p>
         </div>
       )}
     </div>
