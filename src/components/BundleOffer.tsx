@@ -212,9 +212,9 @@ const BundleOffer = () => {
         </div>
       </div>
       
-      {/* Mobile: Sticky CTA Button - positioned higher to avoid overlap */}
+      {/* Mobile: Sticky CTA Button - moved lower to avoid overlap with pricing carousel */}
       {isMobile && (
-        <div className="fixed bottom-16 left-0 right-0 z-50 p-4 bg-white border-t border-gray-200">
+        <div className="fixed bottom-8 left-0 right-0 z-50 p-4 bg-white border-t border-gray-200">
           <Button 
             size="lg" 
             className={cn(
