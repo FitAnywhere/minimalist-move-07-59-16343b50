@@ -64,26 +64,20 @@ const ProductIntro = () => {
                 </div>
               </div>
 
-              {/* Subtitle and bullet points */}
+              {/* Subtitle and single line bullet point */}
               <div className={cn(
                 "text-center transition-all duration-1000",
                 animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               )}>
                 <div className="space-y-4 max-w-md mx-auto">
-                  {/* Subtitle */}
-                  <p className="text-lg text-black font-bold">
-                    15-minutes and done
+                  {/* Subtitle - CAPS on mobile */}
+                  <p className="text-lg text-black font-bold uppercase">
+                    15-MINUTES AND DONE
                   </p>
                   
-                  {/* Bullet points */}
+                  {/* Single line bullet point */}
                   <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>No traffic.
-                  </p>
-                  <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>No mind battles.
-                  </p>
-                  <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>No anxiety.
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>No traffic. No mind battles. No anxiety.
                   </p>
                 </div>
               </div>
@@ -159,16 +153,16 @@ const ProductIntro = () => {
                       15-minutes and done
                     </p>
                     
-                    {/* Bullet points */}
+                    {/* Bullet points - bigger text and CAPS on desktop */}
                     <div className="space-y-3">
-                      <p className="text-xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>No traffic.
+                      <p className="text-2xl text-black leading-relaxed">
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>NO TRAFFIC.
                       </p>
-                      <p className="text-xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>No mind battles.
+                      <p className="text-2xl text-black leading-relaxed">
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>NO MIND BATTLES.
                       </p>
-                      <p className="text-xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>No anxiety.
+                      <p className="text-2xl text-black leading-relaxed">
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>NO ANXIETY.
                       </p>
                     </div>
                   </div>
