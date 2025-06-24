@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Check } from 'lucide-react';
-
 const CheatSystemSection = () => {
   const isMobile = useIsMobile();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -15,13 +14,7 @@ const CheatSystemSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
-
-  const bulletData = [
-    "1 MONTH OF COACH ACCESS",
-    "15-MIN DOPAMINE WORKOUTS",
-    "PORTABLE STRENGTH STATION"
-  ];
-
+  const bulletData = ["1 MONTH OF COACH ACCESS", "15-MIN DOPAMINE WORKOUTS", "PORTABLE STRENGTH STATION"];
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -62,9 +55,9 @@ const CheatSystemSection = () => {
       setIsSubmitting(false);
     }
   };
-
-  return (
-    <section className="py-12 px-4" style={{ backgroundColor: '#f6f6f6' }}>
+  return <section className="py-12 px-4" style={{
+    backgroundColor: '#f6f6f6'
+  }}>
       <div className="container mx-auto">
         {/* Section title */}
         <div className="text-center mb-8">
@@ -80,21 +73,18 @@ const CheatSystemSection = () => {
           
           {/* Subtitle text - Mobile only - moved closer to title */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-xl font-bold text-gray-700 px-[18px] py-0 my-0">We built a plan your excuses can't beat.</p>
+            <p className="text-xl font-bold text-gray-700 px-[18px] py-0 my-0">Warning: Your body will crave workouts like a chocoloate.</p>
           </div>
           
           {/* Video Column */}
           <div className={cn("flex justify-center", isMobile ? "w-full order-3 mt-3" : "w-2/5")}>
             <div className={cn("relative overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-lg", isMobile ? "w-full max-w-md" : "w-full max-w-[360px]")}>
-              <div className="relative w-full h-0" style={{ paddingBottom: '133.33%' }}>
-                <video
-                  className="absolute inset-0 w-full h-full object-cover rounded-lg"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  style={{ borderRadius: '8px' }}
-                >
+              <div className="relative w-full h-0" style={{
+              paddingBottom: '133.33%'
+            }}>
+                <video className="absolute inset-0 w-full h-full object-cover rounded-lg" autoPlay loop muted playsInline style={{
+                borderRadius: '8px'
+              }}>
                   <source src="/3Bp Section.webm" type="video/webm" />
                   Your browser does not support the video tag.
                 </video>
@@ -110,11 +100,7 @@ const CheatSystemSection = () => {
             
             {/* Non-interactive bullet points */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4", isMobile ? "text-left" : "")}>
-              {bulletData.map((bullet, index) => (
-                <li 
-                  key={index} 
-                  className="flex items-start gap-3"
-                >
+              {bulletData.map((bullet, index) => <li key={index} className="flex items-start gap-3">
                   <div className="w-4 h-4 flex-shrink-0 flex items-center justify-center mt-1">
                     <span className="text-yellow-400 text-lg">●</span>
                   </div>
@@ -123,8 +109,7 @@ const CheatSystemSection = () => {
                       {bullet}
                     </div>
                   </div>
-                </li>
-              ))}
+                </li>)}
             </ul>
             
             {/* CTA Button */}
@@ -197,61 +182,37 @@ const CheatSystemSection = () => {
             </DialogTitle>
           </DialogHeader>
           
-          {isSuccess ? (
-            <div className="py-6 text-center space-y-4">
+          {isSuccess ? <div className="py-6 text-center space-y-4">
               <div className="flex justify-center">
                 <Check className="h-12 w-12 text-green-500" />
               </div>
               <p className="text-lg font-medium">Thank you.</p>
               <p>Once we confirm your order number, you will receive TIME HACKS on your email.</p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4 py-4">
+            </div> : <form onSubmit={handleSubmit} className="space-y-4 py-4">
               <div className="space-y-2">
                 <label htmlFor="order-number" className="text-sm font-medium">
                   Order Number
                 </label>
-                <Input 
-                  id="order-number" 
-                  value={orderNumber} 
-                  onChange={(e) => setOrderNumber(e.target.value)} 
-                  placeholder="Enter your order number" 
-                  required 
-                />
+                <Input id="order-number" value={orderNumber} onChange={e => setOrderNumber(e.target.value)} placeholder="Enter your order number" required />
               </div>
               
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium">
                   Email Address
                 </label>
-                <Input 
-                  id="email" 
-                  type="email" 
-                  value={email} 
-                  onChange={(e) => setEmail(e.target.value)} 
-                  placeholder="Enter your email address" 
-                  required 
-                />
+                <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email address" required />
               </div>
               
               {error && <p className="text-red-600 text-sm">{error}</p>}
               
               <div className="flex justify-center pt-2">
-                <Button 
-                  type="submit" 
-                  variant="yellow" 
-                  className="w-full font-semibold" 
-                  disabled={isSubmitting}
-                >
+                <Button type="submit" variant="yellow" className="w-full font-semibold" disabled={isSubmitting}>
                   VERIFY
                 </Button>
               </div>
-            </form>
-          )}
+            </form>}
         </DialogContent>
       </Dialog>
-    </section>
-  );
+    </section>;
 };
-
 export default CheatSystemSection;
