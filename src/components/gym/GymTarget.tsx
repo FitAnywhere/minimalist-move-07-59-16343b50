@@ -1,17 +1,13 @@
-
 import React, { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ChevronRight } from 'lucide-react';
-
 const GymTarget = () => {
   const targetSectionRef = useRef<HTMLElement>(null);
   const isTargetInView = useInView(targetSectionRef);
   const isMobile = useIsMobile();
-
-  return (
-    <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
+  return <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-12")}>
@@ -21,11 +17,10 @@ const GymTarget = () => {
             </h2>
             
             {/* Desktop Layout */}
-            {!isMobile && (
-              <>
+            {!isMobile && <>
                 {/* Single line under title */}
                 <div className={cn("text-center mb-8 transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you | Systems failed you</p>
+                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 items-center px-[123px]">
@@ -77,12 +72,10 @@ const GymTarget = () => {
                     </div>
                   </div>
                 </div>
-              </>
-            )}
+              </>}
 
             {/* Mobile Layout */}
-            {isMobile && (
-              <>
+            {isMobile && <>
                 {/* Text above video - restored */}
                 <div className={cn("mb-4 text-center transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-gray-800 leading-tight">
@@ -122,13 +115,10 @@ const GymTarget = () => {
                     Take your power back.
                   </p>
                 </div>
-              </>
-            )}
+              </>}
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default GymTarget;
