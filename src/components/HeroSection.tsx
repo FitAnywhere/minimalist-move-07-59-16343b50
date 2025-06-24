@@ -60,7 +60,7 @@ const HeroSection = memo(() => {
                     
                     <div className="mt-6 flex flex-col items-center">
                       <ArrowDown className="mb-4 w-6 h-6 animate-bounce text-yellow" />
-                      <button onClick={handleCTAClick} className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm hover:bg-yellow-dark transition-colors uppercase">CRAVING RESULTS? 📖</button>
+                      <button onClick={handleCTAClick} className="inline-block text-lg font-semibold px-6 py-2 bg-yellow text-black rounded-full shadow-sm hover:bg-yellow-dark transition-colors uppercase">WHY YOU MUST START</button>
                       <p className="text-gray-600 text-sm mt-2 opacity-70">
                         30-day guarantee | Beginner-proof | Coach included
                       </p>
