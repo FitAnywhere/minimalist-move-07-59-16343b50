@@ -96,7 +96,7 @@ const CheatSystemSection = () => {
           <div className={cn("flex flex-col", isMobile ? "w-full space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && <p className="text-2xl font-bold text-gray-700 mt-0 pt-0 mb-8">We built a plan your excuses can't beat.</p>}
+            {!isMobile && <p className="text-2xl font-bold text-gray-700 mt-0 pt-0 mb-8">Warning: your body will crave workouts like a chocoloate</p>}
             
             {/* Non-interactive bullet points */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4", isMobile ? "text-left" : "")}>
