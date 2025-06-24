@@ -1,10 +1,10 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Check } from 'lucide-react';
 import CheatSystemSection from './CheatSystemSection';
+import FitAnywherePricingDemo from './ui/pricing-component';
 
 // New carousel content - a video and an image
 const carouselContent = [{
@@ -204,28 +204,9 @@ const BundleOffer = () => {
               </div>
             </div>
 
-            {/* Mobile: Content with adjusted spacing and increased bottom padding */}
-            {isMobile && <div className="flex flex-col items-center space-y-6 w-full mt-6 pb-48">                
-                {/* Mobile: UPDATED PRICE LINE with yellow text and black background */}
-                <div className="text-center">
-                  <div className="inline-block px-4 py-2 bg-black rounded-lg">
-                    <p className="text-xl font-bold text-yellow">
-                      €830 + VAT
-                    </p>
-                  </div>
-                </div>
-                
-                {/* Mobile: VALUE BREAKDOWN - moved more to the right */}
-                <div className="w-full max-w-sm ml-6">
-                  <div className="space-y-2">
-                    {valueBreakdownItems.map((item, index) => (
-                      <div key={index} className="flex items-center space-x-3">
-                        <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                        <span className="text-gray-800">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+            {/* Mobile: Content with NEW PRICING COMPONENT */}
+            {isMobile && <div className="flex flex-col items-center w-full mt-6 pb-24">
+                <FitAnywherePricingDemo />
               </div>}
           </div>
         </div>
