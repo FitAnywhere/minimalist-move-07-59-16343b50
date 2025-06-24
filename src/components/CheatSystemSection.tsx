@@ -73,7 +73,7 @@ const CheatSystemSection = () => {
           
           {/* Subtitle text - Mobile only - moved closer to title */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-xl font-bold text-gray-700 px-[18px] py-0 my-0">Warning: Your body will crave workouts like a chocoloate.</p>
+            <p className="text-xl font-bold text-gray-700 px-[18px] py-0 my-0">Warning: your body will crave workouts like a chocoloate</p>
           </div>
           
           {/* Video Column */}
