@@ -57,12 +57,8 @@ const ProductIntro = () => {
                   <p className="text-lg text-black leading-relaxed font-bold">
                     <span className="text-yellow-400 font-black text-2xl mr-2">→</span>No traffic. No mind battles. No anxiety.
                   </p>
-                  <p className="text-lg text-black leading-relaxed font-bold">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>Just 15 minutes and done.
-                  </p>
-                  <p className="text-lg text-black leading-relaxed font-bold">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>Open the box, set it up, and win from home.
-                  </p>
+                  
+                  
                 </div>
               </div>
 
