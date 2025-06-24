@@ -8,7 +8,6 @@ import WhyAverageMenModal from './ui/WhyAverageMenModal';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { throttle } from '@/utils/eventOptimizers';
-
 const HeroSection = memo(() => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
@@ -42,12 +41,10 @@ const HeroSection = memo(() => {
   const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
   }, []);
-  return (
-    <section ref={heroRef} aria-label="Introduction to FitAnywhere" className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white/[0.57]">
+  return <section ref={heroRef} aria-label="Introduction to FitAnywhere" className="relative min-h-[700px] w-full overflow-hidden py-20 md:py-24 lg:py-28 bg-white/[0.57]">
       <div className="container relative z-20 px-6 py-10 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          {isMobile ? (
-            <>
+          {isMobile ? <>
               <div className="text-center order-1 w-full space-y-6">
                 <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} isMobile={true} overrideTitle="STILL WEAK?" />
                 
@@ -55,10 +52,9 @@ const HeroSection = memo(() => {
                   <HeroCarousel />
                 </div>
                 
-                {isRendered && (
-                  <div className={cn("transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                {isRendered && <div className={cn("transition-all duration-1000 delay-500", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="mt-4 space-y-1">
-                      <p className="text-gray-700 font-bold text-base">Build strength in silence.</p>
+                      <p className="text-gray-700 font-bold text-base">Don’t buy a pull-up bar.</p>
                       <p className="text-gray-700 px-0 py-[4px] font-bold text-base">In your bedroom, balcony, or any 1m² of space.</p>
                     </div>
                     
@@ -71,27 +67,21 @@ const HeroSection = memo(() => {
                         30-day guarantee | Beginner-proof | Coach included
                       </p>
                     </div>
-                  </div>
-                )}
+                  </div>}
               </div>
-            </>
-          ) : (
-            <>
+            </> : <>
               <HeroContent isInView={isInView} scrollToOwnBoth={() => {}} overrideTitle="STILL WEAK?" onCTAClick={handleCTAClick} />
               <div className="order-1 md:order-2 w-full flex flex-col items-center">
                 <HeroCarousel />
               </div>
-            </>
-          )}
+            </>}
         </div>
       </div>
       
       {isRendered && <ScrollIndicator />}
       
       <WhyAverageMenModal isOpen={isModalOpen} onClose={handleCloseModal} />
-    </section>
-  );
+    </section>;
 });
-
 HeroSection.displayName = 'HeroSection';
 export default HeroSection;
