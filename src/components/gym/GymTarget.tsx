@@ -52,7 +52,7 @@ const GymTarget = () => {
 
                     {/* Payoff Line - moved lower with more spacing */}
                     <div className={cn("mt-12 transition-all duration-1000 delay-800", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                      <p className="text-lg md:text-xl font-bold text-black italic">You weren't weak. The game was rigged.</p>
+                      <p className="text-lg md:text-xl font-bold text-black italic py-[13px] my-[34px]">You weren't weak. The game was rigged.</p>
                     </div>
                   </div>
 
