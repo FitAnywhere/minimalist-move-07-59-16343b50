@@ -4,12 +4,12 @@ import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const images = [
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750147533/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_57_hevowf.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750147535/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_58_p3breq.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750147533/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_59_qgwyer.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750147534/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_56_ztubit.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750147534/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_55_bfasym.png",
-  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750147533/Neon_Green_Fitness_and_Gym_Tips_Carousel_Instagram_Post_54_gmdfgq.png"
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750843343/52_gllnot.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750843344/54_vqvmdl.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750843343/51_oorfmr.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750843344/55_uojy1l.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750843344/50_vomtqy.png",
+  "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750843344/53_qhgfx6.png"
 ];
 
 const HeroCarousel = () => {
