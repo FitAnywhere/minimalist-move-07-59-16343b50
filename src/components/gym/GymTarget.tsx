@@ -78,7 +78,7 @@ const GymTarget = () => {
             {isMobile && <>
                 {/* Text above video - restored */}
                 <div className={cn("mb-4 text-center transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you | Systems failed you</p>
+                  <p className="text-lg font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you</p>
                 </div>
 
                 {/* Video Block */}
