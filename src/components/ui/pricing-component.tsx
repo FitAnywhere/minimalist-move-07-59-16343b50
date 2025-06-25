@@ -25,6 +25,7 @@ function FitAnywherePricing({
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const minSwipeDistance = 50;
+  
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
@@ -56,12 +57,12 @@ function FitAnywherePricing({
   };
   return <div className="w-full max-w-3xl mx-auto md:py-20 py-[67px] my-0 px-0">
             <div className="relative">
-                {/* Desktop Navigation Arrows - moved much closer to carousel */}
-                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("hidden md:flex absolute -left-6 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
+                {/* Desktop Navigation Arrows - positioned very close to carousel */}
+                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
                     <ChevronLeft className="w-4 h-4" />
                 </button>
 
-                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("hidden md:flex absolute -right-6 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
+                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
                     <ChevronRight className="w-4 h-4" />
                 </button>
 
