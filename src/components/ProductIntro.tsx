@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -53,11 +54,11 @@ const ProductIntro = () => {
 
               {/* Subtitle and single line bullet point */}
               <div className={cn("text-center transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="space-y-4 max-w-md mx-auto">
+                <div className="max-w-md mx-auto">
                   {/* Subtitle - CAPS on mobile */}
                   <p className="text-lg text-black font-bold uppercase">WIN AT HOME</p>
                   
-                  {/* Single line bullet point */}
+                  {/* Single line bullet point - no margin-top to eliminate space */}
                   <p className="text-lg text-black leading-relaxed">
                     <span className="text-yellow-400 font-black text-2xl mr-2">→</span>No traffic. No mind battles. No anxiety.
                   </p>
