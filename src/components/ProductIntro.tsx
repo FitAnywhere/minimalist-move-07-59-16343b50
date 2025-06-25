@@ -101,9 +101,7 @@ const ProductIntro = () => {
 
                 {/* Subtitle */}
                 <div className={cn("transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-2xl text-black font-bold">
-                    15-minutes and done
-                  </p>
+                  <p className="text-2xl text-black font-bold">WIN AT HOME</p>
                 </div>
               </div>
 
@@ -129,10 +127,8 @@ const ProductIntro = () => {
                   {/* Final Text Section */}
                   <div className={cn("transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="space-y-0">
-                      <p className="text-lg font-bold text-black tracking-wide leading-tight">
-                        SET IT UP. WIN FROM HOME.
-                      </p>
-                      <p className="text-lg font-bold italic text-black tracking-wide leading-tight">
+                      
+                      <p className="font-bold italic text-black tracking-wide leading-tight text-xl">
                         Succeed where you are in control.
                       </p>
                     </div>
