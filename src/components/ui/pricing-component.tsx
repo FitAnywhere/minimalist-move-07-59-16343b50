@@ -171,18 +171,18 @@ function FitAnywherePricing({
                                     )}
 
                                     <div className="mb-6 text-center pt-4">
-                                        <h3 className="text-3xl font-bold text-foreground mb-2">
+                                        <h3 className="text-4xl font-extrabold text-foreground mb-2">
                                             {tier.name}
                                         </h3>
                                     </div>
 
                                     <div className="mb-6 text-center">
-                                        <span className="text-4xl font-extrabold text-foreground">
+                                        <span className="text-3xl font-bold text-foreground">
                                             {tier.price}
                                         </span>
                                     </div>
 
-                                    <div className="flex-grow space-y-2 mb-6 min-h-[180px]">
+                                    <div className="flex-grow space-y-2 mb-4">
                                         {tier.features.map((feature, featureIndex) => (
                                             <div
                                                 key={featureIndex}
@@ -219,7 +219,7 @@ function FitAnywherePricing({
                                             {tier.ctaText}
                                         </Button>
                                         <span className="text-gray-400 text-sm opacity-70">
-                                            FREE SHIPPING INCLUDED
+                                            Free Shipping Included
                                         </span>
                                     </div>
                                 </div>
