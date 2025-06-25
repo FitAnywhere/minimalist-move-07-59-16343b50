@@ -3,14 +3,11 @@ import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ChevronRight } from 'lucide-react';
-
 const GymTarget = () => {
   const targetSectionRef = useRef<HTMLElement>(null);
   const isTargetInView = useInView(targetSectionRef);
   const isMobile = useIsMobile();
-
-  return (
-    <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
+  return <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-12")}>
@@ -20,8 +17,7 @@ const GymTarget = () => {
             </h2>
             
             {/* Desktop Layout */}
-            {!isMobile && (
-              <>
+            {!isMobile && <>
                 {/* Single line under title */}
                 <div className={cn("text-center mb-8 transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you</p>
@@ -33,7 +29,7 @@ const GymTarget = () => {
                     {/* Solution text with animated arrow */}
                     <div className={cn("transition-all duration-1000 delay-300", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                       <div className="flex items-center mb-6">
-                        <p className="text-xl md:text-2xl font-bold text-black mr-3">You weren't weak. The game was rigged.</p>
+                        <p className="text-xl md:text-2xl font-bold text-black mr-3">Take your power back.</p>
                         <ChevronRight className="w-6 h-6 text-yellow-400 animate-pulse" />
                       </div>
                     </div>
@@ -56,9 +52,7 @@ const GymTarget = () => {
 
                     {/* Payoff Line - moved lower with more spacing */}
                     <div className={cn("mt-12 transition-all duration-1000 delay-800", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                      <p className="text-lg md:text-xl font-bold text-black italic">
-                        Take your power back.
-                      </p>
+                      <p className="text-lg md:text-xl font-bold text-black italic">You weren't weak. The game was rigged.</p>
                     </div>
                   </div>
 
@@ -74,12 +68,10 @@ const GymTarget = () => {
                     </div>
                   </div>
                 </div>
-              </>
-            )}
+              </>}
 
             {/* Mobile Layout */}
-            {isMobile && (
-              <>
+            {isMobile && <>
                 {/* Text above video - restored */}
                 <div className={cn("mb-4 text-center transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you</p>
@@ -115,13 +107,10 @@ const GymTarget = () => {
                     Take your power back.
                   </p>
                 </div>
-              </>
-            )}
+              </>}
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default GymTarget;
