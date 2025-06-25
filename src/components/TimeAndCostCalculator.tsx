@@ -1,4 +1,3 @@
-
 import { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -41,13 +40,10 @@ const TimeAndCostCalculator = () => {
         )}>
           {/* Section Title */}
           <div className="text-center mb-16">
-            <h2 className="relative text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-gray-900 mb-2">
-              STOP WASTING
+            <h2 className="relative text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-gray-900 mb-2 inline-block">
+              STOP RENTING
               <div className="absolute -bottom-2 left-0 right-0 h-1 bg-yellow-400 rounded-full"></div>
             </h2>
-            <p className="text-xl md:text-2xl lg:text-3xl text-gray-700 mt-4">
-              Save €12,000+ ... and own your private gym?
-            </p>
           </div>
 
           {/* Calculator Component */}
