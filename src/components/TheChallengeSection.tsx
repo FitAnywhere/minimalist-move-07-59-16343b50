@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
-import { X, Check } from 'lucide-react';
+import { X, Check, ArrowDown } from 'lucide-react';
 
 const challenges = [{
   problem: "Too intimidated to start",
@@ -30,6 +30,7 @@ const TheChallengeSection = () => {
     title: false,
     challenges: [false, false, false, false]
   });
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
   useEffect(() => {
     if (isInView) {
@@ -37,20 +38,45 @@ const TheChallengeSection = () => {
         ...prev,
         title: true
       })), 100);
-      challenges.forEach((_, index) => {
-        setTimeout(() => {
+      
+      // Animate the first card
+      setTimeout(() => {
+        setAnimationState(prev => {
+          const updatedChallenges = [...prev.challenges];
+          updatedChallenges[0] = true;
+          return {
+            ...prev,
+            challenges: updatedChallenges
+          };
+        });
+      }, 300);
+    }
+  }, [isInView]);
+
+  // Carousel auto-switching every 2.2 seconds
+  useEffect(() => {
+    if (isInView && animationState.title) {
+      const interval = setInterval(() => {
+        setCurrentCardIndex(prevIndex => {
+          const nextIndex = (prevIndex + 1) % challenges.length;
+          
+          // Animate the next card
           setAnimationState(prev => {
             const updatedChallenges = [...prev.challenges];
-            updatedChallenges[index] = true;
+            updatedChallenges[nextIndex] = true;
             return {
               ...prev,
               challenges: updatedChallenges
             };
           });
-        }, 300 + index * 150);
-      });
+          
+          return nextIndex;
+        });
+      }, 2200);
+
+      return () => clearInterval(interval);
     }
-  }, [isInView]);
+  }, [isInView, animationState.title]);
 
   const handleCTAClick = () => {
     window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
@@ -63,34 +89,36 @@ const TheChallengeSection = () => {
           "text-center mb-16 transition-all duration-1000",
           animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         )}>
-          <h2 className="text-4xl md:text-6xl font-bold mb-4">
-            THE CHALLENGE
+          <h2 className="relative text-4xl md:text-6xl font-bold mb-4 inline-block">
+            EXCUSES DIE HERE
+            <div className="absolute -bottom-2 left-0 right-0 h-1 bg-yellow-400 rounded-full"></div>
           </h2>
           <p className="text-xl text-gray-300">
-            We know what's stopping you
+            WE KNOW WHAT'S STOPPING YOU
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+        {/* Carousel Container */}
+        <div className="relative max-w-2xl mx-auto mb-12 min-h-[200px] flex items-center justify-center">
           {challenges.map((challenge, index) => (
             <div
               key={index}
               className={cn(
-                "bg-gray-900 p-6 rounded-lg transition-all duration-700",
-                animationState.challenges[index] 
-                  ? "opacity-100 translate-y-0" 
-                  : "opacity-0 translate-y-8"
+                "absolute inset-0 bg-gray-900 p-8 md:p-12 rounded-lg transition-all duration-700",
+                currentCardIndex === index && animationState.challenges[index]
+                  ? "opacity-100 translate-y-0 scale-100" 
+                  : "opacity-0 translate-y-8 scale-95 pointer-events-none"
               )}
             >
-              <div className="flex items-center mb-4">
-                <X className="w-6 h-6 text-red-500 mr-3" />
-                <h3 className="text-lg font-semibold text-red-500">
+              <div className="flex items-center mb-6">
+                <X className="w-8 h-8 text-red-500 mr-4" />
+                <h3 className="text-xl md:text-2xl font-semibold text-red-500">
                   {challenge.problem}
                 </h3>
               </div>
               <div className="flex items-center">
-                <Check className="w-6 h-6 text-green-500 mr-3" />
-                <p className="text-green-500 font-medium">
+                <Check className="w-8 h-8 text-yellow-400 mr-4" />
+                <p className="text-yellow-400 font-medium text-lg md:text-xl">
                   {challenge.solution}
                 </p>
               </div>
@@ -101,10 +129,20 @@ const TheChallengeSection = () => {
         <div className="text-center">
           <Button
             onClick={handleCTAClick}
-            className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-4 text-lg"
+            className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-4 text-lg mb-8"
           >
             START YOUR TRANSFORMATION
           </Button>
+          
+          {/* Animated Arrow */}
+          <div className="flex justify-center">
+            <ArrowDown 
+              className="w-8 h-8 text-yellow-400 animate-bounce" 
+              style={{
+                animation: 'bounce 2s infinite'
+              }}
+            />
+          </div>
         </div>
       </div>
     </section>
