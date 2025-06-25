@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -30,9 +29,7 @@ const GymTarget = () => {
                     {/* Solution text with animated arrow */}
                     <div className={cn("transition-all duration-1000 delay-300", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                       <div className="flex items-center mb-6">
-                        <p className="text-xl md:text-2xl font-bold text-black mr-3">
-                          You were never the problem. The system was.
-                        </p>
+                        <p className="text-xl md:text-2xl font-bold text-black mr-3">You weren't weak. The game was rigged.</p>
                         <ChevronRight className="w-6 h-6 text-yellow-400 animate-pulse" />
                       </div>
                     </div>
