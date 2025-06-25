@@ -48,7 +48,7 @@ const TimeAndCostCalculator = () => {
 
           {/* Italic text below comparison table */}
           <div className="text-center mt-4">
-            <p className="text-lg text-gray-700 italic">You’re not buying equipment. You’re becoming the version of yourself you’ve always admired.</p>
+            
           </div>
         </div>
       </div>
