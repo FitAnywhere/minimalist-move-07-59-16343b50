@@ -53,7 +53,7 @@ const TheChallengeSection = () => {
     }
   }, [isInView]);
 
-  // Carousel auto-switching every 2.2 seconds
+  // Carousel auto-switching every 3.5 seconds
   useEffect(() => {
     if (isInView && animationState.title) {
       const interval = setInterval(() => {
@@ -72,7 +72,7 @@ const TheChallengeSection = () => {
           
           return nextIndex;
         });
-      }, 2200);
+      }, 3500);
 
       return () => clearInterval(interval);
     }
@@ -104,7 +104,7 @@ const TheChallengeSection = () => {
             <div
               key={index}
               className={cn(
-                "absolute inset-0 bg-gray-900 p-8 md:p-12 rounded-lg transition-all duration-700",
+                "absolute inset-0 bg-gray-900 border border-yellow-400 p-8 md:p-12 rounded-lg transition-all duration-700",
                 currentCardIndex === index && animationState.challenges[index]
                   ? "opacity-100 translate-y-0 scale-100" 
                   : "opacity-0 translate-y-8 scale-95 pointer-events-none"
@@ -117,8 +117,8 @@ const TheChallengeSection = () => {
                 </h3>
               </div>
               <div className="flex items-center">
-                <Check className="w-8 h-8 text-yellow-400 mr-4" />
-                <p className="text-yellow-400 font-medium text-lg md:text-xl">
+                <Check className="w-8 h-8 text-green-500 mr-4" />
+                <p className="text-green-500 font-medium text-xl md:text-2xl">
                   {challenge.solution}
                 </p>
               </div>
@@ -131,7 +131,7 @@ const TheChallengeSection = () => {
             onClick={handleCTAClick}
             className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-4 text-lg mb-8"
           >
-            START YOUR TRANSFORMATION
+            LET'S F⚡CKING GO
           </Button>
           
           {/* Animated Arrow */}
