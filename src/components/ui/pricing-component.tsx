@@ -56,16 +56,16 @@ function FitAnywherePricing({
   };
   return <div className="w-full max-w-3xl mx-auto md:py-20 py-[67px] my-0 px-0">
             <div className="relative">
-                {/* Desktop Navigation Arrows - smaller and moved further out */}
-                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("hidden md:flex absolute -left-16 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
+                {/* Desktop Navigation Arrows - moved much closer to carousel */}
+                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("hidden md:flex absolute -left-6 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
                     <ChevronLeft className="w-4 h-4" />
                 </button>
 
-                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("hidden md:flex absolute -right-16 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
+                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("hidden md:flex absolute -right-6 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
                     <ChevronRight className="w-4 h-4" />
                 </button>
 
-                {/* Mobile Navigation Arrows - smaller and moved further out */}
+                {/* Mobile Navigation Arrows - unchanged */}
                 <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("md:hidden absolute -left-4 top-1/2 -translate-y-1/2 z-20", "w-6 h-6 flex items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "active:shadow-[1px_1px_0px_0px] active:translate-x-[1px] active:translate-y-[1px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed")}>
                     <ChevronLeft className="w-3 h-3" />
                 </button>
