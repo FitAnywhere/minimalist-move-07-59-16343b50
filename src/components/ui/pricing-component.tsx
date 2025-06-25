@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Check, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -55,22 +56,22 @@ function FitAnywherePricing({
   };
   return <div className="w-full max-w-3xl mx-auto md:py-20 py-[67px] my-0 px-0">
             <div className="relative">
-                {/* Desktop Navigation Arrows */}
-                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("hidden md:flex absolute -left-10 top-1/2 -translate-y-1/2 z-20", "w-12 h-12 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
-                    <ChevronLeft className="w-6 h-6" />
-                </button>
-
-                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("hidden md:flex absolute -right-10 top-1/2 -translate-y-1/2 z-20", "w-12 h-12 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
-                    <ChevronRight className="w-6 h-6" />
-                </button>
-
-                {/* Mobile Navigation Arrows */}
-                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("md:hidden absolute -left-1 top-1/2 -translate-y-1/2 z-20", "w-10 h-10 flex items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "active:shadow-[1px_1px_0px_0px] active:translate-x-[1px] active:translate-y-[1px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed")}>
+                {/* Desktop Navigation Arrows - smaller and moved further out */}
+                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 z-20", "w-10 h-10 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
                     <ChevronLeft className="w-5 h-5" />
                 </button>
 
-                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("md:hidden absolute -right-1 top-1/2 -translate-y-1/2 z-20", "w-10 h-10 flex items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "active:shadow-[1px_1px_0px_0px] active:translate-x-[1px] active:translate-y-[1px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed")}>
+                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 z-20", "w-10 h-10 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
                     <ChevronRight className="w-5 h-5" />
+                </button>
+
+                {/* Mobile Navigation Arrows - smaller and moved further out */}
+                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("md:hidden absolute -left-3 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 flex items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "active:shadow-[1px_1px_0px_0px] active:translate-x-[1px] active:translate-y-[1px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed")}>
+                    <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("md:hidden absolute -right-3 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 flex items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "active:shadow-[1px_1px_0px_0px] active:translate-x-[1px] active:translate-y-[1px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed")}>
+                    <ChevronRight className="w-4 h-4" />
                 </button>
 
                 {/* Carousel Container */}
@@ -133,10 +134,10 @@ function FitAnywherePricing({
         </div>;
 }
 const sampleFitAnywhereTiers: PricingTier[] = [{
-  name: "STARTER",
+  name: "BASIC",
   subtitle: "",
   price: "€599 + VAT",
-  ctaText: "I WANT THIS",
+  ctaText: "BUY NOW",
   features: [{
     text: "Power Station",
     included: true
@@ -151,10 +152,10 @@ const sampleFitAnywhereTiers: PricingTier[] = [{
     included: false
   }]
 }, {
-  name: "LEVEL UP",
+  name: "UPGRADE",
   subtitle: "",
   price: "€699 + VAT",
-  ctaText: "I WANT THIS",
+  ctaText: "BUY NOW",
   features: [{
     text: "Power Station",
     included: true
@@ -170,10 +171,10 @@ const sampleFitAnywhereTiers: PricingTier[] = [{
   }],
   popular: true
 }, {
-  name: "ALL IN",
+  name: "LOCKED IN",
   subtitle: "",
   price: "€799 + VAT",
-  ctaText: "I WANT THIS",
+  ctaText: "BUY NOW",
   features: [{
     text: "Power Station",
     included: true
