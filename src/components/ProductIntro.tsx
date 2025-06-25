@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -94,7 +95,7 @@ const ProductIntro = () => {
                     playsInline 
                     className="w-full rounded-xl aspect-[3/4] object-cover"
                   >
-                    <source src="/boxxingbars.webm" type="video/webm" />
+                    <source src="/0408-Copy-Copy (2)-Copy-Copy.webm" type="video/webm" />
                     Your browser does not support the video tag.
                   </video>
                 </div>
@@ -204,7 +205,7 @@ const ProductIntro = () => {
                         playsInline 
                         className="w-full rounded-xl aspect-[3/4] object-cover"
                       >
-                        <source src="/boxxingbars.webm" type="video/webm" />
+                        <source src="/0408-Copy-Copy (2)-Copy-Copy.webm" type="video/webm" />
                         Your browser does not support the video tag.
                       </video>
                     </div>
