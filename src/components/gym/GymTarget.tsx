@@ -1,13 +1,17 @@
+
 import React, { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ChevronRight } from 'lucide-react';
+
 const GymTarget = () => {
   const targetSectionRef = useRef<HTMLElement>(null);
   const isTargetInView = useInView(targetSectionRef);
   const isMobile = useIsMobile();
-  return <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
+
+  return (
+    <section id="target" ref={targetSectionRef} className="py-24 bg-inherit">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className={cn("text-center transition-all duration-1000", isTargetInView ? "opacity-100" : "opacity-0 translate-y-12")}>
@@ -17,7 +21,8 @@ const GymTarget = () => {
             </h2>
             
             {/* Desktop Layout */}
-            {!isMobile && <>
+            {!isMobile && (
+              <>
                 {/* Single line under title */}
                 <div className={cn("text-center mb-8 transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you</p>
@@ -68,10 +73,12 @@ const GymTarget = () => {
                     </div>
                   </div>
                 </div>
-              </>}
+              </>
+            )}
 
             {/* Mobile Layout */}
-            {isMobile && <>
+            {isMobile && (
+              <>
                 {/* Text above video - restored */}
                 <div className={cn("mb-4 text-center transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you</p>
@@ -90,25 +97,28 @@ const GymTarget = () => {
                 </div>
 
                 {/* Solution text - close to video */}
-                <div className={cn("mb-8 text-center transition-all duration-1000 delay-500", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <div className={cn("mb-4 text-center transition-all duration-1000 delay-500", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black">Take your power back.</p>
                 </div>
 
-                {/* BANDS | PRIVACY | PROGRESS - black, bold, bigger with light yellow background on mobile only */}
-                <div className={cn("mb-2 text-center transition-all duration-1000 delay-600", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                {/* BANDS | PRIVACY | PROGRESS - moved closer to solution text above */}
+                <div className={cn("mb-8 text-center transition-all duration-1000 delay-600", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black md:bg-transparent bg-yellow-50 md:px-0 px-3 md:py-0 py-2 md:rounded-none rounded-lg inline-block">
                     BANDS | PRIVACY | PROGRESS
                   </p>
                 </div>
 
-                {/* Payoff Line - moved lower with more spacing */}
+                {/* Payoff Line - more space above */}
                 <div className={cn("text-center transition-all duration-1000 delay-800", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black italic">You weren't weak. The game was rigged.</p>
                 </div>
-              </>}
+              </>
+            )}
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default GymTarget;
