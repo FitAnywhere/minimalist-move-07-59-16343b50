@@ -1,8 +1,8 @@
-
 import { Button } from "@/components/ui/button";
 import { Check, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import React, { useState, useRef } from "react";
+
 interface PricingFeature {
   text: string;
   included: boolean;
@@ -57,21 +57,21 @@ function FitAnywherePricing({
   return <div className="w-full max-w-3xl mx-auto md:py-20 py-[67px] my-0 px-0">
             <div className="relative">
                 {/* Desktop Navigation Arrows - smaller and moved further out */}
-                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 z-20", "w-10 h-10 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
-                    <ChevronLeft className="w-5 h-5" />
-                </button>
-
-                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 z-20", "w-10 h-10 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
-                    <ChevronRight className="w-5 h-5" />
-                </button>
-
-                {/* Mobile Navigation Arrows - smaller and moved further out */}
-                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("md:hidden absolute -left-3 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 flex items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "active:shadow-[1px_1px_0px_0px] active:translate-x-[1px] active:translate-y-[1px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed")}>
+                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("hidden md:flex absolute -left-16 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
                     <ChevronLeft className="w-4 h-4" />
                 </button>
 
-                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("md:hidden absolute -right-3 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 flex items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "active:shadow-[1px_1px_0px_0px] active:translate-x-[1px] active:translate-y-[1px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed")}>
+                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("hidden md:flex absolute -right-16 top-1/2 -translate-y-1/2 z-20", "w-8 h-8 items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "hover:shadow-[4px_4px_0px_0px] hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-[2px_2px_0px_0px] disabled:hover:translate-x-0 disabled:hover:translate-y-0")}>
                     <ChevronRight className="w-4 h-4" />
+                </button>
+
+                {/* Mobile Navigation Arrows - smaller and moved further out */}
+                <button onClick={goToPrevious} disabled={currentIndex === 0} className={cn("md:hidden absolute -left-4 top-1/2 -translate-y-1/2 z-20", "w-6 h-6 flex items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "active:shadow-[1px_1px_0px_0px] active:translate-x-[1px] active:translate-y-[1px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed")}>
+                    <ChevronLeft className="w-3 h-3" />
+                </button>
+
+                <button onClick={goToNext} disabled={currentIndex === tiers.length - 1} className={cn("md:hidden absolute -right-4 top-1/2 -translate-y-1/2 z-20", "w-6 h-6 flex items-center justify-center rounded-full", "bg-yellow-400 text-black border-2 border-black", "shadow-[2px_2px_0px_0px] shadow-black", "active:shadow-[1px_1px_0px_0px] active:translate-x-[1px] active:translate-y-[1px]", "transition-all duration-200", "disabled:opacity-50 disabled:cursor-not-allowed")}>
+                    <ChevronRight className="w-3 h-3" />
                 </button>
 
                 {/* Carousel Container */}
@@ -86,15 +86,9 @@ function FitAnywherePricing({
                                         </div>}
 
                                     <div className="mb-6 text-center pt-4 py-0">
-                                        <h3 className="text-4xl font-extrabold text-foreground mb-2 py-0 my-[11px]">
-                                            {tier.name}
+                                        <h3 className="text-2xl font-extrabold text-foreground mb-2 py-0 my-[11px]">
+                                            {tier.name} ({tier.price})
                                         </h3>
-                                    </div>
-
-                                    <div className="mb-6 text-center">
-                                        <span className="text-3xl font-bold text-foreground">
-                                            {tier.price}
-                                        </span>
                                     </div>
 
                                     <div className="flex-grow space-y-2 mb-4">
