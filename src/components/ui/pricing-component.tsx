@@ -80,13 +80,12 @@ function FitAnywherePricing({
         }}>
                         {tiers.map((tier, index) => <div key={tier.name} className="w-full flex-shrink-0 px-4">
                                 <div className={cn("relative flex flex-col p-5 rounded-lg border-2", "bg-white shadow-lg max-w-xs mx-auto", "border-yellow-400 shadow-yellow-400/50", "transition-all duration-300 ease-in-out")}>
-                                    {tier.popular && <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-black 
-                                            font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wide shadow-md border-2 border-black z-10 whitespace-nowrap">
+                                    {tier.popular && <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-black font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wide shadow-md border-2 border-black z-10 whitespace-nowrap my-[12px]">
                                             Most Popular
                                         </div>}
 
-                                    <div className="mb-6 text-center pt-4">
-                                        <h3 className="text-4xl font-extrabold text-foreground mb-2">
+                                    <div className="mb-6 text-center pt-4 py-0">
+                                        <h3 className="text-4xl font-extrabold text-foreground mb-2 py-0 my-[11px]">
                                             {tier.name}
                                         </h3>
                                     </div>
