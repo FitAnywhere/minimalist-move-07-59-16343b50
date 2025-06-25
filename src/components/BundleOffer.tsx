@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -89,44 +90,9 @@ const BundleOffer = () => {
           </div>
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-center gap-8")}>
+            {/* Desktop: Pricing Component in Right Column */}
             {!isMobile && <div className="flex flex-col items-center space-y-6 mt-[-20px]">
-                {/* Desktop: UPDATED PRICE LINE with yellow text and black background */}
-                <div className="text-center mb-6">
-                  <div className="inline-block px-4 py-2 bg-black rounded-lg">
-                    <p className="text-2xl font-bold text-yellow">
-                      €830 + VAT
-                    </p>
-                  </div>
-                </div>
-                
-                {/* Desktop: VALUE BREAKDOWN - moved more to the right */}
-                <div className="w-full max-w-sm mb-4 ml-8">
-                  <div className="space-y-2">
-                    {valueBreakdownItems.map((item, index) => <div key={index} className="flex items-center space-x-3">
-                        <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                        <span className="text-gray-800">{item}</span>
-                      </div>)}
-                  </div>
-                </div>
-
-                <Button size="lg" className={cn("bg-yellow hover:bg-yellow-dark text-black px-8 py-5 rounded-full text-xl font-bold tracking-wide w-full", "transition-all duration-300 hover:shadow-md hover:scale-105")} onClick={handleCheckout}>
-                  I WANT THIS GEAR
-                </Button>
-
-                {/* Mobile only: text and arrow in original position */}
-                {isMobile && <div className="text-center mt-8">
-                    <p className="text-gray-600 text-lg font-bold italic">
-                      Still not sure? Don't take our word for it, take theirs.
-                    </p>
-                    {/* Animated yellow downward arrow */}
-                    <div className="flex justify-center mt-4">
-                      <div className="animate-bounce">
-                        <svg className="w-6 h-6 text-yellow" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>}
+                <FitAnywherePricingDemo />
               </div>}
 
             {/* Fixed carousel container with consistent media dimensions - lowered on desktop */}
