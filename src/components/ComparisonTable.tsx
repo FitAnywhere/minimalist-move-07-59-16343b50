@@ -63,6 +63,13 @@ const ComparisonTable = () => {
         </div>
       </div>
 
+      {/* New bold text below comparison table */}
+      <div className="text-center mt-8 mb-4">
+        <p className="text-lg md:text-xl font-bold text-gray-900">
+          Most people rent their strength. You can buy yours — forever.
+        </p>
+      </div>
+
       {/* CTA Section */}
       <div className="text-center mt-12 mb-4">
         <div className="flex justify-center">
