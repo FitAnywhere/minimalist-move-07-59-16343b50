@@ -1,4 +1,5 @@
 
+
 import React, { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -97,7 +98,7 @@ const GymTarget = () => {
                 </div>
 
                 {/* Solution text - close to video */}
-                <div className={cn("mb-4 text-center transition-all duration-1000 delay-500", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <div className={cn("mb-2 text-center transition-all duration-1000 delay-500", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black">Take your power back.</p>
                 </div>
 
@@ -122,3 +123,4 @@ const GymTarget = () => {
 };
 
 export default GymTarget;
+
