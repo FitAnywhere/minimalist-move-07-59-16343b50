@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
@@ -98,9 +99,9 @@ const GymTarget = () => {
                   <p className="text-lg font-bold text-black">You weren't weak. The game was rigged.</p>
                 </div>
 
-                {/* BANDS | PRIVACY | PROGRESS - black, bold, bigger */}
+                {/* BANDS | PRIVACY | PROGRESS - black, bold, bigger with light yellow background on mobile only */}
                 <div className={cn("mb-2 text-center transition-all duration-1000 delay-600", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg font-bold text-black">
+                  <p className="text-lg font-bold text-black md:bg-transparent bg-yellow-50 md:px-0 px-3 md:py-0 py-2 md:rounded-none rounded-lg inline-block">
                     BANDS | PRIVACY | PROGRESS
                   </p>
                 </div>
