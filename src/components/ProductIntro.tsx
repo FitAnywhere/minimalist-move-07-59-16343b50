@@ -55,7 +55,7 @@ const ProductIntro = () => {
               <div className={cn("text-center transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="space-y-4 max-w-md mx-auto">
                   {/* Subtitle - CAPS on mobile */}
-                  <p className="text-lg text-black font-bold uppercase">WIN FROM HOME</p>
+                  <p className="text-lg text-black font-bold uppercase">WIN AT HOME</p>
                   
                   {/* Single line bullet point */}
                   <p className="text-lg text-black leading-relaxed">
@@ -76,9 +76,7 @@ const ProductIntro = () => {
 
               {/* Mobile-only text below video */}
               <div className={cn("text-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <p className="text-lg font-bold text-black tracking-wide leading-tight">
-                  SET IT UP. WIN FROM HOME.
-                </p>
+                
               </div>
 
               {/* Final Text - italic and proper capitalization */}
