@@ -91,7 +91,7 @@ const GymTarget = () => {
 
                 {/* Solution text - close to video */}
                 <div className={cn("mb-8 text-center transition-all duration-1000 delay-500", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg font-bold text-black">You weren't weak. The game was rigged.</p>
+                  <p className="text-lg font-bold text-black">Take your power back.</p>
                 </div>
 
                 {/* BANDS | PRIVACY | PROGRESS - black, bold, bigger with light yellow background on mobile only */}
