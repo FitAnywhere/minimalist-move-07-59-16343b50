@@ -10,6 +10,7 @@ const OneTruthSection = () => {
   const isInView = useInView(sectionRef);
   const isMobile = useIsMobile();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
   useEffect(() => {
     if (!isInView) return;
     const interval = setInterval(() => {
@@ -69,31 +70,61 @@ const OneTruthSection = () => {
       <div className={cn(
         "transition-all duration-1000 transform space-y-4",
         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
-        isMobile ? "text-left" : "text-left"
+        isMobile ? "text-center" : "text-left"
       )} style={{ animationDelay: "200ms" }}>
         <div className="space-y-6">
           <div className="space-y-1">
-            <div className="flex items-center gap-3">
-              <div className="w-3 h-3 bg-yellow-400 rounded-full flex-shrink-0 mt-0.5"></div>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                +73 different exercises?
-              </p>
-            </div>
-            <p className="text-lg text-gray-700 leading-relaxed italic pl-6">
-              That's okay.
-            </p>
+            {/* Mobile version without yellow dots, centered */}
+            {isMobile ? (
+              <>
+                <p className="text-lg text-gray-700 leading-relaxed font-bold">
+                  ENDLESS EXERCISES?
+                </p>
+                <p className="text-lg text-gray-700 leading-relaxed italic">
+                  That's okay.
+                </p>
+              </>
+            ) : (
+              /* Desktop version with yellow dots, left-aligned */
+              <>
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 bg-yellow-400 rounded-full flex-shrink-0 mt-0.5"></div>
+                  <p className="text-lg text-gray-700 leading-relaxed font-bold">
+                    ENDLESS EXERCISES?
+                  </p>
+                </div>
+                <p className="text-lg text-gray-700 leading-relaxed italic pl-6">
+                  That's okay.
+                </p>
+              </>
+            )}
           </div>
           
           <div className="space-y-1">
-            <div className="flex items-center gap-3">
-              <div className="w-3 h-3 bg-yellow-400 rounded-full flex-shrink-0 mt-0.5"></div>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                Real strength? = 4 core moves done right.
-              </p>
-            </div>
-            <p className="text-lg text-gray-700 leading-relaxed italic pl-6">
-              That's it!
-            </p>
+            {/* Mobile version without yellow dots, centered */}
+            {isMobile ? (
+              <>
+                <p className="text-lg text-gray-700 leading-relaxed font-bold">
+                  REAL STRENGTH?
+                </p>
+                <p className="text-lg text-gray-700 leading-relaxed italic">
+                  Few moves done right.
+                </p>
+              </>
+            ) : (
+              /* Desktop version with yellow dots, left-aligned */
+              <>
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 bg-yellow-400 rounded-full flex-shrink-0 mt-0.5"></div>
+                  <p className="text-lg text-gray-700 leading-relaxed font-bold">
+                    REAL STRENGTH?
+                  </p>
+                </div>
+                <p className="text-lg text-gray-700 leading-relaxed italic pl-6">
+                  Few moves done right.
+                </p>
+              </>
+            )}
           </div>
         </div>
       </div>
