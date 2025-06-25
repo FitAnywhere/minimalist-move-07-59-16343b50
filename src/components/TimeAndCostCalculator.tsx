@@ -40,9 +40,7 @@ const TimeAndCostCalculator = () => {
 
           {/* Bold text above comparison table */}
           <div className="text-center mb-8">
-            <h3 className="text-xl md:text-2xl font-bold text-gray-900">
-              WHY PAY THOUSANDS TO LOSE YOUR SPACE?
-            </h3>
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900">STOP OVERPAYING TO LOSE YOUR SPACE</h3>
           </div>
 
           {/* Comparison Table */}
