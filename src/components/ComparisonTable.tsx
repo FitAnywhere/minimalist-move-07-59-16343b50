@@ -16,7 +16,7 @@ const ComparisonTable = () => {
         {/* Header */}
         <div className="grid grid-cols-2 bg-gray-50 border-b-2 border-black">
           <div className="py-4 px-6 text-center font-bold">
-            FitAnywhere (€990)
+            CHOOSE US (€699)
           </div>
           <div className="py-4 px-6 text-center font-bold border-l-2 border-black">
             Home Park (€5,000+)
