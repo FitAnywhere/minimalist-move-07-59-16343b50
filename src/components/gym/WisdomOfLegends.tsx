@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -100,9 +101,9 @@ const WisdomOfLegends = () => {
 
           {/* Social Proof Section */}
           <div className="max-w-lg mx-auto text-center">
-            {/* Customer Image - 3x bigger, 3:4 aspect ratio, rounded edges, thin black border */}
-            <div className={cn("mb-6 transition-all duration-800", animationState.image ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
-              <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750947270/Izdelek_brez_naslova_-_2025-06-26T161419.256_t4lzso.png" alt="Customer testimonial" className="w-72 h-96 md:w-80 md:h-[26.67rem] mx-auto object-cover shadow-lg border border-black rounded-3xl" />
+            {/* Customer Image - smaller size (20-25% reduction), with margin-top for spacing */}
+            <div className={cn("mb-6 mt-8 transition-all duration-800", animationState.image ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
+              <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750947270/Izdelek_brez_naslova_-_2025-06-26T161419.256_t4lzso.png" alt="Customer testimonial" className="w-56 h-72 md:w-64 md:h-80 mx-auto object-cover shadow-lg border border-black rounded-3xl" />
             </div>
 
             {/* Testimonial Quote */}
