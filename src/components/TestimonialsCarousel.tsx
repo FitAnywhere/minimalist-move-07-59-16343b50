@@ -5,17 +5,20 @@ import { Star } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { CircularTestimonials } from '@/components/ui/circular-testimonials';
+
 interface Testimonial {
   name: string;
   quote: string;
   imageUrl: string;
 }
+
 interface CircularTestimonial {
   quote: string;
   name: string;
   designation: string;
   src: string;
 }
+
 const testimonials: Testimonial[] = [{
   name: "Emily T.",
   quote: "Didn't think 15 minutes a day could do this much",
@@ -41,6 +44,7 @@ const testimonials: Testimonial[] = [{
   quote: "I turn on speaker and grow muscle on my terrace.",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
 }];
+
 const circularTestimonials: CircularTestimonial[] = [{
   quote: "Didn't think 15 minutes a day could do this much",
   name: "Emily T.",
@@ -72,6 +76,7 @@ const circularTestimonials: CircularTestimonial[] = [{
   designation: "Customer",
   src: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
 }];
+
 const TestimonialImage = memo(({
   imageUrl
 }: {
@@ -88,29 +93,39 @@ const TestimonialImage = memo(({
   const smallUrl = getResponsiveUrl(imageUrl, 300);
   const mediumUrl = getResponsiveUrl(imageUrl, 400);
   const largeUrl = getResponsiveUrl(imageUrl, 600);
-  return <picture>
+  
+  return (
+    <picture>
       <source media="(max-width: 480px)" srcSet={smallUrl} />
       <source media="(max-width: 768px)" srcSet={mediumUrl} />
       <img src={largeUrl} alt="Testimonial" className="w-full h-full object-cover" loading="lazy" />
-    </picture>;
+    </picture>
+  );
 });
+
 TestimonialImage.displayName = 'TestimonialImage';
+
 const TestimonialCard = ({
   testimonial
 }: {
   testimonial: Testimonial;
 }) => {
-  return <div className="flex flex-col overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
+  return (
+    <div className="flex flex-col overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
       <TestimonialImage imageUrl={testimonial.imageUrl} />
-    </div>;
+    </div>
+  );
 };
+
 const TestimonialsCarousel = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
-  return <section ref={containerRef} id="testimonials" className="py-16" style={{
-    backgroundColor: '#f6f6f6'
-  }}>
+
+  return (
+    <section ref={containerRef} id="testimonials" className="py-16" style={{
+      backgroundColor: '#f6f6f6'
+    }}>
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
@@ -122,13 +137,17 @@ const TestimonialsCarousel = () => {
           
           <div className={cn("relative transition-all duration-500", isInView ? "opacity-100" : "opacity-0 translate-y-4")}>
             <Carousel opts={{
-            loop: true,
-            align: "start",
-            skipSnaps: false,
-            dragFree: true
-          }}>
+              loop: true,
+              align: "start",
+              skipSnaps: false,
+              dragFree: true
+            }}>
               <CarouselContent>
-                {testimonials.map((testimonial, index) => {})}
+                {testimonials.map((testimonial, index) => (
+                  <CarouselItem key={index}>
+                    <TestimonialCard testimonial={testimonial} />
+                  </CarouselItem>
+                ))}
               </CarouselContent>
             </Carousel>
             
@@ -140,22 +159,29 @@ const TestimonialsCarousel = () => {
           {/* New Circular Testimonials Section */}
           <div className="mt-16">
             <div className="flex justify-center">
-              <CircularTestimonials testimonials={circularTestimonials} autoplay={true} colors={{
-              name: "#0a0a0a",
-              designation: "#454545",
-              testimony: "#171717",
-              arrowBackground: "#141414",
-              arrowForeground: "#f1f1f7",
-              arrowHoverBackground: "#00A6FB"
-            }} fontSizes={{
-              name: "28px",
-              designation: "20px",
-              quote: "20px"
-            }} />
+              <CircularTestimonials 
+                testimonials={circularTestimonials} 
+                autoplay={true} 
+                colors={{
+                  name: "#0a0a0a",
+                  designation: "#454545",
+                  testimony: "#171717",
+                  arrowBackground: "#141414",
+                  arrowForeground: "#f1f1f7",
+                  arrowHoverBackground: "#00A6FB"
+                }} 
+                fontSizes={{
+                  name: "28px",
+                  designation: "20px",
+                  quote: "20px"
+                }} 
+              />
             </div>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default TestimonialsCarousel;
