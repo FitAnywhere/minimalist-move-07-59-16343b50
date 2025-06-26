@@ -1,3 +1,4 @@
+
 "use client";
 import React, {
   useEffect,
@@ -175,6 +176,9 @@ export const CircularTestimonials = ({
     exit: { opacity: 0, y: -20 },
   };
 
+  // Check if mobile
+  const isMobile = containerWidth < 768;
+
   // CSS-in-JS styles
   const containerStyles: React.CSSProperties = {
     width: '100%',
@@ -182,18 +186,34 @@ export const CircularTestimonials = ({
     padding: '2rem',
   };
 
+  // Updated grid styles for proper desktop layout
   const gridStyles: React.CSSProperties = {
-    display: 'grid',
-    gap: containerWidth < 768 ? '2rem' : '5rem', // Reduced gap on mobile from 5rem to 2rem
+    display: 'flex',
+    ...(isMobile ? {
+      flexDirection: 'column',
+      gap: '2rem',
+      alignItems: 'center'
+    } : {
+      flexDirection: 'row',
+      gap: '3rem',
+      alignItems: 'center'
+    })
   };
 
+  // Updated image container styles - smaller on desktop
   const imageContainerStyles: React.CSSProperties = {
     position: 'relative',
-    width: '75%', // Reduced from 100% to 75% (25% smaller)
-    height: '0',
-    paddingBottom: '100%', // Reduced from 133.33% to 100% (3:4 ratio maintained but 25% smaller)
+    ...(isMobile ? {
+      width: '75%',
+      height: '0',
+      paddingBottom: '100%',
+      margin: '0 auto'
+    } : {
+      width: '350px',
+      height: '350px',
+      flexShrink: 0
+    }),
     perspective: '1000px',
-    margin: '0 auto', // Center the container
   };
 
   const imageStyles: React.CSSProperties = {
@@ -207,27 +227,40 @@ export const CircularTestimonials = ({
     boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
   };
 
+  // Updated content styles for desktop layout
   const contentStyles: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    ...(containerWidth < 768 && { textAlign: 'center' }), // Center text on mobile only
+    justifyContent: 'center',
+    ...(isMobile ? { 
+      textAlign: 'center',
+      width: '100%'
+    } : {
+      flex: 1,
+      textAlign: 'left'
+    }),
   };
 
   const nameStyles: React.CSSProperties = {
     fontWeight: 'bold',
-    marginBottom: containerWidth < 768 ? '1rem' : '2rem', // Reduced spacing on mobile from 2rem to 1rem
+    marginBottom: isMobile ? '1rem' : '1.5rem',
   };
 
   const quoteStyles: React.CSSProperties = {
     lineHeight: 1.75,
+    marginBottom: isMobile ? '1.5rem' : '2rem',
   };
 
   const arrowButtonsStyles: React.CSSProperties = {
     display: 'flex',
     gap: '1.5rem',
-    paddingTop: containerWidth < 768 ? '1.5rem' : '3rem', // Reduced spacing on mobile from 3rem to 1.5rem
-    justifyContent: 'center', // Center the arrows on mobile
+    ...(isMobile ? {
+      paddingTop: '1.5rem',
+      justifyContent: 'center'
+    } : {
+      paddingTop: '0',
+      justifyContent: 'flex-start'
+    }),
   };
 
   const arrowButtonStyles: React.CSSProperties = {
@@ -242,24 +275,9 @@ export const CircularTestimonials = ({
     border: 'none',
   };
 
-  // Media query styles for desktop
-  const isDesktop = containerWidth >= 768;
-  const responsiveGridStyles: React.CSSProperties = {
-    ...gridStyles,
-    ...(isDesktop && { gridTemplateColumns: '1fr 1fr' }),
-  };
-
-  const responsiveArrowButtonsStyles: React.CSSProperties = {
-    ...arrowButtonsStyles,
-    ...(isDesktop && { 
-      paddingTop: '0',
-      justifyContent: 'flex-start' // Left align on desktop
-    }),
-  };
-
   return (
     <div style={containerStyles}>
-      <div style={responsiveGridStyles}>
+      <div style={gridStyles}>
         {/* Images */}
         <div style={imageContainerStyles} ref={imageContainerRef}>
           {testimonials.map((testimonial, index) => (
@@ -295,7 +313,6 @@ export const CircularTestimonials = ({
               >
                 {activeTestimonial.name}
               </h3>
-              {/* Removed designation paragraph */}
               <motion.p
                 style={{ 
                   ...quoteStyles,
@@ -329,7 +346,7 @@ export const CircularTestimonials = ({
               </motion.p>
             </motion.div>
           </AnimatePresence>
-          <div style={responsiveArrowButtonsStyles}>
+          <div style={arrowButtonsStyles}>
             <button
               style={{
                 ...arrowButtonStyles,
