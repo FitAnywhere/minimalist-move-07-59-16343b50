@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -70,7 +69,7 @@ const WisdomOfLegends = () => {
 
           {/* Subtitle */}
           <div className={cn("text-center mb-8 transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-            <p className="text-lg md:text-xl text-gray-700 font-medium">
+            <p className="text-lg md:text-xl text-gray-700 font-bold">
               Try it. Break it. Return it.
             </p>
           </div>
