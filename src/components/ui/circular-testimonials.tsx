@@ -187,39 +187,20 @@ export const CircularTestimonials = ({
     gap: '5rem',
   };
 
-  // Check if we're on desktop (768px and above)
-  const isDesktop = containerWidth >= 768;
-
   const imageContainerStyles: React.CSSProperties = {
     position: 'relative',
     width: '100%',
-    // Use responsive height on mobile, fixed on desktop
-    ...(isDesktop ? {
-      height: '28rem', // Fixed height on desktop for zoom consistency
-    } : {
-      height: '0',
-      paddingBottom: '133.33%', // 3:4 aspect ratio on mobile
-    }),
+    height: '0',
+    paddingBottom: '133.33%', // 3:4 aspect ratio (4/3 * 100)
     perspective: '1000px',
   };
 
   const imageStyles: React.CSSProperties = {
     position: 'absolute',
-    ...(isDesktop ? {
-      // Fixed positioning and dimensions on desktop
-      top: '50%',
-      left: '50%',
-      width: '21rem',
-      height: '28rem',
-      transform: 'translate(-50%, -50%)',
-    } : {
-      // Responsive positioning on mobile
-      top: '0',
-      left: '0',
-      width: '100%',
-      height: '100%',
-      transform: 'none',
-    }),
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
     objectFit: 'cover',
     borderRadius: '1.5rem',
     boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
@@ -260,6 +241,7 @@ export const CircularTestimonials = ({
   };
 
   // Media query styles for desktop
+  const isDesktop = containerWidth >= 768;
   const responsiveGridStyles: React.CSSProperties = {
     ...gridStyles,
     ...(isDesktop && { gridTemplateColumns: '1fr 1fr' }),
