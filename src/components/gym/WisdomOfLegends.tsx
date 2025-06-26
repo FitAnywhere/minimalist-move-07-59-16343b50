@@ -85,7 +85,7 @@ const WisdomOfLegends = () => {
           </div>
 
           {/* Bullet Points */}
-          <div className="max-w-2xl mx-auto space-y-4 mb-12 px-[181px]">
+          <div className="max-w-2xl mx-auto space-y-4 mb-12 px-0 md:px-[181px]">
             {bulletPoints.map((point, index) => <div key={index} className={cn("flex items-center gap-4 transition-all duration-500", animationState.bullets[index] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")} style={{
             transitionDelay: `${index * 200}ms`
           }}>
