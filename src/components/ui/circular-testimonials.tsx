@@ -1,3 +1,4 @@
+
 "use client";
 import React, {
   useEffect,
@@ -189,10 +190,11 @@ export const CircularTestimonials = ({
 
   const imageContainerStyles: React.CSSProperties = {
     position: 'relative',
-    width: '100%',
+    width: '75%', // Reduced from 100% to 75% (25% smaller)
     height: '0',
-    paddingBottom: '133.33%', // 3:4 aspect ratio (4/3 * 100)
+    paddingBottom: '100%', // Reduced from 133.33% to 100% (3:4 ratio maintained but 25% smaller)
     perspective: '1000px',
+    margin: '0 auto', // Center the container
   };
 
   const imageStyles: React.CSSProperties = {
