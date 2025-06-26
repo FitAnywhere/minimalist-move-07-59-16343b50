@@ -5,17 +5,20 @@ import { Star } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { CircularTestimonials } from '@/components/ui/circular-testimonials';
+
 interface Testimonial {
   name: string;
   quote: string;
   imageUrl: string;
 }
+
 interface CircularTestimonial {
   quote: string;
   name: string;
   designation: string;
   src: string;
 }
+
 const testimonials: Testimonial[] = [{
   name: "Emily T.",
   quote: "Didn't think 15 minutes a day could do this much",
@@ -41,6 +44,7 @@ const testimonials: Testimonial[] = [{
   quote: "I turn on speaker and grow muscle on my terrace.",
   imageUrl: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
 }];
+
 const circularTestimonials: CircularTestimonial[] = [{
   quote: "Didn't think 15 minutes a day could do this much",
   name: "Emily T.",
@@ -72,6 +76,7 @@ const circularTestimonials: CircularTestimonial[] = [{
   designation: "Customer",
   src: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
 }];
+
 const TestimonialImage = memo(({
   imageUrl
 }: {
@@ -79,36 +84,54 @@ const TestimonialImage = memo(({
 }) => {
   const width = 400;
   const height = 600;
+  
   const getResponsiveUrl = (url: string, width: number) => {
     if (url.includes('f_auto,q_auto')) {
       return url.replace('f_auto,q_auto', `f_auto,q_auto,w_${width}`);
     }
     return url;
   };
+  
   const smallUrl = getResponsiveUrl(imageUrl, 300);
   const mediumUrl = getResponsiveUrl(imageUrl, 400);
   const largeUrl = getResponsiveUrl(imageUrl, 600);
-  return;
+  
+  return (
+    <picture>
+      <source media="(max-width: 480px)" srcSet={smallUrl} />
+      <source media="(max-width: 768px)" srcSet={mediumUrl} />
+      <img 
+        src={largeUrl}
+        alt="Testimonial"
+        className="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </picture>
+  );
 });
+
 TestimonialImage.displayName = 'TestimonialImage';
+
 const TestimonialCard = ({
   testimonial
 }: {
   testimonial: Testimonial;
 }) => {
-  return <div className="flex flex-col overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
+  return (
+    <div className="flex flex-col overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-black rounded-t-xl">
       <TestimonialImage imageUrl={testimonial.imageUrl} />
-      
-      
-    </div>;
+    </div>
+  );
 };
+
 const TestimonialsCarousel = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
   const isMobile = useIsMobile();
-  return <section ref={containerRef} id="testimonials" className="py-16" style={{
-    backgroundColor: '#f6f6f6'
-  }}>
+  return (
+    <section ref={containerRef} id="testimonials" className="py-16" style={{
+      backgroundColor: '#f6f6f6'
+    }}>
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
@@ -130,8 +153,6 @@ const TestimonialsCarousel = () => {
                     <TestimonialCard testimonial={testimonial} />
                   </CarouselItem>)}
               </CarouselContent>
-              
-              
             </Carousel>
             
             <div className="text-center mt-8">
@@ -158,6 +179,8 @@ const TestimonialsCarousel = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default TestimonialsCarousel;
