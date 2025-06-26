@@ -88,15 +88,7 @@ const TestimonialImage = memo(({
   const smallUrl = getResponsiveUrl(imageUrl, 300);
   const mediumUrl = getResponsiveUrl(imageUrl, 400);
   const largeUrl = getResponsiveUrl(imageUrl, 600);
-  return <div className="relative w-full" style={{
-    paddingBottom: '150%'
-  }}>
-      <img src={imageUrl} alt="Testimonial" className="absolute inset-0 w-full h-full object-cover rounded-t-xl" loading="lazy" width={width} height={height} srcSet={`
-          ${smallUrl} 300w,
-          ${mediumUrl} 400w,
-          ${largeUrl} 600w
-        `} sizes="(max-width: 640px) 300px, (max-width: 768px) 400px, 600px" />
-    </div>;
+  return;
 });
 TestimonialImage.displayName = 'TestimonialImage';
 const TestimonialCard = ({
@@ -134,11 +126,9 @@ const TestimonialsCarousel = () => {
             dragFree: true
           }}>
               <CarouselContent>
-                {testimonials.map((testimonial, index) => (
-                  <CarouselItem key={index}>
+                {testimonials.map((testimonial, index) => <CarouselItem key={index}>
                     <TestimonialCard testimonial={testimonial} />
-                  </CarouselItem>
-                ))}
+                  </CarouselItem>)}
               </CarouselContent>
               
               
