@@ -132,7 +132,7 @@ const WisdomOfLegends = () => {
 
           {/* Social Proof Section */}
           <div className="max-w-lg mx-auto text-center">
-            {/* Customer Image - Bigger with Yellow Border */}
+            {/* Customer Image - 3x bigger, 3:4 aspect ratio, rounded edges, thin black border */}
             <div className={cn(
               "mb-6 transition-all duration-800",
               animationState.image ? "opacity-100 scale-100" : "opacity-0 scale-95"
@@ -140,7 +140,7 @@ const WisdomOfLegends = () => {
               <img
                 src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750947270/Izdelek_brez_naslova_-_2025-06-26T161419.256_t4lzso.png"
                 alt="Customer testimonial"
-                className="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto object-cover shadow-lg border-4 border-yellow-400"
+                className="w-72 h-96 md:w-80 md:h-[26.67rem] mx-auto object-cover shadow-lg border border-black rounded-3xl"
               />
             </div>
 
