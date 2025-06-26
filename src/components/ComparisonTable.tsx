@@ -1,4 +1,3 @@
-
 import { Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -11,15 +10,16 @@ const ComparisonTable = () => {
   };
   const borderClass = isMobile ? "border-2" : "border";
   
-  return <div className="w-full max-w-5xl mx-auto mb-16">
+  return (
+    <div className="w-full max-w-5xl mx-auto mb-16">
       <div className={`${borderClass} border-black rounded-xl overflow-hidden shadow-md`}>
         {/* Header */}
-        <div className="grid grid-cols-2 bg-gray-50 border-b-2 border-black">
-          <div className="py-4 px-6 text-center font-bold">
+        <div className="grid grid-cols-2 border-b-2 border-black">
+          <div className="py-4 px-6 text-center font-bold bg-black text-yellow-400">
             CHOOSE US (€699)
           </div>
-          <div className="py-4 px-6 text-center font-bold border-l-2 border-black">
-            Home Park (€5,000+)
+          <div className="py-4 px-6 text-center font-bold border-l-2 border-black bg-black text-yellow-400">
+            Home Park (€3,500+)
           </div>
         </div>
 
@@ -75,7 +75,8 @@ const ComparisonTable = () => {
         <div className="flex justify-center">
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default ComparisonTable;
