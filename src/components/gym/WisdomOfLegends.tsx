@@ -1,8 +1,10 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Check, Shield } from 'lucide-react';
+
 const WisdomOfLegends = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef);
@@ -15,7 +17,9 @@ const WisdomOfLegends = () => {
     image: false,
     quote: false
   });
+
   const bulletPoints = ["30 DAYS RISK-FREE", "3 YEARS FRAME GUARANTEE", "PAY LATER AVAILABLE"];
+
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -54,9 +58,11 @@ const WisdomOfLegends = () => {
       })), 1700);
     }
   }, [isInView]);
-  return <section ref={sectionRef} className="py-16" style={{
-    backgroundColor: '#f6f6f6'
-  }}>
+
+  return (
+    <section ref={sectionRef} className="py-16" style={{
+      backgroundColor: '#f6f6f6'
+    }}>
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           {/* Section Title */}
@@ -74,44 +80,58 @@ const WisdomOfLegends = () => {
             </p>
           </div>
 
-          {/* Guarantee Icon */}
-          <div className={cn("flex justify-center mb-8 transition-all duration-800", animationState.icon ? "opacity-100 scale-100" : "opacity-0 scale-75")}>
-            <div className="relative">
-              <Shield className="w-16 h-16 text-green-500 drop-shadow-lg" strokeWidth={1.5} />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Check className="w-6 h-6 text-green-600" strokeWidth={3} />
-              </div>
-            </div>
-          </div>
-
           {/* Bullet Points */}
           <div className="max-w-2xl mx-auto space-y-4 mb-12 px-0 md:px-[181px]">
-            {bulletPoints.map((point, index) => <div key={index} className={cn("flex items-center gap-4 transition-all duration-500", animationState.bullets[index] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")} style={{
-            transitionDelay: `${index * 200}ms`
-          }}>
+            {bulletPoints.map((point, index) => (
+              <div 
+                key={index} 
+                className={cn("flex items-center gap-4 transition-all duration-500", animationState.bullets[index] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")} 
+                style={{
+                  transitionDelay: `${index * 200}ms`
+                }}
+              >
                 <div className="flex-shrink-0">
                   <Check className="w-6 h-6 text-green-500" strokeWidth={2.5} />
                 </div>
                 <p className="text-lg md:text-xl text-black">
                   {point}
                 </p>
-              </div>)}
+              </div>
+            ))}
           </div>
 
           {/* Social Proof Section */}
           <div className="max-w-lg mx-auto text-center">
             {/* Customer Image - smaller size (20-25% reduction), with margin-top for spacing */}
             <div className={cn("mb-6 mt-8 transition-all duration-800", animationState.image ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
-              <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750947270/Izdelek_brez_naslova_-_2025-06-26T161419.256_t4lzso.png" alt="Customer testimonial" className="w-56 h-72 md:w-64 md:h-80 mx-auto object-cover shadow-lg border border-black rounded-3xl" />
+              <img 
+                src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750947270/Izdelek_brez_naslova_-_2025-06-26T161419.256_t4lzso.png" 
+                alt="Customer testimonial" 
+                className="w-56 h-72 md:w-64 md:h-80 mx-auto object-cover shadow-lg border border-black rounded-3xl" 
+              />
             </div>
 
             {/* Testimonial Quote */}
-            <div className={cn("transition-all duration-800", animationState.quote ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-              <blockquote className="text-lg md:text-xl text-gray-700 italic font-medium leading-relaxed">"Didn't think I'd keep it... To return it now? No chance."</blockquote>
+            <div className={cn("mb-6 transition-all duration-800", animationState.quote ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+              <blockquote className="text-lg md:text-xl text-gray-700 italic font-medium leading-relaxed">
+                "Didn't think I'd keep it... To return it now? No chance."
+              </blockquote>
+            </div>
+
+            {/* Guarantee Icon - moved below the quote */}
+            <div className={cn("flex justify-center transition-all duration-800", animationState.icon ? "opacity-100 scale-100" : "opacity-0 scale-75")}>
+              <div className="relative">
+                <Shield className="w-16 h-16 text-green-500 drop-shadow-lg" strokeWidth={1.5} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Check className="w-6 h-6 text-green-600" strokeWidth={3} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default WisdomOfLegends;
