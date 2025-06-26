@@ -150,7 +150,7 @@ const WisdomOfLegends = () => {
               animationState.quote ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             )}>
               <blockquote className="text-lg md:text-xl text-gray-700 italic font-medium leading-relaxed">
-                "Didn't think I'd keep it... using it every day now. Return? No chance."
+                "Didn't think I'd keep it... To return it? No chance."
               </blockquote>
             </div>
           </div>
