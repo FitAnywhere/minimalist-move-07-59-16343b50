@@ -12,6 +12,7 @@ const WisdomOfLegends = () => {
   
   const [animationState, setAnimationState] = useState({
     title: false,
+    subtitle: false,
     icon: false,
     bullets: [false, false, false],
     image: false,
@@ -29,8 +30,13 @@ const WisdomOfLegends = () => {
 
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
+        subtitle: true
+      })), 300);
+
+      setTimeout(() => setAnimationState(prev => ({
+        ...prev,
         icon: true
-      })), 200);
+      })), 500);
 
       bulletPoints.forEach((_, index) => {
         setTimeout(() => {
@@ -42,19 +48,19 @@ const WisdomOfLegends = () => {
               bullets: updatedBullets
             };
           });
-        }, 400 + index * 200);
+        }, 700 + index * 200);
       });
 
       // Add animations for image and quote
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         image: true
-      })), 1200);
+      })), 1500);
 
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         quote: true
-      })), 1400);
+      })), 1700);
     }
   }, [isInView]);
 
@@ -66,16 +72,26 @@ const WisdomOfLegends = () => {
         <div className="max-w-5xl mx-auto">
           {/* Section Title */}
           <div className={cn(
-            "text-center mb-8 transition-all duration-1000",
+            "text-center mb-4 transition-all duration-1000",
             animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
-              TRY IT. BREAK IT. RETURN IT.
+              NO REGRETS
               <span className={cn(
                 "absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000",
                 animationState.title ? "scale-x-100" : "scale-x-0"
               )}></span>
             </h2>
+          </div>
+
+          {/* Subtitle */}
+          <div className={cn(
+            "text-center mb-8 transition-all duration-1000",
+            animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}>
+            <p className="text-lg md:text-xl text-gray-700 font-medium">
+              Try it. Break it. Return it.
+            </p>
           </div>
 
           {/* Guarantee Icon */}
@@ -116,7 +132,7 @@ const WisdomOfLegends = () => {
 
           {/* Social Proof Section */}
           <div className="max-w-lg mx-auto text-center">
-            {/* Customer Image */}
+            {/* Customer Image - Bigger with Yellow Border */}
             <div className={cn(
               "mb-6 transition-all duration-800",
               animationState.image ? "opacity-100 scale-100" : "opacity-0 scale-95"
@@ -124,7 +140,7 @@ const WisdomOfLegends = () => {
               <img
                 src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750947270/Izdelek_brez_naslova_-_2025-06-26T161419.256_t4lzso.png"
                 alt="Customer testimonial"
-                className="w-20 h-20 md:w-24 md:h-24 rounded-full mx-auto object-cover shadow-lg border-4 border-white"
+                className="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto object-cover shadow-lg border-4 border-yellow-400"
               />
             </div>
 
