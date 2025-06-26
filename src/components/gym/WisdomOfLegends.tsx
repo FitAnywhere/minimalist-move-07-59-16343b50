@@ -1,10 +1,8 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Check, Shield } from 'lucide-react';
-
 const WisdomOfLegends = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef);
@@ -14,25 +12,17 @@ const WisdomOfLegends = () => {
     icon: false,
     bullets: [false, false, false]
   });
-
-  const bulletPoints = [
-    "30 DAYS RISK-FREE",
-    "3 YEARS FRAME GUARANTEE", 
-    "PAY LATER AVAILABLE"
-  ];
-
+  const bulletPoints = ["30 DAYS RISK-FREE", "3 YEARS FRAME GUARANTEE", "PAY LATER AVAILABLE"];
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         title: true
       })), 100);
-
       setTimeout(() => setAnimationState(prev => ({
         ...prev,
         icon: true
       })), 200);
-      
       bulletPoints.forEach((_, index) => {
         setTimeout(() => {
           setAnimationState(prev => {
@@ -47,9 +37,9 @@ const WisdomOfLegends = () => {
       });
     }
   }, [isInView]);
-
-  return (
-    <section ref={sectionRef} className="py-16" style={{ backgroundColor: '#f6f6f6' }}>
+  return <section ref={sectionRef} className="py-16" style={{
+    backgroundColor: '#f6f6f6'
+  }}>
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           {/* Section Title */}
@@ -71,31 +61,20 @@ const WisdomOfLegends = () => {
           </div>
 
           {/* Bullet Points */}
-          <div className="max-w-2xl mx-auto space-y-4">
-            {bulletPoints.map((point, index) => (
-              <div
-                key={index}
-                className={cn(
-                  "flex items-center gap-4 transition-all duration-500",
-                  animationState.bullets[index]
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                )}
-                style={{ transitionDelay: `${index * 200}ms` }}
-              >
+          <div className="max-w-2xl mx-auto space-y-4 px-[186px]">
+            {bulletPoints.map((point, index) => <div key={index} className={cn("flex items-center gap-4 transition-all duration-500", animationState.bullets[index] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")} style={{
+            transitionDelay: `${index * 200}ms`
+          }}>
                 <div className="flex-shrink-0">
                   <Check className="w-6 h-6 text-green-500" strokeWidth={2.5} />
                 </div>
                 <p className="text-lg md:text-xl text-black">
                   {point}
                 </p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default WisdomOfLegends;
