@@ -11,7 +11,7 @@ const TimeAndCostCalculator = () => {
   }, false);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100" id="calculator">
+    <section ref={sectionRef} className="relative overflow-hidden bg-white" id="calculator">
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         {Array.from({
         length: 15
@@ -30,7 +30,7 @@ const TimeAndCostCalculator = () => {
         <div className={cn("mt-16 py-[89px]", "transition-all duration-1000 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
           {/* Section Title */}
           <div className="text-center mb-16">
-            <h2 className="relative text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-white mb-2 inline-block">
+            <h2 className="relative text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-black mb-2 inline-block">
               STOP RENTING
               <div className="absolute -bottom-2 left-0 right-0 h-1 bg-yellow-400 rounded-full"></div>
             </h2>
