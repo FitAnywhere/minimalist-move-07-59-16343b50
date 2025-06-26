@@ -1,4 +1,3 @@
-
 "use client";
 import React, {
   useEffect,
@@ -212,6 +211,7 @@ export const CircularTestimonials = ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
+    ...(containerWidth < 768 && { textAlign: 'center' }), // Center text on mobile only
   };
 
   const nameStyles: React.CSSProperties = {
