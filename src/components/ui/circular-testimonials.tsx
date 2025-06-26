@@ -1,4 +1,3 @@
-
 "use client";
 import React, {
   useEffect,
@@ -191,7 +190,7 @@ export const CircularTestimonials = ({
   const imageContainerStyles: React.CSSProperties = {
     position: 'relative',
     width: '100%',
-    height: '24rem',
+    height: '18rem', // Reduced from 24rem to match mobile size better
     perspective: '1000px',
   };
 
@@ -212,11 +211,7 @@ export const CircularTestimonials = ({
 
   const nameStyles: React.CSSProperties = {
     fontWeight: 'bold',
-    marginBottom: '0.25rem',
-  };
-
-  const designationStyles: React.CSSProperties = {
-    marginBottom: '2rem',
+    marginBottom: '2rem', // Increased from 0.25rem since we removed designation
   };
 
   const quoteStyles: React.CSSProperties = {
@@ -227,6 +222,7 @@ export const CircularTestimonials = ({
     display: 'flex',
     gap: '1.5rem',
     paddingTop: '3rem',
+    justifyContent: 'center', // Center the arrows on mobile
   };
 
   const arrowButtonStyles: React.CSSProperties = {
@@ -250,7 +246,10 @@ export const CircularTestimonials = ({
 
   const responsiveArrowButtonsStyles: React.CSSProperties = {
     ...arrowButtonsStyles,
-    ...(isDesktop && { paddingTop: '0' }),
+    ...(isDesktop && { 
+      paddingTop: '0',
+      justifyContent: 'flex-start' // Left align on desktop
+    }),
   };
 
   return (
@@ -291,15 +290,7 @@ export const CircularTestimonials = ({
               >
                 {activeTestimonial.name}
               </h3>
-              <p
-                style={{ 
-                  ...designationStyles,
-                  color: colorDesignation, 
-                  fontSize: fontSizeDesignation 
-                }}
-              >
-                {activeTestimonial.designation}
-              </p>
+              {/* Removed designation paragraph */}
               <motion.p
                 style={{ 
                   ...quoteStyles,
