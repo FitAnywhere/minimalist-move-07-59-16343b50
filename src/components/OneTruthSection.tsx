@@ -111,9 +111,7 @@ const OneTruthSection = () => {
           </div>
         </div>}
     </div>;
-  return <section ref={sectionRef} className="py-16" style={{
-    backgroundColor: '#f6f6f6'
-  }}>
+  return <section ref={sectionRef} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {isMobile ? renderTextContent() : <div className="grid md:grid-cols-2 gap-12 items-center">
