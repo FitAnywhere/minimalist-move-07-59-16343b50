@@ -1,4 +1,5 @@
 
+
 "use client";
 import React, {
   useEffect,
@@ -83,7 +84,9 @@ export const CircularTestimonials = ({
   useEffect(() => {
     function handleResize() {
       if (imageContainerRef.current) {
-        setContainerWidth(imageContainerRef.current.offsetWidth);
+        const newWidth = imageContainerRef.current.offsetWidth;
+        setContainerWidth(newWidth);
+        console.log('Container width updated:', newWidth);
       }
     }
     handleResize();
@@ -129,7 +132,6 @@ export const CircularTestimonials = ({
     const gap = calculateGap(containerWidth);
     const maxStickUp = gap * 0.8;
     const offset = (index - activeIndex + testimonialsLength) % testimonialsLength;
-    // const zIndex = testimonialsLength - Math.abs(offset);
     const isActive = index === activeIndex;
     const isLeft = (activeIndex - 1 + testimonialsLength) % testimonialsLength === index;
     const isRight = (activeIndex + 1) % testimonialsLength === index;
@@ -176,14 +178,20 @@ export const CircularTestimonials = ({
     exit: { opacity: 0, y: -20 },
   };
 
-  // Check if mobile
+  // Check if mobile - add debugging
   const isMobile = containerWidth < 768;
+  console.log('Is mobile:', isMobile, 'Container width:', containerWidth);
 
-  // CSS-in-JS styles
+  // CSS-in-JS styles - remove max-width restriction on desktop
   const containerStyles: React.CSSProperties = {
     width: '100%',
-    maxWidth: '56rem',
-    padding: '2rem',
+    ...(isMobile ? {
+      maxWidth: '56rem',
+      padding: '2rem'
+    } : {
+      padding: '2rem 4rem', // More padding on desktop
+      minWidth: '900px' // Ensure minimum width for proper layout
+    })
   };
 
   // Updated grid styles for proper desktop layout
@@ -195,12 +203,13 @@ export const CircularTestimonials = ({
       alignItems: 'center'
     } : {
       flexDirection: 'row',
-      gap: '3rem',
-      alignItems: 'center'
+      gap: '4rem', // Increased gap for better desktop layout
+      alignItems: 'center',
+      justifyContent: 'center'
     })
   };
 
-  // Updated image container styles - smaller on desktop
+  // Updated image container styles - proper sizing for desktop
   const imageContainerStyles: React.CSSProperties = {
     position: 'relative',
     ...(isMobile ? {
@@ -209,8 +218,8 @@ export const CircularTestimonials = ({
       paddingBottom: '100%',
       margin: '0 auto'
     } : {
-      width: '350px',
-      height: '350px',
+      width: '400px', // Increased from 350px
+      height: '400px', // Increased from 350px
       flexShrink: 0
     }),
     perspective: '1000px',
@@ -237,7 +246,8 @@ export const CircularTestimonials = ({
       width: '100%'
     } : {
       flex: 1,
-      textAlign: 'left'
+      textAlign: 'left',
+      maxWidth: '500px' // Limit content width for better readability
     }),
   };
 
@@ -379,3 +389,4 @@ export const CircularTestimonials = ({
 };
 
 export default CircularTestimonials;
+
