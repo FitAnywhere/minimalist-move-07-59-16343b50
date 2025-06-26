@@ -190,12 +190,15 @@ export const CircularTestimonials = ({
   const imageContainerStyles: React.CSSProperties = {
     position: 'relative',
     width: '100%',
-    height: '18rem', // Reduced from 24rem to match mobile size better
+    height: '0',
+    paddingBottom: '133.33%', // 3:4 aspect ratio (4/3 * 100)
     perspective: '1000px',
   };
 
   const imageStyles: React.CSSProperties = {
     position: 'absolute',
+    top: '0',
+    left: '0',
     width: '100%',
     height: '100%',
     objectFit: 'cover',
