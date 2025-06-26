@@ -184,7 +184,7 @@ export const CircularTestimonials = ({
 
   const gridStyles: React.CSSProperties = {
     display: 'grid',
-    gap: '5rem',
+    gap: containerWidth < 768 ? '2rem' : '5rem', // Reduced gap on mobile from 5rem to 2rem
   };
 
   const imageContainerStyles: React.CSSProperties = {
@@ -216,7 +216,7 @@ export const CircularTestimonials = ({
 
   const nameStyles: React.CSSProperties = {
     fontWeight: 'bold',
-    marginBottom: '2rem', // Increased from 0.25rem since we removed designation
+    marginBottom: containerWidth < 768 ? '1rem' : '2rem', // Reduced spacing on mobile from 2rem to 1rem
   };
 
   const quoteStyles: React.CSSProperties = {
@@ -226,7 +226,7 @@ export const CircularTestimonials = ({
   const arrowButtonsStyles: React.CSSProperties = {
     display: 'flex',
     gap: '1.5rem',
-    paddingTop: '3rem',
+    paddingTop: containerWidth < 768 ? '1.5rem' : '3rem', // Reduced spacing on mobile from 3rem to 1.5rem
     justifyContent: 'center', // Center the arrows on mobile
   };
 
