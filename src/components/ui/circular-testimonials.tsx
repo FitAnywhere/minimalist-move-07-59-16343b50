@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+
 interface Testimonial {
   quote: string;
   name: string;
@@ -28,6 +29,7 @@ interface CircularTestimonialsProps {
   colors?: Colors;
   fontSizes?: FontSizes;
 }
+
 function calculateGap(width: number) {
   const minWidth = 1024;
   const maxWidth = 1456;
@@ -37,6 +39,7 @@ function calculateGap(width: number) {
   if (width >= maxWidth) return Math.max(minGap, maxGap + 0.06018 * (width - maxWidth));
   return minGap + (maxGap - minGap) * ((width - minWidth) / (maxWidth - minWidth));
 }
+
 export const CircularTestimonials = ({
   testimonials,
   autoplay = true,
@@ -277,7 +280,7 @@ export const CircularTestimonials = ({
     border: 'none'
   };
   return <div style={containerStyles}>
-      <div style={gridStyles} className="px-[235px]">
+      <div style={gridStyles} className="px-0 lg:px-[235px]">
         {/* Images */}
         <div style={imageContainerStyles} ref={imageContainerRef}>
           {testimonials.map((testimonial, index) => <img key={testimonial.src} src={testimonial.src} alt={testimonial.name} style={{
