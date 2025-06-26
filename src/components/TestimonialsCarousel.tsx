@@ -134,7 +134,11 @@ const TestimonialsCarousel = () => {
             dragFree: true
           }}>
               <CarouselContent>
-                {testimonials.map((testimonial, index) => {})}
+                {testimonials.map((testimonial, index) => (
+                  <CarouselItem key={index}>
+                    <TestimonialCard testimonial={testimonial} />
+                  </CarouselItem>
+                ))}
               </CarouselContent>
               
               
