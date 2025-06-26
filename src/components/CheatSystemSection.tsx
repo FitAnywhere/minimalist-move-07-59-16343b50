@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -16,8 +15,13 @@ const CheatSystemSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [videoError, setVideoError] = useState(false);
 
   const bulletData = ["1 MONTH OF COACH ACCESS", "15-MIN DOPAMINE WORKOUTS"];
+
+  const handleVideoError = () => {
+    setVideoError(true);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,19 +94,31 @@ const CheatSystemSection = () => {
               <div className="relative w-full h-0" style={{
                 paddingBottom: '133.33%'
               }}>
-                <video 
-                  className="absolute inset-0 w-full h-full object-cover rounded-lg" 
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline 
-                  style={{
-                    borderRadius: '8px'
-                  }}
-                >
-                  <source src="/0618-Copy.webm" type="video/webm" />
-                  Your browser does not support the video tag.
-                </video>
+                {!videoError ? (
+                  <video 
+                    className="absolute inset-0 w-full h-full object-cover rounded-lg" 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline 
+                    style={{
+                      borderRadius: '8px'
+                    }}
+                    onError={handleVideoError}
+                  >
+                    <source src="/0618-Copy.webm" type="video/webm" />
+                    Your browser does not support the video tag.
+                  </video>
+                ) : (
+                  <img 
+                    src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750975895/0620_1_.mp4_900_x_1200_pik_2_ziv3zf.png"
+                    alt="Workout fallback"
+                    className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                    style={{
+                      borderRadius: '8px'
+                    }}
+                  />
+                )}
               </div>
             </div>
           </div>
