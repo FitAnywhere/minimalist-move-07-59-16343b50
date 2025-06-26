@@ -28,9 +28,7 @@ const GymCallToAction = () => {
         <div className="max-w-5xl mx-auto text-center">
           <div className="space-y-5 md:space-y-4 my-0 py-0">
             {/* Main headline - larger than before, yellow */}
-            <h2 className={cn("font-bold text-xl md:text-2xl lg:text-3xl text-yellow transition-all duration-1000 mb-2", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
-              WE REWARD SPREADING STRENGTH
-            </h2>
+            <h2 className={cn("font-bold text-xl md:text-2xl lg:text-3xl text-yellow transition-all duration-1000 mb-2", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>RESULTS DON'T WAIT</h2>
             
             {/* Subheadline - white, smaller */}
             
