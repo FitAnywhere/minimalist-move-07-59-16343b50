@@ -1,3 +1,4 @@
+
 import { Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -15,10 +16,10 @@ const ComparisonTable = () => {
       <div className={`${borderClass} border-black rounded-xl overflow-hidden shadow-md`}>
         {/* Header */}
         <div className="grid grid-cols-2 border-b-2 border-black">
-          <div className="py-4 px-6 text-center font-bold bg-black text-yellow-400">
+          <div className="py-4 px-6 text-center font-bold bg-gray-800 text-yellow-300">
             CHOOSE US (€699)
           </div>
-          <div className="py-4 px-6 text-center font-bold border-l-2 border-black bg-black text-yellow-400">
+          <div className="py-4 px-6 text-center font-bold border-l-2 border-black bg-gray-800 text-yellow-300">
             Home Park (€3,500+)
           </div>
         </div>
