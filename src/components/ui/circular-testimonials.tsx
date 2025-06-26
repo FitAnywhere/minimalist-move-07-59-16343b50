@@ -1,16 +1,8 @@
-
-
 "use client";
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-  useCallback,
-} from "react";
+
+import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-
 interface Testimonial {
   quote: string;
   name: string;
@@ -36,23 +28,20 @@ interface CircularTestimonialsProps {
   colors?: Colors;
   fontSizes?: FontSizes;
 }
-
 function calculateGap(width: number) {
   const minWidth = 1024;
   const maxWidth = 1456;
   const minGap = 60;
   const maxGap = 86;
   if (width <= minWidth) return minGap;
-  if (width >= maxWidth)
-    return Math.max(minGap, maxGap + 0.06018 * (width - maxWidth));
+  if (width >= maxWidth) return Math.max(minGap, maxGap + 0.06018 * (width - maxWidth));
   return minGap + (maxGap - minGap) * ((width - minWidth) / (maxWidth - minWidth));
 }
-
 export const CircularTestimonials = ({
   testimonials,
   autoplay = true,
   colors = {},
-  fontSizes = {},
+  fontSizes = {}
 }: CircularTestimonialsProps) => {
   // Color & font config
   const colorName = colors.name ?? "#000";
@@ -70,15 +59,10 @@ export const CircularTestimonials = ({
   const [hoverPrev, setHoverPrev] = useState(false);
   const [hoverNext, setHoverNext] = useState(false);
   const [containerWidth, setContainerWidth] = useState(1200);
-
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const autoplayIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
   const testimonialsLength = useMemo(() => testimonials.length, [testimonials]);
-  const activeTestimonial = useMemo(
-    () => testimonials[activeIndex],
-    [activeIndex, testimonials]
-  );
+  const activeTestimonial = useMemo(() => testimonials[activeIndex], [activeIndex, testimonials]);
 
   // Responsive gap calculation
   useEffect(() => {
@@ -98,7 +82,7 @@ export const CircularTestimonials = ({
   useEffect(() => {
     if (autoplay) {
       autoplayIntervalRef.current = setInterval(() => {
-        setActiveIndex((prev) => (prev + 1) % testimonialsLength);
+        setActiveIndex(prev => (prev + 1) % testimonialsLength);
       }, 5000);
     }
     return () => {
@@ -119,11 +103,11 @@ export const CircularTestimonials = ({
 
   // Navigation handlers
   const handleNext = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % testimonialsLength);
+    setActiveIndex(prev => (prev + 1) % testimonialsLength);
     if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
   }, [testimonialsLength]);
   const handlePrev = useCallback(() => {
-    setActiveIndex((prev) => (prev - 1 + testimonialsLength) % testimonialsLength);
+    setActiveIndex(prev => (prev - 1 + testimonialsLength) % testimonialsLength);
     if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
   }, [testimonialsLength]);
 
@@ -141,7 +125,7 @@ export const CircularTestimonials = ({
         opacity: 1,
         pointerEvents: "auto",
         transform: `translateX(0px) translateY(0px) scale(1) rotateY(0deg)`,
-        transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+        transition: "all 0.8s cubic-bezier(.4,2,.3,1)"
       };
     }
     if (isLeft) {
@@ -150,7 +134,7 @@ export const CircularTestimonials = ({
         opacity: 1,
         pointerEvents: "auto",
         transform: `translateX(-${gap}px) translateY(-${maxStickUp}px) scale(0.85) rotateY(15deg)`,
-        transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+        transition: "all 0.8s cubic-bezier(.4,2,.3,1)"
       };
     }
     if (isRight) {
@@ -159,7 +143,7 @@ export const CircularTestimonials = ({
         opacity: 1,
         pointerEvents: "auto",
         transform: `translateX(${gap}px) translateY(-${maxStickUp}px) scale(0.85) rotateY(-15deg)`,
-        transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+        transition: "all 0.8s cubic-bezier(.4,2,.3,1)"
       };
     }
     // Hide all other images
@@ -167,15 +151,24 @@ export const CircularTestimonials = ({
       zIndex: 1,
       opacity: 0,
       pointerEvents: "none",
-      transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+      transition: "all 0.8s cubic-bezier(.4,2,.3,1)"
     };
   }
 
   // Framer Motion variants for quote
   const quoteVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
+    initial: {
+      opacity: 0,
+      y: 20
+    },
+    animate: {
+      opacity: 1,
+      y: 0
+    },
+    exit: {
+      opacity: 0,
+      y: -20
+    }
   };
 
   // Check if mobile - add debugging
@@ -189,7 +182,8 @@ export const CircularTestimonials = ({
       maxWidth: '56rem',
       padding: '2rem'
     } : {
-      padding: '2rem 4rem', // More padding on desktop
+      padding: '2rem 4rem',
+      // More padding on desktop
       minWidth: '900px' // Ensure minimum width for proper layout
     })
   };
@@ -203,7 +197,8 @@ export const CircularTestimonials = ({
       alignItems: 'center'
     } : {
       flexDirection: 'row',
-      gap: '4rem', // Increased gap for better desktop layout
+      gap: '4rem',
+      // Increased gap for better desktop layout
       alignItems: 'center',
       justifyContent: 'center'
     })
@@ -218,13 +213,14 @@ export const CircularTestimonials = ({
       paddingBottom: '100%',
       margin: '0 auto'
     } : {
-      width: '400px', // Increased from 350px
-      height: '400px', // Increased from 350px
+      width: '400px',
+      // Increased from 350px
+      height: '400px',
+      // Increased from 350px
       flexShrink: 0
     }),
-    perspective: '1000px',
+    perspective: '1000px'
   };
-
   const imageStyles: React.CSSProperties = {
     position: 'absolute',
     top: '0',
@@ -233,7 +229,7 @@ export const CircularTestimonials = ({
     height: '100%',
     objectFit: 'cover',
     borderRadius: '1.5rem',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
   };
 
   // Updated content styles for desktop layout
@@ -241,26 +237,23 @@ export const CircularTestimonials = ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    ...(isMobile ? { 
+    ...(isMobile ? {
       textAlign: 'center',
       width: '100%'
     } : {
       flex: 1,
       textAlign: 'left',
       maxWidth: '500px' // Limit content width for better readability
-    }),
+    })
   };
-
   const nameStyles: React.CSSProperties = {
     fontWeight: 'bold',
-    marginBottom: isMobile ? '1rem' : '1.5rem',
+    marginBottom: isMobile ? '1rem' : '1.5rem'
   };
-
   const quoteStyles: React.CSSProperties = {
     lineHeight: 1.75,
-    marginBottom: isMobile ? '1.5rem' : '2rem',
+    marginBottom: isMobile ? '1.5rem' : '2rem'
   };
-
   const arrowButtonsStyles: React.CSSProperties = {
     display: 'flex',
     gap: '1.5rem',
@@ -270,9 +263,8 @@ export const CircularTestimonials = ({
     } : {
       paddingTop: '0',
       justifyContent: 'flex-start'
-    }),
+    })
   };
-
   const arrowButtonStyles: React.CSSProperties = {
     width: '2.7rem',
     height: '2.7rem',
@@ -282,111 +274,72 @@ export const CircularTestimonials = ({
     justifyContent: 'center',
     cursor: 'pointer',
     transition: 'background-color 0.3s',
-    border: 'none',
+    border: 'none'
   };
-
-  return (
-    <div style={containerStyles}>
-      <div style={gridStyles}>
+  return <div style={containerStyles}>
+      <div style={gridStyles} className="px-[235px]">
         {/* Images */}
         <div style={imageContainerStyles} ref={imageContainerRef}>
-          {testimonials.map((testimonial, index) => (
-            <img
-              key={testimonial.src}
-              src={testimonial.src}
-              alt={testimonial.name}
-              style={{
-                ...imageStyles,
-                ...getImageStyle(index),
-              }}
-              data-index={index}
-            />
-          ))}
+          {testimonials.map((testimonial, index) => <img key={testimonial.src} src={testimonial.src} alt={testimonial.name} style={{
+          ...imageStyles,
+          ...getImageStyle(index)
+        }} data-index={index} />)}
         </div>
         {/* Content */}
         <div style={contentStyles}>
           <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIndex}
-              variants={quoteVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-            >
-              <h3
-                style={{ 
-                  ...nameStyles,
-                  color: colorName, 
-                  fontSize: fontSizeName 
-                }}
-              >
+            <motion.div key={activeIndex} variants={quoteVariants} initial="initial" animate="animate" exit="exit" transition={{
+            duration: 0.3,
+            ease: "easeInOut"
+          }}>
+              <h3 style={{
+              ...nameStyles,
+              color: colorName,
+              fontSize: fontSizeName
+            }}>
                 {activeTestimonial.name}
               </h3>
-              <motion.p
-                style={{ 
-                  ...quoteStyles,
-                  color: colorTestimony, 
-                  fontSize: fontSizeQuote 
-                }}
-              >
-                {activeTestimonial.quote.split(" ").map((word, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{
-                      filter: "blur(10px)",
-                      opacity: 0,
-                      y: 5,
-                    }}
-                    animate={{
-                      filter: "blur(0px)",
-                      opacity: 1,
-                      y: 0,
-                    }}
-                    transition={{
-                      duration: 0.22,
-                      ease: "easeInOut",
-                      delay: 0.025 * i,
-                    }}
-                    style={{ display: "inline-block" }}
-                  >
+              <motion.p style={{
+              ...quoteStyles,
+              color: colorTestimony,
+              fontSize: fontSizeQuote
+            }}>
+                {activeTestimonial.quote.split(" ").map((word, i) => <motion.span key={i} initial={{
+                filter: "blur(10px)",
+                opacity: 0,
+                y: 5
+              }} animate={{
+                filter: "blur(0px)",
+                opacity: 1,
+                y: 0
+              }} transition={{
+                duration: 0.22,
+                ease: "easeInOut",
+                delay: 0.025 * i
+              }} style={{
+                display: "inline-block"
+              }}>
                     {word}&nbsp;
-                  </motion.span>
-                ))}
+                  </motion.span>)}
               </motion.p>
             </motion.div>
           </AnimatePresence>
           <div style={arrowButtonsStyles}>
-            <button
-              style={{
-                ...arrowButtonStyles,
-                backgroundColor: hoverPrev ? colorArrowHoverBg : colorArrowBg,
-              }}
-              onClick={handlePrev}
-              onMouseEnter={() => setHoverPrev(true)}
-              onMouseLeave={() => setHoverPrev(false)}
-              aria-label="Previous testimonial"
-            >
+            <button style={{
+            ...arrowButtonStyles,
+            backgroundColor: hoverPrev ? colorArrowHoverBg : colorArrowBg
+          }} onClick={handlePrev} onMouseEnter={() => setHoverPrev(true)} onMouseLeave={() => setHoverPrev(false)} aria-label="Previous testimonial">
               <FaArrowLeft size={28} color={colorArrowFg} />
             </button>
-            <button
-              style={{
-                ...arrowButtonStyles,
-                backgroundColor: hoverNext ? colorArrowHoverBg : colorArrowBg,
-              }}
-              onClick={handleNext}
-              onMouseEnter={() => setHoverNext(true)}
-              onMouseLeave={() => setHoverNext(false)}
-              aria-label="Next testimonial"
-            >
+            <button style={{
+            ...arrowButtonStyles,
+            backgroundColor: hoverNext ? colorArrowHoverBg : colorArrowBg
+          }} onClick={handleNext} onMouseEnter={() => setHoverNext(true)} onMouseLeave={() => setHoverNext(false)} aria-label="Next testimonial">
               <FaArrowRight size={28} color={colorArrowFg} />
             </button>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default CircularTestimonials;
-
