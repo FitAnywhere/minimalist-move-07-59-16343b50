@@ -5,6 +5,7 @@ import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -15,6 +16,8 @@ const ProductIntro = () => {
     video: false,
     finalText: false
   });
+  const [videoError, setVideoError] = useState(false);
+
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -35,13 +38,20 @@ const ProductIntro = () => {
       })), 700);
     }
   }, [isInView]);
-  return <section id="product" ref={containerRef} style={{
-    backgroundColor: '#f6f6f6'
-  }}>
+
+  const handleVideoError = () => {
+    setVideoError(true);
+  };
+
+  return (
+    <section id="product" ref={containerRef} style={{
+      backgroundColor: '#f6f6f6'
+    }}>
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-6xl mx-auto">
           {/* Mobile Layout */}
-          {isMobile && <div className="space-y-6">
+          {isMobile && (
+            <div className="space-y-6">
               {/* Title */}
               <div className="flex justify-center">
                 <div className="space-y-6 flex flex-col items-center">
@@ -67,11 +77,26 @@ const ProductIntro = () => {
 
               {/* Video - 20% smaller */}
               <div className={cn("flex justify-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <div className="max-w-[243px]">
-                  <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover">
-                    <source src="/0408-Copy-Copy (2)-Copy-Copy.webm" type="video/webm" />
-                    Your browser does not support the video tag.
-                  </video>
+                <div className="max-w-[243px] relative">
+                  {!videoError ? (
+                    <video 
+                      autoPlay 
+                      muted 
+                      loop 
+                      playsInline 
+                      className="w-full rounded-xl aspect-[3/4] object-cover"
+                      onError={handleVideoError}
+                    >
+                      <source src="/0408-Copy-Copy (2)-Copy-Copy.webm" type="video/webm" />
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <img 
+                      src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750973466/Izdelek_brez_naslova_-_2025-06-26T232143.944_duekki.png"
+                      alt="Workout at home"
+                      className="w-full rounded-xl aspect-[3/4] object-cover"
+                    />
+                  )}
                 </div>
               </div>
 
@@ -86,10 +111,12 @@ const ProductIntro = () => {
                   Succeed where you are in control.
                 </p>
               </div>
-            </div>}
+            </div>
+          )}
 
           {/* Desktop Layout */}
-          {!isMobile && <div className="space-y-16">
+          {!isMobile && (
+            <div className="space-y-16">
               {/* Centered Title and Subtitle */}
               <div className="text-center space-y-6">
                 {/* Title */}
@@ -139,18 +166,36 @@ const ProductIntro = () => {
                 {/* Right Column - Video */}
                 <div className="flex justify-center items-center h-full">
                   <div className={cn("transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                    <div className="max-w-[308px] mx-auto">
-                      <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover">
-                        <source src="/0408-Copy-Copy (2)-Copy-Copy.webm" type="video/webm" />
-                        Your browser does not support the video tag.
-                      </video>
+                    <div className="max-w-[308px] mx-auto relative">
+                      {!videoError ? (
+                        <video 
+                          autoPlay 
+                          muted 
+                          loop 
+                          playsInline 
+                          className="w-full rounded-xl aspect-[3/4] object-cover"
+                          onError={handleVideoError}
+                        >
+                          <source src="/0408-Copy-Copy (2)-Copy-Copy.webm" type="video/webm" />
+                          Your browser does not support the video tag.
+                        </video>
+                      ) : (
+                        <img 
+                          src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750973466/Izdelek_brez_naslova_-_2025-06-26T232143.944_duekki.png"
+                          alt="Workout at home"
+                          className="w-full rounded-xl aspect-[3/4] object-cover"
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default ProductIntro;
