@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoPlayer from '@/components/ui/VideoPlayer';
-import { useVideoOptimization } from '@/hooks/useVideoOptimization';
+
 interface FAQItem {
   question: string;
   answer: string;
@@ -44,18 +44,14 @@ const faqItems: FAQItem[] = [{
   question: "Can it help with coordination or focus?",
   answer: "Absolutely. BoxFun sharpens hand-eye coordination and reaction time, making it great for mental focus and reflex development."
 }];
+
 const BoxTargetAndFAQ = () => {
   const perfectIfSectionRef = useRef<HTMLDivElement>(null);
   const specialOfferSectionRef = useRef<HTMLDivElement>(null);
   const isPerfectIfInView = useInView(perfectIfSectionRef);
   const isSpecialOfferInView = useInView(specialOfferSectionRef);
-  const [videoContainerRef, isVisible, isLoaded] = useVideoOptimization({
-    threshold: 0.1,
-    rootMargin: '200px',
-    lazyLoad: true,
-    priorityLoad: false
-  });
   const isMobile = useIsMobile();
+  
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://fitanywhere.today/', '_blank');
@@ -64,6 +60,7 @@ const BoxTargetAndFAQ = () => {
     e.preventDefault();
     window.open('https://buy.stripe.com/00gaF43p38yg0Vi7sM', '_blank');
   };
+  
   return <>
     {/* 3. IT'S PERFECT IF... Section */}
     <section id="perfect-if" ref={perfectIfSectionRef} className="py-16 bg-white">

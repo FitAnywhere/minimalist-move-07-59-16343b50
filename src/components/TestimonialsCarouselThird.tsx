@@ -5,7 +5,6 @@ import { Star } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import VideoPlayer from '@/components/ui/VideoPlayer';
-import { useVideoOptimization } from '@/hooks/useVideoOptimization';
 
 interface Testimonial {
   name: string;

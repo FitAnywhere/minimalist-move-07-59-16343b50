@@ -1,8 +1,7 @@
-
 import { useState, useRef, useEffect, memo } from 'react';
 import { Loader, RefreshCw, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import videoLoadManager from '@/utils/videoOptimization';
+import optimizedVideoManager from '@/utils/optimizedVideoManager';
 
 interface EnhancedVimeoPlayerProps {
   vimeoId: string;
@@ -203,30 +202,31 @@ const EnhancedVimeoPlayer = memo(({
     }
   };
 
-  // Register with video load manager on mount
+  // Register with optimized video manager on mount
   useEffect(() => {
     if (!containerRef.current) return;
     
-    // Register this video with the load manager
-    videoLoadManager.registerVideo(
-      vimeoId, 
-      containerRef.current,
-      placeholderImage
-    );
+    // Register this video with the optimized manager
+    optimizedVideoManager.registerVideo(vimeoId, containerRef.current);
     
-    // Add event listener for state changes
-    const handleStateChange = (event: 'loading' | 'loaded' | 'error') => {
-      if (event === 'loading' && loadState !== 'loading') {
+    // Check if video should be loaded based on visibility
+    const checkVisibility = () => {
+      if (optimizedVideoManager.isVideoVisible(vimeoId) && loadState === 'idle') {
         initializePlayer();
       }
     };
     
-    videoLoadManager.addEventListener(vimeoId, handleStateChange);
+    // Initial check
+    checkVisibility();
+    
+    // Set up periodic visibility check
+    const intervalId = setInterval(checkVisibility, 1000);
     
     return () => {
-      videoLoadManager.removeEventListener(vimeoId, handleStateChange);
+      clearInterval(intervalId);
+      optimizedVideoManager.unregisterVideo(vimeoId);
     };
-  }, [vimeoId, placeholderImage, loadState]);
+  }, [vimeoId, loadState]);
 
   // Clean up on unmount
   useEffect(() => {
