@@ -7,7 +7,7 @@ import ProductIntro from '@/components/ProductIntro';
 import OneTruthSection from '@/components/OneTruthSection';
 import TheChallengeSection from '@/components/TheChallengeSection';
 
-// Lazy load non-critical sections
+// Lazy load non-critical sections with better chunking
 const BundleOffer = lazy(() => import('@/components/BundleOffer'));
 const GymTarget = lazy(() => import('@/components/gym/GymTarget'));
 const TestimonialsCarousel = lazy(() => import('@/components/TestimonialsCarousel'));
@@ -17,10 +17,10 @@ const WisdomOfLegends = lazy(() => import('@/components/gym/WisdomOfLegends'));
 const GymCallToAction = lazy(() => import('@/components/gym/GymCallToAction'));
 const Footer = lazy(() => import('@/components/Footer'));
 
-// Loading fallback component
+// Optimized loading fallback
 const SectionLoader = () => (
-  <div className="min-h-[400px] w-full flex items-center justify-center" aria-hidden="true">
-    <div className="w-8 h-8 border-4 border-yellow border-t-transparent rounded-full animate-spin"></div>
+  <div className="min-h-[200px] w-full flex items-center justify-center" aria-hidden="true">
+    <div className="w-6 h-6 border-2 border-yellow border-t-transparent rounded-full animate-spin"></div>
   </div>
 );
 
@@ -29,67 +29,59 @@ const Index = () => {
     <div className="overflow-x-hidden">
       <NavBar />
       
-      {/* 1. Hero Section */}
+      {/* Critical above-the-fold content - not lazy loaded */}
       <div id="hero">
         <HeroSection />
       </div>
       
-      {/* 2. CRUSH YOUR GOALS */}
-      <div id="cheat-system" className="content-visibility-auto">
+      <div id="cheat-system">
         <CheatSystemSection />
       </div>
       
-      {/* 3. BUILT FOR */}
-      <div id="target" className="content-visibility-auto">
+      {/* Lazy loaded sections below the fold */}
+      <div id="target">
         <Suspense fallback={<SectionLoader />}>
           <GymTarget />
         </Suspense>
       </div>
       
-      {/* 4. NO LIMITS */}
-      <div id="product" className="content-visibility-auto">
+      <div id="product">
         <ProductIntro />
       </div>
       
-      {/* 5. ONE TRUTH */}
-      <div id="one-truth" className="content-visibility-auto">
+      <div id="one-truth">
         <OneTruthSection />
       </div>
       
-      {/* 6. THE CHALLENGE */}
-      <div id="the-challenge" className="content-visibility-auto">
+      <div id="the-challenge">
         <TheChallengeSection />
       </div>
       
-      {/* 7. NO EXCUSES */}
-      <div id="bundle" className="content-visibility-auto">
+      <div id="bundle">
         <Suspense fallback={<SectionLoader />}>
           <BundleOffer />
         </Suspense>
       </div>
       
-      {/* 8. LOVED BY */}
-      <div id="reviews" className="content-visibility-auto">
+      <div id="reviews">
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsCarousel />
         </Suspense>
       </div>
       
-      {/* 9. FOREVER YOURS */}
-      <div id="calculator" className="content-visibility-auto">
+      <div id="calculator">
         <Suspense fallback={<SectionLoader />}>
           <TimeAndCostCalculator />
         </Suspense>
       </div>
       
-      {/* 10. LIVE LIKE LEGENDS */}
-      <div id="wisdom" className="content-visibility-auto">
+      <div id="wisdom">
         <Suspense fallback={<SectionLoader />}>
           <WisdomOfLegends />
         </Suspense>
       </div>
       
-      <div id="faq" className="content-visibility-auto">
+      <div id="faq">
         <Suspense fallback={<SectionLoader />}>
           <GymFAQ />
         </Suspense>

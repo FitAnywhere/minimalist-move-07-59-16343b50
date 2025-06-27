@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { debounce } from '@/utils/eventOptimizers';
 
 const images = [
   "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750843343/52_gllnot.png",
@@ -15,17 +16,29 @@ const images = [
 const HeroCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const isMobile = useIsMobile();
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  // Initialize image load status array
+  // Debounced resize handler
+  const debouncedResize = useRef(
+    debounce(() => {
+      if (carouselRef.current) {
+        const rect = carouselRef.current.getBoundingClientRect();
+        setContainerSize({ width: rect.width, height: rect.height });
+      }
+    }, 300)
+  );
+
+  // Initialize image load status and preload images
   useEffect(() => {
     setImagesLoaded(new Array(images.length).fill(false));
     
-    // Preload images
+    // Preload images with priority for first few
     images.forEach((src, index) => {
       const img = new Image();
       img.src = src;
+      img.loading = index < 3 ? 'eager' : 'lazy';
       img.onload = () => {
         setImagesLoaded(prev => {
           const newState = [...prev];
@@ -36,7 +49,23 @@ const HeroCarousel = () => {
     });
   }, []);
 
-  // Only start carousel rotation once first image is loaded - changed to 2000ms (slower)
+  // Set up resize listener
+  useEffect(() => {
+    const resizeHandler = debouncedResize.current;
+    window.addEventListener('resize', resizeHandler);
+    
+    // Initial size calculation
+    if (carouselRef.current) {
+      const rect = carouselRef.current.getBoundingClientRect();
+      setContainerSize({ width: rect.width, height: rect.height });
+    }
+    
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
+  }, []);
+
+  // Carousel rotation with slower timing
   useEffect(() => {
     if (!imagesLoaded[0]) return;
     
@@ -51,10 +80,10 @@ const HeroCarousel = () => {
     <div 
       ref={carouselRef}
       className={cn(
-        "relative overflow-hidden rounded-xl content-visibility-auto",
+        "relative overflow-hidden rounded-xl",
         isMobile 
           ? "aspect-square w-full" 
-          : "max-w-[480px] w-full aspect-square mx-auto md:ml-0 md:mr-8" // 20-30% larger than 400px and shifted left
+          : "max-w-[480px] w-full aspect-square mx-auto md:ml-0 md:mr-8"
       )}
     >
       {images.map((image, index) => (
@@ -70,14 +99,14 @@ const HeroCarousel = () => {
             src={image}
             alt={`Hero image ${index + 1}`}
             className="w-full h-full object-cover rounded-xl"
-            width={1080}
-            height={1080}
+            width={containerSize.width || 480}
+            height={containerSize.height || 480}
+            sizes="(max-width: 768px) 100vw, 480px"
             loading={index === 0 ? "eager" : "lazy"}
             decoding={index === 0 ? "sync" : "async"}
             fetchPriority={index === 0 ? "high" : "auto"}
             onLoad={() => {
               if (index === 0 && carouselRef.current) {
-                // This will help LCP on the first image
                 carouselRef.current.style.opacity = "1";
               }
             }}
