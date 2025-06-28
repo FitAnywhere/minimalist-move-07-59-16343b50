@@ -47,7 +47,7 @@ const TestimonialsCarousel = () => {
   return <section ref={containerRef} id="testimonials" style={{
     backgroundColor: '#f6f6f6'
   }} className="py-0">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 py-[30px]">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-black relative inline-block">
