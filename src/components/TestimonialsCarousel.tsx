@@ -1,18 +1,15 @@
-
 import { useState, useRef, memo } from 'react';
 import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { Star } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { CircularTestimonials } from '@/components/ui/circular-testimonials';
-
 interface CircularTestimonial {
   quote: string;
   name: string;
   designation: string;
   src: string;
 }
-
 const circularTestimonials: CircularTestimonial[] = [{
   quote: "Didn't think 15 minutes a day could do this much",
   name: "Emily T.",
@@ -44,15 +41,12 @@ const circularTestimonials: CircularTestimonial[] = [{
   designation: "Customer",
   src: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744099087/Screenshot_77_jlxu5i.png"
 }];
-
 const TestimonialsCarousel = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
-
-  return (
-    <section ref={containerRef} id="testimonials" className="py-16" style={{
-      backgroundColor: '#f6f6f6'
-    }}>
+  return <section ref={containerRef} id="testimonials" style={{
+    backgroundColor: '#f6f6f6'
+  }} className="py-0">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className={cn("text-center transition-all duration-1000 transform mb-10", isInView ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
@@ -69,29 +63,22 @@ const TestimonialsCarousel = () => {
           {/* Circular Testimonials Section */}
           <div className="mt-16">
             <div className="flex justify-center">
-              <CircularTestimonials 
-                testimonials={circularTestimonials} 
-                autoplay={true} 
-                colors={{
-                  name: "#0a0a0a",
-                  designation: "#454545",
-                  testimony: "#171717",
-                  arrowBackground: "#141414",
-                  arrowForeground: "#f1f1f7",
-                  arrowHoverBackground: "#00A6FB"
-                }} 
-                fontSizes={{
-                  name: "28px",
-                  designation: "20px",
-                  quote: "20px"
-                }} 
-              />
+              <CircularTestimonials testimonials={circularTestimonials} autoplay={true} colors={{
+              name: "#0a0a0a",
+              designation: "#454545",
+              testimony: "#171717",
+              arrowBackground: "#141414",
+              arrowForeground: "#f1f1f7",
+              arrowHoverBackground: "#00A6FB"
+            }} fontSizes={{
+              name: "28px",
+              designation: "20px",
+              quote: "20px"
+            }} />
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default TestimonialsCarousel;
