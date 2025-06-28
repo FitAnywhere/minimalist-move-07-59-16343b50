@@ -17,64 +17,172 @@ const carouselContent = [{
   src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746741696/PRIVATE_GYM_4_o02rth.png',
   label: 'Progressive Support Bands'
 }];
+
 const BundleOffer = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [videoReady, setVideoReady] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [playAttempted, setPlayAttempted] = useState(false);
+
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l', '_blank');
   };
 
-  // Auto-rotate carousel with different timing for video vs image
+  // Enhanced video control functions
+  const playVideo = async () => {
+    if (!videoRef.current || !videoReady || isPlaying) return;
+    
+    try {
+      setPlayAttempted(true);
+      await videoRef.current.play();
+      setIsPlaying(true);
+      console.log('Video started playing successfully');
+    } catch (error) {
+      console.log('Video autoplay prevented:', error);
+      setIsPlaying(false);
+    }
+  };
+
+  const pauseVideo = () => {
+    if (!videoRef.current || !isPlaying) return;
+    
+    try {
+      videoRef.current.pause();
+      setIsPlaying(false);
+      console.log('Video paused successfully');
+    } catch (error) {
+      console.log('Video pause error:', error);
+    }
+  };
+
+  const resetVideo = () => {
+    if (!videoRef.current) return;
+    
+    try {
+      videoRef.current.currentTime = 0;
+      setIsPlaying(false);
+      setPlayAttempted(false);
+    } catch (error) {
+      console.log('Video reset error:', error);
+    }
+  };
+
+  // Auto-rotate carousel with improved video management
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide(prevSlide => {
         const nextSlide = (prevSlide + 1) % carouselContent.length;
+        
+        // If leaving video slide, pause it
+        if (prevSlide === 0) {
+          pauseVideo();
+        }
+        
         return nextSlide;
       });
-    }, currentSlide === 0 ? 4000 : 2000); // Video shows for 4000ms, image shows for 2000ms (2x longer)
+    }, currentSlide === 0 ? 4000 : 2000);
 
     return () => clearInterval(interval);
-  }, [currentSlide]);
+  }, [currentSlide, isPlaying]);
 
-  // Video control based on carousel visibility and active slide
+  // Video loading and ready state management
   useEffect(() => {
-    if (currentSlide === 0 && videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
-    }
-  }, [currentSlide]);
+    const video = videoRef.current;
+    if (!video) return;
 
-  // Handle intersection observer to manage video playback
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
-        if (currentSlide === 0 && videoRef.current) {
-          videoRef.current.currentTime = 0;
-          videoRef.current.play().catch(err => console.log("Video autoplay prevented:", err));
-        }
-      } else {
-        if (videoRef.current) {
-          videoRef.current.pause();
-        }
+    const handleLoadedData = () => {
+      setVideoReady(true);
+      console.log('Video loaded and ready');
+    };
+
+    const handleCanPlay = () => {
+      setVideoReady(true);
+    };
+
+    const handlePlay = () => {
+      setIsPlaying(true);
+    };
+
+    const handlePause = () => {
+      setIsPlaying(false);
+    };
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+      // Reset for loop
+      if (video.loop) {
+        resetVideo();
       }
-    }, {
-      threshold: 0.6
-    });
+    };
+
+    video.addEventListener('loadeddata', handleLoadedData);
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+    video.addEventListener('ended', handleEnded);
+
+    return () => {
+      video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('ended', handleEnded);
+    };
+  }, []);
+
+  // Video playback control when slide becomes active
+  useEffect(() => {
+    if (currentSlide === 0 && videoReady && !playAttempted) {
+      // Small delay to ensure slide transition is complete
+      const timer = setTimeout(() => {
+        resetVideo();
+        playVideo();
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [currentSlide, videoReady, playAttempted]);
+
+  // Intersection observer for section visibility
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isIntersecting = entry.isIntersecting && entry.intersectionRatio >= 0.3;
+        
+        if (isIntersecting && currentSlide === 0 && videoReady) {
+          // Only try to play if we're on video slide and section is visible
+          if (!playAttempted) {
+            playVideo();
+          }
+        } else if (!isIntersecting) {
+          // Pause when section is not visible
+          pauseVideo();
+        }
+      },
+      { threshold: 0.3 }
+    );
+
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-    return () => {
-      observer.disconnect();
-    };
-  }, [currentSlide]);
+
+    return () => observer.disconnect();
+  }, [currentSlide, videoReady, playAttempted]);
+
   const valueBreakdownItems = ['Power Station', '4 Elastic Bands (15–120kg)', '15-Min Workouts', 'Personal Coach Access', 'Free Shipping'];
-  return <section id="bundle-offer" ref={sectionRef} className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0" style={{
-    backgroundColor: '#ffffff'
-  }}>
+
+  return (
+    <section 
+      id="bundle-offer" 
+      ref={sectionRef} 
+      className="relative overflow-hidden scroll-mt-[60px] md:scroll-mt-[80px] py-0" 
+      style={{ backgroundColor: '#ffffff' }}
+    >
       <div className={cn("container mx-auto relative z-10", isMobile ? "px-0 py-[60px]" : "px-4 py-[60px]")}>
         <div className="max-w-5xl mx-auto px-4 md:px-4 md:py-[14px] space-y-6">
           <div className={cn("text-center transition-all duration-1000 transform", isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8")}>
@@ -91,17 +199,52 @@ const BundleOffer = () => {
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-center gap-8")}>
             {/* Desktop: Pricing Component in Right Column */}
-            {!isMobile && <div className="flex flex-col items-center space-y-6 mt-[-20px]">
+            {!isMobile && (
+              <div className="flex flex-col items-center space-y-6 mt-[-20px]">
                 <FitAnywherePricingDemo />
-              </div>}
+              </div>
+            )}
 
-            {/* Fixed carousel container with consistent media dimensions - lowered on desktop */}
+            {/* Enhanced carousel container with better video management */}
             <div className={cn("relative overflow-hidden", isMobile ? "w-full" : "w-full max-w-[500px] h-[530px] mt-12")}>
-              {carouselContent.map((item, index) => <div key={index} className={cn("flex flex-col items-center", index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 absolute", isMobile ? "w-full" : "absolute top-0 left-0 w-full h-full")}>
+              {carouselContent.map((item, index) => (
+                <div 
+                  key={index} 
+                  className={cn(
+                    "flex flex-col items-center transition-opacity duration-300",
+                    index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 absolute",
+                    isMobile ? "w-full" : "absolute top-0 left-0 w-full h-full"
+                  )}
+                >
                   <div className={cn("flex justify-center items-center", isMobile ? "w-full h-[300px]" : "h-[75%]")}>
-                    {item.type === 'video' ? <video ref={index === 0 ? videoRef : null} src={item.src} className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full")} muted playsInline loop preload="metadata" /> : <img src={item.src} alt="Product image" className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full", "transition-transform duration-3000 ease-in-out", index === currentSlide ? "scale-110" : "scale-100")} loading="eager" />}
+                    {item.type === 'video' ? (
+                      <video
+                        ref={index === 0 ? videoRef : null}
+                        src={item.src}
+                        className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full")}
+                        muted
+                        playsInline
+                        loop
+                        preload="metadata"
+                        onLoadStart={() => console.log('Video load started')}
+                        onError={(e) => console.log('Video error:', e)}
+                      />
+                    ) : (
+                      <img
+                        src={item.src}
+                        alt="Product image"
+                        className={cn(
+                          "object-contain rounded-lg",
+                          isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full",
+                          "transition-transform duration-3000 ease-in-out",
+                          index === currentSlide ? "scale-110" : "scale-100"
+                        )}
+                        loading="eager"
+                      />
+                    )}
                   </div>
-                </div>)}
+                </div>
+              ))}
               
               {/* Unified caption under entire carousel */}
               <div className="mt-4 text-center">
@@ -112,13 +255,16 @@ const BundleOffer = () => {
             </div>
 
             {/* Mobile: Content with NEW PRICING COMPONENT */}
-            {isMobile && <div className="flex flex-col items-center w-full mt-6 pb-24">
+            {isMobile && (
+              <div className="flex flex-col items-center w-full mt-6 pb-24">
                 <FitAnywherePricingDemo />
-              </div>}
+              </div>
+            )}
           </div>
 
           {/* Desktop only: Centered text and arrow under both columns */}
-          {!isMobile && <div className="text-center mt-12">
+          {!isMobile && (
+            <div className="text-center mt-12">
               <p className="text-gray-600 text-lg font-bold italic">
                 Still not sure? Don't take our word for it, take theirs.
               </p>
@@ -130,13 +276,14 @@ const BundleOffer = () => {
                   </svg>
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
         </div>
       </div>
       
       {/* Mobile: Sticky CTA Button - moved lower to avoid overlap with pricing carousel */}
-      {isMobile && <div className="fixed bottom-8 left-0 right-0 z-50 p-4 bg-white border-t border-gray-200">
-          
+      {isMobile && (
+        <div className="fixed bottom-8 left-0 right-0 z-50 p-4 bg-white border-t border-gray-200">
           {/* Mobile text and arrow in sticky CTA section */}
           <div className="text-center mt-6">
             <p className="text-gray-600 text-base font-bold italic">
@@ -151,7 +298,10 @@ const BundleOffer = () => {
               </div>
             </div>
           </div>
-        </div>}
-    </section>;
+        </div>
+      )}
+    </section>
+  );
 };
+
 export default BundleOffer;
