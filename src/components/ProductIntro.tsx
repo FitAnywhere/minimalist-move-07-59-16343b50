@@ -1,11 +1,9 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -17,7 +15,6 @@ const ProductIntro = () => {
     finalText: false
   });
   const [videoError, setVideoError] = useState(false);
-
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -38,20 +35,16 @@ const ProductIntro = () => {
       })), 700);
     }
   }, [isInView]);
-
   const handleVideoError = () => {
     setVideoError(true);
   };
-
-  return (
-    <section id="product" ref={containerRef} style={{
-      backgroundColor: '#f6f6f6'
-    }}>
+  return <section id="product" ref={containerRef} style={{
+    backgroundColor: '#f6f6f6'
+  }}>
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-6xl mx-auto">
           {/* Mobile Layout */}
-          {isMobile && (
-            <div className="space-y-6">
+          {isMobile && <div className="space-y-6">
               {/* Title */}
               <div className="flex justify-center">
                 <div className="space-y-6 flex flex-col items-center">
@@ -66,7 +59,7 @@ const ProductIntro = () => {
               <div className={cn("text-center transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="max-w-md mx-auto">
                   {/* Subtitle - CAPS on mobile */}
-                  <p className="text-lg text-black font-bold uppercase">WIN AT HOME</p>
+                  
                 </div>
               </div>
 
@@ -80,25 +73,10 @@ const ProductIntro = () => {
               {/* Video - 20% smaller */}
               <div className={cn("flex justify-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="max-w-[243px] relative">
-                  {!videoError ? (
-                    <video 
-                      autoPlay 
-                      muted 
-                      loop 
-                      playsInline 
-                      className="w-full rounded-xl aspect-[3/4] object-cover"
-                      onError={handleVideoError}
-                    >
+                  {!videoError ? <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover" onError={handleVideoError}>
                       <source src="/0408-Copy-Copy (2)-Copy-Copy-Copy.webm" type="video/webm" />
                       Your browser does not support the video tag.
-                    </video>
-                  ) : (
-                    <img 
-                      src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750973466/Izdelek_brez_naslova_-_2025-06-26T232143.944_duekki.png"
-                      alt="Workout at home"
-                      className="w-full rounded-xl aspect-[3/4] object-cover"
-                    />
-                  )}
+                    </video> : <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750973466/Izdelek_brez_naslova_-_2025-06-26T232143.944_duekki.png" alt="Workout at home" className="w-full rounded-xl aspect-[3/4] object-cover" />}
                 </div>
               </div>
 
@@ -121,12 +99,10 @@ const ProductIntro = () => {
               <div className={cn("text-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 
               </div>
-            </div>
-          )}
+            </div>}
 
           {/* Desktop Layout */}
-          {!isMobile && (
-            <div className="space-y-16">
+          {!isMobile && <div className="space-y-16">
               {/* Centered Title and Subtitle */}
               <div className="text-center space-y-6">
                 {/* Title */}
@@ -139,7 +115,7 @@ const ProductIntro = () => {
 
                 {/* Subtitle */}
                 <div className={cn("transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-2xl text-black font-bold">WIN AT HOME</p>
+                  <p className="text-2xl text-black font-bold">Succeed where you are in control.</p>
                 </div>
               </div>
 
@@ -166,9 +142,7 @@ const ProductIntro = () => {
                   <div className={cn("transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="space-y-0">
                       
-                      <p className="font-bold italic text-black tracking-wide leading-tight text-xl">
-                        Succeed where you are in control.
-                      </p>
+                      
                     </div>
                   </div>
                 </div>
@@ -177,35 +151,17 @@ const ProductIntro = () => {
                 <div className="flex justify-center items-center h-full">
                   <div className={cn("transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="max-w-[308px] mx-auto relative">
-                      {!videoError ? (
-                        <video 
-                          autoPlay 
-                          muted 
-                          loop 
-                          playsInline 
-                          className="w-full rounded-xl aspect-[3/4] object-cover"
-                          onError={handleVideoError}
-                        >
+                      {!videoError ? <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover" onError={handleVideoError}>
                           <source src="/0408-Copy-Copy (2)-Copy-Copy-Copy.webm" type="video/webm" />
                           Your browser does not support the video tag.
-                        </video>
-                      ) : (
-                        <img 
-                          src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750973466/Izdelek_brez_naslova_-_2025-06-26T232143.944_duekki.png"
-                          alt="Workout at home"
-                          className="w-full rounded-xl aspect-[3/4] object-cover"
-                        />
-                      )}
+                        </video> : <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750973466/Izdelek_brez_naslova_-_2025-06-26T232143.944_duekki.png" alt="Workout at home" className="w-full rounded-xl aspect-[3/4] object-cover" />}
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ProductIntro;
