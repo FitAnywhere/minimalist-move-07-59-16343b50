@@ -62,17 +62,19 @@ const ProductIntro = () => {
                 </div>
               </div>
 
-              {/* Subtitle and single line bullet point */}
+              {/* Subtitle */}
               <div className={cn("text-center transition-all duration-1000", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="max-w-md mx-auto">
                   {/* Subtitle - CAPS on mobile */}
                   <p className="text-lg text-black font-bold uppercase">WIN AT HOME</p>
-                  
-                  {/* Single line bullet point - no margin-top to eliminate space */}
-                  <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>No traffic. No mind battles. No anxiety.
-                  </p>
                 </div>
+              </div>
+
+              {/* Text above video - mobile only */}
+              <div className={cn("text-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                <p className="text-lg font-bold italic text-black tracking-wide leading-tight py-0">
+                  Succeed where you are in control.
+                </p>
               </div>
 
               {/* Video - 20% smaller */}
@@ -87,7 +89,7 @@ const ProductIntro = () => {
                       className="w-full rounded-xl aspect-[3/4] object-cover"
                       onError={handleVideoError}
                     >
-                      <source src="/0408-Copy-Copy (2)-Copy-Copy.webm" type="video/webm" />
+                      <source src="/0408-Copy-Copy (2)-Copy-Copy-Copy.webm" type="video/webm" />
                       Your browser does not support the video tag.
                     </video>
                   ) : (
@@ -100,16 +102,24 @@ const ProductIntro = () => {
                 </div>
               </div>
 
-              {/* Mobile-only text below video */}
+              {/* 3 bullet points under video - mobile only */}
               <div className={cn("text-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                
+                <div className="max-w-md mx-auto space-y-2">
+                  <p className="text-lg text-black leading-relaxed">
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>NO TRAFFIC
+                  </p>
+                  <p className="text-lg text-black leading-relaxed">
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>NO MIND BATTLES
+                  </p>
+                  <p className="text-lg text-black leading-relaxed">
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>NO ANXIETY
+                  </p>
+                </div>
               </div>
 
-              {/* Final Text - italic and proper capitalization */}
-              <div className={cn("text-center transition-all duration-1000", animationState.finalText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                <p className="text-lg font-bold italic text-black tracking-wide leading-tight py-0">
-                  Succeed where you are in control.
-                </p>
+              {/* Mobile-only text below video - now empty since content moved */}
+              <div className={cn("text-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
+                
               </div>
             </div>
           )}
@@ -176,7 +186,7 @@ const ProductIntro = () => {
                           className="w-full rounded-xl aspect-[3/4] object-cover"
                           onError={handleVideoError}
                         >
-                          <source src="/0408-Copy-Copy (2)-Copy-Copy.webm" type="video/webm" />
+                          <source src="/0408-Copy-Copy (2)-Copy-Copy-Copy.webm" type="video/webm" />
                           Your browser does not support the video tag.
                         </video>
                       ) : (
