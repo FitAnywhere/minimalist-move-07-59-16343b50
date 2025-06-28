@@ -24,55 +24,45 @@ const BundleOffer = () => {
   const [isVisible, setIsVisible] = useState(true);
   const isMobile = useIsMobile();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [videoReady, setVideoReady] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [playAttempted, setPlayAttempted] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [sectionInView, setSectionInView] = useState(false);
 
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://buy.stripe.com/14AcN53hpdPBgmT0Ns6Na0l', '_blank');
   };
 
-  // Enhanced video control functions
-  const playVideo = async () => {
-    if (!videoRef.current || !videoReady || isPlaying) return;
-    
-    try {
-      setPlayAttempted(true);
-      await videoRef.current.play();
-      setIsPlaying(true);
-      console.log('Video started playing successfully');
-    } catch (error) {
-      console.log('Video autoplay prevented:', error);
-      setIsPlaying(false);
+  // Play video when conditions are met
+  const tryPlayVideo = async () => {
+    if (!videoRef.current || !videoLoaded || currentSlide !== 0 || !sectionInView) {
+      return;
     }
-  };
 
-  const pauseVideo = () => {
-    if (!videoRef.current || !isPlaying) return;
-    
     try {
-      videoRef.current.pause();
-      setIsPlaying(false);
-      console.log('Video paused successfully');
-    } catch (error) {
-      console.log('Video pause error:', error);
-    }
-  };
-
-  const resetVideo = () => {
-    if (!videoRef.current) return;
-    
-    try {
+      // Reset video to start
       videoRef.current.currentTime = 0;
-      setIsPlaying(false);
-      setPlayAttempted(false);
+      await videoRef.current.play();
+      console.log('Video playing successfully');
     } catch (error) {
-      console.log('Video reset error:', error);
+      console.log('Video autoplay failed:', error);
     }
   };
 
-  // Auto-rotate carousel with improved video management
+  // Pause video
+  const pauseVideo = () => {
+    if (videoRef.current && !videoRef.current.paused) {
+      videoRef.current.pause();
+      console.log('Video paused');
+    }
+  };
+
+  // Handle video loaded
+  const handleVideoLoaded = () => {
+    setVideoLoaded(true);
+    console.log('Video loaded and ready');
+  };
+
+  // Auto-rotate carousel
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide(prevSlide => {
@@ -88,83 +78,34 @@ const BundleOffer = () => {
     }, currentSlide === 0 ? 4000 : 2000);
 
     return () => clearInterval(interval);
-  }, [currentSlide, isPlaying]);
+  }, [currentSlide]);
 
-  // Video loading and ready state management
+  // Try to play video when conditions change
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleLoadedData = () => {
-      setVideoReady(true);
-      console.log('Video loaded and ready');
-    };
-
-    const handleCanPlay = () => {
-      setVideoReady(true);
-    };
-
-    const handlePlay = () => {
-      setIsPlaying(true);
-    };
-
-    const handlePause = () => {
-      setIsPlaying(false);
-    };
-
-    const handleEnded = () => {
-      setIsPlaying(false);
-      // Reset for loop
-      if (video.loop) {
-        resetVideo();
-      }
-    };
-
-    video.addEventListener('loadeddata', handleLoadedData);
-    video.addEventListener('canplay', handleCanPlay);
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('pause', handlePause);
-    video.addEventListener('ended', handleEnded);
-
-    return () => {
-      video.removeEventListener('loadeddata', handleLoadedData);
-      video.removeEventListener('canplay', handleCanPlay);
-      video.removeEventListener('play', handlePlay);
-      video.removeEventListener('pause', handlePause);
-      video.removeEventListener('ended', handleEnded);
-    };
-  }, []);
-
-  // Video playback control when slide becomes active
-  useEffect(() => {
-    if (currentSlide === 0 && videoReady && !playAttempted) {
+    if (currentSlide === 0 && videoLoaded && sectionInView) {
       // Small delay to ensure slide transition is complete
       const timer = setTimeout(() => {
-        resetVideo();
-        playVideo();
-      }, 100);
+        tryPlayVideo();
+      }, 300);
       
       return () => clearTimeout(timer);
+    } else if (currentSlide !== 0) {
+      pauseVideo();
     }
-  }, [currentSlide, videoReady, playAttempted]);
+  }, [currentSlide, videoLoaded, sectionInView]);
 
   // Intersection observer for section visibility
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const isIntersecting = entry.isIntersecting && entry.intersectionRatio >= 0.3;
+        const isIntersecting = entry.isIntersecting && entry.intersectionRatio >= 0.1;
+        setSectionInView(isIntersecting);
         
-        if (isIntersecting && currentSlide === 0 && videoReady) {
-          // Only try to play if we're on video slide and section is visible
-          if (!playAttempted) {
-            playVideo();
-          }
-        } else if (!isIntersecting) {
-          // Pause when section is not visible
+        if (!isIntersecting) {
           pauseVideo();
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.1 }
     );
 
     if (sectionRef.current) {
@@ -172,7 +113,7 @@ const BundleOffer = () => {
     }
 
     return () => observer.disconnect();
-  }, [currentSlide, videoReady, playAttempted]);
+  }, []);
 
   const valueBreakdownItems = ['Power Station', '4 Elastic Bands (15–120kg)', '15-Min Workouts', 'Personal Coach Access', 'Free Shipping'];
 
@@ -205,7 +146,7 @@ const BundleOffer = () => {
               </div>
             )}
 
-            {/* Enhanced carousel container with better video management */}
+            {/* Enhanced carousel container */}
             <div className={cn("relative overflow-hidden", isMobile ? "w-full" : "w-full max-w-[500px] h-[530px] mt-12")}>
               {carouselContent.map((item, index) => (
                 <div 
@@ -226,7 +167,8 @@ const BundleOffer = () => {
                         playsInline
                         loop
                         preload="metadata"
-                        onLoadStart={() => console.log('Video load started')}
+                        onLoadedData={handleVideoLoaded}
+                        onCanPlay={handleVideoLoaded}
                         onError={(e) => console.log('Video error:', e)}
                       />
                     ) : (
