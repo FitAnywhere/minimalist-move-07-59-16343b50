@@ -15,6 +15,7 @@ interface PricingTier {
   features: PricingFeature[];
   popular?: boolean;
 }
+
 function FitAnywherePricing({
   tiers
 }: {
@@ -55,6 +56,28 @@ function FitAnywherePricing({
       setCurrentIndex(currentIndex + 1);
     }
   };
+
+  const handleCheckout = (tierName: string) => {
+    let checkoutUrl = '';
+    
+    switch (tierName) {
+      case 'BASIC':
+        checkoutUrl = 'https://buy.stripe.com/eVq9ATcRZdPB5IfeEi6Na0q';
+        break;
+      case 'UPGRADE':
+        checkoutUrl = 'https://buy.stripe.com/00w5kD3hp3aX4Eb0Ns6Na0o';
+        break;
+      case 'LOCKED IN':
+        checkoutUrl = 'https://buy.stripe.com/7sY3cvg4beTFeeL0Ns6Na0p';
+        break;
+      default:
+        console.error('Unknown tier:', tierName);
+        return;
+    }
+    
+    window.open(checkoutUrl, '_blank');
+  };
+
   return <div className="w-full max-w-3xl mx-auto md:py-20 py-[67px] my-0 px-0">
             <div className="relative">
                 {/* Desktop Navigation Arrows - positioned very close to carousel */}
@@ -104,7 +127,10 @@ function FitAnywherePricing({
                                     </div>
 
                                     <div className="flex flex-col items-center">
-                                        <Button className={cn("w-full h-12 text-lg font-bold mb-2", "bg-yellow-400 text-foreground", "hover:bg-yellow-500", "active:bg-yellow-400", "border-2 border-foreground", "shadow-[4px_4px_0px_0px] shadow-foreground", "hover:shadow-[6px_6px_0px_0px]", "hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200")}>
+                                        <Button 
+                                            onClick={() => handleCheckout(tier.name)}
+                                            className={cn("w-full h-12 text-lg font-bold mb-2", "bg-yellow-400 text-foreground", "hover:bg-yellow-500", "active:bg-yellow-400", "border-2 border-foreground", "shadow-[4px_4px_0px_0px] shadow-foreground", "hover:shadow-[6px_6px_0px_0px]", "hover:translate-x-[-2px] hover:translate-y-[-2px]", "transition-all duration-200")}
+                                        >
                                             {tier.ctaText}
                                         </Button>
                                         <span className="text-gray-400 text-sm opacity-70">
@@ -128,6 +154,7 @@ function FitAnywherePricing({
             </div>
         </div>;
 }
+
 const sampleFitAnywhereTiers: PricingTier[] = [{
   name: "BASIC",
   subtitle: "",
