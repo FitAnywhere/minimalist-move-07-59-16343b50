@@ -5,6 +5,7 @@ import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { X, Check, ArrowDown } from 'lucide-react';
+import { scrollToElement } from '@/utils/scrollUtils';
 
 const challenges = [{
   problem: "Too intimidated to start",
@@ -79,7 +80,7 @@ const TheChallengeSection = () => {
   }, [isInView, animationState.title]);
 
   const handleCTAClick = () => {
-    window.open('https://buy.stripe.com/eVa28y4t7cOw33qeVa', '_blank');
+    scrollToElement('#bundle', 80);
   };
 
   return (
