@@ -1,8 +1,10 @@
+
 import { useRef, useEffect } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { scrollToElement } from '@/utils/scrollUtils';
 
 const GymCallToAction = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -13,10 +15,11 @@ const GymCallToAction = () => {
 
   // Set up parallax effect
   useParallax(backgroundRef, 0.05);
-  const handlePartnershipClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    window.open('https://api.whatsapp.com/send/?phone=38668154199&text&type=phone_number&app_absent=0', '_blank');
+  
+  const handleCTAClick = () => {
+    scrollToElement('#bundle', 80);
   };
+
   return (
     <section id="order" ref={sectionRef} style={{
       background: 'linear-gradient(to bottom, #8A898C 0%, #555555 40%, #333333 70%, #222222 85%, black 100%)'
@@ -37,7 +40,7 @@ const GymCallToAction = () => {
             
             {/* CTA Button - yellow with black text */}
             <div className={cn("transition-all duration-1000 mt-6 md:mt-8", isInView ? "opacity-100 scale-100" : "opacity-0 scale-95")}>
-              <Button onClick={handlePartnershipClick} variant="yellow" size="xl" className="font-semibold tracking-wide transition-all duration-300 hover:bg-yellow-dark hover:shadow-lg hover:-translate-y-1">
+              <Button onClick={handleCTAClick} variant="yellow" size="xl" className="font-semibold tracking-wide transition-all duration-300 hover:bg-yellow-dark hover:shadow-lg hover:-translate-y-1">
                 LOCK IN NOW
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
