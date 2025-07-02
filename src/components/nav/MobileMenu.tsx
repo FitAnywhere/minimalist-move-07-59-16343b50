@@ -7,9 +7,10 @@ interface MobileMenuProps {
   isOpen: boolean;
   links: NavLink[];
   onNavLinkClick: (href: string, type: string) => void;
+  onClose: () => void;
 }
 
-export const MobileMenu = ({ isOpen, links, onNavLinkClick }: MobileMenuProps) => {
+export const MobileMenu = ({ isOpen, links, onNavLinkClick, onClose }: MobileMenuProps) => {
   if (!isOpen) return null;
 
   return (
@@ -33,7 +34,7 @@ export const MobileMenu = ({ isOpen, links, onNavLinkClick }: MobileMenuProps) =
           className="flex flex-col space-y-6 items-center text-lg"
         />
         <div className="pt-4 space-y-4">
-          <OrderButton className="block w-full text-center" />
+          <OrderButton className="block w-full text-center" onMenuClose={onClose} />
           <WhatsAppButton showText className="w-full" />
         </div>
       </div>

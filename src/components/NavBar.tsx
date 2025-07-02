@@ -60,6 +60,10 @@ const NavBar = () => {
     { name: "FAQ", href: "#faq", type: "section" }
   ];
 
+  const handleMobileMenuClose = () => {
+    setIsOpen(false);
+  };
+
   return (
     <nav
       className={cn(
@@ -93,6 +97,7 @@ const NavBar = () => {
         isOpen={isOpen}
         links={navLinks}
         onNavLinkClick={handleNavLinkClick}
+        onClose={handleMobileMenuClose}
       />
     </nav>
   );
