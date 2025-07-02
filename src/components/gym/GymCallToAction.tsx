@@ -1,14 +1,14 @@
-
 import { useRef, useEffect } from 'react';
 import { useInView, useParallax } from '@/utils/animations';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { scrollToElement } from '@/utils/scrollUtils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const GymCallToAction = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   const isInView = useInView(sectionRef, {
     threshold: 0.3
   });
@@ -17,7 +17,50 @@ const GymCallToAction = () => {
   useParallax(backgroundRef, 0.05);
   
   const handleCTAClick = () => {
-    scrollToElement('#bundle', 80);
+    // Mobile-specific scrolling to pricing carousel
+    if (isMobile) {
+      setTimeout(() => {
+        // Look for the pricing component specifically within the bundle section
+        const pricingElement = document.querySelector('#bundle-offer .max-w-3xl') || 
+                             document.querySelector('#bundle-offer [class*="pricing"]') ||
+                             document.querySelector('#bundle-offer');
+        
+        if (pricingElement) {
+          // Calculate offset to land directly on the carousel for mobile
+          const elementRect = pricingElement.getBoundingClientRect();
+          const offsetTop = elementRect.top + window.scrollY - 80; // Adjusted for mobile header
+          
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        } else {
+          // Fallback - look for bundle section with adjusted mobile offset
+          const bundleSection = document.querySelector('#bundle-offer') || document.querySelector('#bundle');
+          if (bundleSection) {
+            const elementRect = bundleSection.getBoundingClientRect();
+            const offsetTop = elementRect.top + window.scrollY - 60;
+            
+            window.scrollTo({
+              top: offsetTop,
+              behavior: 'smooth'
+            });
+          }
+        }
+      }, 100);
+    } else {
+      // Desktop fallback - keep existing behavior
+      const bundleSection = document.querySelector('#bundle-offer') || document.querySelector('#bundle');
+      if (bundleSection) {
+        const elementRect = bundleSection.getBoundingClientRect();
+        const offsetTop = elementRect.top + window.scrollY - 100;
+        
+        window.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    }
   };
 
   return (
