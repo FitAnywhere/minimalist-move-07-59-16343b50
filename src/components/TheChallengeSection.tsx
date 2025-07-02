@@ -1,11 +1,9 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { X, Check, ArrowDown } from 'lucide-react';
-import { scrollToElement } from '@/utils/scrollUtils';
 
 const challenges = [{
   problem: "Too intimidated to start",
@@ -80,7 +78,50 @@ const TheChallengeSection = () => {
   }, [isInView, animationState.title]);
 
   const handleCTAClick = () => {
-    scrollToElement('#bundle', 80);
+    // Mobile-specific scrolling to pricing carousel
+    if (isMobile) {
+      setTimeout(() => {
+        // Look for the pricing component specifically within the bundle section
+        const pricingElement = document.querySelector('#bundle-offer .max-w-3xl') || 
+                             document.querySelector('#bundle-offer [class*="pricing"]') ||
+                             document.querySelector('#bundle-offer');
+        
+        if (pricingElement) {
+          // Calculate offset to land directly on the carousel for mobile
+          const elementRect = pricingElement.getBoundingClientRect();
+          const offsetTop = elementRect.top + window.scrollY - 80; // Adjusted for mobile header
+          
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        } else {
+          // Fallback - look for bundle section with adjusted mobile offset
+          const bundleSection = document.querySelector('#bundle-offer') || document.querySelector('#bundle');
+          if (bundleSection) {
+            const elementRect = bundleSection.getBoundingClientRect();
+            const offsetTop = elementRect.top + window.scrollY - 60;
+            
+            window.scrollTo({
+              top: offsetTop,
+              behavior: 'smooth'
+            });
+          }
+        }
+      }, 100);
+    } else {
+      // Desktop fallback - keep existing behavior
+      const bundleSection = document.querySelector('#bundle-offer') || document.querySelector('#bundle');
+      if (bundleSection) {
+        const elementRect = bundleSection.getBoundingClientRect();
+        const offsetTop = elementRect.top + window.scrollY - 100;
+        
+        window.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    }
   };
 
   return (
