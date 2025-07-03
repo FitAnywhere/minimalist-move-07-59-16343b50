@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
@@ -67,6 +68,21 @@ export const CircularTestimonials = ({
   const testimonialsLength = useMemo(() => testimonials.length, [testimonials]);
   const activeTestimonial = useMemo(() => testimonials[activeIndex], [activeIndex, testimonials]);
 
+  // Touch/Swipe state for mobile
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Responsive gap calculation
   useEffect(() => {
     function handleResize() {
@@ -109,10 +125,39 @@ export const CircularTestimonials = ({
     setActiveIndex(prev => (prev + 1) % testimonialsLength);
     if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
   }, [testimonialsLength]);
+  
   const handlePrev = useCallback(() => {
     setActiveIndex(prev => (prev - 1 + testimonialsLength) % testimonialsLength);
     if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
   }, [testimonialsLength]);
+
+  // Touch handlers for swipe functionality (mobile only)
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (!isMobile) return;
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  }, [isMobile]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isMobile) return;
+    setTouchEnd(e.targetTouches[0].clientX);
+  }, [isMobile]);
+
+  const handleTouchEnd = useCallback(() => {
+    if (!isMobile || !touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      console.log('Swiped left - moving to next');
+      handleNext();
+    } else if (isRightSwipe) {
+      console.log('Swiped right - moving to previous');
+      handlePrev();
+    }
+  }, [isMobile, touchStart, touchEnd, handleNext, handlePrev]);
 
   // Compute transforms for each image (always show 3: left, center, right)
   function getImageStyle(index: number): React.CSSProperties {
@@ -175,7 +220,6 @@ export const CircularTestimonials = ({
   };
 
   // Check if mobile - add debugging
-  const isMobile = containerWidth < 768;
   console.log('Is mobile:', isMobile, 'Container width:', containerWidth);
 
   // CSS-in-JS styles - remove max-width restriction on desktop
@@ -282,7 +326,13 @@ export const CircularTestimonials = ({
   return <div style={containerStyles}>
       <div style={gridStyles} className="px-0 lg:px-[235px]">
         {/* Images */}
-        <div style={imageContainerStyles} ref={imageContainerRef}>
+        <div 
+          style={imageContainerStyles} 
+          ref={imageContainerRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           {testimonials.map((testimonial, index) => <img key={testimonial.src} src={testimonial.src} alt={testimonial.name} style={{
           ...imageStyles,
           ...getImageStyle(index)
