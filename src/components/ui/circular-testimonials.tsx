@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
@@ -279,7 +278,7 @@ export const CircularTestimonials = ({
     boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
   };
 
-  // Updated content styles for desktop layout
+  // Updated content styles for desktop layout with wider testimonial text
   const contentStyles: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
@@ -290,17 +289,34 @@ export const CircularTestimonials = ({
     } : {
       flex: 1,
       textAlign: 'left',
-      maxWidth: '500px' // Limit content width for better readability
+      maxWidth: '700px', // Increased from 500px to make testimonial text wider
+      alignItems: 'center' // Center align children for desktop
     })
   };
+
+  // Name styles - centered on testimonial text for desktop
   const nameStyles: React.CSSProperties = {
     fontWeight: 'bold',
-    marginBottom: isMobile ? '1rem' : '1.5rem'
+    marginBottom: isMobile ? '1rem' : '1.5rem',
+    ...(isMobile ? {} : {
+      textAlign: 'center',
+      width: '100%',
+      maxWidth: '600px' // Match testimonial text width
+    })
   };
+
+  // Quote styles - wider for desktop
   const quoteStyles: React.CSSProperties = {
     lineHeight: 1.75,
-    marginBottom: isMobile ? '1.5rem' : '2rem'
+    marginBottom: isMobile ? '1.5rem' : '2rem',
+    ...(isMobile ? {} : {
+      maxWidth: '600px', // Wider testimonial text
+      width: '100%',
+      textAlign: 'center' // Center align text
+    })
   };
+
+  // Arrow buttons styles - centered on testimonial text for desktop
   const arrowButtonsStyles: React.CSSProperties = {
     display: 'flex',
     gap: '1.5rem',
@@ -309,9 +325,12 @@ export const CircularTestimonials = ({
       justifyContent: 'center'
     } : {
       paddingTop: '0',
-      justifyContent: 'flex-start'
+      justifyContent: 'center', // Changed from flex-start to center for desktop
+      width: '100%',
+      maxWidth: '600px' // Match testimonial text width
     })
   };
+
   const arrowButtonStyles: React.CSSProperties = {
     width: '2.7rem',
     height: '2.7rem',
@@ -323,6 +342,7 @@ export const CircularTestimonials = ({
     transition: 'background-color 0.3s',
     border: 'none'
   };
+
   return <div style={containerStyles}>
       <div style={gridStyles} className="px-0 lg:px-[235px]">
         {/* Images */}
