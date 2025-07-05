@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
@@ -278,7 +279,7 @@ export const CircularTestimonials = ({
     boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
   };
 
-  // Updated content styles for desktop layout with wider testimonial text
+  // Updated content styles for desktop layout with much wider testimonial text
   const contentStyles: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
@@ -288,35 +289,36 @@ export const CircularTestimonials = ({
       width: '100%'
     } : {
       flex: 1,
-      textAlign: 'left',
-      maxWidth: '700px', // Increased from 500px to make testimonial text wider
-      alignItems: 'center' // Center align children for desktop
+      textAlign: 'center', // Center everything on desktop
+      maxWidth: '900px', // Much wider container for desktop
+      alignItems: 'center',
+      width: '100%'
     })
   };
 
-  // Name styles - centered on testimonial text for desktop
+  // Name styles - centered above testimonial text for desktop
   const nameStyles: React.CSSProperties = {
     fontWeight: 'bold',
     marginBottom: isMobile ? '1rem' : '1.5rem',
     ...(isMobile ? {} : {
       textAlign: 'center',
       width: '100%',
-      maxWidth: '600px' // Match testimonial text width
+      maxWidth: '800px' // Match wider testimonial text
     })
   };
 
-  // Quote styles - wider for desktop
+  // Quote styles - much wider for desktop to display on fewer lines
   const quoteStyles: React.CSSProperties = {
     lineHeight: 1.75,
     marginBottom: isMobile ? '1.5rem' : '2rem',
     ...(isMobile ? {} : {
-      maxWidth: '600px', // Wider testimonial text
+      maxWidth: '800px', // Much wider testimonial text for desktop
       width: '100%',
       textAlign: 'center' // Center align text
     })
   };
 
-  // Arrow buttons styles - centered on testimonial text for desktop
+  // Arrow buttons styles - centered below testimonial text for desktop
   const arrowButtonsStyles: React.CSSProperties = {
     display: 'flex',
     gap: '1.5rem',
@@ -325,9 +327,9 @@ export const CircularTestimonials = ({
       justifyContent: 'center'
     } : {
       paddingTop: '0',
-      justifyContent: 'center', // Changed from flex-start to center for desktop
+      justifyContent: 'center',
       width: '100%',
-      maxWidth: '600px' // Match testimonial text width
+      maxWidth: '800px' // Match testimonial text width
     })
   };
 
