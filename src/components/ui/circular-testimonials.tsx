@@ -302,17 +302,15 @@ export const CircularTestimonials = ({
     marginBottom: isMobile ? '1rem' : '1.5rem',
     ...(isMobile ? {} : {
       textAlign: 'center',
-      width: '100%',
-      maxWidth: '800px' // Match wider testimonial text
+      width: '100%'
     })
   };
 
-  // Quote styles - much wider for desktop to display on fewer lines
+  // Quote styles - full width for desktop to display horizontally 
   const quoteStyles: React.CSSProperties = {
     lineHeight: 1.75,
     marginBottom: isMobile ? '1.5rem' : '2rem',
     ...(isMobile ? {} : {
-      maxWidth: '800px', // Much wider testimonial text for desktop
       width: '100%',
       textAlign: 'center' // Center align text
     })
@@ -328,8 +326,7 @@ export const CircularTestimonials = ({
     } : {
       paddingTop: '0',
       justifyContent: 'center',
-      width: '100%',
-      maxWidth: '800px' // Match testimonial text width
+      width: '100%'
     })
   };
 
