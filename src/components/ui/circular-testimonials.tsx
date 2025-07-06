@@ -292,8 +292,6 @@ export const CircularTestimonials = ({
       flex: 1,
       textAlign: 'center',
       alignItems: 'center',
-      width: '800px', // Fixed wider width for horizontal text
-      maxWidth: '800px',
       paddingLeft: '2rem' // Space from images
     })
   };
