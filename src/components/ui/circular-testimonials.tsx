@@ -280,7 +280,7 @@ export const CircularTestimonials = ({
     boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
   };
 
-  // Updated content styles for desktop layout with much wider testimonial text
+  // Updated content styles for desktop layout
   const contentStyles: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
@@ -291,10 +291,9 @@ export const CircularTestimonials = ({
     } : {
       flex: 1,
       textAlign: 'center',
-      minWidth: '1200px', // Much wider container for desktop
-      maxWidth: '1400px', // Allow very wide testimonial text
       alignItems: 'center',
-      width: '100%'
+      width: '100%',
+      paddingLeft: '2rem' // Space from images
     })
   };
 
