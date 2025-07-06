@@ -244,10 +244,11 @@ export const CircularTestimonials = ({
       alignItems: 'center'
     } : {
       flexDirection: 'row',
-      gap: '4rem',
-      // Increased gap for better desktop layout
+      gap: '1rem',
+      // Minimal gap to remove empty space
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'flex-start'
+      // Start alignment to keep images positioned and text close
     })
   };
 
