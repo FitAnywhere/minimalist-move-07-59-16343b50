@@ -289,8 +289,9 @@ export const CircularTestimonials = ({
       width: '100%'
     } : {
       flex: 1,
-      textAlign: 'center', // Center everything on desktop
-      maxWidth: '900px', // Much wider container for desktop
+      textAlign: 'center',
+      minWidth: '1200px', // Much wider container for desktop
+      maxWidth: '1400px', // Allow very wide testimonial text
       alignItems: 'center',
       width: '100%'
     })
