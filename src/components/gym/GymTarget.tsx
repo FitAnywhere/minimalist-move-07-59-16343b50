@@ -60,9 +60,9 @@ const GymTarget = () => {
                     </div>
                   </div>
 
-                  {/* Right Column - Video (25% smaller) */}
+                  {/* Right Column - Video (10-15% bigger) */}
                   <div className={cn("transition-all duration-1000 delay-600", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                    <div className="w-full max-w-[225px] mx-auto">
+                    <div className="w-full max-w-[260px] mx-auto">
                       <div className="relative aspect-[9/16] rounded-2xl overflow-hidden bg-black shadow-2xl">
                         {!videoError ? <video autoPlay muted loop playsInline className="w-full h-full object-cover" preload="metadata" onError={handleVideoError}>
                             <source src="/0620(1).Mp4 (1).webm" type="video/webm" />
@@ -83,7 +83,7 @@ const GymTarget = () => {
 
                 {/* Video Block */}
                 <div className={cn("mb-2 transition-all duration-1000 delay-400", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <div className="w-full max-w-[200px] mx-auto">
+                  <div className="w-full max-w-[230px] mx-auto">
                     <div className="relative aspect-[9/16] rounded-2xl overflow-hidden bg-black shadow-2xl">
                       {!videoError ? <video autoPlay muted loop playsInline className="w-full h-full object-cover" preload="metadata" onError={handleVideoError}>
                           <source src="/0620(1).Mp4 (1).webm" type="video/webm" />
