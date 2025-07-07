@@ -244,11 +244,10 @@ export const CircularTestimonials = ({
       alignItems: 'center'
     } : {
       flexDirection: 'row',
-      gap: '1rem',
-      // Minimal gap to remove empty space
+      gap: '4rem',
+      // Increased gap for better desktop layout
       alignItems: 'center',
-      justifyContent: 'flex-start'
-      // Start alignment to keep images positioned and text close
+      justifyContent: 'center'
     })
   };
 
@@ -280,7 +279,7 @@ export const CircularTestimonials = ({
     boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
   };
 
-  // Updated content styles for desktop layout
+  // Updated content styles for desktop layout with much wider testimonial text
   const contentStyles: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
@@ -291,8 +290,10 @@ export const CircularTestimonials = ({
     } : {
       flex: 1,
       textAlign: 'center',
+      minWidth: '1200px', // Much wider container for desktop
+      maxWidth: '1400px', // Allow very wide testimonial text
       alignItems: 'center',
-      paddingLeft: '2rem' // Space from images
+      width: '100%'
     })
   };
 
