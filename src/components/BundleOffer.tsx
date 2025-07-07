@@ -26,6 +26,8 @@ const BundleOffer = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [sectionInView, setSectionInView] = useState(false);
+  const [carouselVideoError, setCarouselVideoError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const handleCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -59,7 +61,24 @@ const BundleOffer = () => {
   // Handle video loaded
   const handleVideoLoaded = () => {
     setVideoLoaded(true);
+    setCarouselVideoError(false);
+    setRetryCount(0);
     console.log('Video loaded and ready');
+  };
+
+  // Handle video error and retry
+  const handleCarouselVideoError = () => {
+    setCarouselVideoError(true);
+    console.log('Carousel video error, will retry in 1 second');
+    
+    // Retry loading video every second
+    setTimeout(() => {
+      if (videoRef.current && retryCount < 10) { // Limit retries to prevent infinite loop
+        setRetryCount(prev => prev + 1);
+        videoRef.current.load(); // Reload video
+        console.log(`Retrying video load, attempt ${retryCount + 1}`);
+      }
+    }, 1000);
   };
 
   // Auto-rotate carousel
@@ -159,18 +178,26 @@ const BundleOffer = () => {
                 >
                   <div className={cn("flex justify-center items-center", isMobile ? "w-full h-[300px]" : "h-[75%]")}>
                     {item.type === 'video' ? (
-                      <video
-                        ref={index === 0 ? videoRef : null}
-                        src={item.src}
-                        className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full")}
-                        muted
-                        playsInline
-                        loop
-                        preload="metadata"
-                        onLoadedData={handleVideoLoaded}
-                        onCanPlay={handleVideoLoaded}
-                        onError={(e) => console.log('Video error:', e)}
-                      />
+                      !carouselVideoError ? (
+                        <video
+                          ref={index === 0 ? videoRef : null}
+                          src={item.src}
+                          className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full")}
+                          muted
+                          playsInline
+                          loop
+                          preload="metadata"
+                          onLoadedData={handleVideoLoaded}
+                          onCanPlay={handleVideoLoaded}
+                          onError={handleCarouselVideoError}
+                        />
+                      ) : (
+                        <img
+                          src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1751888689/Izdelek_brez_naslova_-_2025-07-07T134427.421_qelihy.png"
+                          alt="Workout fallback"
+                          className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full")}
+                        />
+                      )
                     ) : (
                       <img
                         src={item.src}
