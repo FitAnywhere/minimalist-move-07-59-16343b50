@@ -229,16 +229,13 @@ export const CircularTestimonials = ({
   // Updated grid styles for proper desktop layout
   const gridStyles: React.CSSProperties = {
     display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     ...(isMobile ? {
-      flexDirection: 'column',
-      gap: '2rem',
-      alignItems: 'center'
+      gap: '2rem'
     } : {
-      flexDirection: 'row',
-      gap: '2rem',
-      // Reduced gap to bring image and text closer
-      alignItems: 'center',
-      justifyContent: 'center'
+      gap: '3rem'
+      // Desktop: Images centered at top, content below
     })
   };
 
@@ -277,7 +274,10 @@ export const CircularTestimonials = ({
     justifyContent: 'center',
     ...(isMobile ? {
       textAlign: 'center',
-      width: '100%'
+      width: '100%',
+      maxWidth: '100%',
+      padding: '0 1rem'
+      // Make mobile text use full width with only minimal padding
     } : {
       flex: 1,
       textAlign: 'center',
@@ -344,7 +344,7 @@ export const CircularTestimonials = ({
         }} data-index={index} />)}
         </div>
         {/* Content */}
-        <div style={contentStyles} className="py-0 my-0 mx-0 md:mx-[26px] px-0 md:px-[234px]">
+        <div style={contentStyles} className="py-0 my-0 mx-0 px-0 md:px-[234px]">
           <AnimatePresence mode="wait">
             <motion.div key={activeIndex} variants={quoteVariants} initial="initial" animate="animate" exit="exit" transition={{
             duration: 0.3,
