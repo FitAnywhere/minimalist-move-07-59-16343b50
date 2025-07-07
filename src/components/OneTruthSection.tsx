@@ -12,7 +12,7 @@ const OneTruthSection = () => {
     if (!isInView) return;
     const interval = setInterval(() => {
       setCurrentImageIndex(prevIndex => (prevIndex + 1) % exerciseImages.length);
-    }, 1700);
+    }, 1100);
     return () => clearInterval(interval);
   }, [isInView]);
   const renderCarousel = () => <div className="relative w-full max-w-xs mx-auto md:max-w-sm">
