@@ -116,7 +116,7 @@ const TheChallengeSection = () => {
       <div className="container mx-auto px-4">
         <div className={cn("text-center mb-16 transition-all duration-1000", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
           <h2 className="relative text-4xl md:text-6xl font-bold mb-4 inline-block">
-            EXCUSES DIE HERE
+            FIXED FOR YOU
             <div className="absolute -bottom-2 left-0 right-0 h-1 bg-yellow-400 rounded-full"></div>
           </h2>
           
@@ -127,13 +127,13 @@ const TheChallengeSection = () => {
           {challenges.map((challenge, index) => <div key={index} className={cn("absolute inset-0 bg-gray-900 border border-yellow-400 p-8 md:p-12 rounded-lg transition-all duration-700", currentCardIndex === index && animationState.challenges[index] ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95 pointer-events-none")}>
               <div className="flex items-center mb-6">
                 <X className="w-8 h-8 text-red-500 mr-4" />
-                <h3 className="text-xl md:text-2xl font-semibold text-red-500">
+                <h3 className="text-2xl md:text-3xl font-semibold text-red-500">
                   {challenge.problem}
                 </h3>
               </div>
               <div className="flex items-center">
                 <Check className="w-8 h-8 text-green-500 mr-4" />
-                <p className="text-green-500 font-medium text-xl md:text-2xl">
+                <p className="text-green-500 font-medium text-2xl md:text-3xl">
                   {challenge.solution}
                 </p>
               </div>
