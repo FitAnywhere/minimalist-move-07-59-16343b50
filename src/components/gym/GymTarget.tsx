@@ -24,7 +24,7 @@ const GymTarget = () => {
             {!isMobile && <>
                 {/* Single line under title */}
                 <div className={cn("text-center mb-8 transition-all duration-1000 delay-200", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Gyms judged you | Parks embarrassed you</p>
+                  <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">Three friends that hid from gym.</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 items-center px-[123px]">
@@ -33,7 +33,7 @@ const GymTarget = () => {
                     {/* Solution text with animated arrow */}
                     <div className={cn("transition-all duration-1000 delay-300", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                       <div className="flex items-center mb-6">
-                        <p className="text-xl md:text-2xl font-bold text-black mr-3">Take your power back.</p>
+                        <p className="text-xl md:text-2xl font-bold text-black mr-3">They got their own gym now.</p>
                         <ChevronRight className="w-6 h-6 text-yellow-400 animate-pulse" />
                       </div>
                     </div>
@@ -56,7 +56,7 @@ const GymTarget = () => {
 
                     {/* Payoff Line - moved lower with more spacing */}
                     <div className={cn("mt-12 transition-all duration-1000 delay-800", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                      <p className="text-lg md:text-xl font-bold text-black italic py-[13px] my-[34px]">You weren't weak. The game was rigged.</p>
+                      <p className="text-lg md:text-xl font-bold text-black italic py-[13px] my-[34px]">TRAIN WHERE YOU BELONG</p>
                     </div>
                   </div>
 
