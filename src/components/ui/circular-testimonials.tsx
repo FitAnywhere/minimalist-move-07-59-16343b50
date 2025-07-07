@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { Star } from "lucide-react";
 interface Testimonial {
   quote: string;
   name: string;
@@ -357,6 +358,23 @@ export const CircularTestimonials = ({
             }}>
                 {activeTestimonial.name}
               </h3>
+              
+              {/* Star Rating */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '0.25rem',
+                marginBottom: isMobile ? '1rem' : '1.5rem'
+              }}>
+                {[...Array(activeTestimonial.name === "Thijs D." ? 4 : 5)].map((_, i) => (
+                  <Star 
+                    key={i} 
+                    className="h-5 w-5" 
+                    fill="#FFD700" 
+                    color="#FFD700" 
+                  />
+                ))}
+              </div>
               <motion.p style={{
               ...quoteStyles,
               color: colorTestimony,
