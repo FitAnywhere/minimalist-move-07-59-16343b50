@@ -1,8 +1,10 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+
 interface Testimonial {
   quote: string;
   name: string;
@@ -28,6 +30,7 @@ interface CircularTestimonialsProps {
   colors?: Colors;
   fontSizes?: FontSizes;
 }
+
 function calculateGap(width: number) {
   const minWidth = 1024;
   const maxWidth = 1456;
@@ -37,6 +40,7 @@ function calculateGap(width: number) {
   if (width >= maxWidth) return Math.max(minGap, maxGap + 0.06018 * (width - maxWidth));
   return minGap + (maxGap - minGap) * ((width - minWidth) / (maxWidth - minWidth));
 }
+
 export const CircularTestimonials = ({
   testimonials,
   autoplay = true,
@@ -121,6 +125,7 @@ export const CircularTestimonials = ({
     setActiveIndex(prev => (prev + 1) % testimonialsLength);
     if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
   }, [testimonialsLength]);
+  
   const handlePrev = useCallback(() => {
     setActiveIndex(prev => (prev - 1 + testimonialsLength) % testimonialsLength);
     if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
@@ -132,15 +137,19 @@ export const CircularTestimonials = ({
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
   }, [isMobile]);
+
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isMobile) return;
     setTouchEnd(e.targetTouches[0].clientX);
   }, [isMobile]);
+
   const handleTouchEnd = useCallback(() => {
     if (!isMobile || !touchStart || !touchEnd) return;
+    
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
+
     if (isLeftSwipe) {
       console.log('Swiped left - moving to next');
       handleNext();
@@ -235,10 +244,11 @@ export const CircularTestimonials = ({
       alignItems: 'center'
     } : {
       flexDirection: 'row',
-      gap: '4rem',
-      // Increased gap for better desktop layout
+      gap: '1rem',
+      // Minimal gap to remove empty space
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'flex-start'
+      // Start alignment to keep images positioned and text close
     })
   };
 
@@ -270,7 +280,7 @@ export const CircularTestimonials = ({
     boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
   };
 
-  // Updated content styles for desktop layout with much wider testimonial text
+  // Updated content styles for desktop layout
   const contentStyles: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
@@ -281,12 +291,10 @@ export const CircularTestimonials = ({
     } : {
       flex: 1,
       textAlign: 'center',
-      minWidth: '1200px',
-      // Much wider container for desktop
-      maxWidth: '1400px',
-      // Allow very wide testimonial text
       alignItems: 'center',
-      width: '100%'
+      width: '800px', // Fixed wider width for horizontal text
+      maxWidth: '800px',
+      paddingLeft: '2rem' // Space from images
     })
   };
 
@@ -323,6 +331,7 @@ export const CircularTestimonials = ({
       width: '100%'
     })
   };
+
   const arrowButtonStyles: React.CSSProperties = {
     width: '2.7rem',
     height: '2.7rem',
@@ -334,17 +343,24 @@ export const CircularTestimonials = ({
     transition: 'background-color 0.3s',
     border: 'none'
   };
+
   return <div style={containerStyles}>
       <div style={gridStyles} className="px-0 lg:px-[235px]">
         {/* Images */}
-        <div style={imageContainerStyles} ref={imageContainerRef} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+        <div 
+          style={imageContainerStyles} 
+          ref={imageContainerRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           {testimonials.map((testimonial, index) => <img key={testimonial.src} src={testimonial.src} alt={testimonial.name} style={{
           ...imageStyles,
           ...getImageStyle(index)
         }} data-index={index} />)}
         </div>
         {/* Content */}
-        <div style={contentStyles} className="py-0 my-0 mx-[26px] px-[234px]">
+        <div style={contentStyles}>
           <AnimatePresence mode="wait">
             <motion.div key={activeIndex} variants={quoteVariants} initial="initial" animate="animate" exit="exit" transition={{
             duration: 0.3,
