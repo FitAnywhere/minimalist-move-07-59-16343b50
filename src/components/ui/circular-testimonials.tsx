@@ -217,8 +217,8 @@ export const CircularTestimonials = ({
   const containerStyles: React.CSSProperties = {
     width: '100%',
     ...(isMobile ? {
-      maxWidth: '56rem',
-      padding: '2rem'
+      padding: '1rem'
+      // Removed max-width constraint to allow full width usage
     } : {
       padding: '2rem 4rem',
       // More padding on desktop
@@ -235,8 +235,8 @@ export const CircularTestimonials = ({
       alignItems: 'center'
     } : {
       flexDirection: 'row',
-      gap: '4rem',
-      // Increased gap for better desktop layout
+      gap: '2rem',
+      // Reduced gap to bring image and text closer
       alignItems: 'center',
       justifyContent: 'center'
     })
@@ -344,7 +344,7 @@ export const CircularTestimonials = ({
         }} data-index={index} />)}
         </div>
         {/* Content */}
-        <div style={contentStyles} className="py-0 my-0 mx-[26px] px-[234px]">
+        <div style={contentStyles} className="py-0 my-0 mx-0 md:mx-[26px] px-0 md:px-[234px]">
           <AnimatePresence mode="wait">
             <motion.div key={activeIndex} variants={quoteVariants} initial="initial" animate="animate" exit="exit" transition={{
             duration: 0.3,
