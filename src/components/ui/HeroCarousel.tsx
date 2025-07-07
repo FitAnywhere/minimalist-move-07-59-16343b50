@@ -71,7 +71,7 @@ const HeroCarousel = () => {
     
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 2000);
+    }, 1100);
 
     return () => clearInterval(timer);
   }, [imagesLoaded]);
