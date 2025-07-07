@@ -305,9 +305,11 @@ export const CircularTestimonials = ({
   const quoteStyles: React.CSSProperties = {
     lineHeight: 1.75,
     marginBottom: isMobile ? '1.5rem' : '2rem',
-    ...(isMobile ? {} : {
+    ...(isMobile ? {
+      textAlign: 'left' // Left align text on mobile
+    } : {
       width: '100%',
-      textAlign: 'center' // Center align text
+      textAlign: 'center' // Center align text on desktop
     })
   };
 
