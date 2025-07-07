@@ -74,7 +74,7 @@ const ProductIntro = () => {
               <div className={cn("flex justify-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="max-w-[243px] relative">
                   {!videoError ? <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover" onError={handleVideoError}>
-                      <source src="/0408-Copy-Copy (2)-Copy-Copy-Copy.webm" type="video/webm" />
+                    <source src="/settingitupp7070.webm" type="video/webm" />
                       Your browser does not support the video tag.
                     </video> : <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750973466/Izdelek_brez_naslova_-_2025-06-26T232143.944_duekki.png" alt="Workout at home" className="w-full rounded-xl aspect-[3/4] object-cover" />}
                 </div>
@@ -152,7 +152,7 @@ const ProductIntro = () => {
                   <div className={cn("transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="max-w-[308px] mx-auto relative">
                       {!videoError ? <video autoPlay muted loop playsInline className="w-full rounded-xl aspect-[3/4] object-cover" onError={handleVideoError}>
-                          <source src="/0408-Copy-Copy (2)-Copy-Copy-Copy.webm" type="video/webm" />
+                          <source src="/settingitupp7070.webm" type="video/webm" />
                           Your browser does not support the video tag.
                         </video> : <img src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750973466/Izdelek_brez_naslova_-_2025-06-26T232143.944_duekki.png" alt="Workout at home" className="w-full rounded-xl aspect-[3/4] object-cover" />}
                     </div>
