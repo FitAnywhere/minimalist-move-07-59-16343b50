@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -156,14 +157,16 @@ const BundleOffer = () => {
           </div>
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-start justify-center gap-12")}>
-            {/* Desktop and Tablet: Pricing Component in Right Column - Aligned properly */}
+            {/* Desktop and Tablet: Pricing Component in Right Column - Remove padding to align with left carousel */}
             {!isMobile && (
-              <div className="flex flex-col items-center space-y-6 w-full max-w-[400px] mt-4">
-                <FitAnywherePricingDemo />
+              <div className="flex flex-col items-center space-y-6 w-full max-w-[400px]">
+                <div className="-mt-[67px]">
+                  <FitAnywherePricingDemo />
+                </div>
               </div>
             )}
 
-            {/* Left column - Carousel container - Aligned properly WITHOUT mt-4 to match right column height */}
+            {/* Left column - Carousel container */}
             <div className="flex flex-col items-center w-full max-w-[450px]">
               <div className={cn(
                 "relative overflow-hidden w-full", 
