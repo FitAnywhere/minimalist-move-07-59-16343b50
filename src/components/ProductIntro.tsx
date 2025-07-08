@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
@@ -127,13 +128,13 @@ const ProductIntro = () => {
                   <div className={cn("transition-all duration-1000 mb-16", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="space-y-3">
                       <p className="text-2xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>AVOID TRAFFIC
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span><span className="whitespace-nowrap">AVOID TRAFFIC</span>
                       </p>
                       <p className="text-2xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>ELIMINATE MIND BATTLES
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span><span className="whitespace-nowrap">ELIMINATE MIND BATTLES</span>
                       </p>
                       <p className="text-2xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>NEVER FEEL ANXIOUS
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span><span className="whitespace-nowrap">NEVER FEEL ANXIOUS</span>
                       </p>
                     </div>
                   </div>
