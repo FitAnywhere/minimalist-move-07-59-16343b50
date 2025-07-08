@@ -35,10 +35,10 @@ const GymTarget = () => {
 
                 <div className="grid grid-cols-[2fr_1fr] gap-4 items-center px-[60px]">
                   {/* Left Column - Solution text and Bullet Points - Much wider for tablet */}
-                  <div className={cn("text-left space-y-4", "md:max-w-none lg:max-w-[85%]")}>
+                  <div className={cn("text-left space-y-4", "md:max-w-none lg:max-w-[85%]", "lg:pl-[40px]")}>
                     {/* Solution text with animated arrow */}
                     <div className={cn("transition-all duration-1000 delay-300", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                      <div className="flex items-center mb-6">
+                      <div className="flex items-center lg:mb-10 mb-6">
                         <ChevronDown className="w-6 h-6 text-yellow-400 animate-pulse mr-3" />
                         <p className="text-xl md:text-2xl font-bold text-black">Why do they love it so much?</p>
                       </div>
@@ -46,15 +46,15 @@ const GymTarget = () => {
 
                     {/* Bullet points with yellow dots */}
                     <div className={cn("transition-all duration-1000 delay-400", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
-                      <div className="flex items-center mb-3">
+                      <div className="flex items-center lg:mb-6 mb-3">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4 flex-shrink-0"></div>
                         <p className="text-xl md:text-2xl text-black whitespace-nowrap">EASY START WITH BANDS</p>
                       </div>
-                      <div className="flex items-center mb-3">
+                      <div className="flex items-center lg:mb-6 mb-3">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4 flex-shrink-0"></div>
                         <p className="text-xl md:text-2xl text-black whitespace-nowrap">TOTAL COMFORT AT HOME</p>
                       </div>
-                      <div className="flex items-center mb-4">
+                      <div className="flex items-center lg:mb-10 mb-4">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4 flex-shrink-0"></div>
                         <p className="text-xl md:text-2xl text-black whitespace-nowrap">DAILY MUSCLE GAINS</p>
                       </div>
