@@ -1,10 +1,10 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -16,6 +16,7 @@ const ProductIntro = () => {
     finalText: false
   });
   const [videoError, setVideoError] = useState(false);
+
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -36,9 +37,11 @@ const ProductIntro = () => {
       })), 700);
     }
   }, [isInView]);
+
   const handleVideoError = () => {
     setVideoError(true);
   };
+
   return <section id="product" ref={containerRef} style={{
     backgroundColor: '#f6f6f6'
   }}>
@@ -123,7 +126,7 @@ const ProductIntro = () => {
               {/* Two Column Layout with aligned content */}
               <div className="grid md:grid-cols-2 gap-2 items-center">
                 {/* Left Column - Bullet Points and Final Text */}
-                <div className="flex flex-col justify-center h-full px-[102px] py-0">
+                <div className="flex flex-col justify-center h-full px-[102px] md:px-[20px] lg:px-[102px] py-0">
                   {/* Bullet points */}
                   <div className={cn("transition-all duration-1000 mb-16", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="space-y-3">
@@ -165,4 +168,5 @@ const ProductIntro = () => {
       </div>
     </section>;
 };
+
 export default ProductIntro;
