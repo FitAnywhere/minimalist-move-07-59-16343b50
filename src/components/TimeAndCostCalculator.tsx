@@ -3,15 +3,12 @@ import { useInView } from '@/utils/animations';
 import { cn } from '@/lib/utils';
 import { SavingsCalculator } from '@/components/ui/SavingsCalculator';
 import ComparisonTable from '@/components/ComparisonTable';
-
 const TimeAndCostCalculator = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, {
     threshold: 0.2
   }, false);
-
-  return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-white" id="calculator">
+  return <section ref={sectionRef} className="relative overflow-hidden bg-white" id="calculator">
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         {Array.from({
         length: 15
@@ -34,7 +31,7 @@ const TimeAndCostCalculator = () => {
               STOP RENTING
               <div className="absolute -bottom-2 left-0 right-0 h-1 bg-yellow-400 rounded-full"></div>
             </h2>
-            <p className="text-lg md:text-xl text-gray-700 mt-4">
+            <p className="text-lg md:text-xl text-gray-700 mt-4 font-bold my-[36px] py-0">
               Look at all this wasted money
             </p>
           </div>
@@ -58,8 +55,6 @@ const TimeAndCostCalculator = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default TimeAndCostCalculator;
