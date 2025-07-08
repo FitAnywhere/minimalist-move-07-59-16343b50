@@ -11,7 +11,7 @@ import FitAnywherePricingDemo from './ui/pricing-component';
 const carouselContent = [{
   type: 'video',
   src: '/Fitanyprodcut.mp4',
-  label: 'Power Station'
+  label: 'wtf is this?'
 }, {
   type: 'image',
   src: 'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1746741696/PRIVATE_GYM_4_o02rth.png',
@@ -134,7 +134,7 @@ const BundleOffer = () => {
     return () => observer.disconnect();
   }, []);
 
-  const valueBreakdownItems = ['Power Station', '4 Elastic Bands (15–120kg)', '15-Min Workouts', 'Personal Coach Access', 'Free Shipping'];
+  const valueBreakdownItems = ['wtf is this?', '4 Elastic Bands (15–120kg)', '15-Min Workouts', 'Personal Coach Access', 'Free Shipping'];
 
   return (
     <section 
@@ -157,87 +157,105 @@ const BundleOffer = () => {
             </p>
           </div>
 
-          <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-center gap-8")}>
+          <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-start justify-center gap-12")}>
             {/* Desktop and Tablet: Pricing Component in Right Column */}
             {!isMobile && (
-              <div className="flex flex-col items-center space-y-6 mt-[-20px]">
+              <div className="flex flex-col items-center space-y-6 w-full max-w-[400px]">
                 <FitAnywherePricingDemo />
               </div>
             )}
 
-            {/* Enhanced carousel container - Fixed sizing for tablet view */}
-            <div className={cn(
-              "relative overflow-hidden", 
-              isMobile 
-                ? "w-full" 
-                : "w-full max-w-[500px] h-[530px] mt-12"
-            )}>
-              {carouselContent.map((item, index) => (
-                <div 
-                  key={index} 
-                  className={cn(
-                    "flex flex-col items-center transition-opacity duration-300",
-                    index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 absolute",
-                    isMobile ? "w-full" : "absolute top-0 left-0 w-full h-full"
-                  )}
-                >
-                  <div className={cn(
-                    "flex justify-center items-center", 
-                    isMobile 
-                      ? "w-full h-[300px]" 
-                      : "h-[75%] w-full"
-                  )}>
-                    {item.type === 'video' ? (
-                      !carouselVideoError ? (
-                        <video
-                          ref={index === 0 ? videoRef : null}
-                          src={item.src}
-                          className={cn(
-                            "object-contain rounded-lg", 
-                            isMobile 
-                              ? "w-auto h-full" 
-                              : "w-full max-w-[115%] h-auto max-h-full"
-                          )}
-                          muted
-                          playsInline
-                          loop
-                          preload="metadata"
-                          onLoadedData={handleVideoLoaded}
-                          onCanPlay={handleVideoLoaded}
-                          onError={handleCarouselVideoError}
-                        />
+            {/* Left column - Carousel container with proper tablet sizing */}
+            <div className="flex flex-col items-center w-full max-w-[450px]">
+              <div className={cn(
+                "relative overflow-hidden w-full", 
+                isMobile 
+                  ? "h-[300px]" 
+                  : "h-[350px]"
+              )}>
+                {carouselContent.map((item, index) => (
+                  <div 
+                    key={index} 
+                    className={cn(
+                      "flex flex-col items-center transition-opacity duration-300",
+                      index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 absolute",
+                      isMobile ? "w-full" : "absolute top-0 left-0 w-full h-full"
+                    )}
+                  >
+                    <div className={cn(
+                      "flex justify-center items-center w-full", 
+                      isMobile 
+                        ? "h-[300px]" 
+                        : "h-[350px]"
+                    )}>
+                      {item.type === 'video' ? (
+                        !carouselVideoError ? (
+                          <video
+                            ref={index === 0 ? videoRef : null}
+                            src={item.src}
+                            className={cn(
+                              "object-contain rounded-lg", 
+                              isMobile 
+                                ? "w-auto h-full" 
+                                : "w-auto h-full max-h-[350px]"
+                            )}
+                            muted
+                            playsInline
+                            loop
+                            preload="metadata"
+                            onLoadedData={handleVideoLoaded}
+                            onCanPlay={handleVideoLoaded}
+                            onError={handleCarouselVideoError}
+                          />
+                        ) : (
+                          <img
+                            src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1751888689/Izdelek_brez_naslova_-_2025-07-07T134427.421_qelihy.png"
+                            alt="Workout fallback"
+                            className={cn(
+                              "object-contain rounded-lg", 
+                              isMobile 
+                                ? "w-auto h-full" 
+                                : "w-auto h-full max-h-[350px]"
+                            )}
+                          />
+                        )
                       ) : (
                         <img
-                          src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1751888689/Izdelek_brez_naslova_-_2025-07-07T134427.421_qelihy.png"
-                          alt="Workout fallback"
+                          src={item.src}
+                          alt="Product image"
                           className={cn(
-                            "object-contain rounded-lg", 
+                            "object-contain rounded-lg",
                             isMobile 
                               ? "w-auto h-full" 
-                              : "w-full max-w-[115%] h-auto max-h-full"
+                              : "w-auto h-full max-h-[350px]",
+                            "transition-transform duration-3000 ease-in-out",
+                            index === currentSlide ? "scale-110" : "scale-100"
                           )}
+                          loading="eager"
                         />
-                      )
-                    ) : (
-                      <img
-                        src={item.src}
-                        alt="Product image"
-                        className={cn(
-                          "object-contain rounded-lg",
-                          isMobile 
-                            ? "w-auto h-full" 
-                            : "w-full max-w-[115%] h-auto max-h-full",
-                          "transition-transform duration-3000 ease-in-out",
-                          index === currentSlide ? "scale-110" : "scale-100"
-                        )}
-                        loading="eager"
-                      />
-                    )}
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+                
+                {/* Carousel navigation dots - positioned next to carousel for tablet */}
+                {!isMobile && (
+                  <div className="absolute right-[-40px] top-1/2 transform -translate-y-1/2 flex flex-col space-y-2">
+                    {carouselContent.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentSlide(index)}
+                        className={cn(
+                          "w-3 h-3 rounded-full transition-colors duration-200",
+                          index === currentSlide ? "bg-yellow" : "bg-gray-300"
+                        )}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
               
-              {/* Unified caption under entire carousel */}
+              {/* Caption under carousel */}
               <div className="mt-4 text-center">
                 <p className="text-gray-500 opacity-70 text-sm">
                   Your home gym | Adjustable support
