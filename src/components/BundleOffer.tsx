@@ -163,8 +163,8 @@ const BundleOffer = () => {
               </div>
             )}
 
-            {/* Left column - Carousel container - Aligned properly */}
-            <div className="flex flex-col items-center w-full max-w-[450px] mt-4">
+            {/* Left column - Carousel container - Aligned properly WITHOUT mt-4 to match right column height */}
+            <div className="flex flex-col items-center w-full max-w-[450px]">
               <div className={cn(
                 "relative overflow-hidden w-full", 
                 isMobile 
