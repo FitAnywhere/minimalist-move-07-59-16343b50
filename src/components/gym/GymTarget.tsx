@@ -35,7 +35,7 @@ const GymTarget = () => {
 
                 <div className="grid grid-cols-2 gap-4 items-center px-[123px]">
                   {/* Left Column - Solution text and Bullet Points */}
-                  <div className="text-left space-y-4">
+                  <div className={cn("text-left space-y-4", "md:max-w-none lg:max-w-[85%]")}>
                     {/* Solution text with animated arrow */}
                     <div className={cn("transition-all duration-1000 delay-300", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                       <div className="flex items-center mb-6">
@@ -47,15 +47,15 @@ const GymTarget = () => {
                     {/* Bullet points with yellow dots */}
                     <div className={cn("transition-all duration-1000 delay-400", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                       <div className="flex items-center mb-3">
-                        <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4"></div>
+                        <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4 flex-shrink-0"></div>
                         <p className="text-xl md:text-2xl text-black">EASY START WITH BANDS</p>
                       </div>
                       <div className="flex items-center mb-3">
-                        <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4"></div>
+                        <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4 flex-shrink-0"></div>
                         <p className="text-xl md:text-2xl text-black">TOTAL COMFORT AT HOME</p>
                       </div>
                       <div className="flex items-center mb-4">
-                        <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4"></div>
+                        <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4 flex-shrink-0"></div>
                         <p className="text-xl md:text-2xl text-black">DAILY MUSCLE GAINS</p>
                       </div>
                     </div>
