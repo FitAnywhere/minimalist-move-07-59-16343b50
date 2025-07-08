@@ -84,13 +84,13 @@ const ProductIntro = () => {
               <div className={cn("text-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="max-w-md mx-auto space-y-2">
                   <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>NO TRAFFIC
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>AVOID TRAFFIC
                   </p>
                   <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>NO MIND BATTLES
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>ELIMINATE MIND BATTLES
                   </p>
                   <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>NO ANXIETY
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>NEVER FEEL ANXIOUS
                   </p>
                 </div>
               </div>
@@ -127,13 +127,13 @@ const ProductIntro = () => {
                   <div className={cn("transition-all duration-1000 mb-16", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="space-y-3">
                       <p className="text-2xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>NO TRAFFIC
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>AVOID TRAFFIC
                       </p>
                       <p className="text-2xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>NO MIND BATTLES
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>ELIMINATE MIND BATTLES
                       </p>
                       <p className="text-2xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>NO ANXIETY
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>NEVER FEEL ANXIOUS
                       </p>
                     </div>
                   </div>
