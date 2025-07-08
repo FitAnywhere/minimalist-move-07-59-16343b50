@@ -28,12 +28,15 @@ const TimeAndCostCalculator = () => {
       
       <div className="container mx-auto px-6 relative z-10">
         <div className={cn("mt-16 py-[89px]", "transition-all duration-1000 transform", isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
-          {/* Section Title */}
+          {/* Section Title with Subtitle */}
           <div className="text-center mb-16">
             <h2 className="relative text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-black mb-2 inline-block">
               STOP RENTING
               <div className="absolute -bottom-2 left-0 right-0 h-1 bg-yellow-400 rounded-full"></div>
             </h2>
+            <p className="text-lg md:text-xl text-gray-700 mt-4">
+              Look at all this wasted money
+            </p>
           </div>
 
           {/* Calculator Component */}
