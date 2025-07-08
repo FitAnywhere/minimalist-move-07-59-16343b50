@@ -33,8 +33,8 @@ const GymTarget = () => {
                   <p className="text-lg md:text-xl font-bold text-gray-800 leading-tight">They used to avoid gyms, now they have their own.</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 items-center px-[123px]">
-                  {/* Left Column - Solution text and Bullet Points */}
+                <div className="grid grid-cols-[2fr_1fr] gap-4 items-center px-[60px]">
+                  {/* Left Column - Solution text and Bullet Points - Much wider for tablet */}
                   <div className={cn("text-left space-y-4", "md:max-w-none lg:max-w-[85%]")}>
                     {/* Solution text with animated arrow */}
                     <div className={cn("transition-all duration-1000 delay-300", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
@@ -48,15 +48,15 @@ const GymTarget = () => {
                     <div className={cn("transition-all duration-1000 delay-400", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                       <div className="flex items-center mb-3">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4 flex-shrink-0"></div>
-                        <p className="text-xl md:text-2xl text-black">EASY START WITH BANDS</p>
+                        <p className="text-xl md:text-2xl text-black whitespace-nowrap">EASY START WITH BANDS</p>
                       </div>
                       <div className="flex items-center mb-3">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4 flex-shrink-0"></div>
-                        <p className="text-xl md:text-2xl text-black">TOTAL COMFORT AT HOME</p>
+                        <p className="text-xl md:text-2xl text-black whitespace-nowrap">TOTAL COMFORT AT HOME</p>
                       </div>
                       <div className="flex items-center mb-4">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4 flex-shrink-0"></div>
-                        <p className="text-xl md:text-2xl text-black">DAILY MUSCLE GAINS</p>
+                        <p className="text-xl md:text-2xl text-black whitespace-nowrap">DAILY MUSCLE GAINS</p>
                       </div>
                     </div>
 
@@ -66,7 +66,7 @@ const GymTarget = () => {
                     </div>
                   </div>
 
-                  {/* Right Column - Video (10-15% bigger) */}
+                  {/* Right Column - Video */}
                   <div className={cn("transition-all duration-1000 delay-600", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="w-full max-w-[260px] mx-auto">
                       <div className="relative aspect-[9/16] rounded-2xl overflow-hidden bg-black shadow-2xl">
