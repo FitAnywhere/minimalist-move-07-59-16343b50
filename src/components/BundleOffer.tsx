@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -151,22 +150,21 @@ const BundleOffer = () => {
               <span className={cn("absolute bottom-0 left-0 w-full h-1 bg-yellow-400 transform transition-transform duration-1000", isVisible ? "scale-x-100" : "scale-x-0")}></span>
             </h2>
             
-            {/* UPDATED SUBHEADLINE */}
             <p className="text-xl md:text-2xl font-bold text-gray-900 mt-4 mb-6">
               Get fit in 15-min a day without leaving your home
             </p>
           </div>
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-start justify-center gap-12")}>
-            {/* Desktop and Tablet: Pricing Component in Right Column */}
+            {/* Desktop and Tablet: Pricing Component in Right Column - Aligned properly */}
             {!isMobile && (
-              <div className="flex flex-col items-center space-y-6 w-full max-w-[400px]">
+              <div className="flex flex-col items-center space-y-6 w-full max-w-[400px] mt-4">
                 <FitAnywherePricingDemo />
               </div>
             )}
 
-            {/* Left column - Carousel container with proper tablet sizing */}
-            <div className="flex flex-col items-center w-full max-w-[450px]">
+            {/* Left column - Carousel container - Aligned properly */}
+            <div className="flex flex-col items-center w-full max-w-[450px] mt-4">
               <div className={cn(
                 "relative overflow-hidden w-full", 
                 isMobile 
