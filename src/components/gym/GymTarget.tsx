@@ -48,15 +48,15 @@ const GymTarget = () => {
                     <div className={cn("transition-all duration-1000 delay-400", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                       <div className="flex items-center mb-3">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4"></div>
-                        <p className="text-xl md:text-2xl text-black">BANDS MAKING HARD MOVES POSSIBLE</p>
+                        <p className="text-xl md:text-2xl text-black">EASY START WITH BANDS</p>
                       </div>
                       <div className="flex items-center mb-3">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4"></div>
-                        <p className="text-xl md:text-2xl text-black">COMFORTABLE IN THEIR OWN SPACE</p>
+                        <p className="text-xl md:text-2xl text-black">TOTAL COMFORT AT HOME</p>
                       </div>
                       <div className="flex items-center mb-4">
                         <div className="w-4 h-4 bg-yellow-400 rounded-full mr-4"></div>
-                        <p className="text-xl md:text-2xl text-black">FEELING STRONGER EVERY SESSION</p>
+                        <p className="text-xl md:text-2xl text-black">DAILY MUSCLE GAINS</p>
                       </div>
                     </div>
 
@@ -141,12 +141,12 @@ const GymTarget = () => {
                   </div>
                 </div>
 
-                {/* BANDS | PRIVACY | PROGRESS - moved closer to solution text above */}
+                {/* Updated bullet points - mobile format with soft yellow background */}
                 <div className={cn("mb-8 text-center transition-all duration-1000 delay-600", isTargetInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                   <p className="text-lg font-bold text-black md:bg-transparent bg-yellow-50 md:px-0 px-3 md:py-0 py-2 md:rounded-none rounded-lg inline-block">
-                    BANDS MAKING HARD MOVES POSSIBLE<br/>
-                    COMFORTABLE IN THEIR OWN SPACE<br/>
-                    FEELING STRONGER EVERY SESSION
+                    EASY START WITH BANDS<br/>
+                    TOTAL COMFORT AT HOME<br/>
+                    DAILY MUSCLE GAINS
                   </p>
                 </div>
 
