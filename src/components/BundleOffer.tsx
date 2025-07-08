@@ -158,15 +158,20 @@ const BundleOffer = () => {
           </div>
 
           <div className={cn(isMobile ? "flex flex-col items-center" : "flex flex-row-reverse items-center justify-center gap-8")}>
-            {/* Desktop: Pricing Component in Right Column */}
+            {/* Desktop and Tablet: Pricing Component in Right Column */}
             {!isMobile && (
               <div className="flex flex-col items-center space-y-6 mt-[-20px]">
                 <FitAnywherePricingDemo />
               </div>
             )}
 
-            {/* Enhanced carousel container */}
-            <div className={cn("relative overflow-hidden", isMobile ? "w-full" : "w-full max-w-[500px] h-[530px] mt-12")}>
+            {/* Enhanced carousel container - Fixed sizing for tablet view */}
+            <div className={cn(
+              "relative overflow-hidden", 
+              isMobile 
+                ? "w-full" 
+                : "w-full max-w-[500px] h-[530px] mt-12"
+            )}>
               {carouselContent.map((item, index) => (
                 <div 
                   key={index} 
@@ -176,13 +181,23 @@ const BundleOffer = () => {
                     isMobile ? "w-full" : "absolute top-0 left-0 w-full h-full"
                   )}
                 >
-                  <div className={cn("flex justify-center items-center", isMobile ? "w-full h-[300px]" : "h-[75%]")}>
+                  <div className={cn(
+                    "flex justify-center items-center", 
+                    isMobile 
+                      ? "w-full h-[300px]" 
+                      : "h-[75%] w-full"
+                  )}>
                     {item.type === 'video' ? (
                       !carouselVideoError ? (
                         <video
                           ref={index === 0 ? videoRef : null}
                           src={item.src}
-                          className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full")}
+                          className={cn(
+                            "object-contain rounded-lg", 
+                            isMobile 
+                              ? "w-auto h-full" 
+                              : "w-full max-w-[115%] h-auto max-h-full"
+                          )}
                           muted
                           playsInline
                           loop
@@ -195,7 +210,12 @@ const BundleOffer = () => {
                         <img
                           src="https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1751888689/Izdelek_brez_naslova_-_2025-07-07T134427.421_qelihy.png"
                           alt="Workout fallback"
-                          className={cn("object-contain rounded-lg", isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full")}
+                          className={cn(
+                            "object-contain rounded-lg", 
+                            isMobile 
+                              ? "w-auto h-full" 
+                              : "w-full max-w-[115%] h-auto max-h-full"
+                          )}
                         />
                       )
                     ) : (
@@ -204,7 +224,9 @@ const BundleOffer = () => {
                         alt="Product image"
                         className={cn(
                           "object-contain rounded-lg",
-                          isMobile ? "w-auto h-full" : "w-full max-w-[115%] h-auto max-h-full",
+                          isMobile 
+                            ? "w-auto h-full" 
+                            : "w-full max-w-[115%] h-auto max-h-full",
                           "transition-transform duration-3000 ease-in-out",
                           index === currentSlide ? "scale-110" : "scale-100"
                         )}
@@ -223,7 +245,7 @@ const BundleOffer = () => {
               </div>
             </div>
 
-            {/* Mobile: Content with NEW PRICING COMPONENT */}
+            {/* Mobile: Content with PRICING COMPONENT */}
             {isMobile && (
               <div className="flex flex-col items-center w-full mt-6 pb-24">
                 <FitAnywherePricingDemo />
@@ -231,7 +253,7 @@ const BundleOffer = () => {
             )}
           </div>
 
-          {/* Desktop only: Centered text and arrow under both columns */}
+          {/* Desktop and Tablet only: Centered text and arrow under both columns */}
           {!isMobile && (
             <div className="text-center mt-12">
               <p className="text-gray-600 text-lg font-bold italic">
