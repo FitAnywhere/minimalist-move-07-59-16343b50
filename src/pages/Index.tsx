@@ -4,6 +4,7 @@ import NavBar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
 import CheatSystemSection from '@/components/CheatSystemSection';
 import ProductIntro from '@/components/ProductIntro';
+import OneTruthSection from '@/components/OneTruthSection';
 import TheChallengeSection from '@/components/TheChallengeSection';
 
 // Lazy load non-critical sections with better chunking
@@ -46,6 +47,11 @@ const Index = () => {
       
       <div id="product">
         <ProductIntro />
+      </div>
+      
+      {/* TRAIN SMART Section */}
+      <div id="train-smart">
+        <OneTruthSection />
       </div>
       
       <div id="the-challenge">
