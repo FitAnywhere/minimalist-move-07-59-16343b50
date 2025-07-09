@@ -4,7 +4,6 @@ import { useInView } from '@/utils/animations';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const ProductIntro = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
@@ -16,7 +15,6 @@ const ProductIntro = () => {
     finalText: false
   });
   const [videoError, setVideoError] = useState(false);
-
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -37,11 +35,9 @@ const ProductIntro = () => {
       })), 700);
     }
   }, [isInView]);
-
   const handleVideoError = () => {
     setVideoError(true);
   };
-
   return <section id="product" ref={containerRef} style={{
     backgroundColor: '#f6f6f6'
   }}>
@@ -88,13 +84,13 @@ const ProductIntro = () => {
               <div className={cn("text-center transition-all duration-1000", animationState.video ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                 <div className="max-w-md mx-auto space-y-2">
                   <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>AVOID TRAFFIC
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>NO TRAFFIC
                   </p>
                   <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>ELIMINATE MIND BATTLES
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>NO MIND BATTLES
                   </p>
                   <p className="text-lg text-black leading-relaxed">
-                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>NEVER FEEL ANXIOUS
+                    <span className="text-yellow-400 font-black text-2xl mr-2">→</span>NO ANXIETY
                   </p>
                 </div>
               </div>
@@ -126,18 +122,18 @@ const ProductIntro = () => {
               {/* Two Column Layout with aligned content */}
               <div className="grid md:grid-cols-2 gap-2 items-center">
                 {/* Left Column - Bullet Points and Final Text */}
-                <div className="flex flex-col justify-center h-full px-[102px] md:px-[20px] lg:px-[102px] py-0">
+                <div className="flex flex-col justify-center h-full px-[102px] py-0">
                   {/* Bullet points */}
                   <div className={cn("transition-all duration-1000 mb-16", animationState.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
                     <div className="space-y-3">
                       <p className="text-2xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span><span className="whitespace-nowrap">AVOID TRAFFIC</span>
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>NO TRAFFIC
                       </p>
                       <p className="text-2xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span><span className="whitespace-nowrap">ELIMINATE MIND BATTLES</span>
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>NO MIND BATTLES
                       </p>
                       <p className="text-2xl text-black leading-relaxed">
-                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span><span className="whitespace-nowrap">NEVER FEEL ANXIOUS</span>
+                        <span className="text-yellow-400 mr-3 font-black text-4xl">→</span>NO ANXIETY
                       </p>
                     </div>
                   </div>
@@ -168,5 +164,4 @@ const ProductIntro = () => {
       </div>
     </section>;
 };
-
 export default ProductIntro;
