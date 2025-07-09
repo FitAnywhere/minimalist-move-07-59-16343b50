@@ -161,7 +161,7 @@ const sampleFitAnywhereTiers: PricingTier[] = [{
   price: "€599 + VAT",
   ctaText: "BUY NOW",
   features: [{
-    text: "Power Station",
+    text: "Home Gym",
     included: true
   }, {
     text: "4 Elastic Bands (15–120kg)",
@@ -179,7 +179,7 @@ const sampleFitAnywhereTiers: PricingTier[] = [{
   price: "€699 + VAT",
   ctaText: "BUY NOW",
   features: [{
-    text: "Power Station",
+    text: "Home Gym",
     included: true
   }, {
     text: "4 Elastic Bands (15–120kg)",
@@ -198,7 +198,7 @@ const sampleFitAnywhereTiers: PricingTier[] = [{
   price: "€799 + VAT",
   ctaText: "BUY NOW",
   features: [{
-    text: "Power Station",
+    text: "Home Gym",
     included: true
   }, {
     text: "4 Elastic Bands (15–120kg)",
