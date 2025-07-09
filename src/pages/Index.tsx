@@ -49,7 +49,8 @@ const Index = () => {
         <ProductIntro />
       </div>
       
-      <div id="one-truth">
+      {/* TRAIN SMART Section */}
+      <div id="train-smart">
         <OneTruthSection />
       </div>
       
