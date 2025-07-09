@@ -148,7 +148,8 @@ export function SavingsCalculator({
   const [gymCost, setGymCost] = useState(50);
   const shouldReduceMotion = useReducedMotion();
   const shouldAnimate = enableAnimations && !shouldReduceMotion;
-  const twentyYearSavings = gymCost * 12 * 20;
+  const yearlySavings = gymCost * 12;
+  const twentyYearSavings = yearlySavings * 20;
   const handleSliderChange = (value: number[]) => {
     setGymCost(value[0]);
   };
@@ -223,7 +224,7 @@ export function SavingsCalculator({
         {/* Question */}
         <motion.div variants={shouldAnimate ? childVariants : {}} className="mb-8">
           <h3 className="text-lg font-bold text-foreground text-center mb-6">
-            Monthly gym cost in your country?
+            What's a monthly gym membership cost in your country?
           </h3>
 
           {/* Slider */}
@@ -246,13 +247,27 @@ export function SavingsCalculator({
           </div>
         </motion.div>
 
-        {/* Results - Only 20 Year Savings */}
+        {/* Results */}
         <motion.div variants={shouldAnimate ? childVariants : {}} className="space-y-6">
+          {/* Yearly Savings */}
+          <div className="text-center p-4 bg-muted/20 rounded-xl border border-border/30">
+            <motion.p key={yearlySavings} variants={numberVariants} initial="initial" animate="animate" className="text-lg font-semibold text-foreground">
+              Start saving{" "}
+              <NumberFlow value={yearlySavings} format={{
+              style: "currency",
+              currency: "EUR",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            }} className="font-bold text-[#FFD700]" />{" "}
+              every year.
+            </motion.p>
+          </div>
+
           {/* 20 Year Savings */}
           <div className="text-center p-6 bg-gradient-to-br from-[#FFD700]/10 to-[#FFD700]/5 rounded-2xl border-2 border-[#FFD700]/30">
             <motion.div variants={shouldAnimate ? childVariants : {}}>
               <h4 className="text-sm font-black tracking-wider text-foreground mb-3 uppercase">
-                💳 MONEY LOST - 20 YEARS
+                💳 MONEY SAVED - 20 YEARS
               </h4>
               <motion.div key={twentyYearSavings} variants={numberVariants} initial="initial" animate="animate" className="text-4xl md:text-5xl font-black text-[#FFD700] tracking-tight">
                 <NumberFlow value={twentyYearSavings} format={{
