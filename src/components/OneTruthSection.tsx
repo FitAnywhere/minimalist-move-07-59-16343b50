@@ -12,9 +12,8 @@ const OneTruthSection = () => {
   
   // Carousel state
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(new Array(9).fill(false));
   
-  const carouselImages = [
+  const exerciseImages = [
     'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506378/36_tzpycv.png',
     'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506378/37_atfe5o.png',
     'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506379/30_gcqcbp.png',
@@ -31,25 +30,16 @@ const OneTruthSection = () => {
     if (!isInView) return;
     
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length);
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % exerciseImages.length);
     }, 1700);
 
     return () => clearInterval(interval);
-  }, [isInView, carouselImages.length]);
-
-  // Handle image load
-  const handleImageLoad = (index: number) => {
-    setImagesLoaded(prev => {
-      const newState = [...prev];
-      newState[index] = true;
-      return newState;
-    });
-  };
+  }, [isInView, exerciseImages.length]);
 
   // Add yellow underline animation when in view
   useEffect(() => {
     if (isInView && titleRef.current) {
-      titleRef.current.classList.add('underline-animation');
+      titleRef.current.style.setProperty('--underline-width', '100%');
     }
   }, [isInView]);
 
@@ -63,13 +53,24 @@ const OneTruthSection = () => {
             <h2 
               ref={titleRef}
               className={cn(
-                "text-3xl font-extrabold text-black relative",
+                "text-3xl font-extrabold text-black relative inline-block",
+                "after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:bg-yellow",
+                "after:transition-all after:duration-1000 after:ease-out",
                 "transition-all duration-1000 ease-out",
                 isInView ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
               )}
-              style={{ animationDelay: '200ms' }}
+              style={{ 
+                animationDelay: '200ms',
+                '--underline-width': isInView ? '100%' : '0%'
+              } as React.CSSProperties & { '--underline-width': string }}
             >
-              TRAIN SMART
+              <span className="relative">
+                TRAIN SMART
+                <span 
+                  className="absolute bottom-0 left-0 h-1 bg-yellow transition-all duration-1000 ease-out"
+                  style={{ width: 'var(--underline-width, 0%)' }}
+                />
+              </span>
             </h2>
 
             {/* Bullet Points */}
@@ -98,20 +99,21 @@ const OneTruthSection = () => {
               )}
               style={{ animationDelay: '600ms' }}
             >
-              <div className="relative max-w-xs aspect-square rounded-2xl overflow-hidden bg-yellow">
-                {carouselImages.map((src, index) => (
-                  <img
-                    key={index}
-                    src={src}
-                    alt={`Exercise ${index + 1}`}
-                    className={cn(
-                      "absolute inset-0 w-full h-full object-cover transition-opacity duration-500",
-                      currentImageIndex === index ? "opacity-100" : "opacity-0"
-                    )}
-                    loading={index === 0 ? "eager" : "lazy"}
-                    onLoad={() => handleImageLoad(index)}
-                  />
-                ))}
+              <div className="relative w-full max-w-xs mx-auto">
+                <div className="aspect-square relative overflow-hidden rounded-2xl shadow-lg">
+                  {exerciseImages.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image}
+                      alt={`Exercise ${index + 1}`}
+                      className={cn(
+                        "absolute inset-0 w-full h-full object-cover transition-opacity duration-500",
+                        index === currentImageIndex ? "opacity-100" : "opacity-0"
+                      )}
+                      loading="lazy"
+                    />
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -139,13 +141,22 @@ const OneTruthSection = () => {
               <h2 
                 ref={titleRef}
                 className={cn(
-                  "text-4xl font-extrabold text-black relative",
+                  "text-4xl font-extrabold text-black relative inline-block",
                   "transition-all duration-1000 ease-out",
                   isInView ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
                 )}
-                style={{ animationDelay: '200ms' }}
+                style={{ 
+                  animationDelay: '200ms',
+                  '--underline-width': isInView ? '100%' : '0%'
+                } as React.CSSProperties & { '--underline-width': string }}
               >
-                TRAIN SMART
+                <span className="relative">
+                  TRAIN SMART
+                  <span 
+                    className="absolute bottom-0 left-0 h-1 bg-yellow transition-all duration-1000 ease-out"
+                    style={{ width: 'var(--underline-width, 0%)' }}
+                  />
+                </span>
               </h2>
 
               {/* Bullet Points with Yellow Dots */}
@@ -196,20 +207,21 @@ const OneTruthSection = () => {
               )}
               style={{ animationDelay: '400ms' }}
             >
-              <div className="relative max-w-sm aspect-square rounded-2xl overflow-hidden bg-yellow">
-                {carouselImages.map((src, index) => (
-                  <img
-                    key={index}
-                    src={src}
-                    alt={`Exercise ${index + 1}`}
-                    className={cn(
-                      "absolute inset-0 w-full h-full object-cover transition-opacity duration-500",
-                      currentImageIndex === index ? "opacity-100" : "opacity-0"
-                    )}
-                    loading={index === 0 ? "eager" : "lazy"}
-                    onLoad={() => handleImageLoad(index)}
-                  />
-                ))}
+              <div className="relative w-full max-w-sm mx-auto">
+                <div className="aspect-square relative overflow-hidden rounded-2xl shadow-lg">
+                  {exerciseImages.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image}
+                      alt={`Exercise ${index + 1}`}
+                      className={cn(
+                        "absolute inset-0 w-full h-full object-cover transition-opacity duration-500",
+                        index === currentImageIndex ? "opacity-100" : "opacity-0"
+                      )}
+                      loading="lazy"
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
