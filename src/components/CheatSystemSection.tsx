@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -86,7 +85,7 @@ const CheatSystemSection = () => {
           
           {/* Subtitle text - Mobile only - moved closer to title */}
           <div className={cn(isMobile ? "w-full text-center order-2 mb-1" : "hidden")}>
-            <p className="text-xl font-bold text-gray-700 px-[18px] py-0 my-0 bg-red-50">WARNING: Your body will crave workouts more than a chocolate</p>
+            <p className="text-xl font-bold text-white px-[18px] py-0 my-0 bg-red-600">WARNING: Your body will crave workouts more than a chocolate</p>
           </div>
           
           {/* Video Column */}
@@ -128,7 +127,7 @@ const CheatSystemSection = () => {
           <div className={cn("flex flex-col", isMobile ? "w-full space-y-4 order-4" : "w-3/5 text-left space-y-4 pl-6")}>
             
             {/* Subtitle text - Desktop only */}
-            {!isMobile && <p className="text-2xl font-bold text-gray-700 mt-0 pt-0 mb-8 bg-red-50">WARNING: Your body will crave workouts more than a chocolate</p>}
+            {!isMobile && <p className="text-2xl font-bold text-white mt-0 pt-0 mb-8 bg-red-600">WARNING: Your body will crave workouts more than a chocolate</p>}
             
             {/* Non-interactive bullet points */}
             <ul className={cn("space-y-3", !isMobile && "mt-1 ml-4", isMobile ? "text-left" : "")}>
