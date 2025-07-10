@@ -145,7 +145,7 @@ export function SavingsCalculator({
   className,
   enableAnimations = true
 }: SavingsCalculatorProps) {
-  const [gymCost, setGymCost] = useState(50);
+  const [gymCost, setGymCost] = useState(35);
   const shouldReduceMotion = useReducedMotion();
   const shouldAnimate = enableAnimations && !shouldReduceMotion;
   const twentyYearSavings = gymCost * 12 * 20;
