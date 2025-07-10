@@ -4,6 +4,7 @@ import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { X, Check, ArrowDown } from 'lucide-react';
+
 const challenges = [{
   problem: "Too intimidated to start",
   solution: "Bands make everything possible"
@@ -17,6 +18,7 @@ const challenges = [{
   problem: "Don't know what to do",
   solution: "Coach guides every step"
 }];
+
 const TheChallengeSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, {
@@ -28,6 +30,7 @@ const TheChallengeSection = () => {
     challenges: [false, false, false, false]
   });
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
+
   useEffect(() => {
     if (isInView) {
       setTimeout(() => setAnimationState(prev => ({
@@ -71,6 +74,7 @@ const TheChallengeSection = () => {
       return () => clearInterval(interval);
     }
   }, [isInView, animationState.title]);
+
   const handleCTAClick = () => {
     // Mobile-specific scrolling to pricing carousel
     if (isMobile) {
@@ -112,6 +116,7 @@ const TheChallengeSection = () => {
       }
     }
   };
+
   return <section ref={sectionRef} className="py-20 bg-black text-white">
       <div className="container mx-auto px-4">
         <div className={cn("text-center mb-16 transition-all duration-1000", animationState.title ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8")}>
@@ -140,6 +145,19 @@ const TheChallengeSection = () => {
             </div>)}
         </div>
 
+        {/* Carousel Indicator Dots */}
+        <div className="flex justify-center space-x-2 mb-8">
+          {challenges.map((_, index) => (
+            <div
+              key={index}
+              className={cn(
+                "w-2 h-2 rounded-full transition-all duration-300",
+                index === currentCardIndex ? "bg-yellow-400" : "bg-gray-600"
+              )}
+            />
+          ))}
+        </div>
+
         <div className="text-center">
           <Button onClick={handleCTAClick} className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-4 text-lg mb-8">
             LET'S F⚡CKING GO
@@ -155,4 +173,5 @@ const TheChallengeSection = () => {
       </div>
     </section>;
 };
+
 export default TheChallengeSection;
