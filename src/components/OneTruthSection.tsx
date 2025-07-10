@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { useInView } from '@/utils/animations';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -17,12 +16,9 @@ const OneTruthSection = () => {
     'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506378/36_tzpycv.png',
     'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506378/37_atfe5o.png',
     'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506379/30_gcqcbp.png',
-    'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506379/29_aien4c.png',
     'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506379/28_swid5q.png',
     'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506378/35_uc5ypj.png',
-    'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506379/31_z1ja4w.png',
-    'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506379/33_twqq1p.png',
-    'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506380/34_kvn8lo.png'
+    'https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1750506379/33_twqq1p.png'
   ];
 
   // Auto-rotate carousel when in view
