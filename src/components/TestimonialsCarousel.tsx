@@ -63,10 +63,10 @@ const circularTestimonials: CircularTestimonial[] = [
     src: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1751575160/Izdelek_brez_naslova_-_2025-07-03T223601.643_x9sntu.png"
   },
   {
-    quote: "The setup is dope, just wish I took one with adjustable sizing because sealing in my apartment is pretty low.",
-    name: "Thijs D.",
+    quote: "I'm not a gym guy. This gave me a chance to gain muscle anyway.",
+    name: "Jordan P.",
     designation: "Customer",
-    src: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1751575161/Izdelek_brez_naslova_-_2025-07-03T223214.187_ox5c3o.png"
+    src: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
   },
   {
     quote: "A friend convinced me to try 15min workout. Grateful that it happened… I ordered my setup the same day and keep using it.",
@@ -75,10 +75,10 @@ const circularTestimonials: CircularTestimonial[] = [
     src: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1751575160/Izdelek_brez_naslova_-_2025-07-03T190314.511_e0jtim.png"
   },
   {
-    quote: "I'm not a gym guy. This gave me a chance to gain muscle anyway.",
-    name: "Jordan P.",
+    quote: "The setup is dope, just wish I took one with adjustable sizing because sealing in my apartment is pretty low.",
+    name: "Thijs D.",
     designation: "Customer",
-    src: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1744112883/Screenshot_85_xnvarx.png"
+    src: "https://res.cloudinary.com/dxjlvlcao/image/upload/f_auto,q_auto/v1751575161/Izdelek_brez_naslova_-_2025-07-03T223214.187_ox5c3o.png"
   }
 ];
 
@@ -117,7 +117,7 @@ const TestimonialsCarousel = () => {
             <div className="flex justify-center">
               <CircularTestimonials 
                 testimonials={circularTestimonials} 
-                autoplay={true} 
+                autoplay={isInView} 
                 colors={{
                   name: "#0a0a0a",
                   designation: "#454545",
